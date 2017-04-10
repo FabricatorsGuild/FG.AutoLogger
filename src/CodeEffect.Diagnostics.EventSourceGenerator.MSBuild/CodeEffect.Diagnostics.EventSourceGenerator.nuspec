@@ -1,0 +1,23 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>First public release of EventSource Generator</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>ETW EventSource MSBuild</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="9.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="CodeEffect.Diagnostics.EventSourceGenerator.targets" target="build\CodeEffect.Diagnostics.EventSourceGenerator.targets" />
+    <file src="bin\Debug\*.dll" target="lib" />
+    <file src="bin\Debug\*.pdb" target="lib" />
+  </files>
+</package>

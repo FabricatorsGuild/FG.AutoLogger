@@ -1,0 +1,9 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask
+      AssemblyFile="$(MSBuildThisFileDirectory)..\lib\net45\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll"
+      Condition="Exists('$(MSBuildThisFileDirectory)..\lib\net45\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll')"
+      TaskName="CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.GenerateEventSourceTask"/>
+  <Target Name="BeforeBuild" BeforeTargets="Build">
+    <CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.GenerateEventSourceTask ProjectFilePath="$(MSBuildProjectFullPath)"/>
+  </Target>
+</Project>

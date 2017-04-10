@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>CodeEffect.Diagnostics.EventSourceGenerator</id>
+        <version>1.0.43</version>
+        <authors>CodeEffect - Fredrik Göransson</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Generates EventSource implementations based on json metadata in .eventsource files.</description>
+        <dependencies>
+            <dependency id="Newtonsoft.Json" version="9.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="build\CodeEffect.Diagnostics.EventSourceGenerator.targets" target="build\CodeEffect.Diagnostics.EventSourceGenerator.targets" />
+        <file src="lib\net45\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll" target="lib\net45\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll" />
+        <file src="lib\net45\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.pdb" target="lib\net45\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.pdb" />
+        <file src="lib\net45\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+        <file src="tools\net451\_._" target="tools\net451\_._" />
+    </files>
+</package>

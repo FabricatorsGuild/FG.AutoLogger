@@ -55,7 +55,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GenerateEventSource.target" />
+    <None Include="CodeEffect.Diagnostics.EventSourceGenerator.nuspec" />
+    <None Include="CodeEffect.Diagnostics.EventSourceGenerator.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
