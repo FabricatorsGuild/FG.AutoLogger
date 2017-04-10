@@ -8,6 +8,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
         DefaultGeneratedEventSource,
         LoggerImplementation,
         LoggerInterface,
+        Reference,
         Unknown
     }
 }

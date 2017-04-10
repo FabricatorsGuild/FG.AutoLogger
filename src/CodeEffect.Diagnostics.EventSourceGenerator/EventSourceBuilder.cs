@@ -41,8 +41,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                     var projectItem in project.Items.Where(item => item.EvaluatedInclude.EndsWith(@".eventsource", StringComparison.InvariantCultureIgnoreCase))
                 )
                 {
+                    var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
+
                     var projectItemFilePath = System.IO.Path.Combine(basePath, projectItem.EvaluatedInclude);
-                    yield return new ProjectItem(ProjectItemType.EventSourceDefinition, projectItemFilePath) {Include = projectItem.EvaluatedInclude};
+                    yield return new ProjectItem(ProjectItemType.EventSourceDefinition, projectItemFilePath) {Include = projectItem.EvaluatedInclude, RootNamespace = rootNamespace };
                     hasEventSource = true;
                 }
                 foreach (var projectItem in project.Items.Where(item =>
@@ -51,6 +53,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 {
                     var projectItemFilePath = System.IO.Path.Combine(basePath, projectItem.EvaluatedInclude);
                     yield return new ProjectItem(ProjectItemType.LoggerInterface, projectItemFilePath) {Include = projectItem.EvaluatedInclude};
+                }
+                foreach (var projectItem in project.Items.Where(item => item.ItemType == "Reference"))
+                {
+                    var hintPath = projectItem.HasMetadata("HintPath") ? projectItem.GetMetadataValue("HintPath") : null;
+                    hintPath = hintPath != null ? PathExtensions.GetAbsolutePath(basePath, hintPath) : null;
+
+                    var projectItemFilePath = hintPath == null ? $"{projectItem.EvaluatedInclude}.dll" : System.IO.Path.Combine(basePath, hintPath);
+
+                    yield return new ProjectItem(ProjectItemType.Reference, projectItemFilePath) { Include = projectItem.EvaluatedInclude };
                 }
 
                 if (!hasEventSource)
@@ -359,10 +370,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             var loggerTemplates = new List<EventSourceLoggerTemplate>();
             //var loggerFiles = files.Where(projectFile => projectFile.Matches(@"(^|\\)I[^\\]*Logger.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false));
             var loggerFiles = files.OfType(ProjectItemType.LoggerInterface);
+            var referenceFiles = files.OfType(ProjectItemType.Reference);
             foreach (var file in loggerFiles)
             {
                 LogMessage($"Found Logger file {file.Name}");
-                var foundLoggerTemplates = CompileAndEvaluateInterface(file);
+                var foundLoggerTemplates = CompileAndEvaluateInterface(file, referenceFiles);
                 foreach (var foundLoggerTemplate in foundLoggerTemplates)
                 {
                     LogMessage($"Compiled Logger Template {foundLoggerTemplate.Name}");
@@ -371,6 +383,124 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 loggerTemplates.AddRange(foundLoggerTemplates);
             }
             return loggerTemplates.ToArray();
+        }
+
+        private EventSourceLoggerTemplate[] CompileAndEvaluateInterface(ProjectItem projectItem, IEnumerable<ProjectItem> referenceItems)
+        {
+            LogMessage($"Compiling possible logger file {projectItem.Include}");
+
+            var loggers = new List<EventSourceLoggerTemplate>();
+            try
+            {
+                var parameters = new CompilerParameters();
+
+                foreach (var referenceItem in referenceItems)
+                {
+                    parameters.ReferencedAssemblies.Add(referenceItem.Name);
+                }
+
+                //parameters.ReferencedAssemblies.Add("System.dll");
+                parameters.GenerateExecutable = false;
+                parameters.GenerateInMemory = true;
+
+                parameters.IncludeDebugInformation = false;
+                var cSharpCodeProvider = new CSharpCodeProvider();
+                //var cSharpCodeProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
+                var compilerResults = cSharpCodeProvider.CompileAssemblyFromFile(parameters, projectItem.Name);
+                foreach (CompilerError compilerResultsError in compilerResults.Errors)
+                {
+                    LogMessage(compilerResultsError.ToString());
+                }
+
+                var types = compilerResults.CompiledAssembly.GetTypes();
+                foreach (
+                    var type in
+                    types.Where(t => t.IsInterface && t.Name.Matches(@"^I[^\\]*Logger", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)))
+                {
+                    var include = projectItem.Include.Replace(projectItem.Name, type.Name);
+                    var eventSourceLogger = new EventSourceLoggerTemplate()
+                    {
+                        Name = type.Name,
+                        Namespace = type.Namespace,
+                        Include = include
+                    };
+                    var eventSourceEvents = new List<EventSourceEvent>();
+                    foreach (var methodInfo in type.GetMethods())
+                    {
+                        var eventSourceEventArguments = new List<EventSourceEventArgument>();
+                        var eventSourceEvent = new EventSourceEvent()
+                        {
+                            Name = methodInfo.Name,
+                        };
+                        foreach (var parameterInfo in methodInfo.GetParameters())
+                        {
+                            var typeString = parameterInfo.ParameterType.GetFriendlyName();
+                            eventSourceEventArguments.Add(new EventSourceEventArgument()
+                            {
+                                Name = parameterInfo.Name,
+                                Type = typeString,
+                            });
+                        }
+                        eventSourceEvent.Arguments = eventSourceEventArguments.ToArray();
+                        eventSourceEvents.Add(eventSourceEvent);
+                    }
+
+                    eventSourceLogger.Events = eventSourceEvents.ToArray();
+                    loggers.Add(eventSourceLogger);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Failed to compile/evaluate {projectItem.Include} - {ex.Message}\r\n{ex.StackTrace}");
+            }
+            return loggers.ToArray();
+        }
+
+        private IEnumerable<ProjectItem> GenerateEventSourceCode(string projectBasePath, ProjectItem projectItem, EventSourceLoggerTemplate[] loggers)
+        {
+            var sourceFileName = System.IO.Path.GetFileName(projectItem.Name);
+            var implementationFileName = $"{System.IO.Path.GetFileNameWithoutExtension(projectItem.Name)}.cs";
+            var fileRelativePath = projectItem.Name.RemoveFromStart(projectBasePath + System.IO.Path.DirectorySeparatorChar).Replace(sourceFileName, implementationFileName);
+
+            var fileRelateiveFolderPath = System.IO.Path.GetDirectoryName(fileRelativePath);
+            var eventSourceNamespace = $"{projectItem.RootNamespace}.{fileRelateiveFolderPath.Replace(System.IO.Path.DirectorySeparatorChar, '.')}";
+
+            var content = System.IO.File.ReadAllText(projectItem.Name);
+            var eventSourcePrototype = Newtonsoft.Json.JsonConvert.DeserializeObject<EventSourcePrototype>(content);
+
+            var fileName = System.IO.Path.GetFileName(projectItem.Name);
+            var className = System.IO.Path.GetFileNameWithoutExtension(fileName);
+
+            eventSourcePrototype.ClassName = className;
+            eventSourcePrototype.Include = fileRelativePath;
+            eventSourcePrototype.SourceFilePath = projectItem.Include;
+            eventSourcePrototype.Namespace = eventSourceNamespace;          
+            return GenerateEventSourceCode(projectBasePath, projectItem, eventSourcePrototype, loggers);
+        }
+
+        private IEnumerable<ProjectItem> GenerateEventSourceCode(string projectBasePath, ProjectItem projectItem, EventSourcePrototype eventSourcePrototype, EventSourceLoggerTemplate[] loggers)
+        {
+            eventSourcePrototype.AvailableLoggers = loggers;
+            var outputs = eventSourcePrototype.Render(projectBasePath);
+
+            var eventSourceProjectItems = new List<ProjectItem>();
+            foreach (var output in outputs)
+            {
+                output.DependentUpon = projectItem;
+                eventSourceProjectItems.Add(output);
+            }
+            return eventSourceProjectItems;
+        }
+
+    }
+
+    public class LoggerEvaluator
+    {
+        private Action<string> LogMessage { get; }
+
+        public LoggerEvaluator(Action<string> logMessage)
+        {
+            LogMessage = logMessage;
         }
 
         private EventSourceLoggerTemplate[] CompileAndEvaluateInterface(ProjectItem projectItem)
@@ -438,38 +568,5 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             }
             return loggers.ToArray();
         }
-
-        private IEnumerable<ProjectItem> GenerateEventSourceCode(string projectBasePath, ProjectItem projectItem, EventSourceLoggerTemplate[] loggers)
-        {
-            var sourceFileName = System.IO.Path.GetFileName(projectItem.Name);
-            var implementationFileName = $"{System.IO.Path.GetFileNameWithoutExtension(projectItem.Name)}.cs";
-            var fileRelativePath = projectItem.Name.RemoveFromStart(projectBasePath + System.IO.Path.DirectorySeparatorChar).Replace(sourceFileName, implementationFileName);
-
-            var content = System.IO.File.ReadAllText(projectItem.Name);
-            var eventSourcePrototype = Newtonsoft.Json.JsonConvert.DeserializeObject<EventSourcePrototype>(content);
-
-            var fileName = System.IO.Path.GetFileName(projectItem.Name);
-            var className = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-            eventSourcePrototype.ClassName = className;
-            eventSourcePrototype.Include = fileRelativePath;
-            eventSourcePrototype.SourceFilePath = projectItem.Include;            
-            return GenerateEventSourceCode(projectBasePath, projectItem, eventSourcePrototype, loggers);
-        }
-
-        private IEnumerable<ProjectItem> GenerateEventSourceCode(string projectBasePath, ProjectItem projectItem, EventSourcePrototype eventSourcePrototype, EventSourceLoggerTemplate[] loggers)
-        {
-            eventSourcePrototype.AvailableLoggers = loggers;
-            var outputs = eventSourcePrototype.Render(projectBasePath);
-
-            var eventSourceProjectItems = new List<ProjectItem>();
-            foreach (var output in outputs)
-            {
-                output.DependentUpon = projectItem;
-                eventSourceProjectItems.Add(output);
-            }
-            return eventSourceProjectItems;
-        }
-
     }
 }

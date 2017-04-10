@@ -9,7 +9,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
         public string Content { get; set; }
         public string RootNamespace { get; set; }
         public ProjectItem DependentUpon { get; set; }
-
         public ProjectItemType ItemType { get; set; }
 
         public ProjectItem()

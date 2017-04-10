@@ -165,7 +165,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             var eventMethodArgumentsDeclarationBuilder = new ArgumentBuilder((arg) => arg.RenderMethodArgument(), Template_EVENT_METHOD_ARGUMENT_DELIMITER);
             var nonEventMethodArgumentsDeclarationBuilder = new ArgumentBuilder((arg) => arg.RenderMethodArgument(), Template_NONEVENT_METHOD_ARGUMENT_DELIMITER);
             var callArgumentsBuilder = new ArgumentBuilder((arg) => arg.RenderWriteEventMethodCallArgument(), Template_EVENT_METHOD_CALL_ARGUMENT_DELIMITER);            
-            var assignmentArgumentsBuilder = new ArgumentBuilder((arg) =>((EventSourceEventCustomArgument)arg).Assignment.Replace(@"$this", arg.Name), Template_NON_EVENT_ASSIGNMENT_ARGUMENT_DELIMITER);
+            var assignmentArgumentsBuilder = new ArgumentBuilder((arg) => (arg as EventSourceEventCustomArgument)?.Assignment.Replace(@"$this", arg.Name) ?? arg.Name, Template_NON_EVENT_ASSIGNMENT_ARGUMENT_DELIMITER);
 
             var hasComplexArguments = false;
 
@@ -181,26 +181,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 
             var messageArgument = allArguments.FirstOrDefault(arg => Name.Equals("message", StringComparison.InvariantCultureIgnoreCase));
             var messageArgumentIndex = messageArgument != null ? allArguments.IndexOf(messageArgument) : -1;
-
-
-
-            var pureArguments = allArguments;
-            foreach (var argument in pureArguments)
-            {
-                var methodArgument = "";
-                argument.SetCLRType(eventSource);
-                methodArgument = argument.RenderMethodArgument();
-                nonEventMethodArgumentsDeclarationBuilder.Append(methodArgument);
-
-
-            }
-
-            foreach (var argument in pureArguments.SelectMany(a => a.ExpandedArguments))
-            {
-                
-            }
-
-
 
 
             var flatIndex = 0;

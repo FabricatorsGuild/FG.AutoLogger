@@ -37,6 +37,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                     return;
                 }
 
+                if (!System.IO.Path.IsPathRooted(t.ProjectFile))
+                {
+                    t.ProjectFile = PathExtensions.GetAbsolutePath(t.ProjectFile);
+                }
+
                 var projectFilePath = t.ProjectFile;
                 var builder = new EventSourceBuilder(LogMessage);
                 var projectItems = builder.GetProjectItems(projectFilePath);

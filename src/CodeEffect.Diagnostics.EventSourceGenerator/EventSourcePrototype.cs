@@ -16,8 +16,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
         [JsonIgnore]
         public EventSourceLoggerTemplate[] AvailableLoggers { get; set; }
         public EventSourceLogger[] Loggers { get; set; }
+        [JsonIgnore]
         public string Namespace { get; set; }
-
         [JsonIgnore]
         public string ClassName { get; set; }
         public string Name { get; set; }
