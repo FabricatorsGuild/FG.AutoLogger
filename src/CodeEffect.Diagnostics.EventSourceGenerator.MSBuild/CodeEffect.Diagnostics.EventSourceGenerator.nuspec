@@ -9,6 +9,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>First public release of EventSource Generator</releaseNotes>
+    <projectUrl>https://github.com/FredrikGoransson/CodeEffect.Diagnostics.EventSourceGenerator</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/FredrikGoransson/CodeEffect.Diagnostics.EventSourceGenerator/develop/nuget.icon-64.png</iconUrl>
     <copyright>Copyright 2017</copyright>
     <tags>ETW EventSource MSBuild</tags>
     <dependencies>
