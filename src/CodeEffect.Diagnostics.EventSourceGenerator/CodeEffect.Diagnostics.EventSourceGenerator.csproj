@@ -56,6 +56,7 @@
     <Compile Include="EventSourceLoggerTemplate.cs" />
     <Compile Include="EventSourcePrototype.cs" />
     <Compile Include="EventSourceTypeTemplate.cs" />
+    <Compile Include="PathExtensions.cs" />
     <Compile Include="ProjectItem.cs" />
     <Compile Include="ProjectItemExtensions.cs" />
     <Compile Include="ProjectItemType.cs" />
