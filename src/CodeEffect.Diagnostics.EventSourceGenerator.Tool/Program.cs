@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
+using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 using CommandLine;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
@@ -41,12 +43,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                 {
                     t.ProjectFile = PathExtensions.GetAbsolutePath(t.ProjectFile);
                 }
-
                 var projectFilePath = t.ProjectFile;
+
+                var project = new CodeEffect.Diagnostics.EventSourceGenerator.Model.Project() { ProjectFilePath = projectFilePath };
+                var projectBuilder = new ProjectBuilder(LogMessage);
+                projectBuilder.Build(project);
+
                 var builder = new EventSourceBuilder(LogMessage);
-                var projectItems = builder.GetProjectItems(projectFilePath);
-                var projectFileBasePath = System.IO.Path.GetDirectoryName(projectFilePath);
-                var outputs = builder.Execute(projectFileBasePath, projectItems).ToArray();
+                var outputs = builder.Build(project);
+
                 builder.AddGeneratedOutputsToProject(projectFilePath, outputs, false);
 
                 if (t.DisplayOutput)

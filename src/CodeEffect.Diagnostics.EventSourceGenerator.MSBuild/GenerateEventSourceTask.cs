@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
 using Microsoft.Build.Evaluation;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.MSBuild
@@ -12,10 +13,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.MSBuild
         {
             Log.LogMessage($"Executing {nameof(GenerateEventSourceTask)} for project {ProjectFilePath}");
 
+            var project = new CodeEffect.Diagnostics.EventSourceGenerator.Model.Project() {ProjectFilePath = ProjectFilePath};
+            var projectBuilder = new ProjectBuilder(message => Log.LogMessage(message));            
+            projectBuilder.Build(project);
+
             var builder = new EventSourceBuilder(message => Log.LogMessage(message));
-            var projectItems = builder.GetProjectItems(ProjectFilePath);
-            var projectFileBasePath = System.IO.Path.GetDirectoryName(ProjectFilePath);
-            var outputs = builder.Execute(projectFileBasePath, projectItems);
+            var outputs = builder.Build(project);
 
             foreach (var output in outputs)
             {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using Newtonsoft.Json;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator
@@ -11,10 +13,38 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
         public bool AutogenerateLoggerInterfaces { get; set; }
     }
 
+    public interface IOutputRenderer
+    {
+        bool CanRender(RenderTarget target);
+
+        IEnumerable<ProjectItem> Render(RenderTarget target, object input);
+    }
+
+    public interface IPartialRenderer
+    {
+        bool CanRender(RenderTarget target);
+        string Render(RenderTarget target, object input);
+    }
+
+    public enum RenderTarget
+    {
+        EventSourceMainClass,
+        EventSourceKeywords,
+        
+    }
+
+    public interface ILogger
+    {
+        void LogMessage(string message);
+        void LogError(string error);
+        void LogWarning(string warning);
+    }
+
+
     public class EventSourcePrototype
     {
         [JsonIgnore]
-        public EventSourceLoggerTemplate[] AvailableLoggers { get; set; }
+        public LoggerTemplateModel[] AvailableLoggers { get; set; }
         public EventSourceLogger[] Loggers { get; set; }
         [JsonIgnore]
         public string Namespace { get; set; }
@@ -32,7 +62,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 
         public List<EventSourceExtensionsMethod> Extensions { get; private set; }
 
-        public EventSourceEvent[] Events { get; set; }
+        public EventModel[] Events { get; set; }
+
+        public ILoggerBuilderExtension[] BuilderExtensions { get; set; }
 
         public EventSourcePrototype()
         {
@@ -40,11 +72,71 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             Loggers = new EventSourceLogger[] {};
         }
 
+        public class EventSourceMainClassOutputRenderer : IOutputRenderer
+        {
+            private readonly ILogger _logger;
+            public EventSourceMainClassOutputRenderer(ILogger logger)
+            {
+                _logger = logger;
+            }
+            public bool CanRender(RenderTarget target)
+            {
+                return target == RenderTarget.EventSourceMainClass;
+            }
+
+            public IEnumerable<ProjectItem> Render(RenderTarget target, object input)
+            {
+                if (!CanRender(target))
+                {
+                    _logger.LogWarning($"{nameof(EventSourceMainClassOutputRenderer)} tried to render type {target}");
+                    return null;
+                }
+                var model = input as EventSourceModel;
+                if (model == null)
+                {
+                    _logger.LogError($"{nameof(EventSourceMainClassOutputRenderer)} expected input of type {typeof(EventSourceModel).Name}");
+                    return null;
+                }
+
+                var outputs = new List<ProjectItem>();
+
+                var output = Template_EVENTSOURCE_CLASS_DECLARATION;
+                output = output.Replace(EventSourcePrototype.Variable_SOURCE_FILE_NAME, model.SourceFilePath);
+                output = output.Replace(EventSourcePrototype.Variable_EVENTSOURCE_NAME, model.Name);
+                output = output.Replace(EventSourcePrototype.Variable_EVENTSOURCE_CLASS_NAME, model.ClassName);
+                output = output.Replace(EventSourcePrototype.Variable_NAMESPACE_DECLARATION, model.Namespace);
+
+                outputs.Add(new ProjectItem(ProjectItemType.EventSource, model.Include, output) { Include = model.Include });
+                return outputs;
+            }            
+        }
+
+
+        public IEnumerable<ProjectItem> Build(Project project, EventSourceModel model)
+        {
+            var outputs = new List<ProjectItem>();
+
+            // TODO: Get all builders from project and allow all to build
+            var eventSourceBuilders = new IEventSourceBuilder[]
+            {
+                new EventSourceKeywordBuilder(),
+                new EventSourceLoggersBuilder(), 
+                new EventSourceEventsBuilder(), 
+                new EventSourceExtensionsMethodsBuilder(), 
+            };
+            foreach (var builder in eventSourceBuilders)
+            {
+                builder.Build(project, model);
+            }
+            return outputs;
+        }
+
+
         public IEnumerable<ProjectItem> Render(string projectBasePath)
         {
             var outputs = new List<ProjectItem>();
 
-            var output = ClassTemplate;
+            var output = Template_EVENTSOURCE_CLASS_DECLARATION;
             output = output.Replace(Variable_SOURCE_FILE_NAME, this.SourceFilePath);
             output = output.Replace(Variable_EVENTSOURCE_NAME, this.Name);
             output = output.Replace(Variable_EVENTSOURCE_CLASS_NAME, ClassName);
@@ -73,6 +165,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 var loggerFileInclude = this.Include.Replace(this.ClassName, logger.Name.Substring(1));
                 var loggerFileName = System.IO.Path.Combine(projectBasePath, loggerFileInclude);
                 var loggerKeyword = logger.GetKeyword();
+                logger.SourceFileName = logger.Name.Substring(1);
                 if (!allKeywords.Contains(loggerKeyword))
                 {
                     allKeywords.Add(loggerKeyword);
@@ -84,7 +177,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 
                 });
                 outputs.Add(new ProjectItem(ProjectItemType.LoggerImplementation, loggerFileName,
-                    logger.RenderImplementation(this, next, System.IO.Path.GetFileName(loggerFileName)))
+                    logger.RenderImplementation(this, next))
                 {
                     Include = loggerFileInclude
                 });
@@ -93,13 +186,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 
             next = 1;
             var events = new StringBuilder();
-            foreach (var eventSourceEvent in this?.Events ?? new EventSourceEvent[0])
+            var renderer = new EventRenderer();
+            foreach (var eventSourceEvent in this?.Events ?? new EventModel[0])
             {
                 if (eventSourceEvent.Id != null)
                 {
                     next = eventSourceEvent.Id.Value;
                 }
-                events.AppendLine(eventSourceEvent.Render(next, this));
+                events.AppendLine(renderer.Render(eventSourceEvent, next, this));
                 next += 1;
             }
             output = output.Replace(Variable_EVENTS_DECLARATION, events.ToString());
@@ -158,7 +252,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
         private const string Variable_EXTENSION_METHODS_DECLARATION = @"@@EXTENSION_METHODS_DECLARATION@@";
 
 
-        private const string ClassTemplate = @"/*******************************************************************************************
+        private const string Template_EVENTSOURCE_CLASS_DECLARATION = @"/*******************************************************************************************
 *  This class is autogenerated from the class @@SOURCE_FILE_NAME@@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/

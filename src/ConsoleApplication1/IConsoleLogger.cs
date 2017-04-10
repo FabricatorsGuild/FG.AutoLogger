@@ -8,5 +8,5 @@ namespace ConsoleApplication1
         void Message(string message);
         void Error(Exception exception);
         void SayGoodbye(string goodbye, DateTime nightTime);
-    }    
+    }
 }

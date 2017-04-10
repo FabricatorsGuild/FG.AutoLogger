@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E283C474-CE74-48FB-B3D9-193F493008D5}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{714C6060-43CC-4314-A233-8E74D65D014C}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeEffect.Diagnostics.EventSourceGenerator.Tool</RootNamespace>
-    <AssemblyName>CodeEffect.Diagnostics.EventSourceGenerator.Tool</AssemblyName>
+    <RootNamespace>CodeEffect.Diagnostics.EventSourceGenerator.Model</RootNamespace>
+    <AssemblyName>CodeEffect.Diagnostics.EventSourceGenerator.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=2.0.275.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.2.1.1-beta\lib\net45\CommandLine.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -47,23 +44,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleOptions.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="EventArgumentModel.cs" />
+    <Compile Include="EventModel.cs" />
+    <Compile Include="EventSourceModel.cs" />
+    <Compile Include="ExtensionsMethodModel.cs" />
+    <Compile Include="IEventArgumentBuilder.cs" />
+    <Compile Include="IEventSourceBuilder.cs" />
+    <Compile Include="IEventSourceBuilderExtension.cs" />
+    <Compile Include="IEventBuilder.cs" />
+    <Compile Include="IExtensionsMethodBuilder.cs" />
+    <Compile Include="ILoggerBuilder.cs" />
+    <Compile Include="KeywordExtensions.cs" />
+    <Compile Include="KeywordModel.cs" />
+    <Compile Include="LoggerModel.cs" />
+    <Compile Include="LoggerTemplateModel.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="ProjectItem.cs" />
+    <Compile Include="ProjectItemExtensions.cs" />
+    <Compile Include="ProjectItemType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeTemplateExtensions.cs" />
+    <Compile Include="TypeTemplateModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
-      <Project>{714c6060-43cc-4314-a233-8e74d65d014c}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\CodeEffect.Diagnostics.EventSourceGenerator.csproj">
-      <Project>{1837B79F-C48F-4D7E-8121-02026C1EA5FC}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
