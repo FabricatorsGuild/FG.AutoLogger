@@ -1,0 +1,1 @@
+namespace CodeEffect.Diagnostics.EventSourceGenerator { public class Hello {public string SayHello(){return "384045421";}}}

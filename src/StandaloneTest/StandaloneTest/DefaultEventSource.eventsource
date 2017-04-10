@@ -1,0 +1,53 @@
+{
+  "Loggers": [
+    {
+      "Name": "IDomainLogger",
+      "LoggerNamespace": null,
+      "StartId": 1000,
+      "ImplicitArguments": [
+        {
+          "Name": "processId",
+          "Type": "int"
+        },
+        {
+          "Name": "correlationId",
+          "Type":  "Guid" 
+        }
+      ]
+    }
+  ],
+  "Namespace": "StandaloneTest",
+  "Name": "DefaultEventSource",
+  "Settings": null,
+  "Keywords": null,
+  "TypeTemplates": [
+    {
+      "Name": "Exception",
+      "CLRType": "System.Exception",
+      "Arguments": [
+        {
+          "Assignment": "$this.Message",
+          "Name": "message",
+          "Type": "string"
+        },
+        {
+          "Assignment": "$this.Source",
+          "Name": "source",
+          "Type": "string"
+        },
+        {
+          "Assignment": "$this.GetType().FullName",
+          "Name": "exceptionTypeName",
+          "Type": "string"
+        },
+        {
+          "Assignment": "$this.AsJson()",
+          "Name": "exception",
+          "Type": "string"
+        }
+      ]
+    }
+  ],
+  "Extensions": [],
+  "Events": null
+}

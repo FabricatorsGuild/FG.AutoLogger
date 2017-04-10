@@ -1,0 +1,2 @@
+Scan path: C:\Code\Labs\CodeEffect.Diagnostics.EventSourceGenerator\CodeEffect.Diagnostics.EventSourceGenerator\bin
+file: C:\Code\Labs\CodeEffect.Diagnostics.EventSourceGenerator\CodeEffect.Diagnostics.EventSourceGenerator\sample.eventsource
