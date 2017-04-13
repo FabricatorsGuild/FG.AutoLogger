@@ -1,14 +1,20 @@
 ﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class LoggerEventsBuilder : ILoggerBuilder
+    public class LoggerEventsBuilder : BaseWithLogging, ILoggerBuilder
     {
-        public void Build(Project project, EventSourceModel eventSource, LoggerModel model)
+        public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel model)
         {
             if( model ==  null) return;
+            var eventSource = eventSourceProjectItem.Content;
+            if (eventSource == null)
+            {
+                LogError($"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
+                return;
+            }
 
-            
             var nextEventId = model.StartId;
             
             foreach (var loggerEvent in model.Events)

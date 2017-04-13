@@ -58,5 +58,5 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
 
             return friendlyName;
         }
-    }
+    }    
 }

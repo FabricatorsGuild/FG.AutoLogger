@@ -12,7 +12,71 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 	{
 
         
-		private const int SayGoodbyeEventId = 1000;
+		private const int SayHelloEventId = 1000;
+
+		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{1}", Keywords = Keywords.Console)]
+		public void SayHello(
+			int processId, 
+			string message)
+		{
+			WriteEvent(
+				SayHelloEventId,
+				processId, 
+				message);
+		}
+
+        
+		private const int MessageEventId = 1001;
+
+		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{1}", Keywords = Keywords.Console)]
+		public void Message(
+			int processId, 
+			string message)
+		{
+			WriteEvent(
+				MessageEventId,
+				processId, 
+				message);
+		}
+
+        
+		[NonEvent]
+		public void Error(
+			int processId, 
+			System.Exception exception)
+		{
+			if (this.IsEnabled())
+			{
+				Error(
+					processId, 
+					exception.Message, 
+					exception.Source, 
+					exception.GetType().FullName, 
+					exception.AsJson());
+			}
+		}
+
+		private const int ErrorEventId = 1002;
+
+		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{4}", Keywords = Keywords.Console)]
+		private void Error(
+			int processId, 
+			string message, 
+			string source, 
+			string exceptionTypeName, 
+			string exception)
+		{
+			WriteEvent(
+				ErrorEventId,
+				processId, 
+				message, 
+				source, 
+				exceptionTypeName, 
+				exception);
+		}
+
+        
+		private const int SayGoodbyeEventId = 1003;
 
 		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.Console)]
 		public void SayGoodbye(

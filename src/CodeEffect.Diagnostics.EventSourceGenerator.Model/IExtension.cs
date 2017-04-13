@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
-    public interface ILoggerBuilderExtension
+    public interface IExtension
     {
         IEnumerable<string> OnEventRendered(string eventName);
     }

@@ -5,7 +5,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
     public class EventImplicitArgumentsBuilder : IEventBuilder
     {
-        public void Build(Project project, EventSourceModel eventSource, EventModel model)
+        public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventModel model)
         {
             throw new NotImplementedException();
         }

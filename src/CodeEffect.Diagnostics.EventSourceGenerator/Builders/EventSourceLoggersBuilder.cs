@@ -1,11 +1,20 @@
+using System.Runtime.Remoting.Messaging;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class EventSourceLoggersBuilder : IEventSourceBuilder
+    public class EventSourceLoggersBuilder : BaseWithLogging, IEventSourceBuilder
     {
-        public void Build(Project project, EventSourceModel model)
+        public void Build(Project project, ProjectItem<EventSourceModel> model)
         {
+            var eventSource = model.Content;
+            if (eventSource == null)
+            {
+                LogError($"{model.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {model.Content?.GetType().Name ?? "null"}");
+                return;
+            }
+
             // TODO: Get all builders from project and allow all to build
             var loggerBuilders = new ILoggerBuilder[]
             {
@@ -14,9 +23,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 new LoggerImplicitArgumentsBuilder(),
                 new LoggerOverrideArgumentsBuilder(), 
                 new LoggerEventsBuilder(),
+                new LoggerImplementationBuilder(), 
+                new LoggerEventSourcePartialBuilder(), 
             };
             var loggerStartId = 10000;
-            foreach (var logger in model.Loggers)
+            foreach (var logger in eventSource.Loggers)
             {
                 logger.StartId = logger.StartId ?? loggerStartId;
 

@@ -5,7 +5,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         EventSourceDefinition,
         EventSource,
         EventSourceLoggerPartial,
-        DefaultGeneratedEventSource,
+        DefaultGeneratedEventSourceDefinition,
         LoggerImplementation,
         LoggerInterface,
         BuilderExtension,

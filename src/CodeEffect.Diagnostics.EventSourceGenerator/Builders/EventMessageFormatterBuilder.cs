@@ -4,12 +4,18 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class EventMessageFormatterBuilder : IEventBuilder
+    public class EventMessageFormatterBuilder : BaseWithLogging, IEventBuilder
     {
-        public void Build(Project project, EventSourceModel eventSource, EventModel model)
+        public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventModel model)
         {
             if( model == null ) return;
             if(model.MessageFormatter != null) return;
+            var eventSource = eventSourceProjectItem.Content;
+            if (eventSource == null)
+            {
+                LogError($"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
+                return;
+            }
 
             var messageFormatBuilder = new ListBuilder($"{model.Name.GetHumanReadable()}", " ", " ");
 

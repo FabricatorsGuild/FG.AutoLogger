@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 using CommandLine;
 
@@ -45,18 +47,23 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                 }
                 var projectFilePath = t.ProjectFile;
 
-                var project = new CodeEffect.Diagnostics.EventSourceGenerator.Model.Project() { ProjectFilePath = projectFilePath };
-                var projectBuilder = new ProjectBuilder(LogMessage);
-                projectBuilder.Build(project);
 
-                var builder = new EventSourceBuilder(LogMessage);
-                var outputs = builder.Build(project);
+                var projectEventSourceGenerator = new ProjectEventSourceGenerator();
+                projectEventSourceGenerator.SetLogMessage(m => LogMessage(m, EventLevel.Informational));
+                projectEventSourceGenerator.SetLogWarning(w => LogMessage(w, EventLevel.Warning));
+                projectEventSourceGenerator.SetLogError(e => LogMessage(e, EventLevel.Error));
 
-                builder.AddGeneratedOutputsToProject(projectFilePath, outputs, false);
+                var project = projectEventSourceGenerator.Run(projectFilePath);
 
                 if (t.DisplayOutput)
                 {
-                    foreach (var output in outputs)
+                    foreach (var output in project.ProjectItems.OfType(
+                        ProjectItemType.EventSource, 
+                        ProjectItemType.DefaultGeneratedEventSourceDefinition,
+                        ProjectItemType.EventSourceLoggerPartial,
+                        ProjectItemType.LoggerImplementation,
+                        ProjectItemType.EventSourceDefinition,
+                        ProjectItemType.Unknown))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"{"".PadRight(40, '_')}");
@@ -65,7 +72,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                         Console.WriteLine($"{"".PadRight(40, '_')}");
 
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(output.Content);
+                        Console.WriteLine(output.Output);
 
 
                         Console.ForegroundColor = ConsoleColor.Yellow;
@@ -115,12 +122,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
 
             Console.ForegroundColor = consoleColor;
             Console.WriteLine(message);
+            Debug.WriteLine($"{eventLevel}: {message}");
             Console.ForegroundColor = previousConsoleColor;
         }
 
         private static void LogMessage(string message)
         {
-            Console.WriteLine(message);
+            LogMessage(message, EventLevel.Informational);
         }
     }
 

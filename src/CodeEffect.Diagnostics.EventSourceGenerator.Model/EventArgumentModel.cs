@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
@@ -6,13 +7,31 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
     {
         public string Name { get; set; }
         public string Type { get; set; }
+        [JsonIgnore]
         public string CLRType { get; set; }
+        [JsonIgnore]
         public string AssignedCLRType { get; set; }
         public string Assignment { get; set; }
         public TypeTemplateModel TypeTemplate { get; set; }
+        [JsonIgnore]
         public bool IsTemplated { get; set; }
+        [JsonIgnore]
         public bool IsImplicit { get; set; }
+        [JsonIgnore]
         public bool IsOverriden { get; set; }
+
+        public EventArgumentModel()
+        {
+            
+        }
+        public EventArgumentModel(string name, string type, string assignment)
+        {
+            Assignment = assignment;
+            Name = name;
+            Type = type;
+            CLRType = type;
+        }
+
 
         public override string ToString()
         {

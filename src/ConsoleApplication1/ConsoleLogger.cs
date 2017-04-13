@@ -16,6 +16,39 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 			_processId = processId;
 		}
 
+		public void SayHello(
+			string message)
+		{
+
+			sample.Current.SayHello(
+				_processId, 
+				message
+			);
+		}
+
+
+		public void Message(
+			string message)
+		{
+
+			sample.Current.Message(
+				_processId, 
+				message
+			);
+		}
+
+
+		public void Error(
+			System.Exception exception)
+		{
+
+			sample.Current.Error(
+				_processId, 
+				exception
+			);
+		}
+
+
 		public void SayGoodbye(
 			string goodbye, 
 			DateTime nightTime)

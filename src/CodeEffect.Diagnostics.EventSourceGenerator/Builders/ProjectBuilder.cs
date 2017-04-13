@@ -7,20 +7,8 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class ProjectBuilder
+    public class ProjectBuilder : BaseWithLogging, IProjectBuilder
     {
-        private readonly Action<string> _logger;
-
-        public ProjectBuilder(Action<string> logger)
-        {
-            _logger = logger;
-        }
-
-        private void LogMessage(string message)
-        {
-            _logger(message);
-        }
-
         public void Build(Project model)
         {
             LogMessage($"Scanning project {model.ProjectFilePath} for eventsource definitions");
@@ -51,7 +39,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
 
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);
-                    projectItems.Add(new ProjectItem(ProjectItemType.EventSourceDefinition, projectItemFilePath)
+                    projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.EventSourceDefinition, projectItemFilePath)
                     {
                         Include = projectItem.EvaluatedInclude,
                         RootNamespace = rootNamespace
@@ -63,7 +51,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     && item.ItemType == "Compile"))
                 {
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);
-                    projectItems.Add(new ProjectItem(ProjectItemType.LoggerInterface, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
+                    projectItems.Add(new ProjectItem<LoggerTemplateModel>(ProjectItemType.LoggerInterface, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
                 }
 
                 foreach (var projectItem in project.Items.Where(item =>
@@ -107,7 +95,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
                     var include = $"DefaultEventSource.eventsource";
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, include);
-                    projectItems.Add(new ProjectItem(ProjectItemType.DefaultGeneratedEventSource, projectItemFilePath)
+                    projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.DefaultGeneratedEventSourceDefinition, projectItemFilePath)
                     {
                         Include = include,
                         RootNamespace = rootNamespace

@@ -7,6 +7,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string ProjectBasePath { get; set; }
         public ProjectItem[] ProjectItems { get; set; }
         public LoggerTemplateModel[] Loggers { get; set; }
-        public ILoggerBuilderExtension BuilderExtension { get; set; }
+        public IExtension[] Extensions { get; set; }
     }
 }

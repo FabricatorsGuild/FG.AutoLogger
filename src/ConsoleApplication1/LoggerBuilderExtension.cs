@@ -3,7 +3,7 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 
 namespace ConsoleApplication1
 {
-    public class LoggerBuilderExtension : ILoggerBuilderExtension
+    public class LoggerBuilderExtension : IExtension
     {
         public IEnumerable<string> OnEventRendered(string eventName)
         {

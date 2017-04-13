@@ -1,7 +1,7 @@
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
-    public interface ILoggerBuilder
+    public interface ILoggerBuilder : IBuilder
     {
-        void Build(Project project, EventSourceModel eventSource, LoggerModel model);
+        void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel model);
     }
 }

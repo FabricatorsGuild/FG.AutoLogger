@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml;
 using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using Microsoft.Build.Evaluation;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.MSBuild
@@ -13,21 +14,27 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.MSBuild
         {
             Log.LogMessage($"Executing {nameof(GenerateEventSourceTask)} for project {ProjectFilePath}");
 
-            var project = new CodeEffect.Diagnostics.EventSourceGenerator.Model.Project() {ProjectFilePath = ProjectFilePath};
-            var projectBuilder = new ProjectBuilder(message => Log.LogMessage(message));            
-            projectBuilder.Build(project);
+            var projectEventSourceGenerator = new ProjectEventSourceGenerator();
+            projectEventSourceGenerator.SetLogMessage(m => Log.LogMessage(m));
+            projectEventSourceGenerator.SetLogWarning(w => Log.LogWarning(w));
+            projectEventSourceGenerator.SetLogMessage(e => Log.LogError(e));
 
-            var builder = new EventSourceBuilder(message => Log.LogMessage(message));
-            var outputs = builder.Build(project);
+            var project = projectEventSourceGenerator.Run(ProjectFilePath);
 
-            foreach (var output in outputs)
+            //var projectBuilder = new ProjectBuilder(message => Log.LogMessage(message));            
+            //projectBuilder.Build(project);
+
+            //var builder = new EventSourceBuilder(message => Log.LogMessage(message));
+            //var outputs = builder.Build(project);
+
+            foreach (var output in project.ProjectItems)
             {
                 Log.LogMessage($"Writing file {output.Name}");
-                System.IO.File.WriteAllText(output.Name, output.Content);
+                System.IO.File.WriteAllText(output.Name, output.Content.ToString());
             }
 
             Log.LogMessage($"Updating project file {ProjectFilePath}");
-            builder.AddGeneratedOutputsToProject(ProjectFilePath, outputs);
+            //builder.AddGeneratedOutputsToProject(ProjectFilePath, outputs);
 
             Log.LogMessage($"Executed {nameof(GenerateEventSourceTask)} in {ProjectFilePath}");
 

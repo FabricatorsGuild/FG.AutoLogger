@@ -1,12 +1,20 @@
 using System;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class EventArgumentBuilder : IEventArgumentBuilder
+    public class EventArgumentBuilder : BaseWithLogging, IEventArgumentBuilder
     {
-        public void Build(Project project, EventSourceModel eventSource, EventArgumentModel model)
+        public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventArgumentModel model)
         {
+            var eventSource = eventSourceProjectItem.Content;
+            if( eventSource == null)
+            {
+                LogError($"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
+                return;
+            }
+
             var type = model.Type;
             if (IsComplexType(model.Type))
             {

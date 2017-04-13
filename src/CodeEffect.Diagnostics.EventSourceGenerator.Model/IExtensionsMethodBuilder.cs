@@ -1,7 +1,7 @@
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
-    public interface IExtensionsMethodBuilder
+    public interface IExtensionsMethodBuilder : IRenderer
     {
-        void Build(Project project, EventSourceModel eventSourceModel, ExtensionsMethodModel model);
+        void Build(Project project, ProjectItem<EventSourceModel> eventSourceModelProjectItem, ExtensionsMethodModel model);
     }
 }
