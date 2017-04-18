@@ -7,6 +7,7 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator
 {
+
     public class EventRenderer : IEventRenderer
     {
         public string Render(EventModel model, int index, EventSourcePrototype eventSource)

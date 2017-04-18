@@ -19,7 +19,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             {
                 new EventIdBuilder(),
                 new EventImplicitArgumentsBuilder(), 
+                new EventTemplatedArgumentsBuilder(), 
                 new EventMessageFormatterBuilder(), 
+                new EventArgumentsComplexityCheckBuilder(), 
             };
 
             foreach (var evt in eventSource?.Events ?? new EventModel[0])

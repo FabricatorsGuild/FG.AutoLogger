@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Newtonsoft.Json;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
@@ -23,6 +24,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public EventArgumentModel[] OverrideArguments { get; set; }
         [JsonIgnore]
         public EventModel[] Events { get; set; }
+        [JsonIgnore]
+        public EventSourceModel EventSource { get; set; }
 
         public void AddTemplate(LoggerTemplateModel loggerTemplate)
         {

@@ -2,7 +2,7 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class EventMessageFormatterBuilder : EventMessageFormatterBuilderBase, IEventBuilder
+    public class EventTemplatedArgumentsBuilder : EventTemplatedArgumentsBuilderBase, IEventBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventModel model)
         {

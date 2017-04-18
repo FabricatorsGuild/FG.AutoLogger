@@ -33,8 +33,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     .Replace(sourceFileName, implementationFileName);
 
                 var fileRelateiveFolderPath = System.IO.Path.GetDirectoryName(fileRelativePath);
-                var eventSourceNamespace =
-                    $"{eventSourceDefinitionProjectItem.RootNamespace}.{fileRelateiveFolderPath.Replace(System.IO.Path.DirectorySeparatorChar, '.')}";
+                var eventSourceNamespace = fileRelateiveFolderPath.Length > 0
+                    ? $"{eventSourceDefinitionProjectItem.RootNamespace}.{fileRelateiveFolderPath.Replace(System.IO.Path.DirectorySeparatorChar, '.')}"
+                    : eventSourceDefinitionProjectItem.RootNamespace;
 
                 var content = System.IO.File.ReadAllText(eventSourceDefinitionProjectItem.Name);
 

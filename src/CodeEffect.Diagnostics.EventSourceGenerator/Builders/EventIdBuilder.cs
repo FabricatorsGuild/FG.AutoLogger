@@ -15,7 +15,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            var next = model.Id ?? eventSource.Events.Max(e => e.Id) + 1;
+            var next = model.Id ?? ((eventSource.Events?.Where(e => e.Id != null).Max(e => e.Id) ?? 0) + 1);            
             model.Id = next;
         }
     }

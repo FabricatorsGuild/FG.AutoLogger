@@ -31,7 +31,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     {
                         type = renderedType;
                     }
-                    model.IsTemplated = true;
                 }    
             }
             model.CLRType = type;

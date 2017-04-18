@@ -22,15 +22,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
             output = output.Replace(Template.Variable_NAMESPACE_DECLARATION, eventSourceModel.Namespace);
 
-            var next = 0;
-
             // Render all events
             var events = new StringBuilder();
             var eventRenderers = new IEventRenderer[]
             {
-                // TODO: Define event renderers
-                new EventMethodRenderer(), 
-            };
+                new EventSourceEventMethodRenderer(),
+                new EventSourceNonEventMethodRenderer(),
+                new LoggerEventSourcePartialEventMethodRenderer(), 
+            }.Union(project.GetExtensions<IEventRenderer>()).ToArray();
             foreach (var eventSourceEvent in eventSourceModel?.Events ?? new EventModel[0])
             {
                 foreach (var renderer in eventRenderers.Union(project.GetExtensions<IEventRenderer>()))

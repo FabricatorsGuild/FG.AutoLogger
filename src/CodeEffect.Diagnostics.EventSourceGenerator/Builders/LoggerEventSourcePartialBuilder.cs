@@ -1,3 +1,4 @@
+using System.Linq;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
@@ -28,7 +29,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 DependentUpon = eventSourceProjectItem
             };
 
-            project.AddProjectItem(newProjectItem);
+            project.AddProjectItem(newProjectItem);            
         }
     }
 }

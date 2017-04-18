@@ -1,3 +1,4 @@
+using System.Linq;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
@@ -16,11 +17,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             if (model == null) return;
 
-            // TODO: Get ALL builders from project and allow them to 'build'
             var eventArgumentBuilders = new IEventArgumentBuilder[]
             {
                 new EventArgumentBuilder()
-            };
+            }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
             foreach (var argument in model?.ImplicitArguments ?? new EventArgumentModel[0])
             {
                 argument.IsImplicit = true;

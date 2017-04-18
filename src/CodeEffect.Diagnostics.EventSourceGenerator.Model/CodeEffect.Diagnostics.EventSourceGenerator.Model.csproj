@@ -59,7 +59,8 @@
     <Compile Include="IExtensionsMethodRenderer.cs" />
     <Compile Include="IKeywordRenderer.cs" />
     <Compile Include="ILoggerBuilder.cs" />
-    <Compile Include="ILoggerEventRenderer.cs" />
+    <Compile Include="ILoggerEventBuilder.cs" />
+    <Compile Include="ILoggerEventSourcePartialEventRenderer.cs" />
     <Compile Include="ILoggerEventSourcePartialRenderer.cs" />
     <Compile Include="ILoggerImplementationRenderer.cs" />
     <Compile Include="IProjectBuilder.cs" />

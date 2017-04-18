@@ -1,4 +1,5 @@
-﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+﻿using System.Linq;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
@@ -15,24 +16,22 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            var nextEventId = model.StartId;
-            
+            var eventBuilders = new ILoggerEventBuilder[]
+            {
+                new LoggerEventIdBuilder(),
+                new LoggerEventImplicitArgumentsBuilder(),                 
+                new LoggerEventOverrideArgumentsBuilder(), 
+                new LoggerEventMessageFormatterBuilder(),
+                new LoggerEventTemplatedArgumentsBuilder(), 
+                new LoggerEventArgumentsComplexityCheckBuilder(),
+            }.Union(project.GetExtensions<ILoggerEventBuilder>());
+
             foreach (var loggerEvent in model.Events)
             {
-                if (model.ImplicitArguments != null && model.ImplicitArguments.Length > 0)
+                foreach (var builder in eventBuilders)
                 {
-                    loggerEvent.InsertImplicitArguments(model.ImplicitArguments);
+                    builder.Build(project, eventSourceProjectItem, model, loggerEvent);
                 }
-                if (model.OverrideArguments != null && model.OverrideArguments.Length > 0)
-                {
-                    loggerEvent.OverrideArguments(model.OverrideArguments);
-                }
-                loggerEvent.Keywords = new[] { eventSource.Keywords.Find(model.GetKeyword()) };
-                loggerEvent.Id = nextEventId;
-
-                //TODO: Create events builder
-
-                nextEventId += 1;
             }
         }
     }

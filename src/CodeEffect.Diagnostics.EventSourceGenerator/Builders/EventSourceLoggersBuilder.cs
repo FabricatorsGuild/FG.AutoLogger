@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
@@ -15,7 +16,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            // TODO: Get all builders from project and allow all to build
             var loggerBuilders = new ILoggerBuilder[]
             {
                 new LoggerTemplateBuilder(),
@@ -25,11 +25,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 new LoggerEventsBuilder(),
                 new LoggerImplementationBuilder(), 
                 new LoggerEventSourcePartialBuilder(), 
-            };
+            }.Union(project.GetExtensions<ILoggerBuilder>()).ToArray();
             var loggerStartId = 10000;
             foreach (var logger in eventSource.Loggers)
             {
                 logger.StartId = logger.StartId ?? loggerStartId;
+                logger.EventSource = eventSource;
 
                 foreach (var builder in loggerBuilders)
                 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
@@ -15,6 +16,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public System.Diagnostics.Tracing.EventLevel Level { get; set; }
         public KeywordModel[] Keywords { get; set; }
         public string MessageFormatter { get; set; }
+        [JsonIgnore]
+        public bool HasComplexArguments { get; set; }
         public EventArgumentModel[] ImplicitArguments { get; set; }
         public void InsertImplicitArguments(EventArgumentModel[] implicitArguments)
         {
@@ -51,7 +54,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 
         public IEnumerable<EventArgumentModel> GetAllArguments()
         {
-            foreach (var implicitArgument in ImplicitArguments)
+            foreach (var implicitArgument in ImplicitArguments ?? new EventArgumentModel[0])
             {
                 yield return implicitArgument;
             }
@@ -69,7 +72,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
                 {
                     foreach (var templateArgument in argument.TypeTemplate.Arguments)
                     {
-                        yield return templateArgument;
+                        yield return new EventArgumentModel(
+                            name: templateArgument.Name,
+                            type: templateArgument.Type,
+                            assignment: templateArgument.Assignment?.Replace(@"$this", argument.Name))
+                        {
+                            TemplatedParentArgument = argument,
+                            CLRType = templateArgument.CLRType,
+                            IsImplicit = argument.IsImplicit,
+                        };
                     }
                 }
                 else

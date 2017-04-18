@@ -14,11 +14,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string Assignment { get; set; }
         public TypeTemplateModel TypeTemplate { get; set; }
         [JsonIgnore]
-        public bool IsTemplated { get; set; }
+        public bool IsTemplated => TemplatedParentArgument != null;
+        [JsonIgnore]
+        public bool HasTemplate => TypeTemplate != null;
         [JsonIgnore]
         public bool IsImplicit { get; set; }
         [JsonIgnore]
         public bool IsOverriden { get; set; }
+        [JsonIgnore]
+        public EventArgumentModel TemplatedParentArgument { get; set; }
 
         public EventArgumentModel()
         {
