@@ -23,30 +23,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 return "";
             }
 
-            return Render(model);
-            /*
-            if (!model.HasComplexArguments)
-            {
-                return "";
-            }
-
-            var output = Template.Template_NON_EVENT_METHOD;
-            output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
-            output = output.Replace(Template.Variable_EVENT_NAME, model.Name);
-
-            var nonEventMethodArgumentsDeclarationBuilder = new EventArgumentsListBuilder(
-                RenderMethodArgument, Template.Template_NONEVENT_METHOD_ARGUMENT_DELIMITER);
-            foreach (var argument in model.GetAllArguments())
-            {
-                nonEventMethodArgumentsDeclarationBuilder.Append(argument);
-            }
-
-            var assignmentArgumentsBuilder = new EventArgumentsListBuilder((arg) => RenderAssignment(arg), Template.Template_NON_EVENT_ASSIGNMENT_ARGUMENT_DELIMITER);
-
-
-            output = output.Replace(Template.Variable_NON_EVENT_METHOD_ARGUMENTS, nonEventMethodArgumentsDeclarationBuilder.ToString());
-
-            return output;*/
+            return Render(model);            
         }
     }
 }

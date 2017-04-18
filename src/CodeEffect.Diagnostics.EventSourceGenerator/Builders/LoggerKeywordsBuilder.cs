@@ -16,7 +16,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 LogError($"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
                 return;
             }
-            var loggerKeyword = model.GetKeyword();
+            var loggerKeyword = model.Keyword;
             model.SourceFileName = model.Name.Substring(1);
             var allKeywords = new List<KeywordModel>();
             allKeywords.AddRange(eventSource.Keywords);

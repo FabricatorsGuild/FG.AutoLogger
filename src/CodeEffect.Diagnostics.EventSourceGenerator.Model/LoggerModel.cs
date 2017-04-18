@@ -6,16 +6,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
     public class LoggerModel
     {
-        public string GetImplementationName()
-        {
-            return this.Name.Substring(1);
-        }
-        public string GetKeyword()
-        {
-            return this.Name.Substring(1).Replace("Logger", "");
-        }
         public string SourceFileName { get; set; }
         public string Name { get; set; }
+        [JsonIgnore]
+        public string ClassName { get; set; }
+        [JsonIgnore]
+        public string Keyword { get; set; }
         [JsonIgnore]
         public string Include { get; set; }
         public string LoggerNamespace { get; set; }

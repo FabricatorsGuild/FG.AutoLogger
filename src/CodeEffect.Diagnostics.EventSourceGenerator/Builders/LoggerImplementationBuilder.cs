@@ -17,7 +17,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             var loggerFileInclude = eventSource.Include.Replace(eventSource.ClassName, model.Name.Substring(1));
             var loggerFileName = System.IO.Path.Combine(project.ProjectBasePath, loggerFileInclude);
-            model.SourceFileName = model.Name.Substring(1);
+            model.SourceFileName = model.Name;
+            model.ClassName = model.Name.Substring(1);
+            model.Keyword = model.Name.Substring(1).Replace("Logger", "");
 
             var newProjectItem = new ProjectItem<LoggerModel>(
                 type: ProjectItemType.LoggerImplementation,

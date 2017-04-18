@@ -5,10 +5,16 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 {
-    public class EventSourceLoggerPartialRenderer : BaseWithLogging, ILoggerEventSourcePartialRenderer
+    public class LoggerEventSourcePartialRenderer : BaseWithLogging, ILoggerEventSourcePartialRenderer
     {
         public void Render(Project project, ProjectItem<LoggerModel> model)
         {
+            if (model.ItemType != ProjectItemType.EventSourceLoggerPartial)
+            {
+                LogError($"{model.Name} should be of ItemType {nameof(ProjectItemType.EventSourceLoggerPartial)} set but found {model.ItemType}");
+                return;
+            }
+
             var loggerModel = model.Content;
             if (loggerModel == null)
             {

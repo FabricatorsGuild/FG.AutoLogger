@@ -28,7 +28,6 @@ namespace @@NAMESPACE_DECLARATION@@
 
         public const string Variable_LOGGER_SOURCE_FILE_NAME = @"@@LOGGER_SOURCE_FILE_NAME@@";
         public const string Variable_LOGGER_NAME = @"@@LOGGER_NAME@@";
-        public const string Variable_LOGGER_NAMESPACE = @"@@LOGGER_NAMESPACE@@";
         public const string Variable_LOGGER_CLASS_NAME = @"@@LOGGER_CLASS_NAME@@";
 
         public const string Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT = @"@@LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT@@";
@@ -120,8 +119,12 @@ namespace @@NAMESPACE_DECLARATION@@
         public const string Variable_LOGGER_METHOD_ARGUMENTS = @"@@LOGGER_METHOD_ARGUMENTS@@";
         public const string Template_LOGGER_METHOD_ARGUMENTS_DELIMITER = @", 
 			";
-        public const string Variable_LOGGER_CALL_ARGUMENTS = @"@@LOGGER_EVENTSOURCE_NONEVENT_METHOD_ARGUMENTS@@";
-        public const string Variable_LOGGER_METHOD_POST_LOG_EXTENSIONS = @"@@LOGGER_METHOD_POST_LOG_EXTENSIONS@@";
+        public const string Variable_LOGGER_METHOD_IMPLEMENTATION_CALL_ARGUMENTS = @"@@LOGGER_METHOD_IMPLEMENTATION_CALL_ARGUMENTS@@";
+        public const string Variable_LOGGER_METHOD_IMPLEMENTATION = @"@@LOGGER_METHOD_IMPLEMENTATION@@";
+
+        public const string Template_LOGGER_METHOD_CALL_EVENTSOURCE_EVENT = @"			@@EVENTSOURCE_CLASS_NAME@@.Current.@@LOGGER_METHOD_NAME@@(
+				@@LOGGER_METHOD_IMPLEMENTATION_CALL_ARGUMENTS@@
+			);";
         public const string Template_LOGGER_CALL_ARGUMENTS_DELIMITER = @", 
 				";
 
@@ -129,11 +132,7 @@ namespace @@NAMESPACE_DECLARATION@@
 		public void @@LOGGER_METHOD_NAME@@(
 			@@LOGGER_METHOD_ARGUMENTS@@)
 		{
-
-			@@EVENTSOURCE_CLASS_NAME@@.Current.@@LOGGER_METHOD_NAME@@(
-				@@LOGGER_EVENTSOURCE_NONEVENT_METHOD_ARGUMENTS@@
-			);
-			@@LOGGER_METHOD_POST_LOG_EXTENSIONS@@    
+@@LOGGER_METHOD_IMPLEMENTATION@@    
 		}
 ";
         // ReSharper restore InconsistentNaming

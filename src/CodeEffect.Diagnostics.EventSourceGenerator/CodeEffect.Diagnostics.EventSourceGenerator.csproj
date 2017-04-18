@@ -62,12 +62,16 @@
     <Compile Include="Renderers\EventMethodBaseRenderer.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderBase.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderer.cs" />
-    <Compile Include="Renderers\EventSourceLoggerPartialRenderer.cs" />
+    <Compile Include="Renderers\LoggerEventSourcePartialRenderer.cs" />
     <Compile Include="Renderers\EventSourceNonEventMethodBaseRenderer.cs" />
     <Compile Include="Renderers\EventSourceRenderer.cs" />
     <Compile Include="Renderers\LoggerEventSourcePartialEventMethodRenderer.cs" />
     <Compile Include="Renderers\LoggerEventSourcePartialNonEventMethodRenderer.cs" />
     <Compile Include="Renderers\EventSourceNonEventMethodRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationEventMethodArgumentRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationEventMethodRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationMethodCallEventSourceEventRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationRenderer.cs" />
     <Compile Include="Renderers\ProjectDefaultEventSourceDefinitionRenderer.cs" />
     <Compile Include="Renderers\ProjectEventSourceRenderer.cs" />
     <Compile Include="Renderers\ProjectLoggerRenderer.cs" />

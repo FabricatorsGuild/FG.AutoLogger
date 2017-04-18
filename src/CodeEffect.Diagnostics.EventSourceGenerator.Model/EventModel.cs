@@ -64,6 +64,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
             }
         }
 
+        public IEnumerable<EventArgumentModel> GetAllNonImplicitArguments()
+        {
+            foreach (var argument in Arguments)
+            {
+                yield return argument;
+            }
+        }
+
         public IEnumerable<EventArgumentModel> GetAllArgumentsExpanded()
         {
             foreach (var argument in GetAllArguments())

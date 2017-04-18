@@ -39,8 +39,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 
             var loggerRenderers = new ILoggerImplementationRenderer[]
             {
-                // TODO : add logger implementation renderers 
-            };
+                new LoggerImplementationRenderer(),
+            }.Union(project.GetExtensions<ILoggerImplementationRenderer>()).ToArray();
             foreach (var renderer in loggerRenderers.Union(project.GetExtensions<ILoggerImplementationRenderer>()))
             {
                 renderer.Render(project, loggerProjectItem);
@@ -59,8 +59,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 
             var loggerRenderers = new ILoggerEventSourcePartialRenderer[]
             {
-                new EventSourceLoggerPartialRenderer(),
-            };
+                new LoggerEventSourcePartialRenderer(),
+            }.Union(project.GetExtensions<ILoggerEventSourcePartialRenderer>()).ToArray();
             foreach (var renderer in loggerRenderers.Union(project.GetExtensions<ILoggerEventSourcePartialRenderer>()))
             {
                 renderer.Render(project, loggerProjectItem);
