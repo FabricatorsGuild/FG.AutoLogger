@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 using CommandLine;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
@@ -13,7 +17,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
             {
                 LogMessage("Enter arguments for program:");
                 var line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line)) line = "-o";
+                if (string.IsNullOrWhiteSpace(line)) line = "-o -s";
                 args = line.Split(' ');
             }
 
@@ -41,17 +45,23 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                 {
                     t.ProjectFile = PathExtensions.GetAbsolutePath(t.ProjectFile);
                 }
-
                 var projectFilePath = t.ProjectFile;
-                var builder = new EventSourceBuilder(LogMessage);
-                var projectItems = builder.GetProjectItems(projectFilePath);
-                var projectFileBasePath = System.IO.Path.GetDirectoryName(projectFilePath);
-                var outputs = builder.Execute(projectFileBasePath, projectItems).ToArray();
-                builder.AddGeneratedOutputsToProject(projectFilePath, outputs, false);
+
+
+                var projectEventSourceGenerator = new ProjectEventSourceGenerator();
+                projectEventSourceGenerator.SetLogMessage(m => LogMessage(m, EventLevel.Informational));
+                projectEventSourceGenerator.SetLogWarning(w => LogMessage(w, EventLevel.Warning));
+                projectEventSourceGenerator.SetLogError(e => LogMessage(e, EventLevel.Error));
+
+                var project = projectEventSourceGenerator.Run(projectFilePath, t.SaveChanges);
 
                 if (t.DisplayOutput)
                 {
-                    foreach (var output in outputs)
+                    foreach (var output in project.ProjectItems.OfType(
+                        ProjectItemType.EventSource, 
+                        ProjectItemType.DefaultGeneratedEventSourceDefinition,
+                        ProjectItemType.EventSourceLoggerPartial,
+                        ProjectItemType.LoggerImplementation))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"{"".PadRight(40, '_')}");
@@ -60,7 +70,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                         Console.WriteLine($"{"".PadRight(40, '_')}");
 
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(output.Content);
+                        Console.WriteLine(output.Output);
 
 
                         Console.ForegroundColor = ConsoleColor.Yellow;
@@ -110,12 +120,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
 
             Console.ForegroundColor = consoleColor;
             Console.WriteLine(message);
+            Debug.WriteLine($"{eventLevel}: {message}");
             Console.ForegroundColor = previousConsoleColor;
         }
 
         private static void LogMessage(string message)
         {
-            Console.WriteLine(message);
+            LogMessage(message, EventLevel.Informational);
         }
     }
 

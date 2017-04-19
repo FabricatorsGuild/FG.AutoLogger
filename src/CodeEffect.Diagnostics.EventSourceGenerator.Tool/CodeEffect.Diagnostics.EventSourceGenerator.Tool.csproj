@@ -56,6 +56,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
+      <Project>{714c6060-43cc-4314-a233-8e74d65d014c}</Project>
+      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\CodeEffect.Diagnostics.EventSourceGenerator.csproj">
       <Project>{1837B79F-C48F-4D7E-8121-02026C1EA5FC}</Project>
       <Name>CodeEffect.Diagnostics.EventSourceGenerator</Name>

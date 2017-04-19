@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using Newtonsoft.Json;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator
@@ -9,6 +10,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
         public string Name { get; set; }
         public string Type { get; set; }
         public string CLRType { get; set; }
+
+        public TypeTemplateModel TypeTemplate { get; set; }
 
         [JsonIgnore]
         public EventSourceEventCustomArgument[] ExpandedArguments { get; set; }
@@ -24,6 +27,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
         private const string Template_METHOD_CALL_PASSTHROUGH_ARGUMENT = @"@@ARGUMENT_NAME@@";
         private const string Template_METHOD_CALL_PRIVATE_MEMBER_ARGUMENT = @"_@@ARGUMENT_NAME@@";
         // ReSharper restore InconsistentNaming
+
+        
 
         public virtual void SetCLRType(EventSourcePrototype eventSource)
         {

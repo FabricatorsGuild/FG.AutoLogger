@@ -3,12 +3,16 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 using Microsoft.Build.Evaluation;
 using Microsoft.CSharp;
-using ProjectItem = CodeEffect.Diagnostics.EventSourceGenerator.ProjectItem;
+using Project = CodeEffect.Diagnostics.EventSourceGenerator.Model.Project;
+using ProjectItem = CodeEffect.Diagnostics.EventSourceGenerator.Model.ProjectItem;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator
 {
+
     public class EventSourceBuilder
     {
         private readonly Action<string> _logger;
@@ -52,16 +56,42 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                     && item.ItemType == "Compile"))
                 {
                     var projectItemFilePath = System.IO.Path.Combine(basePath, projectItem.EvaluatedInclude);
-                    yield return new ProjectItem(ProjectItemType.LoggerInterface, projectItemFilePath) {Include = projectItem.EvaluatedInclude};
+                    yield return new ProjectItem(ProjectItemType.LoggerInterface, projectItemFilePath) { Include = projectItem.EvaluatedInclude };
                 }
+
+                foreach (var projectItem in project.Items.Where(item =>
+                                    item.EvaluatedInclude.Matches(@"(^|\\)[^\\]*BuilderExtension.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
+                                    && item.ItemType == "Compile"))
+                {
+                    var projectItemFilePath = System.IO.Path.Combine(basePath, projectItem.EvaluatedInclude);
+                    yield return new ProjectItem(ProjectItemType.BuilderExtension, projectItemFilePath) { Include = projectItem.EvaluatedInclude };
+                }
+                var anyHintPath = "";
                 foreach (var projectItem in project.Items.Where(item => item.ItemType == "Reference"))
                 {
                     var hintPath = projectItem.HasMetadata("HintPath") ? projectItem.GetMetadataValue("HintPath") : null;
                     hintPath = hintPath != null ? PathExtensions.GetAbsolutePath(basePath, hintPath) : null;
 
+                    anyHintPath = hintPath ?? anyHintPath;
+
                     var projectItemFilePath = hintPath == null ? $"{projectItem.EvaluatedInclude}.dll" : System.IO.Path.Combine(basePath, hintPath);
 
                     yield return new ProjectItem(ProjectItemType.Reference, projectItemFilePath) { Include = projectItem.EvaluatedInclude };
+                }
+
+                var outputPath =
+                    project.Items.FirstOrDefault(item => item.ItemType.Equals("_OutputPathItem", StringComparison.InvariantCultureIgnoreCase))?.EvaluatedInclude;
+                foreach (var projectItem in project.Items.Where(item => item.ItemType == "ProjectReference"))
+                {
+                    var referencedProjectPath = PathExtensions.GetAbsolutePath(basePath, projectItem.EvaluatedInclude);
+                    var referencedProjectName = System.IO.Path.GetFileNameWithoutExtension(projectItem.EvaluatedInclude);
+                    var expectedDllName = $"{referencedProjectName}.dll";
+                    var referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), outputPath);
+                    var projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
+                    if (System.IO.File.Exists(projectItemFilePath))
+                    {
+                        yield return new ProjectItem(ProjectItemType.Reference, projectItemFilePath) { Include = projectItem.EvaluatedInclude };
+                    }
                 }
 
                 if (!hasEventSource)
@@ -230,13 +260,16 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             _logger(message);
         }
         
-        public IEnumerable<ProjectItem> Execute(string projectBasePath, IEnumerable<ProjectItem> projectFiles)
+        public IEnumerable<ProjectItem> Build(Project project)
         {
-            var files = projectFiles.ToArray();
+            var files = project.ProjectItems.ToArray();
             LogMessage($"Scanning {files.Length} project file{(files.Length == 1 ? "" : "s")} for eventsources");
 
-            var loggerTemplates = ExecuteLoggers(files);
-            var outputs = ExecuteEventSources(projectBasePath, loggerTemplates, files);
+            var extensions = DiscoverExtensions(files);
+            
+            var loggerTemplates = DiscoverLoggers(files);
+            
+            var outputs = GenerateEventSources(project.ProjectBasePath, loggerTemplates, extensions, files);
             
             LogMessage($"\tGenerated {outputs.Count()} files");
             foreach (var output in outputs)
@@ -265,7 +298,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
         //    }
         //}
 
-        private IEnumerable<ProjectItem> ExecuteEventSources(string projectBasePath, EventSourceLoggerTemplate[] loggers, IEnumerable<ProjectItem> projectFiles)
+        private IEnumerable<ProjectItem> GenerateEventSources(string projectBasePath, LoggerTemplateModel[] loggers, ILoggerBuilderExtension[] extensions, IEnumerable<ProjectItem> projectFiles)
         {
             var files = projectFiles.ToArray();
             LogMessage($"Scanning {files.Length} project file{(files.Length == 1 ? "" : "s")} for eventsources");
@@ -277,7 +310,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             foreach (var eventSourceProjectItem in eventSourceProjectItems)
             {
                 LogMessage($"Found EventSource from file {eventSourceProjectItem.Name}");
-                outputs = GenerateEventSourceCode(projectBasePath, eventSourceProjectItem, loggers);
+                outputs = GenerateEventSourceCode(projectBasePath, eventSourceProjectItem, loggers, extensions);
                 foreach (var output in outputs)
                 {
                     generatedFiles.Add(output);
@@ -286,7 +319,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 }
             }
 
-            outputs = AddDefaultEventSource(projectBasePath, loggers, projectFiles);
+            outputs = AddDefaultEventSource(projectBasePath, loggers, extensions, projectFiles);
             foreach (var output in outputs)
             {
                 generatedFiles.Add(output);
@@ -295,7 +328,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             return generatedFiles;
         }
 
-        private IEnumerable<ProjectItem> AddDefaultEventSource(string projectBasePath, EventSourceLoggerTemplate[] loggers, IEnumerable<ProjectItem> projectFiles)
+        private IEnumerable<ProjectItem> AddDefaultEventSource(string projectBasePath, LoggerTemplateModel[] loggers, ILoggerBuilderExtension[] extensions, IEnumerable<ProjectItem> projectFiles)
         {
             var defaultEventSourceFile = projectFiles.GetDefaultEventSourceProjectItem();
             if (defaultEventSourceFile != null)
@@ -354,7 +387,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                         RootNamespace = defaultEventSourceFile.RootNamespace
                     };
 
-                var outputs = GenerateEventSourceCode(projectBasePath, defaultEventSourceFile, defaultEventSource, loggers);
+                var outputs = GenerateEventSourceCode(projectBasePath, defaultEventSourceFile, defaultEventSource, loggers, extensions);
                 foreach (var output in outputs)
                 {
                     yield return output;
@@ -362,7 +395,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             }
         }
 
-        private EventSourceLoggerTemplate[] ExecuteLoggers(IEnumerable<ProjectItem> projectFiles)
+        private LoggerTemplateModel[] DiscoverLoggers(IEnumerable<ProjectItem> projectFiles)
         {
             var files = projectFiles.ToArray();
 
@@ -385,7 +418,87 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             return loggerTemplates.ToArray();
         }
 
-        private EventSourceLoggerTemplate[] CompileAndEvaluateInterface(ProjectItem projectItem, IEnumerable<ProjectItem> referenceItems)
+        private ILoggerBuilderExtension[] DiscoverExtensions(IEnumerable<ProjectItem> projectFiles)
+        {
+            var files = projectFiles.ToArray();
+
+            LogMessage($"Scanning {files.Length} project file{(files.Length == 1 ? "" : "s")} for extensions");
+            var builderExtensions = new List<ILoggerBuilderExtension>();
+            //var loggerFiles = files.Where(projectFile => projectFile.Matches(@"(^|\\)I[^\\]*Logger.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false));
+            var extensionFiles = files.OfType(ProjectItemType.BuilderExtension);
+            var referenceFiles = files.OfType(ProjectItemType.Reference).ToArray();
+            foreach (var file in extensionFiles)
+            {
+                LogMessage($"Found Extension file {file.Name}");
+                var extensions = CompileAndEvaluateExtensions(file, referenceFiles);
+                foreach (var foundExtensions in extensions)
+                {
+                    LogMessage($"Compiled Extension {foundExtensions.GetType().FullName}");
+
+                }
+                builderExtensions.AddRange(extensions);
+            }
+            if (!extensionFiles.Any())
+            {
+                LogMessage($"Scanning for Extensions in references only");
+                var extensions = CompileAndEvaluateExtensions(null, referenceFiles);
+                foreach (var foundExtensions in extensions)
+                {
+                    LogMessage($"Compiled Extension {foundExtensions.GetType().FullName}");
+
+                }
+                builderExtensions.AddRange(extensions);
+            }
+            return builderExtensions.ToArray();
+        }
+
+        private ILoggerBuilderExtension[] CompileAndEvaluateExtensions(ProjectItem projectItem, IEnumerable<ProjectItem> referenceItems)
+        {
+            LogMessage($"Compiling possible logger builder extension file {projectItem?.Include ?? "in referenced dlls"}");
+
+            var extensions = new List<ILoggerBuilderExtension>();
+            try
+            {
+                var parameters = new CompilerParameters();
+
+                foreach (var referenceItem in referenceItems)
+                {
+                    parameters.ReferencedAssemblies.Add(referenceItem.Name);
+                }
+
+                //parameters.ReferencedAssemblies.Add("System.dll");
+                parameters.GenerateExecutable = false;
+                parameters.GenerateInMemory = true;
+
+                parameters.IncludeDebugInformation = false;
+                var cSharpCodeProvider = new CSharpCodeProvider();
+                //var cSharpCodeProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
+
+                var items = projectItem != null ? new string[] { projectItem.Name} : new string[0];
+                CompilerResults compilerResults;
+                compilerResults = cSharpCodeProvider.CompileAssemblyFromFile(parameters, items);
+                foreach (CompilerError compilerResultsError in compilerResults.Errors)
+                {
+                    LogMessage(compilerResultsError.ToString());
+                }
+
+                var types = compilerResults.CompiledAssembly.GetTypes();
+                foreach (
+                    var type in
+                    types.Where(t => typeof(ILoggerBuilderExtension).IsAssignableFrom(t)))
+                {
+                    var extension = (ILoggerBuilderExtension)Activator.CreateInstance(type);
+                    extensions.Add(extension);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMessage($"Failed to compile/evaluate {projectItem.Include} - {ex.Message}\r\n{ex.StackTrace}");
+            }
+            return extensions.ToArray();
+        }
+
+        private LoggerTemplateModel[] CompileAndEvaluateInterface(ProjectItem projectItem, IEnumerable<ProjectItem> referenceItems)
         {
             LogMessage($"Compiling possible logger file {projectItem.Include}");
 
@@ -424,7 +537,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                         Namespace = type.Namespace,
                         Include = include
                     };
-                    var eventSourceEvents = new List<EventSourceEvent>();
+                    var eventSourceEvents = new List<EventModel>();
                     foreach (var methodInfo in type.GetMethods())
                     {
                         var eventSourceEventArguments = new List<EventSourceEventArgument>();
@@ -456,7 +569,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             return loggers.ToArray();
         }
 
-        private IEnumerable<ProjectItem> GenerateEventSourceCode(string projectBasePath, ProjectItem projectItem, EventSourceLoggerTemplate[] loggers)
+        private IEnumerable<ProjectItem> GenerateEventSourceCode(string projectBasePath, ProjectItem projectItem, LoggerTemplateModel[] loggers , ILoggerBuilderExtension[] extensions)
         {
             var sourceFileName = System.IO.Path.GetFileName(projectItem.Name);
             var implementationFileName = $"{System.IO.Path.GetFileNameWithoutExtension(projectItem.Name)}.cs";
@@ -475,12 +588,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             eventSourcePrototype.Include = fileRelativePath;
             eventSourcePrototype.SourceFilePath = projectItem.Include;
             eventSourcePrototype.Namespace = eventSourceNamespace;          
-            return GenerateEventSourceCode(projectBasePath, projectItem, eventSourcePrototype, loggers);
+            return GenerateEventSourceCode(projectBasePath, projectItem, eventSourcePrototype, loggers, extensions);
         }
 
-        private IEnumerable<ProjectItem> GenerateEventSourceCode(string projectBasePath, ProjectItem projectItem, EventSourcePrototype eventSourcePrototype, EventSourceLoggerTemplate[] loggers)
+        private IEnumerable<ProjectItem> GenerateEventSourceCode(string projectBasePath, ProjectItem projectItem, EventSourcePrototype eventSourcePrototype, LoggerTemplateModel[] loggers, ILoggerBuilderExtension[] extensions)
         {
             eventSourcePrototype.AvailableLoggers = loggers;
+            eventSourcePrototype.BuilderExtensions = extensions;
             var outputs = eventSourcePrototype.Render(projectBasePath);
 
             var eventSourceProjectItems = new List<ProjectItem>();
@@ -492,81 +606,5 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             return eventSourceProjectItems;
         }
 
-    }
-
-    public class LoggerEvaluator
-    {
-        private Action<string> LogMessage { get; }
-
-        public LoggerEvaluator(Action<string> logMessage)
-        {
-            LogMessage = logMessage;
-        }
-
-        private EventSourceLoggerTemplate[] CompileAndEvaluateInterface(ProjectItem projectItem)
-        {
-            LogMessage($"Compiling possible logger file {projectItem.Include}");
-
-            var loggers = new List<EventSourceLoggerTemplate>();
-            try
-            {
-                var parameters = new CompilerParameters();
-
-                parameters.ReferencedAssemblies.Add("System.dll");
-                parameters.GenerateExecutable = false;
-                parameters.GenerateInMemory = true;
-
-                parameters.IncludeDebugInformation = false;
-                var cSharpCodeProvider = new CSharpCodeProvider();
-                //var cSharpCodeProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
-                var compilerResults = cSharpCodeProvider.CompileAssemblyFromFile(parameters, projectItem.Name);
-                foreach (CompilerError compilerResultsError in compilerResults.Errors)
-                {
-                    LogMessage(compilerResultsError.ToString());
-                }
-
-                var types = compilerResults.CompiledAssembly.GetTypes();
-                foreach (
-                    var type in
-                    types.Where(t => t.IsInterface && t.Name.Matches(@"^I[^\\]*Logger", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)))
-                {
-                    var include = projectItem.Include.Replace(projectItem.Name, type.Name);
-                    var eventSourceLogger = new EventSourceLoggerTemplate()
-                    {
-                        Name = type.Name,
-                        Namespace = type.Namespace,
-                        Include = include
-                    };
-                    var eventSourceEvents = new List<EventSourceEvent>();
-                    foreach (var methodInfo in type.GetMethods())
-                    {
-                        var eventSourceEventArguments = new List<EventSourceEventArgument>();
-                        var eventSourceEvent = new EventSourceEvent()
-                        {
-                            Name = methodInfo.Name,
-                        };
-                        foreach (var parameterInfo in methodInfo.GetParameters())
-                        {
-                            var typeString = parameterInfo.ParameterType.GetFriendlyName();
-                            eventSourceEventArguments.Add(new EventSourceEventArgument()
-                            {
-                                Name = parameterInfo.Name,
-                                Type = typeString,
-                            });
-                        }
-                        eventSourceEvent.Arguments = eventSourceEventArguments.ToArray();
-                        eventSourceEvents.Add(eventSourceEvent);
-                    }
-
-                    eventSourceLogger.Events = eventSourceEvents.ToArray();
-                    loggers.Add(eventSourceLogger);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogMessage($"Failed to compile/evaluate {projectItem.Include} - {ex.Message}\r\n{ex.StackTrace}");
-            }
-            return loggers.ToArray();
-        }
     }
 }

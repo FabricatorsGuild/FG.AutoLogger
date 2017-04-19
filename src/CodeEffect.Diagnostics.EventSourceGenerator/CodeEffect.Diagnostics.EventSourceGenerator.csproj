@@ -11,6 +11,8 @@
     <AssemblyName>CodeEffect.Diagnostics.EventSourceGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,7 +35,7 @@
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -46,23 +48,76 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventSourceBuilder.cs" />
-    <Compile Include="EventSourceEvent.cs" />
-    <Compile Include="EventSourceEventArgument.cs" />
-    <Compile Include="EventSourceEventCustomArgument.cs" />
-    <Compile Include="EventSourceExtensionsMethod.cs" />
-    <Compile Include="EventSourceKeyword.cs" />
-    <Compile Include="EventSourceLogger.cs" />
-    <Compile Include="EventSourceLoggerTemplate.cs" />
-    <Compile Include="EventSourcePrototype.cs" />
-    <Compile Include="EventSourceTypeTemplate.cs" />
-    <Compile Include="PathExtensions.cs" />
-    <Compile Include="ProjectItem.cs" />
-    <Compile Include="ProjectItemExtensions.cs" />
-    <Compile Include="ProjectItemType.cs" />
+    <Compile Include="Builders\EventArgumentExtensionMethodBuilder.cs" />
+    <Compile Include="Builders\EventArgumentsBuilder.cs" />
+    <Compile Include="Builders\EventArgumentsComplexityCheckBuilder.cs" />
+    <Compile Include="Builders\EventArgumentsComplexityCheckBuilderBase.cs" />
+    <Compile Include="Builders\EventMessageFormatterBuilderBase.cs" />
+    <Compile Include="Builders\EventTemplatedArgumentsBuilder.cs" />
+    <Compile Include="Builders\EventTemplatedArgumentsBuilderBase.cs" />
+    <Compile Include="Builders\LoggerEventArgumentsBuilder.cs" />
+    <Compile Include="Builders\LoggerEventArgumentsComplexityCheckBuilder.cs" />
+    <Compile Include="Builders\LoggerEventIdBuilder.cs" />
+    <Compile Include="Builders\LoggerEventImplicitArgumentsBuilder.cs" />
+    <Compile Include="Builders\LoggerEventMessageFormatterBuilder.cs" />
+    <Compile Include="Builders\LoggerEventOverrideArgumentsBuilder.cs" />
+    <Compile Include="Builders\LoggerEventTemplatedArgumentsBuilder.cs" />
+    <Compile Include="Renderers\EventMethodBaseRenderer.cs" />
+    <Compile Include="Renderers\EventSourceEventMethodRenderBase.cs" />
+    <Compile Include="Renderers\EventSourceEventMethodRenderer.cs" />
+    <Compile Include="Renderers\EventSourceExtensionMethodRenderer.cs" />
+    <Compile Include="Renderers\EventSourceKeywordRenderer.cs" />
+    <Compile Include="Renderers\LoggerEventSourcePartialRenderer.cs" />
+    <Compile Include="Renderers\EventSourceNonEventMethodBaseRenderer.cs" />
+    <Compile Include="Renderers\EventSourceRenderer.cs" />
+    <Compile Include="Renderers\LoggerEventSourcePartialEventMethodRenderer.cs" />
+    <Compile Include="Renderers\LoggerEventSourcePartialNonEventMethodRenderer.cs" />
+    <Compile Include="Renderers\EventSourceNonEventMethodRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationEventMethodRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationMethodCallEventSourceEventRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationRenderer.cs" />
+    <Compile Include="Renderers\ProjectDefaultEventSourceDefinitionRenderer.cs" />
+    <Compile Include="Renderers\ProjectEventSourceRenderer.cs" />
+    <Compile Include="Renderers\ProjectFilesRenderer.cs" />
+    <Compile Include="Renderers\ProjectLoggerRenderer.cs" />
+    <Compile Include="Renderers\ProjectRenderer.cs" />
+    <Compile Include="Template.cs" />
+    <Compile Include="Utils\BaseWithLogging.cs" />
+    <Compile Include="Builders\EventArgumentBuilder.cs" />
+    <Compile Include="Builders\EventArgumentsListBuilder.cs" />
+    <Compile Include="Builders\EventIdBuilder.cs" />
+    <Compile Include="Builders\EventImplicitArgumentsBuilder.cs" />
+    <Compile Include="Builders\EventMessageFormatterBuilder.cs" />
+    <Compile Include="Builders\IWithLogging.cs" />
+    <Compile Include="Builders\LoggerEventSourcePartialBuilder.cs" />
+    <Compile Include="Builders\LoggerImplementationBuilder.cs" />
+    <Compile Include="Builders\ProjectDefaultEventSourceBuilder.cs" />
+    <Compile Include="Builders\ProjectEventSourceBuilder.cs" />
+    <Compile Include="Builders\ProjectExtensionsDiscoverBuilder.cs" />
+    <Compile Include="Builders\ProjectLoggerDiscoverBuilder.cs" />
+    <Compile Include="Builders\EventSourceEventsBuilder.cs" />
+    <Compile Include="Builders\EventSourceExtensionsMethodsBuilder.cs" />
+    <Compile Include="Builders\EventSourceKeywordBuilder.cs" />
+    <Compile Include="Builders\EventSourceLoggersBuilder.cs" />
+    <Compile Include="Builders\ProjectReferenceItemRemoverBuilder.cs" />
+    <Compile Include="ListBuilder.cs" />
+    <Compile Include="Builders\LoggerEventsBuilder.cs" />
+    <Compile Include="Builders\LoggerImplicitArgumentsBuilder.cs" />
+    <Compile Include="Builders\LoggerKeywordsBuilder.cs" />
+    <Compile Include="Builders\LoggerOverrideArgumentsBuilder.cs" />
+    <Compile Include="Builders\LoggerTemplateBuilder.cs" />
+    <Compile Include="Builders\ProjectBuilder.cs" />
+    <Compile Include="ProjectEventSourceGenerator.cs" />
+    <Compile Include="Utils\PathExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringMatchExtensions.cs" />
-    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="Utils\StringMatchExtensions.cs" />
+    <Compile Include="Utils\TypeExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
+      <Project>{714C6060-43CC-4314-A233-8E74D65D014C}</Project>
+      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
