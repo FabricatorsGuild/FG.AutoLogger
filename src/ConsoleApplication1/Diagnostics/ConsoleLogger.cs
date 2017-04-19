@@ -3,25 +3,29 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
-using ConsoleApplication1.Diagnostics;
+using ConsoleApplication1.Loggers;
 
-namespace ConsoleApplication1.Loggers
+namespace ConsoleApplication1.Diagnostics
 {
 	internal sealed class ConsoleLogger : IConsoleLogger
 	{
-		private int _processId;
+		private readonly int _processId;
+		private readonly string _machineName;
 
 		public ConsoleLogger(
-			int processId)
+			int processId,
+			string machineName)
 		{
 			_processId = processId;
+			_machineName = machineName;
 		}
 
 		public void SayHello(
 			string message)
 		{
-			sample.Current.SayHello(
+			Sample.Current.SayHello(
 				_processId, 
+				_machineName, 
 				message
 			);
     
@@ -31,8 +35,9 @@ namespace ConsoleApplication1.Loggers
 		public void Message(
 			string message)
 		{
-			sample.Current.Message(
+			Sample.Current.Message(
 				_processId, 
+				_machineName, 
 				message
 			);
     
@@ -42,8 +47,9 @@ namespace ConsoleApplication1.Loggers
 		public void Error(
 			System.Exception exception)
 		{
-			sample.Current.Error(
+			Sample.Current.Error(
 				_processId, 
+				_machineName, 
 				exception
 			);
     
@@ -52,10 +58,11 @@ namespace ConsoleApplication1.Loggers
 
 		public void SayGoodbye(
 			string goodbye,
-			DateTime nightTime)
+			System.DateTime nightTime)
 		{
-			sample.Current.SayGoodbye(
+			Sample.Current.SayGoodbye(
 				_processId, 
+				_machineName, 
 				goodbye, 
 				nightTime
 			);
@@ -64,10 +71,11 @@ namespace ConsoleApplication1.Loggers
 
 
 		public void Special(
-			Special special)
+			ConsoleApplication1.Loggers.Special special)
 		{
-			sample.Current.Special(
+			Sample.Current.Special(
 				_processId, 
+				_machineName, 
 				special
 			);
     

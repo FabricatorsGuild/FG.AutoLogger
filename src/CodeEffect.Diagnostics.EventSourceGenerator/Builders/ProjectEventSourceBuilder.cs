@@ -53,8 +53,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 eventSourceModel.Include = fileRelativePath;
             }
 
+            eventSourceModel.Name = name;
             eventSourceModel.Namespace = eventSourceModel.Namespace ?? eventSourceNamespace;
-            eventSourceModel.ClassName = name;
+            eventSourceModel.ProviderName = eventSourceModel.ProviderName ?? $"{eventSourceModel.Namespace.Replace('.', '-')}-{name}";
+            eventSourceModel.ClassName = name.GetUpperCasedInitial();
             eventSourceModel.SourceFilePath = eventSourceDefinitionProjectItem.Include;
 
             var filePath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(eventSourceDefinitionProjectItem.Name), implementationFileName);
@@ -79,6 +81,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var eventSourceBuilders = new IEventSourceBuilder[]
             {
                 new EventSourceKeywordBuilder(),
+                new EventSourceAutoGenerateLoggersBuilder(), 
                 new EventSourceLoggersBuilder(),
                 new EventSourceEventsBuilder(),
                 new EventSourceExtensionsMethodsBuilder(),

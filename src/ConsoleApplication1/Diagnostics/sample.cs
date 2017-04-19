@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication1.Diagnostics
 {
-	[EventSource(Name = "CE-CodeEffect.Diagnostics.EventSourceGenerator")]
-	internal sealed partial class sample : EventSource
+	[EventSource(Name = "sample")]
+	internal sealed partial class Sample : EventSource
 	{
-		public static readonly sample Current = new sample();
+		public static readonly Sample Current = new Sample();
 
-		static sample()
+		static Sample()
 		{
 			// A workaround for the problem where ETW activities do not 
 			// get tracked until Tasks infrastructure is initialized.
@@ -22,7 +22,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 		// Instance constructor is private to enforce singleton semantics
-		private sample() : base() { }
+		private Sample() : base() { }
 
 		#region Keywords
 		// Event keywords can be used to categorize events. 
@@ -36,6 +36,7 @@ namespace ConsoleApplication1.Diagnostics
 			public const EventKeywords Domain = (EventKeywords)0x2L;
 			public const EventKeywords Infrastructure = (EventKeywords)0x4L;
 			public const EventKeywords Console = (EventKeywords)0x8L;
+			public const EventKeywords ConsoleRunner = (EventKeywords)0x16L;
 
 		}
 		#endregion Keywords
@@ -48,8 +49,14 @@ namespace ConsoleApplication1.Diagnostics
 	}
 
 
-	internal static class sampleHelpers
+	internal static class SampleHelpers
 	{
+
+            public static string AsJson(this System.Exception that)
+            {
+                return Newtonsoft.Json.JsonConvert.SerializeObject(that);
+            }
+
 
 	}
 

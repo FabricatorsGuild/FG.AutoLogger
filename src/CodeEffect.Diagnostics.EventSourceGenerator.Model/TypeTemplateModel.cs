@@ -4,6 +4,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
     {
         public string Name { get; set; }
         public string CLRType { get; set; }
+
         public EventArgumentModel[] Arguments { get; set; }
 
         public override string ToString()

@@ -15,10 +15,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            var loggerFileInclude = eventSource.Include.Replace(eventSource.ClassName, model.Name.Substring(1));
-            var loggerFileName = System.IO.Path.Combine(project.ProjectBasePath, loggerFileInclude);
             model.SourceFileName = model.Name;
-            model.ClassName = model.Name.Substring(1);            
+            model.ClassName = model.Name.Substring(1);
+            var loggerFileInclude = eventSource.Include.Replace(eventSource.Name, model.ClassName);
+            var loggerFileName = System.IO.Path.Combine(project.ProjectBasePath, loggerFileInclude);
+            //model.LoggerNamespace = eventSource.Namespace;
 
             var newProjectItem = new ProjectItem<LoggerModel>(
                 type: ProjectItemType.LoggerImplementation,
@@ -26,7 +27,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 content: model,
                 include: loggerFileInclude)
             {
-                DependentUpon = eventSourceProjectItem
+                DependentUpon = eventSourceProjectItem,                
             };
 
             project.AddProjectItem(newProjectItem);

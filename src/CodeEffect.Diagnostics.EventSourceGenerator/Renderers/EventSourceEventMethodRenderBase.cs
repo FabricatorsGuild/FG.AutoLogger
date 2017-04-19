@@ -40,6 +40,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 RenderEventMethodArgument, Template.Template_EVENT_METHOD_ARGUMENT_DELIMITER);
             var writeEventMethodCallArgument = new EventArgumentsListBuilder(
                 (arg) => RenderWriteEventMethodCallArgument(arg), Template.Template_EVENT_METHOD_CALL_ARGUMENT_DELIMITER);
+            writeEventMethodCallArgument.Append($"{model.Name}EventId");
 
             foreach (var argument in model.GetAllArgumentsExpanded())
             {

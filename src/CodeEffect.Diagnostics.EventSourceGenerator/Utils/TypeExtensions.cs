@@ -33,7 +33,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
                 return friendlyName;
             }
 
-            friendlyName = type.Name;
+            friendlyName = type.FullName;
             if (type.IsGenericType)
             {
                 int backtick = friendlyName.IndexOf('`');

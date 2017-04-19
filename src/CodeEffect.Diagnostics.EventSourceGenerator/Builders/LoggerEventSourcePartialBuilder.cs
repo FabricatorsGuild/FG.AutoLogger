@@ -16,7 +16,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            var eventSourcePartialFileInclude = eventSource.Include.Replace(eventSource.ClassName, $"{eventSource.ClassName}.{model.Name}");
+            var eventSourcePartialFileInclude = eventSource.Include.Replace(eventSource.Name, $"{eventSource.ClassName}.{model.Name}");
             var eventSourcePartialFileName = System.IO.Path.Combine(project.ProjectBasePath, eventSourcePartialFileInclude);
             model.SourceFileName = model.Name.Substring(1);            
 

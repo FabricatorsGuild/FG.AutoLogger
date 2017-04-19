@@ -8,7 +8,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 {
     public class LoggerImplementationRenderer : BaseWithLogging, ILoggerImplementationRenderer
     {
-        private  string RenderPrivateDeclaration(EventArgumentModel model)
+        private static string RenderPrivateDeclaration(EventArgumentModel model)
         {
             var output = Template.Template_PRIVATE_MEMBER_DECLARATION;
             output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
@@ -17,7 +17,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             return output;
         }
 
-        public string RenderPrivateAssignment(EventArgumentModel model)
+        private static string RenderPrivateAssignment(EventArgumentModel model)
         {
             var output = Template.Template_PRIVATE_MEMBER_ASSIGNMENT;
             output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
@@ -25,7 +25,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             return output;
         }
 
-        public virtual string RenderMethodArgument(EventArgumentModel model)
+        private static string RenderMethodArgument(EventArgumentModel model)
         {
             var output = Template.Template_METHOD_ARGUMENT_DECLARATION;
             output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
@@ -67,9 +67,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             var memberDeclarations = new EventArgumentsListBuilder(
                 RenderPrivateDeclaration, Template.Template_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION_DELIMITER);
             var constructorMemberAssignments = new EventArgumentsListBuilder(
-                RenderPrivateAssignment, Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT);
+                RenderPrivateAssignment, Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT_DELIMITER);
             var constructorArguments = new EventArgumentsListBuilder(
-                RenderMethodArgument, Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION);
+                RenderMethodArgument, Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_METHOD_CONSTRUCTOR_DELIMITER);
             foreach (var argument in loggerModel.ImplicitArguments)
             {
                 memberDeclarations.Append(argument);
@@ -77,19 +77,22 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 constructorMemberAssignments.Append(argument);
             }
 
+            var memberRenderers = new ILoggerImplementationMembersRenderer[]
+            {
+            }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>()).ToArray();
+            foreach (var renderer in memberRenderers)
+            {
+                memberDeclarations.Append(renderer.Render(project, model));
+            }
+
             output = output.Replace(Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION, memberDeclarations.ToString());
             output = output.Replace(Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT, constructorMemberAssignments.ToString());
-            output = output.Replace(Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION, constructorArguments.ToString());
-
-
-
+            output = output.Replace(Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION, constructorArguments.ToString());
 
             var logger = new StringBuilder();
             var loggerEventRenderers = new ILoggerImplementationEventRenderer[]
             {
                 new LoggerImplementationEventMethodRenderer(), 
-                //new LoggerEventSourcePartialEventMethodRenderer(),
-                //new LoggerEventSourcePartialNonEventMethodRenderer(),
             }.Union(project.GetExtensions<ILoggerImplementationEventRenderer>()).ToArray();
 
             foreach (var loggerEvent in loggerModel.Events)

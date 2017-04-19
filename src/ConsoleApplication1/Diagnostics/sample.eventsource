@@ -1,5 +1,5 @@
 {
-  "Name": "CE-CodeEffect.Diagnostics.EventSourceGenerator",
+  "ProviderName": "CE-CodeEffect.Diagnostics.EventSourceGenerator",
   "Settings": {
     "AutogenerateLoggerInterfaces": "true"
   },
@@ -95,11 +95,15 @@
         {
           "Name": "processId",
           "Type": "int"
+        },
+        {
+          "Name": "machineName",
+          "Type": "string",
+          "Assignment": "Environment.MachineName"
         }
       ]
     }
   ],
-  "Events":
-  [
+  "Events": [
   ]
 }

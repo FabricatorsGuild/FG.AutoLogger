@@ -73,7 +73,6 @@
     <Compile Include="Renderers\LoggerEventSourcePartialEventMethodRenderer.cs" />
     <Compile Include="Renderers\LoggerEventSourcePartialNonEventMethodRenderer.cs" />
     <Compile Include="Renderers\EventSourceNonEventMethodRenderer.cs" />
-    <Compile Include="Renderers\LoggerImplementationEventMethodArgumentRenderer.cs" />
     <Compile Include="Renderers\LoggerImplementationEventMethodRenderer.cs" />
     <Compile Include="Renderers\LoggerImplementationMethodCallEventSourceEventRenderer.cs" />
     <Compile Include="Renderers\LoggerImplementationRenderer.cs" />

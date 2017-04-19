@@ -68,7 +68,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 {
                     foreach (var renderer in extensionRenderers.Union(project.GetExtensions<IExtensionsMethodRenderer>()))
                     {
-                        keywords.AppendLine(renderer.Render(project, eventSourceModel, extension));
+                        extensions.AppendLine(renderer.Render(project, eventSourceModel, extension));
                     }
                 }
 

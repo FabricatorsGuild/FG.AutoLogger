@@ -6,6 +6,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
     public class LoggerModel
     {
+        private EventArgumentModel[] _implicitArguments;
+        private EventArgumentModel[] _overrideArguments;
+
+        [JsonIgnore]
         public string SourceFileName { get; set; }
         public string Name { get; set; }
         [JsonIgnore]
@@ -14,10 +18,20 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string Keyword { get; set; }
         [JsonIgnore]
         public string Include { get; set; }
+        [JsonIgnore]
         public string LoggerNamespace { get; set; }
         public int? StartId { get; set; }
-        public EventArgumentModel[] ImplicitArguments { get; set; }
-        public EventArgumentModel[] OverrideArguments { get; set; }
+
+        public EventArgumentModel[] ImplicitArguments
+        {
+            get { return _implicitArguments ?? new EventArgumentModel[0]; }
+            set { _implicitArguments = value; }
+        }
+        public EventArgumentModel[] OverrideArguments
+        {
+            get { return _overrideArguments ?? new EventArgumentModel[0]; }
+            set { _overrideArguments = value; }
+        }
         [JsonIgnore]
         public EventModel[] Events { get; set; }
         [JsonIgnore]

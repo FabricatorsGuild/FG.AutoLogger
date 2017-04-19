@@ -8,50 +8,56 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication1.Diagnostics
 {
-	internal sealed partial class sample
+	internal sealed partial class Sample
 	{
 
 		private const int SayHelloEventId = 1001;
 
-		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{2}")]
+		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{3}")]
 		public void SayHello(
 			int processId, 
+			string machineName, 
 			string message)
 		{
 			WriteEvent(
-				SayHelloEventId,
+				SayHelloEventId, 
 				processId, 
+				machineName, 
 				message);
 		}
 
 
 		private const int MessageEventId = 1002;
 
-		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{2}")]
+		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{3}")]
 		public void Message(
 			int processId, 
+			string machineName, 
 			string message)
 		{
 			WriteEvent(
-				MessageEventId,
+				MessageEventId, 
 				processId, 
+				machineName, 
 				message);
 		}
 
 
 		private const int ErrorEventId = 1003;
 
-		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{2}")]
+		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{3}")]
 		private void Error(
 			int processId, 
+			string machineName, 
 			string message, 
 			string source, 
 			string exceptionTypeName, 
 			string exception)
 		{
 			WriteEvent(
-				ErrorEventId,
+				ErrorEventId, 
 				processId, 
+				machineName, 
 				message, 
 				source, 
 				exceptionTypeName, 
@@ -61,12 +67,14 @@ namespace ConsoleApplication1.Diagnostics
 		[NonEvent]
 		public void Error(
 			int processId, 
+			string machineName, 
 			System.Exception exception)
 		{
 			if (this.IsEnabled())
 			{
 				Error(
 					processId, 
+					Environment.MachineName, 
 					exception.Message, 
 					exception.Source, 
 					exception.GetType().FullName, 
@@ -77,42 +85,65 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int SayGoodbyeEventId = 1004;
 
-		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "Say Goodbye {2} {3}")]
-		public void SayGoodbye(
+		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "Say Goodbye {3} {4}")]
+		private void SayGoodbye(
 			int processId, 
+			string machineName, 
 			string goodbye, 
-			DateTime nightTime)
+			string nightTime)
 		{
 			WriteEvent(
-				SayGoodbyeEventId,
+				SayGoodbyeEventId, 
 				processId, 
+				machineName, 
 				goodbye, 
 				nightTime);
+		}
+
+		[NonEvent]
+		public void SayGoodbye(
+			int processId, 
+			string machineName, 
+			string goodbye, 
+			System.DateTime nightTime)
+		{
+			if (this.IsEnabled())
+			{
+				SayGoodbye(
+					processId, 
+					Environment.MachineName, 
+					goodbye, 
+					nightTime.ToString());
+			}
 		}
 
 
 		private const int SpecialEventId = 1005;
 
-		[Event(SpecialEventId, Level = EventLevel.LogAlways, Message = "Special {2}")]
+		[Event(SpecialEventId, Level = EventLevel.LogAlways, Message = "Special {3}")]
 		private void Special(
 			int processId, 
+			string machineName, 
 			string special)
 		{
 			WriteEvent(
-				SpecialEventId,
+				SpecialEventId, 
 				processId, 
+				machineName, 
 				special);
 		}
 
 		[NonEvent]
 		public void Special(
 			int processId, 
-			string special)
+			string machineName, 
+			ConsoleApplication1.Loggers.Special special)
 		{
 			if (this.IsEnabled())
 			{
 				Special(
 					processId, 
+					Environment.MachineName, 
 					special.ToString());
 			}
 		}

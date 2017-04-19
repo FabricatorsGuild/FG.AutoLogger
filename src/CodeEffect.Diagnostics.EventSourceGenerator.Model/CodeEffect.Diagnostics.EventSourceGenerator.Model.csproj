@@ -62,8 +62,8 @@
     <Compile Include="ILoggerEventBuilder.cs" />
     <Compile Include="ILoggerEventSourcePartialEventRenderer.cs" />
     <Compile Include="ILoggerEventSourcePartialRenderer.cs" />
-    <Compile Include="ILoggerImplementationEventArgumentRenderer.cs" />
     <Compile Include="ILoggerImplementationEventRenderer.cs" />
+    <Compile Include="ILoggerImplementationMembersRenderer.cs" />
     <Compile Include="ILoggerImplementationMethodRenderer.cs" />
     <Compile Include="ILoggerImplementationRenderer.cs" />
     <Compile Include="IProjectBuilder.cs" />

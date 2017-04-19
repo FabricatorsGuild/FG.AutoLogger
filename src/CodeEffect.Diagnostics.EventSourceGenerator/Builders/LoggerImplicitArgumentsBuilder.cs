@@ -22,7 +22,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 new EventArgumentBuilder(),
                 new EventArgumentExtensionMethodBuilder(), 
             }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
-            foreach (var argument in model?.ImplicitArguments ?? new EventArgumentModel[0])
+            foreach (var argument in model?.ImplicitArguments)
             {
                 foreach (var eventArgumentBuilder in eventArgumentBuilders)
                 {

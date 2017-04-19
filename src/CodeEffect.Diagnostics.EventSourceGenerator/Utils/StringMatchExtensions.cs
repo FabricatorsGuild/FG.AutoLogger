@@ -6,6 +6,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
 {
     public static class StringMatchExtensions
     {
+        private static readonly Regex FindInitialLowercaseRegex = new Regex(@"\b([a-z])", RegexOptions.Compiled);
+
         private static readonly Regex HumanReadableStringRegex = new Regex(@"((?<=\p{Ll})\p{Lu}|\p{Lu}(?=\p{Ll}))", RegexOptions.Compiled);
         public static bool Matches(this string that, string pattern, StringComparison stringComparison, bool useWildcards = true)
         {
@@ -100,6 +102,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
         public static string GetHumanReadable(this string that)
         {
             return HumanReadableStringRegex.Replace(that, " $1").Trim();
+        }
+
+        public static string GetUpperCasedInitial(this string that)
+        {
+            return $"{that?.Substring(0, 1).ToUpperInvariant()}{that?.Substring(1)}";
         }
     }
 }

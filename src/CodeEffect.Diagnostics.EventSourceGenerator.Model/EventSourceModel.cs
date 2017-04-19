@@ -8,6 +8,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public EventSourceModel()
         {
             Extensions = new List<ExtensionsMethodModel>();
+            Settings = new EventSourceSettings()
+            {
+                AutogenerateLoggerInterfaces = false,
+            };
         }
 
         public LoggerModel[] Loggers { get; set; }
@@ -19,6 +23,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string ClassName { get; set; }
 
         public string Name { get; set; }
+        public string ProviderName { get; set; }
 
         [JsonIgnore]
         public string SourceFilePath { get; set; }
@@ -35,10 +40,17 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 
         public EventModel[] Events { get; set; }
 
+        public EventSourceSettings Settings { get; set; }
 
         public override string ToString()
         {
             return $"{nameof(EventSourceModel)} {this.Name}";
         }
+
+        public class EventSourceSettings
+        {
+            public bool AutogenerateLoggerInterfaces { get; set; }
+        }
+
     }
 }

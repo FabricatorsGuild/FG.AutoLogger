@@ -32,12 +32,14 @@ namespace @@NAMESPACE_DECLARATION@@
         public const string Variable_EVENTSOURCE_NAMESPACE = @"@@EVENTSOURCE_NAMESPACE@@";
 
         public const string Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT = @"@@LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT@@";
-        public const string Template_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT_DELIMITER = @"
+        public const string Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT_DELIMITER = @"
 			";
         public const string Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION = @"@@LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION@@";
         public const string Template_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION_DELIMITER = @"
 		";
-        public const string Variable_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION = @"@@LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION@@";
+        public const string Variable_LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION = @"@@LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION@@";
+        public const string Variable_LOGGER_IMPLICIT_ARGUMENTS_METHOD_CONSTRUCTOR_DELIMITER = @",
+			";
         public const string Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER = @",
 			";
         public const string Variable_LOGGER_IMPLEMENTATION = @"@@LOGGER_IMPLEMENTATION@@";
@@ -47,16 +49,16 @@ namespace @@NAMESPACE_DECLARATION@@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
-using @@EVENTSOURCE_NAMESPACE@@;
+using @@NAMESPACE_DECLARATION@@;
 
-namespace @@NAMESPACE_DECLARATION@@
+namespace @@EVENTSOURCE_NAMESPACE@@
 {
 	internal sealed class @@LOGGER_CLASS_NAME@@ : @@LOGGER_NAME@@
 	{
 		@@LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION@@
 
 		public @@LOGGER_CLASS_NAME@@(
-			@@LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION@@)
+			@@LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION@@)
 		{
 			@@LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT@@
 		}
@@ -92,7 +94,6 @@ namespace @@NAMESPACE_DECLARATION@@
 			@@EVENT_METHOD_ARGUMENTS@@)
 		{
 			WriteEvent(
-				@@EVENT_NAME@@EventId,
 				@@WRITEEVENT_CALL_ARGUMENTS@@);
 		}";
 
@@ -216,7 +217,7 @@ namespace @@NAMESPACE_DECLARATION@@
         public const string Template_ARGUMENT_NAME = @"@@ARGUMENT_NAME@@";
 
         public const string Template_METHOD_ARGUMENT_DECLARATION = @"@@ARGUMENT_CLR_TYPE@@ @@ARGUMENT_NAME@@";
-        public const string Template_PRIVATE_MEMBER_DECLARATION = @"private @@ARGUMENT_CLR_TYPE@@ _@@ARGUMENT_NAME@@;";
+        public const string Template_PRIVATE_MEMBER_DECLARATION = @"private readonly @@ARGUMENT_CLR_TYPE@@ _@@ARGUMENT_NAME@@;";
         public const string Template_PRIVATE_MEMBER_ASSIGNMENT = @"_@@ARGUMENT_NAME@@ = @@ARGUMENT_NAME@@;";
 
         public const string Template_METHOD_CALL_PASSTHROUGH_ARGUMENT = @"@@ARGUMENT_NAME@@";

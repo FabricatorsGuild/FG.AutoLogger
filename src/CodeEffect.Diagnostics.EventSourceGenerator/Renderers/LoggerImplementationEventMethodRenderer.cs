@@ -9,6 +9,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 {
     public class LoggerImplementationEventMethodRenderer : BaseWithLogging, ILoggerImplementationEventRenderer
     {
+        public string RenderMethodArgument(EventArgumentModel model)
+        {
+            var output = Template.Template_METHOD_ARGUMENT_DECLARATION;
+            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
+            output = output.Replace(Template.Template_ARGUMENT_CLR_TYPE, model.CLRType);
+
+            return output;
+        }
+
         public string Render(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventModel model)
         {
             if (loggerProjectItem.ItemType != ProjectItemType.LoggerImplementation)
@@ -35,17 +44,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             output = output.Replace(Template.Variable_LOGGER_METHOD_NAME, model.Name);
             output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
 
-            var methodArguments = new EventArgumentsListBuilder("", Template.Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER, "");
-            var eventArgumentRenderers = new ILoggerImplementationEventArgumentRenderer[]
-            {
-                new LoggerImplementationEventMethodArgumentRenderer(), 
-            }.Union(project.GetExtensions<ILoggerImplementationEventArgumentRenderer>()).ToArray();
+            var methodArguments = new EventArgumentsListBuilder(
+                RenderMethodArgument, Template.Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER);
             foreach (var argument in model.GetAllNonImplicitArguments())
             {
-                foreach (var renderer in eventArgumentRenderers)
-                {
-                    methodArguments.Append(renderer.Render(project, loggerProjectItem, model, argument));
-                }                
+                methodArguments.Append(argument);
             }
             output = output.Replace(Template.Variable_LOGGER_METHOD_ARGUMENTS, methodArguments.ToString());
 
