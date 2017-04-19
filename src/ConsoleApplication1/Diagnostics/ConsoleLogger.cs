@@ -28,6 +28,12 @@ namespace ConsoleApplication1.Diagnostics
 				_machineName, 
 				message
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: SayHello");
+           
+            System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+            System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+            System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
     
 		}
 
@@ -40,6 +46,12 @@ namespace ConsoleApplication1.Diagnostics
 				_machineName, 
 				message
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: Message");
+           
+            System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+            System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+            System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
     
 		}
 
@@ -52,6 +64,15 @@ namespace ConsoleApplication1.Diagnostics
 				_machineName, 
 				exception
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: Error");
+           
+            System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+            System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+            System.Diagnostics.Debug.WriteLine($"\texception.Message:\t{exception.Message}");
+            System.Diagnostics.Debug.WriteLine($"\texception.Source:\t{exception.Source}");
+            System.Diagnostics.Debug.WriteLine($"\texception.GetType().FullName:\t{exception.GetType().FullName}");
+            System.Diagnostics.Debug.WriteLine($"\texception.AsJson():\t{exception.AsJson()}");
     
 		}
 
@@ -66,6 +87,13 @@ namespace ConsoleApplication1.Diagnostics
 				goodbye, 
 				nightTime
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: SayGoodbye");
+           
+            System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+            System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+            System.Diagnostics.Debug.WriteLine($"\tgoodbye:\t{goodbye}");
+            System.Diagnostics.Debug.WriteLine($"\tnightTime.ToString():\t{nightTime.ToString()}");
     
 		}
 
@@ -78,6 +106,12 @@ namespace ConsoleApplication1.Diagnostics
 				_machineName, 
 				special
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: Special");
+           
+            System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+            System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+            System.Diagnostics.Debug.WriteLine($"\tspecial.ToString():\t{special.ToString()}");
     
 		}
 
