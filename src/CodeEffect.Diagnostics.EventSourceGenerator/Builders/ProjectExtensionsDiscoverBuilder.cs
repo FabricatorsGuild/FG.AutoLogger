@@ -21,7 +21,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             LogMessage($"Scanning {files.Length} project file{(files.Length == 1 ? "" : "s")} for extensions");
             var builderExtensions = new List<IExtension>();
-            //var loggerFiles = files.Where(projectFile => projectFile.Matches(@"(^|\\)I[^\\]*Logger.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false));
             var extensionFiles = files.OfType(ProjectItemType.BuilderExtension);
             var referenceFiles = files.OfType(ProjectItemType.Reference).ToArray();
             foreach (var file in extensionFiles)
@@ -67,7 +66,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 parameters.GenerateExecutable = false;
                 parameters.GenerateInMemory = true;
 
-                parameters.IncludeDebugInformation = false;
+                parameters.IncludeDebugInformation = true;
                 var cSharpCodeProvider = new CSharpCodeProvider();
                 //var cSharpCodeProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
 

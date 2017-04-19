@@ -1,4 +1,5 @@
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
-    public interface IBuilder { }
+    public interface IBuilder : IExtension
+    { }
 }

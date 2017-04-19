@@ -23,6 +23,9 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.RunnerCreated(
 				
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: RunnerCreated");
+           
     
 		}
 
@@ -33,6 +36,9 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.RunnerDestroyed(
 				
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: RunnerDestroyed");
+           
     
 		}
 
@@ -43,6 +49,9 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.WaitingForKeyPress(
 				
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: WaitingForKeyPress");
+           
     
 		}
 
@@ -53,6 +62,10 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.KeyPressed(
 				key
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: KeyPressed");
+           
+            System.Diagnostics.Debug.WriteLine($"\tkey.ToString():\t{key.ToString()}");
     
 		}
 
@@ -63,6 +76,13 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.UnsupportedKeyError(
 				ex
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: UnsupportedKeyError");
+           
+            System.Diagnostics.Debug.WriteLine($"\tex.Message:\t{ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"\tex.Source:\t{ex.Source}");
+            System.Diagnostics.Debug.WriteLine($"\tex.GetType().FullName:\t{ex.GetType().FullName}");
+            System.Diagnostics.Debug.WriteLine($"\tex.AsJson():\t{ex.AsJson()}");
     
 		}
 
@@ -73,6 +93,9 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.StartLoop(
 				
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: StartLoop");
+           
     
 		}
 
@@ -83,6 +106,9 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.StopLoop(
 				
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: StopLoop");
+           
     
 		}
 
@@ -93,6 +119,10 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.RandomIntsGenerated(
 				values
 			);
+
+            System.Diagnostics.Debug.WriteLine($"[] ERR: RandomIntsGenerated");
+           
+            System.Diagnostics.Debug.WriteLine($"\tvalues.ToString():\t{values.ToString()}");
     
 		}
 
