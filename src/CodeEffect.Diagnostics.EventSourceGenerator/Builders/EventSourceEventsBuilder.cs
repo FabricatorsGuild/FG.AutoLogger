@@ -1,4 +1,5 @@
-﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+﻿using System.Linq;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
@@ -14,16 +15,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            // TODO: Get all builders from project and allow all to build
             var eventBuilders = new IEventBuilder[]
             {
                 new EventIdBuilder(),
-                new EventImplicitArgumentsBuilder(), 
-                new EventTemplatedArgumentsBuilder(), 
-                new EventArgumentsBuilder(), 
-                new EventMessageFormatterBuilder(), 
-                new EventArgumentsComplexityCheckBuilder(), 
-            };
+                new EventImplicitArgumentsBuilder(),
+                new EventTemplatedArgumentsBuilder(),
+                new EventArgumentsBuilder(),
+                new EventMessageFormatterBuilder(),
+                new EventArgumentsComplexityCheckBuilder(),
+            }.Union(project.GetExtensions<IEventBuilder>()).ToArray();
 
             foreach (var evt in eventSource?.Events ?? new EventModel[0])
             {

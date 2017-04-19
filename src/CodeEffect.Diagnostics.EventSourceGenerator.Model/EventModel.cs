@@ -8,8 +8,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
     public class EventModel
     {
-        private readonly HashSet<string> _implicitArgumentsAdded = new HashSet<string>();
-
         public int? Id { get; set; }
         public string Name { get; set; }
         public EventArgumentModel[] Arguments { get; set; }
@@ -19,15 +17,27 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         [JsonIgnore]
         public bool HasComplexArguments { get; set; }
         public EventArgumentModel[] ImplicitArguments { get; set; }
+
         public void InsertImplicitArguments(EventArgumentModel[] implicitArguments)
         {
-            var hash = implicitArguments.Aggregate("", (a, i) => $"{a}{i.Name}");
-            if (_implicitArgumentsAdded.Contains(hash)) return;
-
-            this.ImplicitArguments = implicitArguments.ToArray();
-
-            _implicitArgumentsAdded.Add(hash);
+            this.ImplicitArguments = new EventArgumentModel[implicitArguments.Length];
+            var index = 0;
+            foreach (var argument in implicitArguments)
+            {
+                this.ImplicitArguments[index] = new EventArgumentModel(
+                    name: argument.Name,
+                    type: argument.Type,
+                    assignment: argument.Assignment)
+                {
+                    AssignedCLRType = argument.AssignedCLRType,
+                    CLRType = argument.CLRType,
+                    IsImplicit = true,
+                    IsOverriden = false
+                };
+                index++;
+            }
         }
+
         public void OverrideArguments(EventArgumentModel[] overrideArguments)
         {
             var index = 0;

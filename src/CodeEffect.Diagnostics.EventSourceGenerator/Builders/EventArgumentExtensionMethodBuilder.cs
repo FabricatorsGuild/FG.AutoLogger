@@ -16,6 +16,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             }
 
             AddKnownExtensions(eventSource, model);
+
+            if (model.TypeTemplate != null)
+            {
+            }
         }
 
         private static void AddKnownExtension(EventSourceModel eventSource, string extensionName, string clrType)
@@ -26,8 +30,19 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             }
         }
 
+
+
         public static void AddKnownExtensions(EventSourceModel eventSource, EventArgumentModel argument)
         {
+            if (argument.TypeTemplate != null)
+            {
+                foreach (var templateArgument in argument.TypeTemplate.Arguments)
+                {
+                    AddKnownExtensions(eventSource, templateArgument);
+                }
+            }
+
+            if (argument.Assignment == null) return;
             var templateCLRType = argument.AssignedCLRType;
 
             if (argument.Assignment.Contains("$this.AsJson()"))

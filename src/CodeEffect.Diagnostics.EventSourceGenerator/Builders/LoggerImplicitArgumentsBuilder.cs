@@ -24,7 +24,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
             foreach (var argument in model?.ImplicitArguments ?? new EventArgumentModel[0])
             {
-                argument.IsImplicit = true;
                 foreach (var eventArgumentBuilder in eventArgumentBuilders)
                 {
                     eventArgumentBuilder.Build(project, eventSourceProjectItem, argument);

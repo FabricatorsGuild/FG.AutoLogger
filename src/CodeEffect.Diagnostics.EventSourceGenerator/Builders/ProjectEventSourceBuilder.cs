@@ -76,14 +76,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
         private void BuildEventSource(Project project, ProjectItem<EventSourceModel> eventSourceDefinitionProjectItem)
         {
-            // TODO: Get all builders from project and allow all to build
             var eventSourceBuilders = new IEventSourceBuilder[]
             {
                 new EventSourceKeywordBuilder(),
                 new EventSourceLoggersBuilder(),
                 new EventSourceEventsBuilder(),
                 new EventSourceExtensionsMethodsBuilder(),
-            };
+            }.Union(project.GetExtensions<IEventSourceBuilder>()).ToArray();
             foreach (var builder in eventSourceBuilders)
             {
                 builder.Build(project, eventSourceDefinitionProjectItem);

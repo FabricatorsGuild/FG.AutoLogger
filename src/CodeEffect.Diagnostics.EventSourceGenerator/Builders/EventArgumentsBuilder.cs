@@ -17,7 +17,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             var eventArgumentBuilders = new IEventArgumentBuilder[]
             {
-                new EventArgumentBuilder()
+                new EventArgumentBuilder(),
+                new EventArgumentExtensionMethodBuilder(), 
             }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
             foreach (var argument in model.Arguments ?? new EventArgumentModel[0])
             {

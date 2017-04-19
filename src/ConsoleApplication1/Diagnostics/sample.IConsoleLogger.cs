@@ -5,7 +5,6 @@
 using System;
 using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
-using ConsoleApplication1.Loggers;
 
 namespace ConsoleApplication1.Diagnostics
 {
@@ -71,7 +70,7 @@ namespace ConsoleApplication1.Diagnostics
 					exception.Message, 
 					exception.Source, 
 					exception.GetType().FullName, 
-					exception.ToString());
+					exception.AsJson());
 			}
 		}
 
@@ -108,7 +107,7 @@ namespace ConsoleApplication1.Diagnostics
 		[NonEvent]
 		public void Special(
 			int processId, 
-			Special special)
+			string special)
 		{
 			if (this.IsEnabled())
 			{

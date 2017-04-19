@@ -48,5 +48,9 @@ namespace ConsoleApplication1.Diagnostics
 	}
 
 
+	internal static class sampleHelpers
+	{
+
+	}
 
 }

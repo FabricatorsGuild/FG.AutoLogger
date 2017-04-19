@@ -31,7 +31,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     {
                         type = renderedType;
                     }
-                }    
+
+                }
+                else
+                {
+                    model.AssignedCLRType = "string";
+                    model.Assignment = "$this.ToString()";
+                }  
             }
             model.CLRType = type;
         }
