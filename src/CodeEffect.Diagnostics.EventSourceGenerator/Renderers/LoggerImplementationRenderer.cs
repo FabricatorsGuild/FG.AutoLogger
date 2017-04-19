@@ -62,6 +62,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             output = output.Replace(Template.Variable_NAMESPACE_DECLARATION, loggerModel.LoggerNamespace);
             output = output.Replace(Template.Variable_LOGGER_NAME, loggerModel.Name);
             output = output.Replace(Template.Variable_LOGGER_CLASS_NAME, loggerModel.ClassName);
+            output = output.Replace(Template.Variable_EVENTSOURCE_NAMESPACE, eventSourceModel.Namespace);
 
             var memberDeclarations = new EventArgumentsListBuilder(
                 RenderPrivateDeclaration, Template.Template_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION_DELIMITER);

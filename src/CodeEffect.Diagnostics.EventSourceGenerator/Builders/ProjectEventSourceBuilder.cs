@@ -23,19 +23,23 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
         private void LoadAndBuildEventSource(Project project, ProjectItem<EventSourceModel> eventSourceDefinitionProjectItem)
         {
-            var eventSourceModel = eventSourceDefinitionProjectItem.Content;            
+            var eventSourceModel = eventSourceDefinitionProjectItem.Content;
+            var sourceFileName = System.IO.Path.GetFileName(eventSourceDefinitionProjectItem.Name);
+            var name = System.IO.Path.GetFileNameWithoutExtension(eventSourceDefinitionProjectItem.Name);
+            var implementationFileName = $"{name}.cs";
+
+            var fileRelativePath = eventSourceDefinitionProjectItem.Name
+                .RemoveFromStart(project.ProjectBasePath + System.IO.Path.DirectorySeparatorChar)
+                .Replace(sourceFileName, implementationFileName);
+
+            var fileRelateiveFolderPath = System.IO.Path.GetDirectoryName(fileRelativePath);
+
+            var eventSourceNamespace = fileRelateiveFolderPath.Length > 0
+                   ? $"{eventSourceDefinitionProjectItem.RootNamespace}.{fileRelateiveFolderPath.Replace(System.IO.Path.DirectorySeparatorChar, '.')}"
+                   : eventSourceDefinitionProjectItem.RootNamespace;
+
             if (eventSourceModel == null)
             {
-                var sourceFileName = System.IO.Path.GetFileName(eventSourceDefinitionProjectItem.Name);
-                var implementationFileName = $"{System.IO.Path.GetFileNameWithoutExtension(eventSourceDefinitionProjectItem.Name)}.cs";
-                var fileRelativePath = eventSourceDefinitionProjectItem.Name
-                    .RemoveFromStart(project.ProjectBasePath + System.IO.Path.DirectorySeparatorChar)
-                    .Replace(sourceFileName, implementationFileName);
-
-                var fileRelateiveFolderPath = System.IO.Path.GetDirectoryName(fileRelativePath);
-                var eventSourceNamespace = fileRelateiveFolderPath.Length > 0
-                    ? $"{eventSourceDefinitionProjectItem.RootNamespace}.{fileRelateiveFolderPath.Replace(System.IO.Path.DirectorySeparatorChar, '.')}"
-                    : eventSourceDefinitionProjectItem.RootNamespace;
 
                 var content = System.IO.File.ReadAllText(eventSourceDefinitionProjectItem.Name);
 
@@ -46,20 +50,21 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     Converters = converters
                 });
 
-                var fileName = System.IO.Path.GetFileName(eventSourceDefinitionProjectItem.Name);
-                var className = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-                eventSourceModel.ClassName = className;
                 eventSourceModel.Include = fileRelativePath;
-                eventSourceModel.SourceFilePath = eventSourceDefinitionProjectItem.Include;
-                eventSourceModel.Namespace = eventSourceNamespace;
             }
+
+            eventSourceModel.Namespace = eventSourceModel.Namespace ?? eventSourceNamespace;
+            eventSourceModel.ClassName = name;
+            eventSourceModel.SourceFilePath = eventSourceDefinitionProjectItem.Include;
+
+            var filePath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(eventSourceDefinitionProjectItem.Name), implementationFileName);
+
             eventSourceDefinitionProjectItem.Content = eventSourceModel;
             BuildEventSource(project, eventSourceDefinitionProjectItem);
 
             var newProjectItem = new ProjectItem<EventSourceModel>(
                 type: ProjectItemType.EventSource,
-                name: eventSourceModel.Include,
+                name: filePath,
                 content: eventSourceModel,
                 include: eventSourceModel.Include)
             {

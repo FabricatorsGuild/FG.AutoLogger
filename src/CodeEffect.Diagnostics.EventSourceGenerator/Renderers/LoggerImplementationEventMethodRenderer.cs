@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
@@ -34,7 +35,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             output = output.Replace(Template.Variable_LOGGER_METHOD_NAME, model.Name);
             output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
 
-            var methodArguments = new StringBuilder();
+            var methodArguments = new EventArgumentsListBuilder("", Template.Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER, "");
             var eventArgumentRenderers = new ILoggerImplementationEventArgumentRenderer[]
             {
                 new LoggerImplementationEventMethodArgumentRenderer(), 

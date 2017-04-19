@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApplication1
+namespace ConsoleApplication1.Loggers
 {
     public interface IConsoleLogger
     {
@@ -8,5 +8,14 @@ namespace ConsoleApplication1
         void Message(string message);
         void Error(Exception exception);
         void SayGoodbye(string goodbye, DateTime nightTime);
+
+        void Special(Special special);
+    }
+
+    public class Special
+    {
+        public int A { get; set; }
+        public string B { get; set; }
+        public DateTime C { get; set; }
     }
 }

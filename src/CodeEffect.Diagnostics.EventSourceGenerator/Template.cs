@@ -29,6 +29,7 @@ namespace @@NAMESPACE_DECLARATION@@
         public const string Variable_LOGGER_SOURCE_FILE_NAME = @"@@LOGGER_SOURCE_FILE_NAME@@";
         public const string Variable_LOGGER_NAME = @"@@LOGGER_NAME@@";
         public const string Variable_LOGGER_CLASS_NAME = @"@@LOGGER_CLASS_NAME@@";
+        public const string Variable_EVENTSOURCE_NAMESPACE = @"@@EVENTSOURCE_NAMESPACE@@";
 
         public const string Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT = @"@@LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT@@";
         public const string Template_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT_DELIMITER = @"
@@ -46,6 +47,7 @@ namespace @@NAMESPACE_DECLARATION@@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using @@EVENTSOURCE_NAMESPACE@@;
 
 namespace @@NAMESPACE_DECLARATION@@
 {
@@ -124,7 +126,8 @@ namespace @@NAMESPACE_DECLARATION@@
 
         public const string Template_LOGGER_METHOD_CALL_EVENTSOURCE_EVENT = @"			@@EVENTSOURCE_CLASS_NAME@@.Current.@@LOGGER_METHOD_NAME@@(
 				@@LOGGER_METHOD_IMPLEMENTATION_CALL_ARGUMENTS@@
-			);";
+			);
+";
         public const string Template_LOGGER_CALL_ARGUMENTS_DELIMITER = @", 
 				";
 
@@ -208,7 +211,6 @@ namespace @@NAMESPACE_DECLARATION@@
 
     public partial class Template
     {
-
         // ReSharper disable InconsistentNaming
         public const string Template_ARGUMENT_CLR_TYPE = @"@@ARGUMENT_CLR_TYPE@@";
         public const string Template_ARGUMENT_NAME = @"@@ARGUMENT_NAME@@";
@@ -220,6 +222,79 @@ namespace @@NAMESPACE_DECLARATION@@
         public const string Template_METHOD_CALL_PASSTHROUGH_ARGUMENT = @"@@ARGUMENT_NAME@@";
         public const string Template_METHOD_CALL_PRIVATE_MEMBER_ARGUMENT = @"_@@ARGUMENT_NAME@@";
         // ReSharper restore InconsistentNaming
+    }
 
+    public partial class Template
+    {
+        // ReSharper disable InconsistentNaming
+        public const string Template_KEYWORD = @"			public const EventKeywords @@KEYWORD_NAME@@ = (EventKeywords)0x@@KEYWORD_INDEX@@L;";
+        public const string Template_KEYWORD_NAME = @"@@KEYWORD_NAME@@";
+        public const string Template_KEYWORD_INDEX = @"@@KEYWORD_INDEX@@";
+        // ReSharper restore InconsistentNaming
+    }
+
+    public partial class Template
+    {
+        // ReSharper disable InconsistentNaming
+        public const string Template_EXTENSION_CLRTYPE = @"@@EXTENSION_CLRTYPE@@";
+
+        public const string Template_EXTENSION_ASJSON_DECLARATION = @"
+            public static string AsJson(this @@EXTENSION_CLRTYPE@@ that)
+            {
+                return Newtonsoft.Json.JsonConvert.SerializeObject(that);
+            }
+";
+
+        public const string Template_EXTENSION_GETREPLICAORINSTANCEID_DECLARATION = @"
+            public static long GetReplicaOrInstanceId(this System.Fabric.ServiceContext context)
+            {
+                var stateless = context as System.Fabric.StatelessServiceContext;
+                if (stateless != null)
+                {
+                    return stateless.InstanceId;
+                }
+
+                var stateful = context as System.Fabric.StatefulServiceContext;
+                if (stateful != null)
+                {
+                    return stateful.ReplicaId;
+                }
+
+                throw new NotSupportedException(""Context type not supported."");
+            }
+";
+
+        public const string Template_EXTENSION_GETCONTENTDIGEST_DECLARATION = @"
+            public static long GetContentDigest(this string content)
+            {
+                var contentDigest = """";
+                try
+                {
+    				var hash = content.GetMD5Hash();
+                    var length = content?.Length ?? 0;
+                    contentDigest = $""{content?.Substring(0, 30)?.Replace(""\r"", """")?.Replace(""\n"", """")}... ({length}) [{hash}]"";
+                }
+                catch (Exception ex)
+                {
+                    contentDigest = $""Failed to generate digest {ex.Message}"";
+                }
+                return contentDigest;
+            }
+";
+
+        public const string Template_EXTENSION_GETMD5HASH_DECLARATION = @"
+		    public static string GetMD5Hash(this string input)
+		    {
+			    var md5Hasher = MD5.Create();
+			    var data = md5Hasher?.ComputeHash(Encoding.UTF8.GetBytes(input));
+			    var hexStringBuilder = new StringBuilder();
+			    for (var i = 0; i < (data?.Length); i++)
+			    {
+				    hexStringBuilder.Append(data[i].ToString(""x2""));
+			    }
+			    return hexStringBuilder.ToString();
+		    }
+";
+        // ReSharper restore InconsistentNaming
     }
 }

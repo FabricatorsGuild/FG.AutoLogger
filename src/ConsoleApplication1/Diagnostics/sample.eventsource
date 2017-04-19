@@ -1,5 +1,4 @@
 {
-  "Namespace": "CodeEffect.Diagnostics.EventSourceGenerator",
   "Name": "CE-CodeEffect.Diagnostics.EventSourceGenerator",
   "Settings": {
     "AutogenerateLoggerInterfaces": "true"

@@ -4,27 +4,23 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class LoggerImplicitArgumentsBuilder : BaseWithLogging, ILoggerBuilder
+    public class LoggerEventArgumentsBuilder : BaseWithLogging, ILoggerEventBuilder
     {
-        public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel model)
+        public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel loggerModel, EventModel model)
         {
-            var eventSource = eventSourceProjectItem.Content;
-            if (eventSource == null)
+            var eventSourceModel = eventSourceProjectItem.Content;
+            if (eventSourceModel == null)
             {
                 LogError($"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
                 return;
             }
 
-            if (model == null) return;
-
             var eventArgumentBuilders = new IEventArgumentBuilder[]
             {
-                new EventArgumentBuilder(),
-                new EventArgumentExtensionMethodBuilder(), 
+                new EventArgumentBuilder()
             }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
-            foreach (var argument in model?.ImplicitArguments ?? new EventArgumentModel[0])
+            foreach (var argument in model.Arguments ?? new EventArgumentModel[0])
             {
-                argument.IsImplicit = true;
                 foreach (var eventArgumentBuilder in eventArgumentBuilders)
                 {
                     eventArgumentBuilder.Build(project, eventSourceProjectItem, argument);

@@ -1,4 +1,5 @@
-﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+﻿using System.Linq;
+using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
@@ -15,11 +16,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            // TODO: Get ALL builders from project and allow them to 'build'
-            var eventArgumentBuilders = new[]
+            var eventArgumentBuilders = new IEventArgumentBuilder[]
             {
-                new EventArgumentBuilder()
-            };
+                new EventArgumentBuilder(),
+                new EventArgumentExtensionMethodBuilder(),
+            }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
             foreach (var argument in model?.OverrideArguments?? new EventArgumentModel[0])
             {
                 argument.IsOverriden = true;

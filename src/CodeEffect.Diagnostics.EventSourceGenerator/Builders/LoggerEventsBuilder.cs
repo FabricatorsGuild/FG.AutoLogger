@@ -21,6 +21,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 new LoggerEventIdBuilder(),
                 new LoggerEventImplicitArgumentsBuilder(),                 
                 new LoggerEventOverrideArgumentsBuilder(), 
+                new LoggerEventArgumentsBuilder(), 
                 new LoggerEventMessageFormatterBuilder(),
                 new LoggerEventTemplatedArgumentsBuilder(), 
                 new LoggerEventArgumentsComplexityCheckBuilder(),

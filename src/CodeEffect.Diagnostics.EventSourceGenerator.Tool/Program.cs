@@ -17,7 +17,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
             {
                 LogMessage("Enter arguments for program:");
                 var line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line)) line = "-o";
+                if (string.IsNullOrWhiteSpace(line)) line = "-o -s";
                 args = line.Split(' ');
             }
 
@@ -53,7 +53,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                 projectEventSourceGenerator.SetLogWarning(w => LogMessage(w, EventLevel.Warning));
                 projectEventSourceGenerator.SetLogError(e => LogMessage(e, EventLevel.Error));
 
-                var project = projectEventSourceGenerator.Run(projectFilePath);
+                var project = projectEventSourceGenerator.Run(projectFilePath, t.SaveChanges);
 
                 if (t.DisplayOutput)
                 {
@@ -61,9 +61,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                         ProjectItemType.EventSource, 
                         ProjectItemType.DefaultGeneratedEventSourceDefinition,
                         ProjectItemType.EventSourceLoggerPartial,
-                        ProjectItemType.LoggerImplementation,
-                        ProjectItemType.EventSourceDefinition,
-                        ProjectItemType.Unknown))
+                        ProjectItemType.LoggerImplementation))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"{"".PadRight(40, '_')}");

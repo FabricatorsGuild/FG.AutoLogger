@@ -8,7 +8,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 {
     public class ProjectEventSourceGenerator : BaseWithLogging
     {
-        public Project Run(string projectBasePath)
+        public Project Run(string projectBasePath, bool saveChanges = false)
         {
 
             var project = new Project() { ProjectFilePath = projectBasePath };
@@ -37,9 +37,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             var renderers = new IProjectRenderer[]
             {
                 new ProjectDefaultEventSourceDefinitionRenderer(),
-                new ProjectEventSourceRenderer(), 
+                new ProjectEventSourceRenderer(),
                 new ProjectLoggerRenderer(),
-                new ProjectRenderer(),
+                new ProjectRenderer() {SaveChanges = saveChanges},
+                new ProjectFilesRenderer() {SaveChanges = saveChanges}
             };
             foreach (var renderer in renderers.Union(project.GetExtensions<IProjectRenderer>()))
             {

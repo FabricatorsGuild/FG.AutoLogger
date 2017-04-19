@@ -20,6 +20,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 new EventIdBuilder(),
                 new EventImplicitArgumentsBuilder(), 
                 new EventTemplatedArgumentsBuilder(), 
+                new EventArgumentsBuilder(), 
                 new EventMessageFormatterBuilder(), 
                 new EventArgumentsComplexityCheckBuilder(), 
             };

@@ -44,8 +44,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             var keywords = new StringBuilder();
             var keywordsRenderers = new IKeywordRenderer[]
             {
-                // TODO: Define event renderers
-            };
+                new EventSourceKeywordRenderer(),
+            }.Union(project.GetExtensions<IKeywordRenderer>()).ToArray();
             foreach (var keyword in eventSourceModel.Keywords ?? new KeywordModel[0])
             {
                 foreach (var renderer in keywordsRenderers.Union(project.GetExtensions<IKeywordRenderer>()))
@@ -62,8 +62,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 var extensions = new StringBuilder();
                 var extensionRenderers = new IExtensionsMethodRenderer[]
                 {
-                    // TODO: Define event renderers
-                };
+                    new EventSourceExtensionMethodRenderer(), 
+                }.Union(project.GetExtensions<IExtensionsMethodRenderer>()).ToArray();
                 foreach (var extension in eventSourceModel.Extensions)
                 {
                     foreach (var renderer in extensionRenderers.Union(project.GetExtensions<IExtensionsMethodRenderer>()))

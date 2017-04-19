@@ -33,6 +33,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
             }
             this.Events = events.ToArray();
             this.Include = loggerTemplate.Include;
+            this.Keyword = loggerTemplate.Name.Substring(1).Replace("Logger", "");
         }
     }
 }

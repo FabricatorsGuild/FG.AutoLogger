@@ -15,5 +15,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
         [Option('o', "output", Default = false,
             HelpText = "Prints out all generated output.")]
         public bool DisplayOutput { get; set; }
+
+
+        [Option('s', "save", Default = false,
+            HelpText = "Save all changes")]
+        public bool SaveChanges { get; set; }
+
     }
 }

@@ -20,6 +20,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             {
                 new LoggerTemplateBuilder(),
                 new LoggerKeywordsBuilder(),
+                
                 new LoggerImplicitArgumentsBuilder(),
                 new LoggerOverrideArgumentsBuilder(), 
                 new LoggerEventsBuilder(),
@@ -30,6 +31,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             foreach (var logger in eventSource.Loggers)
             {
                 logger.StartId = logger.StartId ?? loggerStartId;
+                
                 logger.EventSource = eventSource;
 
                 foreach (var builder in loggerBuilders)

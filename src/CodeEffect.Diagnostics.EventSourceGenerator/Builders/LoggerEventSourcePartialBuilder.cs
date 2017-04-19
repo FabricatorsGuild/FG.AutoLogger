@@ -18,7 +18,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             var eventSourcePartialFileInclude = eventSource.Include.Replace(eventSource.ClassName, $"{eventSource.ClassName}.{model.Name}");
             var eventSourcePartialFileName = System.IO.Path.Combine(project.ProjectBasePath, eventSourcePartialFileInclude);
-            model.SourceFileName = model.Name.Substring(1);
+            model.SourceFileName = model.Name.Substring(1);            
 
             var newProjectItem = new ProjectItem<LoggerModel>(
                 type: ProjectItemType.EventSourceLoggerPartial,

@@ -1,3 +1,4 @@
+using System.Text;
 using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 

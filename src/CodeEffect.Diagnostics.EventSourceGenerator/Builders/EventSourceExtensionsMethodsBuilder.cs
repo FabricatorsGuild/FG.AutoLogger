@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
@@ -17,13 +19,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             var extensionMethodBuilders = new IExtensionsMethodBuilder[]
             {
+            }.Union(project.GetExtensions<IExtensionsMethodBuilder>()).ToArray();
 
-            };
-            foreach (var extension in eventSource.Extensions ?? new List<ExtensionsMethodModel>())
+            foreach (var extension in (IEnumerable<ExtensionsMethodModel>) eventSource.Extensions ?? new ExtensionsMethodModel[0])
             {
-                foreach (var extensionMethodBuilder in extensionMethodBuilders)
+                foreach (var builder in extensionMethodBuilders)
                 {
-                    extensionMethodBuilder.Build(project, model, extension);
+                    builder.Build(project, model, extension);
                 }
             }
         }

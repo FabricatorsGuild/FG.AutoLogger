@@ -48,11 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\EventArgumentExtensionMethodBuilder.cs" />
+    <Compile Include="Builders\EventArgumentsBuilder.cs" />
     <Compile Include="Builders\EventArgumentsComplexityCheckBuilder.cs" />
     <Compile Include="Builders\EventArgumentsComplexityCheckBuilderBase.cs" />
     <Compile Include="Builders\EventMessageFormatterBuilderBase.cs" />
     <Compile Include="Builders\EventTemplatedArgumentsBuilder.cs" />
     <Compile Include="Builders\EventTemplatedArgumentsBuilderBase.cs" />
+    <Compile Include="Builders\LoggerEventArgumentsBuilder.cs" />
     <Compile Include="Builders\LoggerEventArgumentsComplexityCheckBuilder.cs" />
     <Compile Include="Builders\LoggerEventIdBuilder.cs" />
     <Compile Include="Builders\LoggerEventImplicitArgumentsBuilder.cs" />
@@ -62,6 +65,8 @@
     <Compile Include="Renderers\EventMethodBaseRenderer.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderBase.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderer.cs" />
+    <Compile Include="Renderers\EventSourceExtensionMethodRenderer.cs" />
+    <Compile Include="Renderers\EventSourceKeywordRenderer.cs" />
     <Compile Include="Renderers\LoggerEventSourcePartialRenderer.cs" />
     <Compile Include="Renderers\EventSourceNonEventMethodBaseRenderer.cs" />
     <Compile Include="Renderers\EventSourceRenderer.cs" />
@@ -74,6 +79,7 @@
     <Compile Include="Renderers\LoggerImplementationRenderer.cs" />
     <Compile Include="Renderers\ProjectDefaultEventSourceDefinitionRenderer.cs" />
     <Compile Include="Renderers\ProjectEventSourceRenderer.cs" />
+    <Compile Include="Renderers\ProjectFilesRenderer.cs" />
     <Compile Include="Renderers\ProjectLoggerRenderer.cs" />
     <Compile Include="Renderers\ProjectRenderer.cs" />
     <Compile Include="Template.cs" />
