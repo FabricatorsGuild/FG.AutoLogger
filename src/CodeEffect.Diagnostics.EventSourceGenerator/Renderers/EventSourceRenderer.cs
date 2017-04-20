@@ -18,7 +18,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 
             var output = Template.Template_EVENTSOURCE_CLASS_DECLARATION;
             output = output.Replace(Template.Variable_SOURCE_FILE_NAME, eventSourceModel.SourceFilePath);
-            output = output.Replace(Template.Variable_EVENTSOURCE_NAME, eventSourceModel.Name);
+            output = output.Replace(Template.Variable_EVENTSOURCE_NAME, eventSourceModel.ProviderName);
             output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
             output = output.Replace(Template.Variable_NAMESPACE_DECLARATION, eventSourceModel.Namespace);
 
