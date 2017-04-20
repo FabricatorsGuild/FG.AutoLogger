@@ -1,9 +1,10 @@
+using System;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class EventTemplatedArgumentsBuilder : BaseWithLogging, IEventBuilder, ILoggerEventBuilder
+    public class EventImplicitKeywordBuilder : BaseWithLogging, ILoggerEventBuilder, IEventBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventModel model)
         {
@@ -14,31 +15,22 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            Build(eventSource, model);
+            if ((model.Name.Matches(@"*Error*", StringComparison.InvariantCultureIgnoreCase))
+                || (model.Name.Matches(@"*Exception*", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                var errorKeyword = eventSource.GetKeyword("Error");
+                if (errorKeyword == null)
+                {
+                    eventSource.AddKeyword("Error");
+                }
+
+                model.Keywords = model.Keywords.Add(errorKeyword);
+            }            
         }
 
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel logger, EventModel model)
         {
             Build(project, eventSourceProjectItem, model);
-        }
-
-        private void Build(EventSourceModel eventSource, EventModel model)
-        {
-            if (eventSource == null)
-            {
-                LogError($"{nameof(eventSource)} should not be null");
-                return;
-            }
-
-            foreach (var argument in model.GetAllArguments())
-            {
-                var template = eventSource.TypeTemplates.GetTypeTemplate(argument.Type);
-                if (template != null)
-                {
-                    argument.TypeTemplate = template;
-                }
-            }
-
         }
     }
 }
