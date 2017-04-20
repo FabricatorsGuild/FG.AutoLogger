@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication1.Diagnostics
 {
-	[EventSource(Name = "sample")]
+	[EventSource(Name = "CE-CodeEffect.Diagnostics.EventSourceGenerator-sample")]
 	internal sealed partial class Sample : EventSource
 	{
 		public static readonly Sample Current = new Sample();

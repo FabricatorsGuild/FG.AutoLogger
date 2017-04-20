@@ -1,5 +1,5 @@
 {
-  "ProviderName": "CE-CodeEffect.Diagnostics.EventSourceGenerator",
+  "ProviderName": "CE-CodeEffect.Diagnostics.EventSourceGenerator-sample",
   "Settings": {
     "AutogenerateLoggerInterfaces": "true"
   },
