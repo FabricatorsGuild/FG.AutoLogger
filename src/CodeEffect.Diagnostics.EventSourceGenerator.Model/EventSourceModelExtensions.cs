@@ -16,7 +16,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
             return that.Keywords.GetKeyword(keywordName);
         }
 
-        public static void AddKeyword(this EventSourceModel that, string keywordName)
+        public static KeywordModel AddKeyword(this EventSourceModel that, string keywordName)
         {
             var maxKeywordValue = that.Keywords.Max(k => k.Value) ?? 0;
             var newKeyword = new KeywordModel()
@@ -26,6 +26,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
             };
             var keywords = new List<KeywordModel>(that.Keywords) {newKeyword};
             that.Keywords = that.Keywords.Add(newKeyword);
+
+            return newKeyword;
         }
 
         private static T[] Add<T>(this T[] that, T item)

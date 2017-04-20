@@ -18,11 +18,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             if ((model.Name.Matches(@"*Error*", StringComparison.InvariantCultureIgnoreCase))
                 || (model.Name.Matches(@"*Exception*", StringComparison.InvariantCultureIgnoreCase)))
             {
-                var errorKeyword = eventSource.GetKeyword("Error");
-                if (errorKeyword == null)
-                {
-                    eventSource.AddKeyword("Error");
-                }
+                var errorKeyword = eventSource.GetKeyword("Error") ?? eventSource.AddKeyword("Error");
 
                 model.Keywords = model.Keywords.Add(errorKeyword);
             }            
