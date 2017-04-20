@@ -51,17 +51,10 @@
     <Compile Include="Builders\EventArgumentExtensionMethodBuilder.cs" />
     <Compile Include="Builders\EventArgumentsBuilder.cs" />
     <Compile Include="Builders\EventArgumentsComplexityCheckBuilder.cs" />
-    <Compile Include="Builders\EventArgumentsComplexityCheckBuilderBase.cs" />
-    <Compile Include="Builders\EventMessageFormatterBuilderBase.cs" />
+    <Compile Include="Builders\EventImplicitKeywordBuilder.cs" />
+    <Compile Include="Builders\EventSourceAutoGenerateLoggersBuilder.cs" />
     <Compile Include="Builders\EventTemplatedArgumentsBuilder.cs" />
-    <Compile Include="Builders\EventTemplatedArgumentsBuilderBase.cs" />
-    <Compile Include="Builders\LoggerEventArgumentsBuilder.cs" />
-    <Compile Include="Builders\LoggerEventArgumentsComplexityCheckBuilder.cs" />
-    <Compile Include="Builders\LoggerEventIdBuilder.cs" />
-    <Compile Include="Builders\LoggerEventImplicitArgumentsBuilder.cs" />
-    <Compile Include="Builders\LoggerEventMessageFormatterBuilder.cs" />
     <Compile Include="Builders\LoggerEventOverrideArgumentsBuilder.cs" />
-    <Compile Include="Builders\LoggerEventTemplatedArgumentsBuilder.cs" />
     <Compile Include="Renderers\EventMethodBaseRenderer.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderBase.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderer.cs" />
@@ -102,7 +95,6 @@
     <Compile Include="Builders\EventSourceLoggersBuilder.cs" />
     <Compile Include="Builders\ProjectReferenceItemRemoverBuilder.cs" />
     <Compile Include="ListBuilder.cs" />
-    <Compile Include="Builders\LoggerEventsBuilder.cs" />
     <Compile Include="Builders\LoggerImplicitArgumentsBuilder.cs" />
     <Compile Include="Builders\LoggerKeywordsBuilder.cs" />
     <Compile Include="Builders\LoggerOverrideArgumentsBuilder.cs" />

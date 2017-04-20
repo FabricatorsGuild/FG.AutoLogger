@@ -4,7 +4,7 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
-    public class EventArgumentsBuilder : BaseWithLogging, IEventBuilder
+    public class EventArgumentsBuilder : BaseWithLogging, IEventBuilder, ILoggerEventBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventModel model)
         {
@@ -28,5 +28,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 }
             }
         }
+
+        public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel loggerModel, EventModel model)
+        {
+            Build(project, eventSourceProjectItem, model);
+        }
+        
     }
 }

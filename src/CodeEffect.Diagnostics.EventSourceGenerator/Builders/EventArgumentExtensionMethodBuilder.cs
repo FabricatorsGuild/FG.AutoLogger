@@ -27,8 +27,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
         }
 
 
-
-        public static void AddKnownExtensions(EventSourceModel eventSource, EventArgumentModel argument)
+        private static void AddKnownExtensions(EventSourceModel eventSource, EventArgumentModel argument)
         {
             if (argument.TypeTemplate != null)
             {
