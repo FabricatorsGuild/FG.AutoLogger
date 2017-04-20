@@ -11,11 +11,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
             return that.Where(item => item.ItemType == type);
         }
 
-        public static IEnumerable<ProjectItem<TModel>> OfType<TModel>(this IEnumerable<ProjectItem> that, ProjectItemType type) 
+        public static IEnumerable<ProjectItem<TModel>> OfType<TModel>(this IEnumerable<ProjectItem> that, ProjectItemType type)
             where TModel : class
         {
             return that.Where(item => item.ItemType == type).Cast<ProjectItem<TModel>>();
         }
+
         public static IEnumerable<ProjectItem> OfType(this IEnumerable<ProjectItem> that, params ProjectItemType[] types)
         {
             return that.Where(item => types.Any(t => item.ItemType == t));

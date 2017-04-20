@@ -82,6 +82,7 @@
     <Compile Include="Renderers\ProjectLoggerRenderer.cs" />
     <Compile Include="Renderers\ProjectRenderer.cs" />
     <Compile Include="Template.cs" />
+    <Compile Include="Utils\ArrayExtensions.cs" />
     <Compile Include="Utils\BaseWithLogging.cs" />
     <Compile Include="Builders\EventArgumentBuilder.cs" />
     <Compile Include="Builders\EventArgumentsListBuilder.cs" />
