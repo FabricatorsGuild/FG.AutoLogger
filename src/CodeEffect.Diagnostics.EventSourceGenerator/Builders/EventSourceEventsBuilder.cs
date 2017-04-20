@@ -33,7 +33,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 new EventIdBuilder(),
                 new EventImplicitKeywordBuilder(),
                 new EventImplicitArgumentsBuilder(),
-                new LoggerEventOverrideArgumentsBuilder(),
+                new EventOverrideArgumentsBuilder(),
                 new EventArgumentsBuilder(),
                 new EventMessageFormatterBuilder(),
                 new EventTemplatedArgumentsBuilder(),

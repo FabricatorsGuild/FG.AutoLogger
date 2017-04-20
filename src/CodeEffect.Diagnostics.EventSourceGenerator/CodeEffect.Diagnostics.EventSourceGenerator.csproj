@@ -54,7 +54,7 @@
     <Compile Include="Builders\EventImplicitKeywordBuilder.cs" />
     <Compile Include="Builders\EventSourceAutoGenerateLoggersBuilder.cs" />
     <Compile Include="Builders\EventTemplatedArgumentsBuilder.cs" />
-    <Compile Include="Builders\LoggerEventOverrideArgumentsBuilder.cs" />
+    <Compile Include="Builders\EventOverrideArgumentsBuilder.cs" />
     <Compile Include="Renderers\EventMethodBaseRenderer.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderBase.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderer.cs" />
