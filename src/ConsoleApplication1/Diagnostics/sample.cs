@@ -36,7 +36,8 @@ namespace ConsoleApplication1.Diagnostics
 			public const EventKeywords Domain = (EventKeywords)0x2L;
 			public const EventKeywords Infrastructure = (EventKeywords)0x4L;
 			public const EventKeywords Console = (EventKeywords)0x8L;
-			public const EventKeywords ConsoleRunner = (EventKeywords)0x16L;
+			public const EventKeywords Error = (EventKeywords)0x16L;
+			public const EventKeywords ConsoleRunner = (EventKeywords)0x32L;
 
 		}
 		#endregion Keywords

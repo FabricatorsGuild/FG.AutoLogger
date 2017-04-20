@@ -24,7 +24,7 @@ namespace ConsoleApplication1.Diagnostics
 				
 			);
 
-            System.Diagnostics.Debug.WriteLine($"[] ERR: RunnerCreated");
+			System.Diagnostics.Debug.WriteLine($"[] ERR: RunnerCreated");
            
     
 		}
@@ -37,7 +37,7 @@ namespace ConsoleApplication1.Diagnostics
 				
 			);
 
-            System.Diagnostics.Debug.WriteLine($"[] ERR: RunnerDestroyed");
+			System.Diagnostics.Debug.WriteLine($"[] ERR: RunnerDestroyed");
            
     
 		}
@@ -50,7 +50,7 @@ namespace ConsoleApplication1.Diagnostics
 				
 			);
 
-            System.Diagnostics.Debug.WriteLine($"[] ERR: WaitingForKeyPress");
+			System.Diagnostics.Debug.WriteLine($"[] ERR: WaitingForKeyPress");
            
     
 		}
@@ -63,9 +63,9 @@ namespace ConsoleApplication1.Diagnostics
 				key
 			);
 
-            System.Diagnostics.Debug.WriteLine($"[] ERR: KeyPressed");
+			System.Diagnostics.Debug.WriteLine($"[] ERR: KeyPressed");
            
-            System.Diagnostics.Debug.WriteLine($"\tkey.ToString():\t{key.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\tkey.ToString():\t{key.ToString()}");
     
 		}
 
@@ -77,12 +77,12 @@ namespace ConsoleApplication1.Diagnostics
 				ex
 			);
 
-            System.Diagnostics.Debug.WriteLine($"[] ERR: UnsupportedKeyError");
+			System.Diagnostics.Debug.WriteLine($"[Error] ERR: UnsupportedKeyError");
            
-            System.Diagnostics.Debug.WriteLine($"\tex.Message:\t{ex.Message}");
-            System.Diagnostics.Debug.WriteLine($"\tex.Source:\t{ex.Source}");
-            System.Diagnostics.Debug.WriteLine($"\tex.GetType().FullName:\t{ex.GetType().FullName}");
-            System.Diagnostics.Debug.WriteLine($"\tex.AsJson():\t{ex.AsJson()}");
+			System.Diagnostics.Debug.WriteLine($"\tex.Message:\t{ex.Message}");
+			System.Diagnostics.Debug.WriteLine($"\tex.Source:\t{ex.Source}");
+			System.Diagnostics.Debug.WriteLine($"\tex.GetType().FullName:\t{ex.GetType().FullName}");
+			System.Diagnostics.Debug.WriteLine($"\tex.AsJson():\t{ex.AsJson()}");
     
 		}
 
@@ -94,7 +94,7 @@ namespace ConsoleApplication1.Diagnostics
 				
 			);
 
-            System.Diagnostics.Debug.WriteLine($"[] ERR: StartLoop");
+			System.Diagnostics.Debug.WriteLine($"[] ERR: StartLoop");
            
     
 		}
@@ -107,7 +107,7 @@ namespace ConsoleApplication1.Diagnostics
 				
 			);
 
-            System.Diagnostics.Debug.WriteLine($"[] ERR: StopLoop");
+			System.Diagnostics.Debug.WriteLine($"[] ERR: StopLoop");
            
     
 		}
@@ -120,9 +120,9 @@ namespace ConsoleApplication1.Diagnostics
 				values
 			);
 
-            System.Diagnostics.Debug.WriteLine($"[] ERR: RandomIntsGenerated");
+			System.Diagnostics.Debug.WriteLine($"[] ERR: RandomIntsGenerated");
            
-            System.Diagnostics.Debug.WriteLine($"\tvalues.ToString():\t{values.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\tvalues.ToString():\t{values.ToString()}");
     
 		}
 

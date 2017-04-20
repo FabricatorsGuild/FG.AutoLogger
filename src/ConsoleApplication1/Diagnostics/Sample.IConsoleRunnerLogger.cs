@@ -22,7 +22,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int RunnerDestroyedEventId = 3002;
+		private const int RunnerDestroyedEventId = 6002;
 
 		[Event(RunnerDestroyedEventId, Level = EventLevel.LogAlways, Message = "Runner Destroyed")]
 		public void RunnerDestroyed(
@@ -33,7 +33,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int WaitingForKeyPressEventId = 3003;
+		private const int WaitingForKeyPressEventId = 9003;
 
 		[Event(WaitingForKeyPressEventId, Level = EventLevel.LogAlways, Message = "Waiting For Key Press")]
 		public void WaitingForKeyPress(
@@ -44,7 +44,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int KeyPressedEventId = 3004;
+		private const int KeyPressedEventId = 12004;
 
 		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {1}")]
 		private void KeyPressed(
@@ -67,9 +67,9 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int UnsupportedKeyErrorEventId = 3005;
+		private const int UnsupportedKeyErrorEventId = 15005;
 
-		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{1}")]
+		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{1}", Keywords = Keywords.Error)]
 		private void UnsupportedKeyError(
 			string message, 
 			string source, 
@@ -99,7 +99,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int StartLoopEventId = 3006;
+		private const int StartLoopEventId = 18006;
 
 		[Event(StartLoopEventId, Level = EventLevel.LogAlways, Message = "Start Loop")]
 		public void StartLoop(
@@ -110,7 +110,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int StopLoopEventId = 3007;
+		private const int StopLoopEventId = 21007;
 
 		[Event(StopLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Loop")]
 		public void StopLoop(
@@ -121,7 +121,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int RandomIntsGeneratedEventId = 3008;
+		private const int RandomIntsGeneratedEventId = 24008;
 
 		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {1}")]
 		private void RandomIntsGenerated(
