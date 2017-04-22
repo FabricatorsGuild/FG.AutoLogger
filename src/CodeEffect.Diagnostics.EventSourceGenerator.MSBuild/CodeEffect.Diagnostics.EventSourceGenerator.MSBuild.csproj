@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CodeEffect.Diagnostics.EventSourceGenerator.MSBuild</RootNamespace>
     <AssemblyName>CodeEffect.Diagnostics.EventSourceGenerator.MSBuild</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,8 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="CodeEffect.Diagnostics.EventSourceGenerator.nuspec" />
-    <None Include="CodeEffect.Diagnostics.EventSourceGenerator.targets">
+    <None Include="CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.nuspec" />
+    <None Include="build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
