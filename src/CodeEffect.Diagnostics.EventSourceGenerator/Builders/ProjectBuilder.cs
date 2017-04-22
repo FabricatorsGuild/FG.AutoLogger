@@ -33,7 +33,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
                 var hasEventSource = false;
                 foreach (
-                    var projectItem in project.Items.Where(item => item.EvaluatedInclude.EndsWith(@".eventsource", StringComparison.InvariantCultureIgnoreCase))
+                    var projectItem in project.Items.Where(item => item.EvaluatedInclude.EndsWith(@".eventsource.json", StringComparison.InvariantCultureIgnoreCase))
                 )
                 {
                     var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
@@ -93,7 +93,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 {
                     var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
 
-                    var include = $"DefaultEventSource.eventsource";
+                    var include = $"DefaultEventSource.eventsource.json";
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, include);
                     projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.DefaultGeneratedEventSourceDefinition, projectItemFilePath)
                     {
