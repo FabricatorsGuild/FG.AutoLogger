@@ -1,7 +1,7 @@
 {
   "ProviderName": "CE-CodeEffect.Diagnostics.EventSourceGenerator-sample",
   "Settings": {
-    "AutogenerateLoggerInterfaces": "true"
+    "AutogenerateLoggerInterfaces":  true 
   },
   "Keywords": [
     "HostInitialization",

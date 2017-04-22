@@ -151,6 +151,11 @@
     <Error Condition="!Exists('..\packages\Microsoft.ServiceFabric.Actors.2.5.216\build\Microsoft.ServiceFabric.Actors.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ServiceFabric.Actors.2.5.216\build\Microsoft.ServiceFabric.Actors.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.ServiceFabric.Actors.2.5.216\build\Microsoft.ServiceFabric.Actors.targets" Condition="Exists('..\packages\Microsoft.ServiceFabric.Actors.2.5.216\build\Microsoft.ServiceFabric.Actors.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties Diagnostics_4sample_1eventsource_1json__JSONSchema="https://github.com/FredrikGoransson/CodeEffect.Diagnostics.EventSourceGenerator/releases/download/1.0.2/CodeEffect.Diagnostics.EventSourceGenerator.Model.json" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
