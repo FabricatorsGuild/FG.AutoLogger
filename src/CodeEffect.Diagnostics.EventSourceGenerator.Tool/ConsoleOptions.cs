@@ -21,5 +21,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
             HelpText = "Save all changes")]
         public bool SaveChanges { get; set; }
 
+        [Option('g', "generateSchema", Default = false,
+            HelpText = "Generates a JSON schema for the EventSource model")]
+        public bool GenerateSchema { get; set; }
+
+
+
     }
 }

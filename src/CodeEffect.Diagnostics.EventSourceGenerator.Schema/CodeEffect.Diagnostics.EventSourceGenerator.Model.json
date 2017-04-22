@@ -1,0 +1,273 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "EventSourceModel",
+  "additionalProperties": false,
+  "properties": {
+    "Loggers": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/LoggerModel"
+      }
+    },
+    "Name": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "ProviderName": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "Keywords": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/KeywordModel"
+      }
+    },
+    "TypeTemplates": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/TypeTemplateModel"
+      }
+    },
+    "Events": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/EventModel"
+      }
+    },
+    "Settings": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/EventSourceSettings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "LoggerModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Name": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "StartId": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int32"
+        },
+        "ImplicitArguments": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/EventArgumentModel"
+          }
+        },
+        "OverrideArguments": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/EventArgumentModel"
+          }
+        }
+      }
+    },
+    "EventArgumentModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Name": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "Type": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "Assignment": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "TypeTemplate": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TypeTemplateModel"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "TypeTemplateModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Name": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "CLRType": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "Arguments": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/EventArgumentModel"
+          }
+        }
+      }
+    },
+    "KeywordModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Name": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "Value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int32"
+        }
+      }
+    },
+    "EventModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Id": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int32"
+        },
+        "Name": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "Arguments": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/EventArgumentModel"
+          }
+        },
+        "Level": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/EventLevel"
+            }
+          ]
+        },
+        "Keywords": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/KeywordModel"
+          }
+        },
+        "MessageFormatter": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "ImplicitArguments": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/EventArgumentModel"
+          }
+        }
+      }
+    },
+    "EventLevel": {
+      "type": "integer",
+      "x-enumNames": [
+        "LogAlways",
+        "Critical",
+        "Error",
+        "Warning",
+        "Informational",
+        "Verbose"
+      ],
+      "enum": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "description": ""
+    },
+    "EventSourceSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "AutogenerateLoggerInterfaces": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

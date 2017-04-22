@@ -4,6 +4,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Schema;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 using CommandLine;
 
@@ -17,7 +18,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
             {
                 LogMessage("Enter arguments for program:");
                 var line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line)) line = "-o -s";
+                if (string.IsNullOrWhiteSpace(line)) line = "-o -s -g";
                 args = line.Split(' ');
             }
 
@@ -92,6 +93,30 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
 
                 }
 
+
+                if (t.GenerateSchema)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Generating JSON Schema");
+
+                    var output = SchemaWriter.GenerateSchema(t.SaveChanges).GetAwaiter().GetResult();
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"{"".PadRight(40, '_')}");
+                    Console.WriteLine($"{"".PadRight(40, '=')}");
+                    Console.WriteLine($"File: {output.Name}");
+                    Console.WriteLine($"{"".PadRight(40, '_')}");
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(output.Output);
+
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"{"".PadRight(40, '_')}");
+                    Console.WriteLine($"{"".PadRight(40, '=')}");
+
+                    Console.WriteLine($"Done generating JSON Schema");
+                }
             });
             Console.ReadKey();
         }
