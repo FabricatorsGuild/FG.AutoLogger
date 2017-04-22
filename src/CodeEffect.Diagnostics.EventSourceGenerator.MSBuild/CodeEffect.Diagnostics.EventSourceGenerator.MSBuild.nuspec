@@ -18,8 +18,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="CodeEffect.Diagnostics.EventSourceGenerator.targets" target="build\CodeEffect.Diagnostics.EventSourceGenerator.targets" />
-    <file src="bin\Debug\*.dll" target="lib" />
-    <file src="bin\Debug\*.pdb" target="lib" />
+    <file src="build\**" target="build" />
+    <file src="bin\Debug\*.dll" target="lib\net45" />
+    <file src="bin\Debug\*.pdb" target="lib\net45" />
   </files>
 </package>
