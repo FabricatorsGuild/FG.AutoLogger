@@ -25,7 +25,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
         {
             var eventSourceModel = eventSourceDefinitionProjectItem.Content;
             var sourceFileName = System.IO.Path.GetFileName(eventSourceDefinitionProjectItem.Name);
-            var name = System.IO.Path.GetFileNameWithoutExtension(eventSourceDefinitionProjectItem.Name);
+            var name = sourceFileName.Replace(".eventsource.json", "");
             var implementationFileName = $"{name}.cs";
 
             var fileRelativePath = eventSourceDefinitionProjectItem.Name
