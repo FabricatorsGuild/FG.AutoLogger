@@ -1,6 +1,6 @@
 # CodeEffect.Diagnostics.EventSourceGenerator
 
-EventSourceGenerator automatically generates ETW EventSources for C# .NET projects. It picks up [existing logger files](#adding-loggers-to-a-project) in the project and [metadata files](#mofifying-an-eventsource-file) describing the expected EventSource.
+EventSourceGenerator automatically generates ETW EventSources for C# .NET projects. It picks up [existing logger files](#adding-loggers-to-a-project) in the project and [metadata files](#modifying-an-eventsource-json-file) describing the expected EventSource.
 
 The purpose is to remove a lot of the manual writing and maintainance of EventSource implemenations in solutions. Since it accepts logger interfaces as well, implementations of these interfaces can be passed around to classes that we don't want having a reference to the typical ``XXXEventSource.Current`` singleton. This makes the code 
 
@@ -14,7 +14,7 @@ The purpose is to remove a lot of the manual writing and maintainance of EventSo
 1) Add the NuGet package ``CodeEffect.Diagnostics.EventSourceGenerator.MSBuild`` to a project in Visual Studio. (Non-listed NuGet-package, install with ``Install-Package CodeEffect.Diagnostics.EventSourceGenerator.MSBuild -Version 1.0.2.1``)
 2) Add any number of loggers to the project [Adding Loggers to a project](#adding-loggers-to-a-project)
 3) Build the project.
-4) [Modify](#mofifying-an-eventsource-file) the ``DefaultEventSource.eventsource`` file -or- create a new ``*EventSource.eventsource`` file in your project
+4) [Modify](#mofifying-an-eventsource-file) the ``DefaultEventSource.eventsource`` file -or- create a new ``*EventSource.eventsource.json`` file in your project
 
 ## Adding Loggers to a project
 
@@ -34,7 +34,7 @@ Add a new interface to the file, the interface shoud be named the same way as th
 
 **Important**: The interface should be plain and only use C# 5 or below (*No Roslyn!*)
 
-## Modifying an .eventsource file
+## Modifying an .eventsource.json file
 
 The ``.eventsource`` is an json file that should have the following structure:
 
@@ -49,7 +49,9 @@ The ``.eventsource`` is an json file that should have the following structure:
 }
 ```
 
-The *.eventsource file defines *how* the new EventSource should be generated. It can control the following aspects:
+The json schema can be found [here](https://raw.githubusercontent.com/FredrikGoransson/CodeEffect.Diagnostics.EventSourceGenerator/master/src/CodeEffect.Diagnostics.EventSourceGenerator.Schema/CodeEffect.Diagnostics.EventSourceGenerator.Model.json).
+
+The *.eventsource.json file defines *how* the new EventSource should be generated. It can control the following aspects:
 
 * The naming of the ETW provider generated
 * [EventSource Keywords](#eventsource-keywords)
@@ -88,7 +90,7 @@ If Name is set to ``CompanyName-ProjectNamespace`` in the ``.eventsource`` file 
 
 ### EventSource keywords
 
-Keywords can be explicitly defined in the  ``.eventsource`` file as a string list:
+Keywords can be explicitly defined in the  ``.eventsource.json`` file as a string list:
 
 ```json
 {
@@ -101,7 +103,7 @@ Keywords can be explicitly defined in the  ``.eventsource`` file as a string lis
 }
 ```
 
-These can then be referenced by events defined in the  ``.eventsource`` file.
+These can then be referenced by events defined in the  ``.eventsource.json`` file.
 
 For loggers, a new keyword is implicitly generated for each logger. This means that we can split loggers on functionality and get them logged to the same EventSource but with different keywords to separate them. Events emitted from a logger will automatically have the keyword generated from that logger set.
 
