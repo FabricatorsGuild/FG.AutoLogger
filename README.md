@@ -1,6 +1,6 @@
 # CodeEffect.Diagnostics.EventSourceGenerator
 
-EventSourceGenerator automatically generates ETW EventSources for C# .NET projects. It picks up [existing logger files](#adding-loggers-to-a-project) in the project and [metadata files](#modifying-an-eventsource-json-file) describing the expected EventSource.
+EventSourceGenerator automatically generates ETW EventSources for C# .NET projects. It picks up [existing logger files](#adding-loggers-to-a-project) in the project and [metadata files](#modifying-an-eventsourcejson-file) describing the expected EventSource.
 
 The purpose is to remove a lot of the manual writing and maintainance of EventSource implemenations in solutions. Since it accepts logger interfaces as well, implementations of these interfaces can be passed around to classes that we don't want having a reference to the typical ``XXXEventSource.Current`` singleton. This makes the code 
 
@@ -36,7 +36,7 @@ Add a new interface to the file, the interface shoud be named the same way as th
 
 ## Modifying an .eventsource.json file
 
-The ``.eventsource`` is an json file that should have the following structure:
+The ``.eventsource.json`` is an json file that should have the following structure:
 
 ```json
 {
