@@ -54,6 +54,7 @@
     <Compile Include="Builders\EventArgumentsComplexityCheckBuilder.cs" />
     <Compile Include="Builders\EventImplicitKeywordBuilder.cs" />
     <Compile Include="Builders\EventSourceAutoGenerateLoggersBuilder.cs" />
+    <Compile Include="Builders\EventSourceCorrelatingEventsBuilder.cs" />
     <Compile Include="Builders\EventTemplatedArgumentsBuilder.cs" />
     <Compile Include="Builders\EventOverrideArgumentsBuilder.cs" />
     <Compile Include="Renderers\EventMethodBaseRenderer.cs" />
