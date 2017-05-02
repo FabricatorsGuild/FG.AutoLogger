@@ -40,7 +40,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var messageArgumentIndex = -1;
             foreach (var argument in model.GetAllArgumentsExpanded())
             {
-                if (!argument.IsImplicit) messageFormatBuilder.Append($"{{{nextArgumentIndex}}}");
+                if (!argument.IsImplicit) messageFormatBuilder.Append($"{{{nextArgumentIndex - 1}}}");
                 if (argument.Name.Equals("message", StringComparison.InvariantCultureIgnoreCase))
                 {
                     messageArgumentIndex = nextArgumentIndex;
@@ -48,7 +48,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 nextArgumentIndex++;
             }
 
-            model.MessageFormatter = messageArgumentIndex >= 0 ? $"{{{messageArgumentIndex}}}" : messageFormatBuilder.ToString();
+            model.MessageFormatter = messageArgumentIndex >= 0 ? $"{{{messageArgumentIndex - 1}}}" : messageFormatBuilder.ToString();
         }
 
     }
