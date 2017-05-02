@@ -1,6 +1,6 @@
 ﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.Templates
 {
-    public partial class EventSourceKeywordTemplate
+    public static class EventSourceKeywordTemplate
     {
         // ReSharper disable InconsistentNaming
         public const string Template_KEYWORD = @"			public const EventKeywords @@KEYWORD_NAME@@ = (EventKeywords)0x@@KEYWORD_INDEX@@L;";

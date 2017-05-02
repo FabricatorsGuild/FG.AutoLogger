@@ -1,6 +1,6 @@
 ﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.Templates
 {
-    public partial class EventSourceExtensionMethodTemplate
+    public static class EventSourceExtensionMethodTemplate
     {
         // ReSharper disable InconsistentNaming
         public const string Template_EXTENSION_CLRTYPE = @"@@EXTENSION_CLRTYPE@@";

@@ -1,8 +1,8 @@
 ﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.Templates
 {
-    public partial class EventSourceEventMethodTemplate
+    public static class EventSourceEventMethodTemplate
     {
-        // ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
         public const string Variable_EVENT_NAME = @"@@EVENT_NAME@@";
         public const string Variable_EVENT_ID = @"@@EVENT_ID@@";
         public const string Variable_EVENT_LEVEL = @"@@EVENT_LEVEL@@";
@@ -35,6 +35,5 @@
 			WriteEvent(
 				@@WRITEEVENT_CALL_ARGUMENTS@@);
 		}";
-
     }
 }

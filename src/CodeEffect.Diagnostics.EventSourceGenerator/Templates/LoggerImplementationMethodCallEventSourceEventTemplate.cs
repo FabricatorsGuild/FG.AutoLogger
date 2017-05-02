@@ -1,6 +1,6 @@
 ﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.Templates
 {
-    public class LoggerImplementationMethodCallEventSourceEventTemplate
+    public static class LoggerImplementationMethodCallEventSourceEventTemplate
     {
         // ReSharper disable InconsistentNaming
 
