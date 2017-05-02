@@ -13,9 +13,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 
         private static string RenderNonEventMethodArgument(EventArgumentModel model)
         {
-            var output = Template.Template_METHOD_ARGUMENT_DECLARATION;
-            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
-            output = output.Replace(Template.Template_ARGUMENT_CLR_TYPE, RenderEventSourceType(model) ?? model.CLRType ?? model.Type);
+            var output = EventSourceNonEventMethodTemplate.Template_METHOD_ARGUMENT_DECLARATION;
+            output = output.Replace(EventSourceNonEventMethodTemplate.Template_ARGUMENT_NAME, model.Name);
+            output = output.Replace(EventSourceNonEventMethodTemplate.Template_ARGUMENT_CLR_TYPE, RenderEventSourceType(model) ?? model.CLRType ?? model.Type);
             return output;
         }
 
@@ -26,12 +26,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 return "";
             }
 
-            var outputNonEventMethod = Template.Template_NON_EVENT_METHOD;
-            outputNonEventMethod = outputNonEventMethod.Replace(Template.Variable_EVENT_NAME, model.Name);
+            var outputNonEventMethod = EventSourceNonEventMethodTemplate.Template_NON_EVENT_METHOD;
+            outputNonEventMethod = outputNonEventMethod.Replace(EventSourceNonEventMethodTemplate.Variable_EVENT_NAME, model.Name);
             var methodArgumentsDeclarationBuilder = new EventArgumentsListBuilder(
-                RenderNonEventMethodArgument, Template.Template_NONEVENT_METHOD_ARGUMENT_DELIMITER);
+                RenderNonEventMethodArgument, EventSourceNonEventMethodTemplate.Template_NONEVENT_METHOD_ARGUMENT_DELIMITER);
             var assignmentArgumentsBuilder = new EventArgumentsListBuilder(
-                RenderAssignment, Template.Template_NON_EVENT_ASSIGNMENT_ARGUMENT_DELIMITER);
+                RenderAssignment, EventSourceNonEventMethodTemplate.Template_NON_EVENT_ASSIGNMENT_ARGUMENT_DELIMITER);
 
             foreach (var argument in model.GetAllArguments())
             {
@@ -41,8 +41,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             {
                 assignmentArgumentsBuilder.Append(argument);
             }
-            outputNonEventMethod = outputNonEventMethod.Replace(Template.Variable_NON_EVENT_METHOD_ARGUMENTS, methodArgumentsDeclarationBuilder.ToString());
-            outputNonEventMethod = outputNonEventMethod.Replace(Template.Variable_NON_EVENT_ASSIGNMENT_ARGUMENTS, assignmentArgumentsBuilder.ToString());
+            outputNonEventMethod = outputNonEventMethod.Replace(EventSourceNonEventMethodTemplate.Variable_NON_EVENT_METHOD_ARGUMENTS, methodArgumentsDeclarationBuilder.ToString());
+            outputNonEventMethod = outputNonEventMethod.Replace(EventSourceNonEventMethodTemplate.Variable_NON_EVENT_ASSIGNMENT_ARGUMENTS, assignmentArgumentsBuilder.ToString());
 
             return outputNonEventMethod;
         }

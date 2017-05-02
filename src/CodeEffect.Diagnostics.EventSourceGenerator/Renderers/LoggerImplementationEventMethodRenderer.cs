@@ -11,9 +11,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
     {
         public string RenderMethodArgument(EventArgumentModel model)
         {
-            var output = Template.Template_METHOD_ARGUMENT_DECLARATION;
-            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
-            output = output.Replace(Template.Template_ARGUMENT_CLR_TYPE, model.CLRType);
+            var output = LoggerImplementationEventMethodTemplate.Template_METHOD_ARGUMENT_DECLARATION;
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Template_ARGUMENT_NAME, model.Name);
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Template_ARGUMENT_CLR_TYPE, model.CLRType);
 
             return output;
         }
@@ -40,17 +40,17 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 return "";
             }
 
-            var output = Template.Template_LOGGER_METHOD;
-            output = output.Replace(Template.Variable_LOGGER_METHOD_NAME, model.Name);
-            output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
+            var output = LoggerImplementationEventMethodTemplate.Template_LOGGER_METHOD;
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_NAME, model.Name);
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
 
             var methodArguments = new EventArgumentsListBuilder(
-                RenderMethodArgument, Template.Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER);
+                RenderMethodArgument, LoggerImplementationEventMethodTemplate.Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER);
             foreach (var argument in model.GetAllNonImplicitArguments())
             {
                 methodArguments.Append(argument);
             }
-            output = output.Replace(Template.Variable_LOGGER_METHOD_ARGUMENTS, methodArguments.ToString());
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_ARGUMENTS, methodArguments.ToString());
 
             var methodImplementation = new StringBuilder();
             var renderers = new ILoggerImplementationMethodRenderer[]
@@ -61,7 +61,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             {
                 methodImplementation.Append(renderer.Render(project, loggerProjectItem, model));
             }
-            output = output.Replace(Template.Variable_LOGGER_METHOD_IMPLEMENTATION, methodImplementation.ToString());
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_IMPLEMENTATION, methodImplementation.ToString());
 
             return output;
         }

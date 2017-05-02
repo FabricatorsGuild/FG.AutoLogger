@@ -57,6 +57,10 @@
     <Compile Include="Builders\EventSourceCorrelatingEventsBuilder.cs" />
     <Compile Include="Builders\EventTemplatedArgumentsBuilder.cs" />
     <Compile Include="Builders\EventOverrideArgumentsBuilder.cs" />
+    <Compile Include="Templates\EventSourceKeywordTemplate.cs" />
+    <Compile Include="Templates\LoggerImplementationEventMethodTemplate.cs" />
+    <Compile Include="Templates\EventSourceTemplate.cs" />
+    <Compile Include="Templates\EventSourceEventMethodTemplate.cs" />
     <Compile Include="Renderers\EventMethodBaseRenderer.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderBase.cs" />
     <Compile Include="Renderers\EventSourceEventMethodRenderer.cs" />
@@ -76,7 +80,11 @@
     <Compile Include="Renderers\ProjectFilesRenderer.cs" />
     <Compile Include="Renderers\ProjectLoggerRenderer.cs" />
     <Compile Include="Renderers\ProjectRenderer.cs" />
-    <Compile Include="Template.cs" />
+    <Compile Include="Templates\LoggerImplementationMethodCallEventSourceEventTemplate.cs" />
+    <Compile Include="Templates\EventSourceExtensionMethodTemplate.cs" />
+    <Compile Include="Templates\EventSourceNonEventMethodTemplate.cs" />
+    <Compile Include="Templates\LoggerImplementationTemplate.cs" />
+    <Compile Include="Templates\LoggerEventSourcePartialTemplate.cs" />
     <Compile Include="Utils\ArrayExtensions.cs" />
     <Compile Include="Utils\BaseWithLogging.cs" />
     <Compile Include="Builders\EventArgumentBuilder.cs" />
