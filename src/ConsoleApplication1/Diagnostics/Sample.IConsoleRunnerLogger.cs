@@ -13,7 +13,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int RunnerCreatedEventId = 3001;
 
-		[Event(RunnerCreatedEventId, Level = EventLevel.LogAlways, Message = "Runner Created")]
+		[Event(RunnerCreatedEventId, Level = EventLevel.LogAlways, Message = "Runner Created", Keywords = Keywords.ConsoleRunner)]
 		public void RunnerCreated(
 			)
 		{
@@ -24,7 +24,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int RunnerDestroyedEventId = 6002;
 
-		[Event(RunnerDestroyedEventId, Level = EventLevel.LogAlways, Message = "Runner Destroyed")]
+		[Event(RunnerDestroyedEventId, Level = EventLevel.LogAlways, Message = "Runner Destroyed", Keywords = Keywords.ConsoleRunner)]
 		public void RunnerDestroyed(
 			)
 		{
@@ -35,7 +35,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int WaitingForKeyPressEventId = 9003;
 
-		[Event(WaitingForKeyPressEventId, Level = EventLevel.LogAlways, Message = "Waiting For Key Press")]
+		[Event(WaitingForKeyPressEventId, Level = EventLevel.LogAlways, Message = "Waiting For Key Press", Keywords = Keywords.ConsoleRunner)]
 		public void WaitingForKeyPress(
 			)
 		{
@@ -46,7 +46,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int KeyPressedEventId = 12004;
 
-		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {1}")]
+		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {0}", Keywords = Keywords.ConsoleRunner)]
 		private void KeyPressed(
 			string key)
 		{
@@ -69,7 +69,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int UnsupportedKeyErrorEventId = 15005;
 
-		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{1}", Keywords = Keywords.Error)]
+		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{0}", Keywords = Keywords.ConsoleRunner | Keywords.Error)]
 		private void UnsupportedKeyError(
 			string message, 
 			string source, 
@@ -101,7 +101,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int StartLoopEventId = 18006;
 
-		[Event(StartLoopEventId, Level = EventLevel.LogAlways, Message = "Start Loop")]
+		[Event(StartLoopEventId, Level = EventLevel.LogAlways, Message = "Start Loop", Keywords = Keywords.ConsoleRunner, OpCode = EventOpcode.Start)]
 		public void StartLoop(
 			)
 		{
@@ -112,7 +112,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int StopLoopEventId = 21007;
 
-		[Event(StopLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Loop")]
+		[Event(StopLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Loop", Keywords = Keywords.ConsoleRunner, OpCode = EventOpcode.Stop)]
 		public void StopLoop(
 			)
 		{
@@ -123,7 +123,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int RandomIntsGeneratedEventId = 24008;
 
-		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {1}")]
+		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {0}", Keywords = Keywords.ConsoleRunner)]
 		private void RandomIntsGenerated(
 			string values)
 		{

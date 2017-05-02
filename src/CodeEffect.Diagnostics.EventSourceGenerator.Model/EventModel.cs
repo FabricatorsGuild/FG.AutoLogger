@@ -14,7 +14,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public EventArgumentModel[] Arguments { get; set; }
         public System.Diagnostics.Tracing.EventLevel Level { get; set; }
         public KeywordModel[] Keywords { get; set; }
-        public EventOpcode OpCode { get; set; }
+        public EventOpcode? OpCode { get; set; }
         public string MessageFormatter { get; set; }
         [JsonIgnore]
         public bool HasComplexArguments { get; set; }

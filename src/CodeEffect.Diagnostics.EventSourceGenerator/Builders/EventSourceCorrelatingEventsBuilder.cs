@@ -31,11 +31,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
         private void Build(IEnumerable<EventModel> events)
         {
             var startEvents = events.Where(e => StringMatchExtensions.Matches(e.Name, "*start*", StringComparison.InvariantCultureIgnoreCase, useWildcards: true)).ToArray();
-            var stopEvents = events.Where(e => e.Name.Matches("*stop*", StringComparison.InvariantCulture, useWildcards: true)).ToArray();
+            var stopEvents = events.Where(e => e.Name.Matches("*stop*", StringComparison.InvariantCultureIgnoreCase, useWildcards: true)).ToArray();
 
             foreach (var startEvent in startEvents)
             {
-                var stopEventName = startEvent.Name.Replace("start", "stop");
+                var stopEventName = startEvent.Name.ToLowerInvariant().Replace("start", "stop");
                 var stopEvent = stopEvents.FirstOrDefault(e => e.Name.Equals(stopEventName, StringComparison.InvariantCultureIgnoreCase));
                 if (stopEvent != null)
                 {

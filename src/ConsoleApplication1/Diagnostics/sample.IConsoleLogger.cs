@@ -13,7 +13,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int SayHelloEventId = 1001;
 
-		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{3}")]
+		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.Console)]
 		public void SayHello(
 			int processId, 
 			string machineName, 
@@ -29,7 +29,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int MessageEventId = 2002;
 
-		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{3}")]
+		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.Console)]
 		public void Message(
 			int processId, 
 			string machineName, 
@@ -45,7 +45,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int ErrorEventId = 3003;
 
-		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Error)]
+		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.Console | Keywords.Error)]
 		private void Error(
 			int processId, 
 			string machineName, 
@@ -85,7 +85,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int SayGoodbyeEventId = 4004;
 
-		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "Say Goodbye {3} {4}")]
+		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "Say Goodbye {2} {3}", Keywords = Keywords.Console)]
 		private void SayGoodbye(
 			int processId, 
 			string machineName, 
@@ -120,7 +120,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int SpecialEventId = 5005;
 
-		[Event(SpecialEventId, Level = EventLevel.LogAlways, Message = "Special {3}")]
+		[Event(SpecialEventId, Level = EventLevel.LogAlways, Message = "Special {2}", Keywords = Keywords.Console)]
 		private void Special(
 			int processId, 
 			string machineName, 

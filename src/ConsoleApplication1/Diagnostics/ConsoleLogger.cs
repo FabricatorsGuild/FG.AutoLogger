@@ -29,7 +29,7 @@ namespace ConsoleApplication1.Diagnostics
 				message
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: SayHello");
+			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayHello");
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
@@ -47,7 +47,7 @@ namespace ConsoleApplication1.Diagnostics
 				message
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: Message");
+			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Message");
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
@@ -65,7 +65,7 @@ namespace ConsoleApplication1.Diagnostics
 				exception
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[Error] ERR: Error");
+			System.Diagnostics.Debug.WriteLine($"[Console, Error] ERR: Error");
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
@@ -88,7 +88,7 @@ namespace ConsoleApplication1.Diagnostics
 				nightTime
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: SayGoodbye");
+			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayGoodbye");
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
@@ -107,7 +107,7 @@ namespace ConsoleApplication1.Diagnostics
 				special
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: Special");
+			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Special");
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
