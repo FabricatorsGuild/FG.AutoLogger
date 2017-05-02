@@ -1,4 +1,4 @@
-﻿namespace CodeEffect.Diagnostics.EventSourceGenerator
+﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.Templates
 {
     public partial class EventSourceKeywordTemplate
     {
