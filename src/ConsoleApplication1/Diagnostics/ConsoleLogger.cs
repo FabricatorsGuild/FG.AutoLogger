@@ -38,6 +38,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
+
 		public void Message(
 			string message)
 		{
@@ -54,6 +55,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
     
 		}
+
 
 
 		public void Error(
@@ -77,6 +79,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
+
 		public void SayGoodbye(
 			string goodbye,
 			System.DateTime nightTime)
@@ -98,6 +101,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
+
 		public void Special(
 			ConsoleApplication1.Loggers.Special special)
 		{
@@ -114,6 +118,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tspecial.ToString():\t{special.ToString()}");
     
 		}
+
 
 
 	}

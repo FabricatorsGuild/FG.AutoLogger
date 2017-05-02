@@ -30,6 +30,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
+
 		public void RunnerDestroyed(
 			)
 		{
@@ -41,6 +42,7 @@ namespace ConsoleApplication1.Diagnostics
            
     
 		}
+
 
 
 		public void WaitingForKeyPress(
@@ -56,6 +58,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
+
 		public void KeyPressed(
 			System.ConsoleKey key)
 		{
@@ -68,6 +71,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tkey.ToString():\t{key.ToString()}");
     
 		}
+
 
 
 		public void UnsupportedKeyError(
@@ -87,17 +91,21 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
+
 		public void StartLoop(
 			)
 		{
 			Sample.Current.StartLoop(
 				
 			);
+			_loopStopwatch.Restart();
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: StartLoop");
            
     
 		}
+
+		private System.Diagnostics.Stopwatch _loopStopwatch = new System.Diagnostics.Stopwatch();
 
 
 		public void StopLoop(
@@ -106,11 +114,13 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.StopLoop(
 				
 			);
+			_loopStopwatch.Stop();
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: StopLoop");
            
     
 		}
+
 
 
 		public void RandomIntsGenerated(
@@ -125,6 +135,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tvalues.ToString():\t{values.ToString()}");
     
 		}
+
 
 
 	}
