@@ -86,13 +86,11 @@
     <Compile Include="Templates\LoggerImplementationTemplate.cs" />
     <Compile Include="Templates\LoggerEventSourcePartialTemplate.cs" />
     <Compile Include="Utils\ArrayExtensions.cs" />
-    <Compile Include="Utils\BaseWithLogging.cs" />
     <Compile Include="Builders\EventArgumentBuilder.cs" />
     <Compile Include="Builders\EventArgumentsListBuilder.cs" />
     <Compile Include="Builders\EventIdBuilder.cs" />
     <Compile Include="Builders\EventImplicitArgumentsBuilder.cs" />
     <Compile Include="Builders\EventMessageFormatterBuilder.cs" />
-    <Compile Include="Builders\IWithLogging.cs" />
     <Compile Include="Builders\LoggerEventSourcePartialBuilder.cs" />
     <Compile Include="Builders\LoggerImplementationBuilder.cs" />
     <Compile Include="Builders\ProjectDefaultEventSourceBuilder.cs" />

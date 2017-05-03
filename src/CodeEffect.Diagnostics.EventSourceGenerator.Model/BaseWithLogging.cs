@@ -1,7 +1,6 @@
-    using System;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
+using System;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
+namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
     public class BaseWithLogging : IWithLogging
     {

@@ -86,6 +86,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 memberDeclarations.Append(renderer.Render(project, model));
             }
 
+            var constructorRenderers = new ILoggerImplementationConstructorRenderer[]
+            {
+            }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>()).ToArray();
+            foreach (var renderer in constructorRenderers)
+            {
+                constructorMemberAssignments.Append(renderer.Render(project, model));
+            }
+
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION, memberDeclarations.ToString());
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT, constructorMemberAssignments.ToString());
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION, constructorArguments.ToString());

@@ -11,6 +11,7 @@ namespace ConsoleApplication1.Diagnostics
 	{
 		private readonly int _processId;
 		private readonly string _machineName;
+		// Hello from extension
 
 		public ConsoleLogger(
 			int processId,
@@ -18,6 +19,7 @@ namespace ConsoleApplication1.Diagnostics
 		{
 			_processId = processId;
 			_machineName = machineName;
+			// Do stuff in the constructor
 		}
 
 		public void SayHello(

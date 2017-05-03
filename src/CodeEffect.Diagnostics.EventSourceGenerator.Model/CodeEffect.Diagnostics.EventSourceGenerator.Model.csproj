@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseWithLogging.cs" />
     <Compile Include="EventArgumentModel.cs" />
     <Compile Include="EventModel.cs" />
     <Compile Include="EventSourceModel.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="ILoggerEventBuilder.cs" />
     <Compile Include="ILoggerEventSourcePartialEventRenderer.cs" />
     <Compile Include="ILoggerEventSourcePartialRenderer.cs" />
+    <Compile Include="ILoggerImplementationConstructorRenderer.cs" />
     <Compile Include="ILoggerImplementationEventRenderer.cs" />
     <Compile Include="ILoggerImplementationMembersRenderer.cs" />
     <Compile Include="ILoggerImplementationMethodRenderer.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="IProjectBuilder.cs" />
     <Compile Include="IProjectRenderer.cs" />
     <Compile Include="IRenderer.cs" />
+    <Compile Include="IWithLogging.cs" />
     <Compile Include="KeywordExtensions.cs" />
     <Compile Include="KeywordModel.cs" />
     <Compile Include="LoggerModel.cs" />
