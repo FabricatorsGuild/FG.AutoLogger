@@ -18,14 +18,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 return;
             }
 
-            Build(eventSource.Events);
+            Build(eventSource.Events ?? new EventModel[0]);
         }
 
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel model)
         {
             if (model == null) return;
             
-            Build(model.Events);
+            Build(model.Events ?? new EventModel[0]);
         }
 
         private void Build(IEnumerable<EventModel> events)
