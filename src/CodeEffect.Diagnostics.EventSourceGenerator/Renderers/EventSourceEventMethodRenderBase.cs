@@ -1,6 +1,7 @@
 using System.Text;
 using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 {
@@ -8,25 +9,25 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
     {
         private static string RenderEventMethodArgument(EventArgumentModel model)
         {
-            var output = Template.Template_METHOD_ARGUMENT_DECLARATION;
-            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
-            output = output.Replace(Template.Template_ARGUMENT_CLR_TYPE, RenderEventSourceType(model) ?? model.AssignedCLRType ?? @"string");
+            var output = EventSourceEventMethodTemplate.Template_METHOD_ARGUMENT_DECLARATION;
+            output = output.Replace(EventSourceEventMethodTemplate.Variable_ARGUMENT_NAME, model.Name);
+            output = output.Replace(EventSourceEventMethodTemplate.Variable_ARGUMENT_CLR_TYPE, RenderEventSourceType(model) ?? model.AssignedCLRType ?? @"string");
             return output;
         }
 
         private static string RenderWriteEventMethodCallArgument(EventArgumentModel model, bool isPrivateMember = false)
         {
-            var output = isPrivateMember ? Template.Template_METHOD_CALL_PRIVATE_MEMBER_ARGUMENT : Template.Template_METHOD_CALL_PASSTHROUGH_ARGUMENT;
-            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
+            var output = isPrivateMember ? EventSourceEventMethodTemplate.Template_METHOD_CALL_PRIVATE_MEMBER_ARGUMENT : EventSourceEventMethodTemplate.Template_METHOD_CALL_PASSTHROUGH_ARGUMENT;
+            output = output.Replace(EventSourceEventMethodTemplate.Variable_ARGUMENT_NAME, model.Name);
             return output;
         }
 
         protected string Render(EventModel model)
         {
-            var outputEventMethod = Template.Template_EVENT_METHOD;
-            outputEventMethod = outputEventMethod.Replace(Template.Variable_EVENT_NAME, model.Name);
-            outputEventMethod = outputEventMethod.Replace(Template.Variable_EVENT_ID, model.Id.ToString());
-            outputEventMethod = outputEventMethod.Replace(Template.Variable_EVENT_LEVEL, model.Level.ToString());
+            var outputEventMethod = EventSourceEventMethodTemplate.Template_EVENT_METHOD;
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_NAME, model.Name);
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_ID, model.Id.ToString());
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_LEVEL, model.Level.ToString());
 
             var keywords = new ListBuilder("", " | ", "");
             foreach (var keyword in model.Keywords ?? new KeywordModel[] { })
@@ -34,12 +35,20 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 keywords.Append($"Keywords.{keyword.Name}");
             }
             var keywordsDeclaration = (keywords.Length > 0) ? $", Keywords = {keywords}" : "";
-            outputEventMethod = outputEventMethod.Replace(Template.Variable_EVENT_KEYWORDS_DECLARATION, keywordsDeclaration);
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_KEYWORDS_DECLARATION, keywordsDeclaration);
+
+            var opCode = (string)null;
+            if (model.OpCode != null)
+            {
+                opCode = model.OpCode.ToString();
+            }
+            var opCodeDeclaration = (opCode != null) ? $", Opcode = EventOpcode.{opCode}" : "";
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_OPCODE_DECLARATION, opCodeDeclaration);
 
             var eventMethodArgumentsDeclarationBuilder = new EventArgumentsListBuilder(
-                RenderEventMethodArgument, Template.Template_EVENT_METHOD_ARGUMENT_DELIMITER);
+                RenderEventMethodArgument, EventSourceEventMethodTemplate.Template_EVENT_METHOD_ARGUMENT_DELIMITER);
             var writeEventMethodCallArgument = new EventArgumentsListBuilder(
-                (arg) => RenderWriteEventMethodCallArgument(arg), Template.Template_EVENT_METHOD_CALL_ARGUMENT_DELIMITER);
+                (arg) => RenderWriteEventMethodCallArgument(arg), EventSourceEventMethodTemplate.Template_EVENT_METHOD_CALL_ARGUMENT_DELIMITER);
             writeEventMethodCallArgument.Append($"{model.Name}EventId");
 
             foreach (var argument in model.GetAllArgumentsExpanded())
@@ -48,11 +57,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 writeEventMethodCallArgument.Append(argument);
             }
 
-            outputEventMethod = outputEventMethod.Replace(Template.Variable_EVENT_METHOD_ACCESS, model.HasComplexArguments ? "private" : "public");
-            outputEventMethod = outputEventMethod.Replace(Template.Variable_EVENT_METHOD_ARGUMENTS, eventMethodArgumentsDeclarationBuilder.ToString());
-            outputEventMethod = outputEventMethod.Replace(Template.Variable_WRITEEVENT_CALL_ARGUMENTS, writeEventMethodCallArgument.ToString());
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_METHOD_ACCESS, model.HasComplexArguments ? "private" : "public");
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_METHOD_ARGUMENTS, eventMethodArgumentsDeclarationBuilder.ToString());
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_WRITEEVENT_CALL_ARGUMENTS, writeEventMethodCallArgument.ToString());
 
-            outputEventMethod = outputEventMethod.Replace(Template.Variable_EVENT_MESSAGE_FORMATTER, model.MessageFormatter);
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_MESSAGE_FORMATTER, model.MessageFormatter);
 
             return outputEventMethod;
         }

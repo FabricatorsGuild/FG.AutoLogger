@@ -108,5 +108,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
         {
             return $"{that?.Substring(0, 1).ToUpperInvariant()}{that?.Substring(1)}";
         }
+
+        public static string GetLowerCasedInitial(this string that)
+        {
+            return $"{that?.Substring(0, 1).ToLowerInvariant()}{that?.Substring(1)}";
+        }
     }
 }

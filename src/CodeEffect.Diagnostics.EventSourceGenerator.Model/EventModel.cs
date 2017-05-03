@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
@@ -13,11 +14,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public EventArgumentModel[] Arguments { get; set; }
         public System.Diagnostics.Tracing.EventLevel Level { get; set; }
         public KeywordModel[] Keywords { get; set; }
+        public EventOpcode? OpCode { get; set; }
         public string MessageFormatter { get; set; }
         [JsonIgnore]
         public bool HasComplexArguments { get; set; }
+        // ReSharper disable once MemberCanBePrivate.Global - Declared in json template
         public EventArgumentModel[] ImplicitArguments { get; set; }
-
+        [JsonIgnore]
+        public EventModel CorrelatesTo { get; set; }
         public void InsertImplicitArguments(EventArgumentModel[] implicitArguments)
         {
             this.ImplicitArguments = new EventArgumentModel[implicitArguments.Length];

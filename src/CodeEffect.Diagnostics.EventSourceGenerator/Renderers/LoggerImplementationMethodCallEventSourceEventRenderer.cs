@@ -1,5 +1,6 @@
 using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
@@ -8,8 +9,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
     {
         private string RenderEventSourceEventMethodCallArgument(EventArgumentModel model)
         {
-            var output = model.IsImplicit ? Template.Template_METHOD_CALL_PRIVATE_MEMBER_ARGUMENT : Template.Template_METHOD_CALL_PASSTHROUGH_ARGUMENT;
-            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
+            var output = model.IsImplicit ? LoggerImplementationMethodCallEventSourceEventTemplate.Template_METHOD_CALL_PRIVATE_MEMBER_ARGUMENT : LoggerImplementationMethodCallEventSourceEventTemplate.Template_METHOD_CALL_PASSTHROUGH_ARGUMENT;
+            output = output.Replace(LoggerImplementationMethodCallEventSourceEventTemplate.Template_ARGUMENT_NAME, model.Name);
             return output;
         }
 
@@ -35,18 +36,18 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 return "";
             }
 
-            var output = Template.Template_LOGGER_METHOD_CALL_EVENTSOURCE_EVENT;
-            output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
-            output = output.Replace(Template.Variable_LOGGER_METHOD_NAME, model.Name);
+            var output = LoggerImplementationMethodCallEventSourceEventTemplate.Template_LOGGER_METHOD_CALL_EVENTSOURCE_EVENT;
+            output = output.Replace(LoggerImplementationMethodCallEventSourceEventTemplate.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
+            output = output.Replace(LoggerImplementationMethodCallEventSourceEventTemplate.Variable_LOGGER_METHOD_NAME, model.Name);
 
             var callArguments = new EventArgumentsListBuilder(
-                RenderEventSourceEventMethodCallArgument, Template.Template_LOGGER_CALL_ARGUMENTS_DELIMITER);
+                RenderEventSourceEventMethodCallArgument, LoggerImplementationMethodCallEventSourceEventTemplate.Template_LOGGER_CALL_ARGUMENTS_DELIMITER);
 
             foreach (var argument in model.GetAllArguments())
             {
                 callArguments.Append(argument);
             }
-            output = output.Replace(Template.Variable_LOGGER_METHOD_IMPLEMENTATION_CALL_ARGUMENTS, callArguments.ToString());
+            output = output.Replace(LoggerImplementationMethodCallEventSourceEventTemplate.Variable_LOGGER_METHOD_IMPLEMENTATION_CALL_ARGUMENTS, callArguments.ToString());
 
             return output;
         }

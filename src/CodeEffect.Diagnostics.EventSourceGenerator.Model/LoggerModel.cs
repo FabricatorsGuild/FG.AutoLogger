@@ -41,13 +41,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         {
             var events = new List<EventModel>();
             this.LoggerNamespace = loggerTemplate.Namespace;
+            this.Keyword = loggerTemplate.Name.Substring(1).Replace("Logger", "");
             foreach (var templateEvent in loggerTemplate.Events)
             {
                 events.Add(templateEvent);
             }
             this.Events = events.ToArray();
             this.Include = loggerTemplate.Include;
-            this.Keyword = loggerTemplate.Name.Substring(1).Replace("Logger", "");
         }
     }
 }

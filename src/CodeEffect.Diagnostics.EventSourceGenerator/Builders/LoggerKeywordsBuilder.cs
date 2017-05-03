@@ -21,12 +21,18 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var allKeywords = new List<KeywordModel>();
             allKeywords.AddRange(eventSource.Keywords);
             var nextKeyword = allKeywords.Any() ? allKeywords.Max(kw => kw.Value ?? 1) * 2 : 1;
+            var keyword = new KeywordModel() {Name = loggerKeyword, Value = nextKeyword};
             if (eventSource.Keywords.Find(loggerKeyword) == null)
             {
-                allKeywords.Add(new KeywordModel() { Name = loggerKeyword, Value = nextKeyword });
+                allKeywords.Add(keyword);
             }
 
             eventSource.Keywords = allKeywords.ToArray();
+
+            foreach (var loggerEvent in model.Events)
+            {
+                loggerEvent.Keywords = loggerEvent.Keywords.Add(keyword);
+            }
         }
     }
 }

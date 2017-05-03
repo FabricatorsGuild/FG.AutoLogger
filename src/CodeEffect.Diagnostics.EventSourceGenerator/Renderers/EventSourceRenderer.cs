@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
@@ -16,11 +17,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 return;
             }
 
-            var output = Template.Template_EVENTSOURCE_CLASS_DECLARATION;
-            output = output.Replace(Template.Variable_SOURCE_FILE_NAME, eventSourceModel.SourceFilePath);
-            output = output.Replace(Template.Variable_EVENTSOURCE_NAME, eventSourceModel.ProviderName);
-            output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
-            output = output.Replace(Template.Variable_NAMESPACE_DECLARATION, eventSourceModel.Namespace);
+            var output = EventSourceTemplate.Template_EVENTSOURCE_CLASS_DECLARATION;
+            output = output.Replace(EventSourceTemplate.Variable_SOURCE_FILE_NAME, eventSourceModel.SourceFilePath);
+            output = output.Replace(EventSourceTemplate.Variable_EVENTSOURCE_NAME, eventSourceModel.ProviderName);
+            output = output.Replace(EventSourceTemplate.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
+            output = output.Replace(EventSourceTemplate.Variable_NAMESPACE_DECLARATION, eventSourceModel.Namespace);
 
             // Render all events
             var events = new StringBuilder();
@@ -37,7 +38,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                     events.AppendLine(renderer.Render(project, eventSourceModel, eventSourceEvent));
                 }
             }
-            output = output.Replace(Template.Variable_EVENTS_DECLARATION, events.ToString());
+            output = output.Replace(EventSourceTemplate.Variable_EVENTS_DECLARATION, events.ToString());
 
 
             // Render all keywords
@@ -53,7 +54,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                     keywords.AppendLine(renderer.Render(project, eventSourceModel, keyword));
                 }
             }
-            output = output.Replace(Template.Variable_KEYWORDS_DECLARATION, keywords.ToString());
+            output = output.Replace(EventSourceTemplate.Variable_KEYWORDS_DECLARATION, keywords.ToString());
 
 
             // Render extensions
@@ -72,15 +73,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                     }
                 }
 
-                var extensionMethod = Template.Template_EXTENSIONS_DECLARATION;
-                extensionMethod = extensionMethod.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
-                extensionMethod = extensionMethod.Replace(Template.Variable_EXTENSION_METHODS_DECLARATION, extensions.ToString());
+                var extensionMethod = EventSourceTemplate.Template_EXTENSIONS_DECLARATION;
+                extensionMethod = extensionMethod.Replace(EventSourceTemplate.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
+                extensionMethod = extensionMethod.Replace(EventSourceTemplate.Variable_EXTENSION_METHODS_DECLARATION, extensions.ToString());
 
-                output = output.Replace(Template.Variable_EXTENSIONS_DECLARATION, extensionMethod);
+                output = output.Replace(EventSourceTemplate.Variable_EXTENSIONS_DECLARATION, extensionMethod);
             }
             else
             {
-                output = output.Replace(Template.Variable_EXTENSIONS_DECLARATION, "");
+                output = output.Replace(EventSourceTemplate.Variable_EXTENSIONS_DECLARATION, "");
 
             }
 
