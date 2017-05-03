@@ -42,7 +42,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             {
                 opCode = model.OpCode.ToString();
             }
-            var opCodeDeclaration = (opCode != null) ? $", OpCode = EventOpcode.{opCode}" : "";
+            var opCodeDeclaration = (opCode != null) ? $", Opcode = EventOpcode.{opCode}" : "";
             outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_OPCODE_DECLARATION, opCodeDeclaration);
 
             var eventMethodArgumentsDeclarationBuilder = new EventArgumentsListBuilder(

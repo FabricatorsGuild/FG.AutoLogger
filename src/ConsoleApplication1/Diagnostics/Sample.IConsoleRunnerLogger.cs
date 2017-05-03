@@ -11,66 +11,85 @@ namespace ConsoleApplication1.Diagnostics
 	internal sealed partial class Sample
 	{
 
-		private const int RunnerCreatedEventId = 3001;
+		private const int RunnerCreatedEventId = 2001;
 
 		[Event(RunnerCreatedEventId, Level = EventLevel.LogAlways, Message = "Runner Created", Keywords = Keywords.ConsoleRunner)]
 		public void RunnerCreated(
-			)
+			int processId, 
+			string machineName)
 		{
 			WriteEvent(
-				RunnerCreatedEventId);
+				RunnerCreatedEventId, 
+				processId, 
+				machineName);
 		}
 
 
-		private const int RunnerDestroyedEventId = 6002;
+		private const int RunnerDestroyedEventId = 4002;
 
 		[Event(RunnerDestroyedEventId, Level = EventLevel.LogAlways, Message = "Runner Destroyed", Keywords = Keywords.ConsoleRunner)]
 		public void RunnerDestroyed(
-			)
+			int processId, 
+			string machineName)
 		{
 			WriteEvent(
-				RunnerDestroyedEventId);
+				RunnerDestroyedEventId, 
+				processId, 
+				machineName);
 		}
 
 
-		private const int WaitingForKeyPressEventId = 9003;
+		private const int WaitingForKeyPressEventId = 6003;
 
 		[Event(WaitingForKeyPressEventId, Level = EventLevel.LogAlways, Message = "Waiting For Key Press", Keywords = Keywords.ConsoleRunner)]
 		public void WaitingForKeyPress(
-			)
+			int processId, 
+			string machineName)
 		{
 			WriteEvent(
-				WaitingForKeyPressEventId);
+				WaitingForKeyPressEventId, 
+				processId, 
+				machineName);
 		}
 
 
-		private const int KeyPressedEventId = 12004;
+		private const int KeyPressedEventId = 8004;
 
-		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {0}", Keywords = Keywords.ConsoleRunner)]
+		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {2}", Keywords = Keywords.ConsoleRunner)]
 		private void KeyPressed(
+			int processId, 
+			string machineName, 
 			string key)
 		{
 			WriteEvent(
 				KeyPressedEventId, 
+				processId, 
+				machineName, 
 				key);
 		}
 
 		[NonEvent]
 		public void KeyPressed(
+			int processId, 
+			string machineName, 
 			System.ConsoleKey key)
 		{
 			if (this.IsEnabled())
 			{
 				KeyPressed(
+					processId, 
+					Environment.MachineName, 
 					key.ToString());
 			}
 		}
 
 
-		private const int UnsupportedKeyErrorEventId = 15005;
+		private const int UnsupportedKeyErrorEventId = 10005;
 
-		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{0}", Keywords = Keywords.ConsoleRunner | Keywords.Error)]
+		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.ConsoleRunner | Keywords.Error)]
 		private void UnsupportedKeyError(
+			int processId, 
+			string machineName, 
 			string message, 
 			string source, 
 			string exceptionTypeName, 
@@ -78,6 +97,8 @@ namespace ConsoleApplication1.Diagnostics
 		{
 			WriteEvent(
 				UnsupportedKeyErrorEventId, 
+				processId, 
+				machineName, 
 				message, 
 				source, 
 				exceptionTypeName, 
@@ -86,11 +107,15 @@ namespace ConsoleApplication1.Diagnostics
 
 		[NonEvent]
 		public void UnsupportedKeyError(
+			int processId, 
+			string machineName, 
 			System.Exception ex)
 		{
 			if (this.IsEnabled())
 			{
 				UnsupportedKeyError(
+					processId, 
+					Environment.MachineName, 
 					ex.Message, 
 					ex.Source, 
 					ex.GetType().FullName, 
@@ -99,46 +124,60 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int StartLoopEventId = 18006;
+		private const int StartLoopEventId = 12006;
 
-		[Event(StartLoopEventId, Level = EventLevel.LogAlways, Message = "Start Loop", Keywords = Keywords.ConsoleRunner, OpCode = EventOpcode.Start)]
+		[Event(StartLoopEventId, Level = EventLevel.LogAlways, Message = "Start Loop", Keywords = Keywords.ConsoleRunner, Opcode = EventOpcode.Start)]
 		public void StartLoop(
-			)
+			int processId, 
+			string machineName)
 		{
 			WriteEvent(
-				StartLoopEventId);
+				StartLoopEventId, 
+				processId, 
+				machineName);
 		}
 
 
-		private const int StopLoopEventId = 21007;
+		private const int StopLoopEventId = 14007;
 
-		[Event(StopLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Loop", Keywords = Keywords.ConsoleRunner, OpCode = EventOpcode.Stop)]
+		[Event(StopLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Loop", Keywords = Keywords.ConsoleRunner, Opcode = EventOpcode.Stop)]
 		public void StopLoop(
-			)
+			int processId, 
+			string machineName)
 		{
 			WriteEvent(
-				StopLoopEventId);
+				StopLoopEventId, 
+				processId, 
+				machineName);
 		}
 
 
-		private const int RandomIntsGeneratedEventId = 24008;
+		private const int RandomIntsGeneratedEventId = 16008;
 
-		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {0}", Keywords = Keywords.ConsoleRunner)]
+		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {2}", Keywords = Keywords.ConsoleRunner)]
 		private void RandomIntsGenerated(
+			int processId, 
+			string machineName, 
 			string values)
 		{
 			WriteEvent(
 				RandomIntsGeneratedEventId, 
+				processId, 
+				machineName, 
 				values);
 		}
 
 		[NonEvent]
 		public void RandomIntsGenerated(
+			int processId, 
+			string machineName, 
 			int[] values)
 		{
 			if (this.IsEnabled())
 			{
 				RandomIntsGenerated(
+					processId, 
+					Environment.MachineName, 
 					values.ToString());
 			}
 		}
