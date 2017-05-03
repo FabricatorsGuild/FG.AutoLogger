@@ -9,76 +9,100 @@ namespace ConsoleApplication1.Diagnostics
 {
 	internal sealed class ConsoleRunnerLogger : IConsoleRunnerLogger
 	{
-		
+		private readonly int _processId;
+		private readonly string _machineName;
 
 		public ConsoleRunnerLogger(
-			)
+			int processId,
+			string machineName)
 		{
-			
+			_processId = processId;
+			_machineName = machineName;
 		}
 
 		public void RunnerCreated(
 			)
 		{
 			Sample.Current.RunnerCreated(
-				
+				_processId, 
+				_machineName
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: RunnerCreated");
+			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: RunnerCreated");
            
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
     
 		}
+
 
 
 		public void RunnerDestroyed(
 			)
 		{
 			Sample.Current.RunnerDestroyed(
-				
+				_processId, 
+				_machineName
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: RunnerDestroyed");
+			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: RunnerDestroyed");
            
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
     
 		}
+
 
 
 		public void WaitingForKeyPress(
 			)
 		{
 			Sample.Current.WaitingForKeyPress(
-				
+				_processId, 
+				_machineName
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: WaitingForKeyPress");
+			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: WaitingForKeyPress");
            
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
     
 		}
+
 
 
 		public void KeyPressed(
 			System.ConsoleKey key)
 		{
 			Sample.Current.KeyPressed(
+				_processId, 
+				_machineName, 
 				key
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: KeyPressed");
+			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: KeyPressed");
            
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tkey.ToString():\t{key.ToString()}");
     
 		}
+
 
 
 		public void UnsupportedKeyError(
 			System.Exception ex)
 		{
 			Sample.Current.UnsupportedKeyError(
+				_processId, 
+				_machineName, 
 				ex
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[Error] ERR: UnsupportedKeyError");
+			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner, Error] ERR: UnsupportedKeyError");
            
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tex.Message:\t{ex.Message}");
 			System.Diagnostics.Debug.WriteLine($"\tex.Source:\t{ex.Source}");
 			System.Diagnostics.Debug.WriteLine($"\tex.GetType().FullName:\t{ex.GetType().FullName}");
@@ -87,44 +111,61 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
+
 		public void StartLoop(
 			)
 		{
 			Sample.Current.StartLoop(
-				
+				_processId, 
+				_machineName
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: StartLoop");
+			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: StartLoop");
            
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+			_loopStopwatch.Restart();
     
 		}
+
+		private System.Diagnostics.Stopwatch _loopStopwatch = new System.Diagnostics.Stopwatch();
 
 
 		public void StopLoop(
 			)
 		{
 			Sample.Current.StopLoop(
-				
+				_processId, 
+				_machineName
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: StopLoop");
+			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: StopLoop");
            
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+			_loopStopwatch.Stop();
     
 		}
+
 
 
 		public void RandomIntsGenerated(
 			int[] values)
 		{
 			Sample.Current.RandomIntsGenerated(
+				_processId, 
+				_machineName, 
 				values
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[] ERR: RandomIntsGenerated");
+			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: RandomIntsGenerated");
            
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tvalues.ToString():\t{values.ToString()}");
     
 		}
+
 
 
 	}

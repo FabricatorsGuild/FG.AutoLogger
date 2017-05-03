@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
@@ -29,11 +30,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 return;
             }
 
-            var output = Template.Template_LOGGER_PARTIAL_CLASS_DECLARATION;
-            output = output.Replace(Template.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
-            output = output.Replace(Template.Variable_NAMESPACE_DECLARATION, eventSourceModel.Namespace);
-            output = output.Replace(Template.Variable_EVENTSOURCE_PARTIAL_FILE_NAME, loggerModel.Name);
-            output = output.Replace(Template.Variable_LOGGER_SOURCE_FILE_NAME, loggerModel.SourceFileName);
+            var output = LoggerEventSourcePartialTemplate.Template_LOGGER_PARTIAL_CLASS_DECLARATION;
+            output = output.Replace(LoggerEventSourcePartialTemplate.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
+            output = output.Replace(LoggerEventSourcePartialTemplate.Variable_NAMESPACE_DECLARATION, eventSourceModel.Namespace);
+            output = output.Replace(LoggerEventSourcePartialTemplate.Variable_EVENTSOURCE_PARTIAL_FILE_NAME, loggerModel.Name);
+            output = output.Replace(LoggerEventSourcePartialTemplate.Variable_LOGGER_SOURCE_FILE_NAME, loggerModel.SourceFileName);
 
 
             var logger = new StringBuilder();
@@ -52,7 +53,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 }
             }
 
-            output = output.Replace(Template.Variable_LOGGER_EVENTS_DECLARATION, logger.ToString());
+            output = output.Replace(LoggerEventSourcePartialTemplate.Variable_LOGGER_EVENTS_DECLARATION, logger.ToString());
 
             model.Output = output;
         }

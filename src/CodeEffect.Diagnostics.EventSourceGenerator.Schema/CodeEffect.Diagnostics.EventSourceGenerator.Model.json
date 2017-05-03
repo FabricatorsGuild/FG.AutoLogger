@@ -217,7 +217,7 @@
         "Keywords": {
           "type": [
             "array",
-            "null"
+            "string"
           ],
           "items": {
             "$ref": "#/definitions/KeywordModel"

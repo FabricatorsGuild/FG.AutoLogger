@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text;
 using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
@@ -10,26 +11,26 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
     {
         private static string RenderPrivateDeclaration(EventArgumentModel model)
         {
-            var output = Template.Template_PRIVATE_MEMBER_DECLARATION;
-            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
-            output = output.Replace(Template.Template_ARGUMENT_CLR_TYPE, model.CLRType);
+            var output = LoggerImplementationTemplate.Template_PRIVATE_MEMBER_DECLARATION;
+            output = output.Replace(LoggerImplementationTemplate.Template_ARGUMENT_NAME, model.Name);
+            output = output.Replace(LoggerImplementationTemplate.Template_ARGUMENT_CLR_TYPE, model.CLRType);
 
             return output;
         }
 
         private static string RenderPrivateAssignment(EventArgumentModel model)
         {
-            var output = Template.Template_PRIVATE_MEMBER_ASSIGNMENT;
-            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
+            var output = LoggerImplementationTemplate.Template_PRIVATE_MEMBER_ASSIGNMENT;
+            output = output.Replace(LoggerImplementationTemplate.Template_ARGUMENT_NAME, model.Name);
 
             return output;
         }
 
         private static string RenderMethodArgument(EventArgumentModel model)
         {
-            var output = Template.Template_METHOD_ARGUMENT_DECLARATION;
-            output = output.Replace(Template.Template_ARGUMENT_NAME, model.Name);
-            output = output.Replace(Template.Template_ARGUMENT_CLR_TYPE, model.CLRType);
+            var output = LoggerImplementationTemplate.Template_METHOD_ARGUMENT_DECLARATION;
+            output = output.Replace(LoggerImplementationTemplate.Template_ARGUMENT_NAME, model.Name);
+            output = output.Replace(LoggerImplementationTemplate.Template_ARGUMENT_CLR_TYPE, model.CLRType);
 
             return output;
         }
@@ -57,19 +58,19 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }
 
 
-            var output = Template.Template_LOGGER_CLASS_DECLARATION;
-            output = output.Replace(Template.Variable_LOGGER_SOURCE_FILE_NAME, loggerModel.SourceFileName);
-            output = output.Replace(Template.Variable_NAMESPACE_DECLARATION, loggerModel.LoggerNamespace);
-            output = output.Replace(Template.Variable_LOGGER_NAME, loggerModel.Name);
-            output = output.Replace(Template.Variable_LOGGER_CLASS_NAME, loggerModel.ClassName);
-            output = output.Replace(Template.Variable_EVENTSOURCE_NAMESPACE, eventSourceModel.Namespace);
+            var output = LoggerImplementationTemplate.Template_LOGGER_CLASS_DECLARATION;
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_SOURCE_FILE_NAME, loggerModel.SourceFileName);
+            output = output.Replace(LoggerImplementationTemplate.Variable_NAMESPACE_DECLARATION, loggerModel.LoggerNamespace);
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_NAME, loggerModel.Name);
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_CLASS_NAME, loggerModel.ClassName);
+            output = output.Replace(LoggerImplementationTemplate.Variable_EVENTSOURCE_NAMESPACE, eventSourceModel.Namespace);
 
             var memberDeclarations = new EventArgumentsListBuilder(
-                RenderPrivateDeclaration, Template.Template_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION_DELIMITER);
+                RenderPrivateDeclaration, LoggerImplementationTemplate.Template_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION_DELIMITER);
             var constructorMemberAssignments = new EventArgumentsListBuilder(
-                RenderPrivateAssignment, Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT_DELIMITER);
+                RenderPrivateAssignment, LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT_DELIMITER);
             var constructorArguments = new EventArgumentsListBuilder(
-                RenderMethodArgument, Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_METHOD_CONSTRUCTOR_DELIMITER);
+                RenderMethodArgument, LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_METHOD_CONSTRUCTOR_DELIMITER);
             foreach (var argument in loggerModel.ImplicitArguments)
             {
                 memberDeclarations.Append(argument);
@@ -85,9 +86,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 memberDeclarations.Append(renderer.Render(project, model));
             }
 
-            output = output.Replace(Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION, memberDeclarations.ToString());
-            output = output.Replace(Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT, constructorMemberAssignments.ToString());
-            output = output.Replace(Template.Variable_LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION, constructorArguments.ToString());
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION, memberDeclarations.ToString());
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT, constructorMemberAssignments.ToString());
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION, constructorArguments.ToString());
 
             var logger = new StringBuilder();
             var loggerEventRenderers = new ILoggerImplementationEventRenderer[]
@@ -104,7 +105,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 }
             }
 
-            output = output.Replace(Template.Variable_LOGGER_IMPLEMENTATION, logger.ToString());
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLEMENTATION, logger.ToString());
 
             model.Output = output;
         }

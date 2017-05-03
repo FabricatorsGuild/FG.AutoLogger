@@ -102,6 +102,22 @@
           "Assignment": "Environment.MachineName"
         }
       ]
+    },
+    {
+      "Name": "IConsoleRunnerLogger",
+      "StartId": 2000,
+      "ImplicitArguments": [
+        {
+          "Name": "processId",
+          "Type": "int"
+        },
+        {
+          "Name": "machineName",
+          "Type": "string",
+          "Assignment": "Environment.MachineName"
+        }
+      ],
+      "OverrideArguments": []
     }
   ],
   "Events": [

@@ -29,4 +29,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             Build(project, eventSourceProjectItem, model);
         }
     }
+
+    
 }
