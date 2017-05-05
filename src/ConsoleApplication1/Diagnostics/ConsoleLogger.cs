@@ -4,6 +4,10 @@
 *******************************************************************************************/
 using System;
 using ConsoleApplication1.Loggers;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility;
+
 
 namespace ConsoleApplication1.Diagnostics
 {
@@ -12,6 +16,7 @@ namespace ConsoleApplication1.Diagnostics
 		private readonly int _processId;
 		private readonly string _machineName;
 		// Hello from extension
+		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public ConsoleLogger(
 			int processId,
@@ -20,6 +25,10 @@ namespace ConsoleApplication1.Diagnostics
 			_processId = processId;
 			_machineName = machineName;
 			// Do stuff in the constructor
+			_telemetryClient.Context.User.Id = Environment.UserName;
+            _telemetryClient.Context.Session.Id = Guid.NewGuid().ToString();
+            _telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
+
 		}
 
 		public void SayHello(
@@ -36,8 +45,17 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
+			_telemetryClient.TrackEvent(
+	            nameof(SayHello),
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+	                {"processId", _processId.ToString()},
+                    {"machineName", _machineName},
+                    {"message", message}
+	            });
     
 		}
+
 
 
 
@@ -55,8 +73,17 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
+			_telemetryClient.TrackEvent(
+	            nameof(Message),
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+	                {"processId", _processId.ToString()},
+                    {"machineName", _machineName},
+                    {"message", message}
+	            });
     
 		}
+
 
 
 
@@ -77,8 +104,21 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\texception.Source:\t{exception.Source}");
 			System.Diagnostics.Debug.WriteLine($"\texception.GetType().FullName:\t{exception.GetType().FullName}");
 			System.Diagnostics.Debug.WriteLine($"\texception.AsJson():\t{exception.AsJson()}");
+			_telemetryClient.TrackException(
+	            exception,
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+                    { "Name", "Error" },
+	                {"processId", _processId.ToString()},
+                    {"machineName", _machineName},
+                    {"messagestring", exception.Message},
+                    {"sourcestring", exception.Source},
+                    {"exceptionTypeNamestring", exception.GetType().FullName},
+                    {"exceptionstring", exception.AsJson()}
+	            });
     
 		}
+
 
 
 
@@ -99,8 +139,18 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tgoodbye:\t{goodbye}");
 			System.Diagnostics.Debug.WriteLine($"\tnightTime.ToString():\t{nightTime.ToString()}");
+			_telemetryClient.TrackEvent(
+	            nameof(SayGoodbye),
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+	                {"processId", _processId.ToString()},
+                    {"machineName", _machineName},
+                    {"goodbye", goodbye},
+                    {"nightTimestring", nightTime.ToString()}
+	            });
     
 		}
+
 
 
 
@@ -118,8 +168,17 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tspecial.ToString():\t{special.ToString()}");
+			_telemetryClient.TrackEvent(
+	            nameof(Special),
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+	                {"processId", _processId.ToString()},
+                    {"machineName", _machineName},
+                    {"specialstring", special.ToString()}
+	            });
     
 		}
+
 
 
 

@@ -1,9 +1,8 @@
-﻿using System;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using System;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
-    internal class EventArgumentsListBuilder : ListBuilder
+    public class EventArgumentsListBuilder : ListBuilder
     {
         private readonly Func<EventArgumentModel, string> _renderer;
 

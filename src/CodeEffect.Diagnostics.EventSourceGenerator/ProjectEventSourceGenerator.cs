@@ -24,13 +24,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             };
             foreach (var builder in builders)
             {
-                SetLoggers(builder as IWithLogging);
+                PassAlongLoggers(builder as IWithLogging);
                 builder.Build(project);
             }
             // Do this in step 2 as project extensions are not loaded until above.
             foreach (var builder in project.GetExtensions<IProjectBuilder>())
             {
-                SetLoggers(builder as IWithLogging);
+                PassAlongLoggers(builder as IWithLogging);
                 builder.Build(project);
             }
 
@@ -44,7 +44,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             };
             foreach (var renderer in renderers.Union(project.GetExtensions<IProjectRenderer>()))
             {
-                SetLoggers(renderer as IWithLogging);
+                PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project);
             }
 

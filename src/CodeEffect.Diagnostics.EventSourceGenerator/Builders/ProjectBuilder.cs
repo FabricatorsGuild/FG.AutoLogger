@@ -46,6 +46,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     });
                     hasEventSource = true;
                 }
+
+                var platformProperty = project.Properties.FirstOrDefault(p => p.Name == "PlatformTarget")?.EvaluatedValue ?? "AnyCPU";
+                model.Platform = platformProperty;
+
                 foreach (var projectItem in project.Items.Where(item =>
                     item.EvaluatedInclude.Matches(@"(^|\\)I[^\\]*Logger.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
                     && item.ItemType == "Compile"))
