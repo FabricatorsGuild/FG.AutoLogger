@@ -1,5 +1,4 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
@@ -26,7 +25,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             foreach (var loggerProjectItem in loggerProjectItems)
             {
                 LogMessage($"Found Logger file {loggerProjectItem.Name}");
-                var foundLoggerTemplates = CompileAndEvaluateInterface(loggerProjectItem, referenceProjectItems);
+                var foundLoggerTemplates = CompileAndEvaluateInterface(loggerProjectItem, referenceProjectItems, model.Platform);
                 var updateExisting = true;
                 foreach (var foundLoggerTemplate in foundLoggerTemplates)
                 {
@@ -54,68 +53,55 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             model.Loggers = loggerTemplates.ToArray();            
         }
 
-        private LoggerTemplateModel[] CompileAndEvaluateInterface(ProjectItem<LoggerTemplateModel> projectItem, IEnumerable<ProjectItem> referenceItems)
+        private LoggerTemplateModel[] CompileAndEvaluateInterface(ProjectItem<LoggerTemplateModel> projectItem, IEnumerable<ProjectItem> referenceItems, string platform)
         {
             LogMessage($"Compiling possible logger file {projectItem.Include}");
 
             var loggers = new List<LoggerTemplateModel>();
             try
             {
-                var parameters = new CompilerParameters();
+                var complierHelper = new ComplierHelper();
+                this.PassAlongLoggers(complierHelper);
 
-                foreach (var referenceItem in referenceItems)
+                var compiledAssembly = complierHelper.Compile(projectItem, referenceItems, platform);
+                if (compiledAssembly != null)
                 {
-                    parameters.ReferencedAssemblies.Add(referenceItem.Name);
-                }
-
-                //parameters.ReferencedAssemblies.Add("System.dll");
-                parameters.GenerateExecutable = false;
-                parameters.GenerateInMemory = true;
-
-                parameters.IncludeDebugInformation = false;
-                var cSharpCodeProvider = new CSharpCodeProvider();
-                //var cSharpCodeProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
-                var compilerResults = cSharpCodeProvider.CompileAssemblyFromFile(parameters, projectItem.Name);
-                foreach (CompilerError compilerResultsError in compilerResults.Errors)
-                {
-                    LogWarning(compilerResultsError.ToString());
-                }
-
-                var types = compilerResults.CompiledAssembly.GetTypes();
-                foreach (
-                    var type in
-                    types.Where(t => t.IsInterface && t.Name.Matches(@"^I[^\\]*Logger", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)))
-                {
-                    var include = projectItem.Include.Replace(projectItem.Name, type.Name);
-                    var eventSourceLogger = new LoggerTemplateModel()
+                    var types = compiledAssembly.GetTypes();
+                    foreach (
+                        var type in
+                        types.Where(t => t.IsInterface && t.Name.Matches(@"^I[^\\]*Logger", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)))
                     {
-                        Name = type.Name,
-                        Namespace = type.Namespace,
-                        Include = include
-                    };
-                    var eventSourceEvents = new List<EventModel>();
-                    foreach (var methodInfo in type.GetMethods())
-                    {
-                        var eventSourceEventArguments = new List<EventArgumentModel>();
-                        var eventSourceEvent = new EventModel()
+                        var include = projectItem.Include.Replace(projectItem.Name, type.Name);
+                        var eventSourceLogger = new LoggerTemplateModel()
                         {
-                            Name = methodInfo.Name,
+                            Name = type.Name,
+                            Namespace = type.Namespace,
+                            Include = include
                         };
-                        foreach (var parameterInfo in methodInfo.GetParameters())
+                        var eventSourceEvents = new List<EventModel>();
+                        foreach (var methodInfo in type.GetMethods())
                         {
-                            var typeString = parameterInfo.ParameterType.GetFriendlyName();
-                            eventSourceEventArguments.Add(new EventArgumentModel()
+                            var eventSourceEventArguments = new List<EventArgumentModel>();
+                            var eventSourceEvent = new EventModel()
                             {
-                                Name = parameterInfo.Name,
-                                Type = typeString,
-                            });
+                                Name = methodInfo.Name,
+                            };
+                            foreach (var parameterInfo in methodInfo.GetParameters())
+                            {
+                                var typeString = parameterInfo.ParameterType.GetFriendlyName();
+                                eventSourceEventArguments.Add(new EventArgumentModel()
+                                {
+                                    Name = parameterInfo.Name,
+                                    Type = typeString,
+                                });
+                            }
+                            eventSourceEvent.Arguments = eventSourceEventArguments.ToArray();
+                            eventSourceEvents.Add(eventSourceEvent);
                         }
-                        eventSourceEvent.Arguments = eventSourceEventArguments.ToArray();
-                        eventSourceEvents.Add(eventSourceEvent);
-                    }
 
-                    eventSourceLogger.Events = eventSourceEvents.ToArray();
-                    loggers.Add(eventSourceLogger);
+                        eventSourceLogger.Events = eventSourceEvents.ToArray();
+                        loggers.Add(eventSourceLogger);
+                    }
                 }
             }
             catch (Exception ex)
