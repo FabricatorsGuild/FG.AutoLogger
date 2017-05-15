@@ -24,9 +24,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
             foreach (var argument in model?.ImplicitArguments)
             {
-                foreach (var eventArgumentBuilder in eventArgumentBuilders)
+                foreach (var builder in eventArgumentBuilders)
                 {
-                    eventArgumentBuilder.Build(project, eventSourceProjectItem, argument);
+                    PassAlongLoggers(builder as IWithLogging);
+                    builder.Build(project, eventSourceProjectItem, argument);
                 }
             }
         }

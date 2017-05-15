@@ -13,15 +13,18 @@ namespace ConsoleApplication1.Diagnostics
 {
 	internal sealed class ConsoleLogger : IConsoleLogger
 	{
+		private readonly Microsoft.ServiceFabric.Actors.ActorId _actorId;
 		private readonly int _processId;
 		private readonly string _machineName;
 		// Hello from extension
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public ConsoleLogger(
+			Microsoft.ServiceFabric.Actors.ActorId actorId,
 			int processId,
 			string machineName)
 		{
+			_actorId = actorId;
 			_processId = processId;
 			_machineName = machineName;
 			// Do stuff in the constructor
@@ -35,6 +38,7 @@ namespace ConsoleApplication1.Diagnostics
 			string message)
 		{
 			Sample.Current.SayHello(
+				_actorId, 
 				_processId, 
 				_machineName, 
 				message
@@ -42,6 +46,7 @@ namespace ConsoleApplication1.Diagnostics
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayHello");
            
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
@@ -49,9 +54,10 @@ namespace ConsoleApplication1.Diagnostics
 	            nameof(SayHello),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"processId", _processId.ToString()},
-                    {"machineName", _machineName},
-                    {"message", message}
+	                {"Actor", _actorId.ToString()},
+                    {"ProcessId", _processId.ToString()},
+                    {"MachineName", Environment.MachineName},
+                    {"Message", message}
 	            });
     
 		}
@@ -63,6 +69,7 @@ namespace ConsoleApplication1.Diagnostics
 			string message)
 		{
 			Sample.Current.Message(
+				_actorId, 
 				_processId, 
 				_machineName, 
 				message
@@ -70,6 +77,7 @@ namespace ConsoleApplication1.Diagnostics
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Message");
            
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
@@ -77,9 +85,10 @@ namespace ConsoleApplication1.Diagnostics
 	            nameof(Message),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"processId", _processId.ToString()},
-                    {"machineName", _machineName},
-                    {"message", message}
+	                {"Actor", _actorId.ToString()},
+                    {"ProcessId", _processId.ToString()},
+                    {"MachineName", Environment.MachineName},
+                    {"Message", message}
 	            });
     
 		}
@@ -91,6 +100,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Exception exception)
 		{
 			Sample.Current.Error(
+				_actorId, 
 				_processId, 
 				_machineName, 
 				exception
@@ -98,6 +108,7 @@ namespace ConsoleApplication1.Diagnostics
 
 			System.Diagnostics.Debug.WriteLine($"[Console, Error] ERR: Error");
            
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\texception.Message:\t{exception.Message}");
@@ -109,12 +120,13 @@ namespace ConsoleApplication1.Diagnostics
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
                     { "Name", "Error" },
-	                {"processId", _processId.ToString()},
-                    {"machineName", _machineName},
-                    {"messagestring", exception.Message},
-                    {"sourcestring", exception.Source},
-                    {"exceptionTypeNamestring", exception.GetType().FullName},
-                    {"exceptionstring", exception.AsJson()}
+	                {"Actor", _actorId.ToString()},
+                    {"ProcessId", _processId.ToString()},
+                    {"MachineName", Environment.MachineName},
+                    {"Message", exception.Message},
+                    {"Source", exception.Source},
+                    {"ExceptionTypeName", exception.GetType().FullName},
+                    {"Exception", exception.AsJson()}
 	            });
     
 		}
@@ -127,6 +139,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.DateTime nightTime)
 		{
 			Sample.Current.SayGoodbye(
+				_actorId, 
 				_processId, 
 				_machineName, 
 				goodbye, 
@@ -135,6 +148,7 @@ namespace ConsoleApplication1.Diagnostics
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayGoodbye");
            
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tgoodbye:\t{goodbye}");
@@ -143,10 +157,11 @@ namespace ConsoleApplication1.Diagnostics
 	            nameof(SayGoodbye),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"processId", _processId.ToString()},
-                    {"machineName", _machineName},
-                    {"goodbye", goodbye},
-                    {"nightTimestring", nightTime.ToString()}
+	                {"Actor", _actorId.ToString()},
+                    {"ProcessId", _processId.ToString()},
+                    {"MachineName", Environment.MachineName},
+                    {"Goodbye", goodbye},
+                    {"NightTime", nightTime.ToString()}
 	            });
     
 		}
@@ -158,6 +173,7 @@ namespace ConsoleApplication1.Diagnostics
 			ConsoleApplication1.Loggers.Special special)
 		{
 			Sample.Current.Special(
+				_actorId, 
 				_processId, 
 				_machineName, 
 				special
@@ -165,6 +181,7 @@ namespace ConsoleApplication1.Diagnostics
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Special");
            
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tspecial.ToString():\t{special.ToString()}");
@@ -172,9 +189,10 @@ namespace ConsoleApplication1.Diagnostics
 	            nameof(Special),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"processId", _processId.ToString()},
-                    {"machineName", _machineName},
-                    {"specialstring", special.ToString()}
+	                {"Actor", _actorId.ToString()},
+                    {"ProcessId", _processId.ToString()},
+                    {"MachineName", Environment.MachineName},
+                    {"Special", special.ToString()}
 	            });
     
 		}

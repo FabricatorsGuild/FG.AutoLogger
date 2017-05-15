@@ -86,7 +86,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
             }
         }
 
-        public IEnumerable<EventArgumentModel> GetAllArgumentsExpanded()
+        public IEnumerable<EventArgumentModel> GetAllArgumentsExpanded(bool directArgumentAssignments = true)
         {
             foreach (var argument in GetAllArguments())
             {
@@ -94,10 +94,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
                 {
                     foreach (var templateArgument in argument.TypeTemplate.Arguments)
                     {
+                        var memberName = (argument.IsImplicit && !directArgumentAssignments) ? $"_{argument.Name}" : argument.Name;
+                        var assignment = templateArgument.Assignment?.Replace(@"$this", memberName);
+
                         yield return new EventArgumentModel(
                             name: templateArgument.Name,
                             type: templateArgument.Type,
-                            assignment: templateArgument.Assignment?.Replace(@"$this", argument.Name))
+                            assignment: assignment)
                         {
                             TemplatedParentArgument = argument,
                             CLRType = templateArgument.CLRType,

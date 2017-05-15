@@ -12,7 +12,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string CLRType { get; set; }
         [JsonIgnore]
         public string AssignedCLRType { get; set; }
+
         public string Assignment { get; set; }
+
         public TypeTemplateModel TypeTemplate { get; set; }
         [JsonIgnore]
         public bool IsTemplated => TemplatedParentArgument != null;

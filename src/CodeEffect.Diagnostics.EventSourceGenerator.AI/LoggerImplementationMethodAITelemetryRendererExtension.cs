@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
@@ -74,7 +75,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_NAME, operationName);
 
             var arguments = new EventArgumentsListBuilder("", RenderDictionaryKeyValueAdd, "\r\n			");
-            foreach (var argumentModel in model.GetAllArgumentsExpanded())
+            foreach (var argumentModel in model.GetAllArgumentsExpanded(directArgumentAssignments: false))
             {
                 arguments.Append(argumentModel);
             }
@@ -99,7 +100,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             output = output.Replace(Variable_LOGGER_METHOD_TRACKEVENT_NAME, model.Name);
 
             var arguments = new EventArgumentsListBuilder("", RenderDictionaryKeyValue, ",\r\n                    ");
-            foreach (var argumentModel in model.GetAllArgumentsExpanded())
+            foreach (var argumentModel in model.GetAllArgumentsExpanded(directArgumentAssignments: false))
             {
                 arguments.Append(argumentModel);
             }
@@ -119,7 +120,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             output = output.Replace(Variable_LOGGER_METHOD_TRACKEXCEPTION_EXCEPTION_NAME, exceptionName);
 
             var arguments = new EventArgumentsListBuilder("", RenderDictionaryKeyValue, ",\r\n                    ");
-            var eventArgumentModels = model.GetAllArgumentsExpanded().ToArray();
+            var eventArgumentModels = model.GetAllArgumentsExpanded(directArgumentAssignments:false).ToArray();
             foreach (var argumentModel in eventArgumentModels)
             {
                 if (argumentModel.Name == propertyEventName)
@@ -141,7 +142,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             return output;
         }
 
-        private string RenderDictionaryKeyValueAdd(EventArgumentModel model)
+        private KeyValuePair<string, string> CreateDictionaryKeyValue(EventArgumentModel model)
         {
             var variable = model.Name;
             if (model.IsImplicit)
@@ -151,52 +152,40 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
 
             var assignment = variable;
             var assignmentType = model.Type;
-            if (model.Assignment != null && !model.IsImplicit)
+            if (model.Assignment != null)
             {
                 assignment = model.Assignment.Replace("$this", variable);
 
                 assignmentType = model.AssignedCLRType;
             }
-            if (EventArgumentModel.ParseType(assignmentType) != typeof(string))
+            if ((assignmentType != null) && (EventArgumentModel.ParseType(assignmentType) != typeof(string)))
             {
                 assignment = $"{assignment}.ToString()";
             }
 
-            var keyOutput = $"{model.Name.Substring(0, 1)}{model.Name.Substring(1)}{model.AssignedCLRType}";
+            var keyOutput = $"{model.Name.Substring(0, 1).ToUpperInvariant()}{model.Name.Substring(1)}";
+
+            return new KeyValuePair<string, string>(keyOutput, assignment);
+        }
+
+        private string RenderDictionaryKeyValueAdd(EventArgumentModel model)
+        {
+            var value = CreateDictionaryKeyValue(model);
 
             var output = Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION;
-            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME, keyOutput);
-            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT, assignment);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME, value.Key);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT, value.Value);
 
             return output;
         }
 
         private string RenderDictionaryKeyValue(EventArgumentModel model)
         {
-            var variable = model.Name;
-            if (model.IsImplicit)
-            {
-                variable = $"_{model.Name}";
-            }
-
-            var assignment = variable;
-            var assignmentType = model.Type;
-            if (model.Assignment != null && !model.IsImplicit)
-            {
-                assignment = model.Assignment.Replace("$this", variable);
-
-                assignmentType = model.AssignedCLRType;
-            }
-            if (EventArgumentModel.ParseType(assignmentType) != typeof(string))
-            {
-                assignment = $"{assignment}.ToString()";
-            }
-
-            var keyOutput = $"{model.Name.Substring(0, 1)}{model.Name.Substring(1)}{model.AssignedCLRType}";
+            var value = CreateDictionaryKeyValue(model);
 
             var output = Template_LOGGER_METHOD_TRACKEVENT_PROPERTY_DECLARATION;
-            output = output.Replace(Variable_LOGGER_METHOD_TRACKEVENT_PROPERTY_NAME, keyOutput);
-            output = output.Replace(Variable_LOGGER_METHOD_TRACKEVENT_PROPERTY_ASSIGNMENT, assignment);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKEVENT_PROPERTY_NAME, value.Key);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKEVENT_PROPERTY_ASSIGNMENT, value.Value);
 
             return output;
         }

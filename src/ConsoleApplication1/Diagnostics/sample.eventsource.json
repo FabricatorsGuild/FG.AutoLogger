@@ -85,6 +85,17 @@
           "Type": "string"
         }
       ]
+    },
+    {
+      "Name": "ActorId",
+      "CLRType": "Microsoft.ServiceFabric.Actors.ActorId",
+      "Arguments": [
+        {
+          "Name": "actor",
+          "Type": "string",
+          "Assignment": "$this.ToString()"
+        }
+      ]
     }
   ],
   "Loggers": [
@@ -92,6 +103,10 @@
       "Name": "IConsoleLogger",
       "StartId": 1000,
       "ImplicitArguments": [
+        {
+          "Name": "actorId",
+          "Type": "ActorId"
+        },
         {
           "Name": "processId",
           "Type": "int"
@@ -115,6 +130,10 @@
           "Name": "machineName",
           "Type": "string",
           "Assignment": "Environment.MachineName"
+        },
+        {
+          "Name": "actorId",
+          "Type": "ActorId"
         }
       ],
       "OverrideArguments": []

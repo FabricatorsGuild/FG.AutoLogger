@@ -8,14 +8,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 {
     public class ProjectEventSourceGenerator : BaseWithLogging
     {
-        public Project Run(string projectBasePath, bool saveChanges = false)
+        public Project Run(string projectBasePath, string cscToolPath, bool saveChanges = false)
         {
 
-            var project = new Project() { ProjectFilePath = projectBasePath };
+            var project = new Project() { ProjectFilePath = projectBasePath, CscToolPath = cscToolPath};
 
             var builders = new IProjectBuilder[]
             {
                 new ProjectBuilder(),
+                new ProjectPrecompileBuilder(), 
                 new ProjectExtensionsDiscoverBuilder(),
                 new ProjectLoggerDiscoverBuilder(),
                 new ProjectReferenceItemRemoverBuilder(), 
@@ -50,5 +51,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 
             return project;
         }
+
     }
 }
