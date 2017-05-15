@@ -24,9 +24,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             foreach (var argument in model?.OverrideArguments?? new EventArgumentModel[0])
             {
                 argument.IsOverriden = true;
-                foreach (var eventArgumentBuilder in eventArgumentBuilders)
+                foreach (var builder in eventArgumentBuilders)
                 {
-                    eventArgumentBuilder.Build(project, eventSourceProjectItem, argument);
+                    PassAlongLoggers(builder as IWithLogging);
+                    builder.Build(project, eventSourceProjectItem, argument);
                 }
             }
         }

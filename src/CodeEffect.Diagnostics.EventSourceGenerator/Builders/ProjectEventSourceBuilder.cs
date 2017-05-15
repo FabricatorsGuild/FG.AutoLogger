@@ -89,6 +89,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             }.Union(project.GetExtensions<IEventSourceBuilder>()).ToArray();
             foreach (var builder in eventSourceBuilders)
             {
+                PassAlongLoggers(builder as IWithLogging);
                 builder.Build(project, eventSourceDefinitionProjectItem);
             }
         }

@@ -54,7 +54,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                 projectEventSourceGenerator.SetLogWarning(w => LogMessage(w, EventLevel.Warning));
                 projectEventSourceGenerator.SetLogError(e => LogMessage(e, EventLevel.Error));
 
-                var project = projectEventSourceGenerator.Run(projectFilePath, t.SaveChanges);
+                var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var roslynDirectory = System.IO.Path.Combine(baseDirectory, "roslyn");
+
+                var project = projectEventSourceGenerator.Run(projectFilePath, roslynDirectory, t.SaveChanges);
 
                 if (t.DisplayOutput)
                 {

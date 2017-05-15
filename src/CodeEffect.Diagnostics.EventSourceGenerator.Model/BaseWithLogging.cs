@@ -1,7 +1,6 @@
-    using System;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
+using System;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
+namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
     public class BaseWithLogging : IWithLogging
     {
@@ -9,7 +8,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
         private Action<string> _logWarning;
         private Action<string> _logError;
 
-        public void SetLoggers(IWithLogging nextBuilder)
+        public void PassAlongLoggers(IWithLogging nextBuilder)
         {
             nextBuilder.SetLogMessage(_logMessage);
             nextBuilder.SetLogWarning(_logWarning);

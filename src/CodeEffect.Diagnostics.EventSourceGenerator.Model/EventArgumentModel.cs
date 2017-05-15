@@ -12,7 +12,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string CLRType { get; set; }
         [JsonIgnore]
         public string AssignedCLRType { get; set; }
+
         public string Assignment { get; set; }
+
         public TypeTemplateModel TypeTemplate { get; set; }
         [JsonIgnore]
         public bool IsTemplated => TemplatedParentArgument != null;
@@ -57,6 +59,33 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
                     TemplatedParentArgument = this,
                     IsOverriden = this.IsOverriden,
                 };
+            }
+        }
+
+        public static Type ParseType(string type)
+        {
+            switch (type.ToLowerInvariant())
+            {
+                case ("string"):
+                case ("system.string"):
+                    return typeof(string);
+                case ("int"):
+                case ("system.int32"):
+                    return typeof(int);
+                case ("long"):
+                case ("system.int64"):
+                    return typeof(long);
+                case ("bool"):
+                case ("system.boolean"):
+                    return typeof(bool);
+                case ("datetime"):
+                case ("system.dateTime"):
+                    return typeof(System.DateTime);
+                case ("guid"):
+                case ("system.guid"):
+                    return typeof(Guid);
+                default:
+                    return typeof(object);
             }
         }
     }

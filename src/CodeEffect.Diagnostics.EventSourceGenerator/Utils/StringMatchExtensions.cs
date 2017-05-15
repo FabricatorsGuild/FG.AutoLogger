@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -112,6 +114,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
         public static string GetLowerCasedInitial(this string that)
         {
             return $"{that?.Substring(0, 1).ToLowerInvariant()}{that?.Substring(1)}";
+        }
+
+        public static string GetCSVList<T>(this IEnumerable<T> values, Func<T, string> renderValue )
+        {
+            renderValue = renderValue ?? (v => v.ToString());
+            return values.Aggregate("", (s, i) => $"{s}, {renderValue(i)}");
         }
     }
 }

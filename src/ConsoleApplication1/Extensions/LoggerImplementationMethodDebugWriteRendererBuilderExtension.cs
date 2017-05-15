@@ -46,7 +46,7 @@ namespace ConsoleApplication1.Extensions
             output = output.Replace(Variable_LOGGER_METHOD_IMPLEMENTATION_LEVEL, level);
 
             var arguments = new StringBuilder();
-            foreach (var argumentModel in model.GetAllArgumentsExpanded())
+            foreach (var argumentModel in model.GetAllArgumentsExpanded(directArgumentAssignments:false))
             {
                 // ReSharper disable UseStringInterpolation - don't compile C# 6 in extensions
                 var argumentName = string.Format("{0}{1}", (argumentModel.IsImplicit ? "_" : ""), argumentModel.Name);

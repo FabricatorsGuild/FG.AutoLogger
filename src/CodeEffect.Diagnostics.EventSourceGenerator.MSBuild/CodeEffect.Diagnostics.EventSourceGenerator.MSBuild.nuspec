@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$</version>
+    <version>$version$-RC1</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
@@ -19,7 +19,7 @@
   </metadata>
   <files>
     <file src="build\**" target="build" />
-    <file src="bin\Debug\*.dll" target="lib\net45" />
-    <file src="bin\Debug\*.pdb" target="lib\net45" />
+    <file src="bin\Debug\*.dll" target="lib\net452" />
+    <file src="bin\Debug\*.pdb" target="lib\net452" />
   </files>
 </package>

@@ -1,6 +1,6 @@
 using System;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
     public interface IWithLogging
     {

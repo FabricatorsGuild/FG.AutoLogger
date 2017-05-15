@@ -1,7 +1,7 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 using Microsoft.CSharp;
@@ -23,104 +23,84 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var loggerTemplates = new List<LoggerTemplateModel>();
             var loggerProjectItems = files.OfType<LoggerTemplateModel>(ProjectItemType.LoggerInterface);
             var referenceProjectItems = files.OfType(ProjectItemType.Reference).ToArray();
-            foreach (var loggerProjectItem in loggerProjectItems)
+
+            var foundLoggerTemplates =  CompileAndEvaluateInterface(model.DynamicAssembly, loggerProjectItems);
+
+            foreach (var foundLoggerTemplate in foundLoggerTemplates)
             {
-                LogMessage($"Found Logger file {loggerProjectItem.Name}");
-                var foundLoggerTemplates = CompileAndEvaluateInterface(loggerProjectItem, referenceProjectItems);
-                var updateExisting = true;
-                foreach (var foundLoggerTemplate in foundLoggerTemplates)
-                {
-                    LogMessage($"Compiled Logger Template {foundLoggerTemplate.Name}");
-
-                    if (updateExisting)
-                    {
-                        loggerProjectItem.Content = foundLoggerTemplate;
-                        updateExisting = false;
-                    }
-                    else
-                    {
-                        var newProjectItem = new ProjectItem<LoggerTemplateModel>(
-                            type: loggerProjectItem.ItemType,
-                            name: loggerProjectItem.Name,
-                            content: foundLoggerTemplate,
-                            include: loggerProjectItem.Include);
-
-                        model.AddProjectItem(newProjectItem);
-                    }
-                    loggerTemplates.Add(foundLoggerTemplate);
-                }
+                LogMessage($"Compiled Logger Template {foundLoggerTemplate.Name}");                
+                loggerTemplates.Add(foundLoggerTemplate);
             }
 
             model.Loggers = loggerTemplates.ToArray();            
         }
 
-        private LoggerTemplateModel[] CompileAndEvaluateInterface(ProjectItem<LoggerTemplateModel> projectItem, IEnumerable<ProjectItem> referenceItems)
+        private LoggerTemplateModel[] CompileAndEvaluateInterface(Assembly dynamicAssembly, IEnumerable<ProjectItem> projectItems)
         {
-            LogMessage($"Compiling possible logger file {projectItem.Include}");
+            var loggerFiles = projectItems.GetCSVList(p => p.Include);
+            LogMessage($"Compiling possible logger files {loggerFiles}");
 
             var loggers = new List<LoggerTemplateModel>();
             try
             {
-                var parameters = new CompilerParameters();
+                var complierHelper = new ComplierHelper();
+                this.PassAlongLoggers(complierHelper);
 
-                foreach (var referenceItem in referenceItems)
+                
+                //var compiledAssembly = complierHelper.Compile(cscToolPath, projectItem, referenceItems);
+                if (dynamicAssembly != null)
                 {
-                    parameters.ReferencedAssemblies.Add(referenceItem.Name);
-                }
-
-                //parameters.ReferencedAssemblies.Add("System.dll");
-                parameters.GenerateExecutable = false;
-                parameters.GenerateInMemory = true;
-
-                parameters.IncludeDebugInformation = false;
-                var cSharpCodeProvider = new CSharpCodeProvider();
-                //var cSharpCodeProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
-                var compilerResults = cSharpCodeProvider.CompileAssemblyFromFile(parameters, projectItem.Name);
-                foreach (CompilerError compilerResultsError in compilerResults.Errors)
-                {
-                    LogWarning(compilerResultsError.ToString());
-                }
-
-                var types = compilerResults.CompiledAssembly.GetTypes();
-                foreach (
-                    var type in
-                    types.Where(t => t.IsInterface && t.Name.Matches(@"^I[^\\]*Logger", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)))
-                {
-                    var include = projectItem.Include.Replace(projectItem.Name, type.Name);
-                    var eventSourceLogger = new LoggerTemplateModel()
+                    var types = dynamicAssembly.GetTypes();
+                    foreach (
+                        var type in
+                        types.Where(t => t.IsInterface && t.Name.Matches(@"^I[^\\]*Logger", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)))
                     {
-                        Name = type.Name,
-                        Namespace = type.Namespace,
-                        Include = include
-                    };
-                    var eventSourceEvents = new List<EventModel>();
-                    foreach (var methodInfo in type.GetMethods())
-                    {
-                        var eventSourceEventArguments = new List<EventArgumentModel>();
-                        var eventSourceEvent = new EventModel()
+                        var projectItem = projectItems.FirstOrDefault(l => l.Name.Matches($"*{type.Name}.cs", StringComparison.InvariantCultureIgnoreCase, true));
+                        if (projectItem == null)
                         {
-                            Name = methodInfo.Name,
-                        };
-                        foreach (var parameterInfo in methodInfo.GetParameters())
-                        {
-                            var typeString = parameterInfo.ParameterType.GetFriendlyName();
-                            eventSourceEventArguments.Add(new EventArgumentModel()
-                            {
-                                Name = parameterInfo.Name,
-                                Type = typeString,
-                            });
+                            LogWarning($"Could not find matching project item for type {type.Name}");
                         }
-                        eventSourceEvent.Arguments = eventSourceEventArguments.ToArray();
-                        eventSourceEvents.Add(eventSourceEvent);
-                    }
+                        else
+                        {
+                            var include = projectItem.Include.Replace(projectItem.Name, type.Name);
+                            var eventSourceLogger = new LoggerTemplateModel()
+                            {
+                                Name = type.Name,
+                                Namespace = type.Namespace,
+                                Include = include
+                            };
+                            var eventSourceEvents = new List<EventModel>();
+                            foreach (var methodInfo in type.GetMethods())
+                            {
+                                var eventSourceEventArguments = new List<EventArgumentModel>();
+                                var eventSourceEvent = new EventModel()
+                                {
+                                    Name = methodInfo.Name,
+                                };
+                                foreach (var parameterInfo in methodInfo.GetParameters())
+                                {
+                                    var typeString = parameterInfo.ParameterType.GetFriendlyName();
+                                    eventSourceEventArguments.Add(new EventArgumentModel()
+                                    {
+                                        Name = parameterInfo.Name,
+                                        Type = typeString,
+                                    });
+                                }
+                                eventSourceEvent.Arguments = eventSourceEventArguments.ToArray();
+                                eventSourceEvents.Add(eventSourceEvent);
+                            }
 
-                    eventSourceLogger.Events = eventSourceEvents.ToArray();
-                    loggers.Add(eventSourceLogger);
+                            eventSourceLogger.Events = eventSourceEvents.ToArray();
+                            loggers.Add(eventSourceLogger);
+
+                            projectItem.Content = eventSourceLogger;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                LogWarning($"Failed to compile/evaluate {projectItem.Include} - {ex.Message}\r\n{ex.StackTrace}");
+                LogWarning($"Failed to compile/evaluate {loggerFiles} - {ex.Message}\r\n{ex.StackTrace}");
             }
             return loggers.ToArray();
         }

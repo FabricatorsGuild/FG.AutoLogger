@@ -8,14 +8,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 {
     public class ProjectEventSourceGenerator : BaseWithLogging
     {
-        public Project Run(string projectBasePath, bool saveChanges = false)
+        public Project Run(string projectBasePath, string cscToolPath, bool saveChanges = false)
         {
 
-            var project = new Project() { ProjectFilePath = projectBasePath };
+            var project = new Project() { ProjectFilePath = projectBasePath, CscToolPath = cscToolPath};
 
             var builders = new IProjectBuilder[]
             {
                 new ProjectBuilder(),
+                new ProjectPrecompileBuilder(), 
                 new ProjectExtensionsDiscoverBuilder(),
                 new ProjectLoggerDiscoverBuilder(),
                 new ProjectReferenceItemRemoverBuilder(), 
@@ -24,13 +25,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             };
             foreach (var builder in builders)
             {
-                SetLoggers(builder as IWithLogging);
+                PassAlongLoggers(builder as IWithLogging);
                 builder.Build(project);
             }
             // Do this in step 2 as project extensions are not loaded until above.
             foreach (var builder in project.GetExtensions<IProjectBuilder>())
             {
-                SetLoggers(builder as IWithLogging);
+                PassAlongLoggers(builder as IWithLogging);
                 builder.Build(project);
             }
 
@@ -44,11 +45,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             };
             foreach (var renderer in renderers.Union(project.GetExtensions<IProjectRenderer>()))
             {
-                SetLoggers(renderer as IWithLogging);
+                PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project);
             }
 
             return project;
         }
+
     }
 }
