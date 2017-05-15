@@ -1,8 +1,8 @@
-﻿using System.Text;
+using System.Text;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator
+namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
-    internal class ListBuilder
+    public class ListBuilder
     {
         protected readonly StringBuilder Builder = new StringBuilder();
         protected readonly string Delimiter;

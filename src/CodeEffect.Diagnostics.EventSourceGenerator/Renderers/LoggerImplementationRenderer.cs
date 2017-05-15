@@ -78,6 +78,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 constructorMemberAssignments.Append(argument);
             }
 
+            var usings = new StringBuilder();
+            var usingRenderers = new ILoggerImplementationUsingRenderer[]
+            {
+            }.Union(project.GetExtensions<ILoggerImplementationUsingRenderer>()).ToArray();
+            foreach (var renderer in usingRenderers)
+            {
+                usings.Append(renderer.Render(project, model));
+            }
+
             var memberRenderers = new ILoggerImplementationMembersRenderer[]
             {
             }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>()).ToArray();
@@ -86,6 +95,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 memberDeclarations.Append(renderer.Render(project, model));
             }
 
+            var constructorRenderers = new ILoggerImplementationConstructorRenderer[]
+            {
+            }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>()).ToArray();
+            foreach (var renderer in constructorRenderers)
+            {
+                constructorMemberAssignments.Append(renderer.Render(project, model));
+            }
+
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_USING_DECLARATION, usings.ToString());
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION, memberDeclarations.ToString());
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT, constructorMemberAssignments.ToString());
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION, constructorArguments.ToString());

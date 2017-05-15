@@ -44,6 +44,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             {
                 foreach (var builder in eventBuilders)
                 {
+                    PassAlongLoggers(builder as IWithLogging);
                     build(builder, evt);
                 }
             }

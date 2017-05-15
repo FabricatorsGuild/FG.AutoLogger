@@ -19,7 +19,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
         private void AddGeneratedOutputsToProject(Project model, bool saveChanges = true)
         {
             var projectFilePath = model.ProjectFilePath;
-            var includes = model.ProjectItems;
+            var includes = model.ProjectItems.Where(p => p.ItemType != ProjectItemType.Reference && p.ItemType != ProjectItemType.Unknown);
 
             LogMessage($"Loading projectfile {projectFilePath} to include new files");
             Microsoft.Build.Evaluation.Project project = null;

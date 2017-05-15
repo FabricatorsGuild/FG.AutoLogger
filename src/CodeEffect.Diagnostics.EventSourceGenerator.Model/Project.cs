@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
     public class Project
@@ -8,5 +10,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public ProjectItem[] ProjectItems { get; set; }
         public LoggerTemplateModel[] Loggers { get; set; }
         public IExtension[] Extensions { get; set; }
+        public string Platform { get; set; }
+        public string CscToolPath { get; set; }
+        public Assembly DynamicAssembly { get; set; }
     }
 }

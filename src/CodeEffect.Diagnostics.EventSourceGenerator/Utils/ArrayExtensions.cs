@@ -9,5 +9,5 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
             var list = that == null ? new List<T> {item} : new List<T>(that) {item};
             return list.ToArray();
         }
-    }
+    }    
 }
