@@ -26,7 +26,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Samples
 			_processId = processId;
 			_machineName = machineName;
 			_actorId = actorId;
-			_telemetryClient.Context.User.Id = Environment.UserName;
+			
+            _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
+            _telemetryClient.Context.User.Id = Environment.UserName;
             _telemetryClient.Context.Session.Id = Guid.NewGuid().ToString();
             _telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
 
