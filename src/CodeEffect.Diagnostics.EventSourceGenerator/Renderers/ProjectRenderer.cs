@@ -42,12 +42,18 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 {
                     project = new Microsoft.Build.Evaluation.Project(projectFileReader);
                     LogMessage($"Loaded project {projectFilePath} from XML with {project.Items.Count} items");
-
                 }
             }
             if (project == null)
             {
                 throw new NotSupportedException($"Failed to load {projectFilePath} from either XML or GlobalProjectCollection");
+            }
+
+            // Set the project summary hash
+            if (model.HasProjectChanges)
+            {
+                var summaryHash = project.SetProperty("EventSourceGeneratorSummaryHash", model.SummaryHash);
+                updatedProjectFile = true;
             }
 
             var existingItems = new List<Microsoft.Build.Evaluation.ProjectItem>();

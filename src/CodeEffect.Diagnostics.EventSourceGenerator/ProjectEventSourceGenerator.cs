@@ -16,6 +16,23 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             var builders = new IProjectBuilder[]
             {
                 new ProjectBuilder(),
+                new ProjectSummaryBuilder(),
+
+            };
+            foreach (var builder in builders)
+            {
+                PassAlongLoggers(builder as IWithLogging);
+                builder.Build(project);
+            }
+
+            // Do not continue if no changes are detected, saving time on compilation etc
+            if (!project.HasProjectChanges)
+            {
+                return project;
+            }
+
+            builders = new IProjectBuilder[]
+            {
                 new ProjectPrecompileBuilder(), 
                 new ProjectExtensionsDiscoverBuilder(),
                 new ProjectLoggerDiscoverBuilder(),
@@ -28,6 +45,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 PassAlongLoggers(builder as IWithLogging);
                 builder.Build(project);
             }
+
             // Do this in step 2 as project extensions are not loaded until above.
             foreach (var builder in project.GetExtensions<IProjectBuilder>())
             {

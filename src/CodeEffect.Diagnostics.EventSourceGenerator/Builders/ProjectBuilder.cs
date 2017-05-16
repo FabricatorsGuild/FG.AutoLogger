@@ -50,6 +50,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 var platformProperty = project.Properties.FirstOrDefault(p => p.Name == "PlatformTarget")?.EvaluatedValue ?? "AnyCPU";
                 model.Platform = platformProperty;
 
+                var summaryHash = project.Properties.FirstOrDefault(p => p.Name == "EventSourceGeneratorSummaryHash")?.EvaluatedValue ?? "";
+                model.SummaryHash = summaryHash;
+
                 foreach (var projectItem in project.Items.Where(item =>
                     item.EvaluatedInclude.Matches(@"(^|\\)I[^\\]*Logger.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
                     && item.ItemType == "Compile"))
@@ -110,4 +113,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             model.ProjectItems = projectItems.ToArray();
         }
     }
+
+    
+
 }

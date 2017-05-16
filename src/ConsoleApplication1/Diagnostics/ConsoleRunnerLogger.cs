@@ -28,7 +28,9 @@ namespace ConsoleApplication1.Diagnostics
 			_machineName = machineName;
 			_actorId = actorId;
 			// Do stuff in the constructor
-			_telemetryClient.Context.User.Id = Environment.UserName;
+			
+            _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
+            _telemetryClient.Context.User.Id = Environment.UserName;
             _telemetryClient.Context.Session.Id = Guid.NewGuid().ToString();
             _telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
 

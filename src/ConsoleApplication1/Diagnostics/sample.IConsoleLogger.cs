@@ -164,17 +164,17 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int SpecialEventId = 5005;
+		private const int SpeciallyEventId = 5005;
 
-		[Event(SpecialEventId, Level = EventLevel.LogAlways, Message = "Special {3}", Keywords = Keywords.Console)]
-		private void Special(
+		[Event(SpeciallyEventId, Level = EventLevel.LogAlways, Message = "Specially {3}", Keywords = Keywords.Console)]
+		private void Specially(
 			string actor, 
 			int processId, 
 			string machineName, 
 			string special)
 		{
 			WriteEvent(
-				SpecialEventId, 
+				SpeciallyEventId, 
 				actor, 
 				processId, 
 				machineName, 
@@ -182,7 +182,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 		[NonEvent]
-		public void Special(
+		public void Specially(
 			Microsoft.ServiceFabric.Actors.ActorId actorId, 
 			int processId, 
 			string machineName, 
@@ -190,7 +190,7 @@ namespace ConsoleApplication1.Diagnostics
 		{
 			if (this.IsEnabled())
 			{
-				Special(
+				Specially(
 					actorId.ToString(), 
 					processId, 
 					Environment.MachineName, 

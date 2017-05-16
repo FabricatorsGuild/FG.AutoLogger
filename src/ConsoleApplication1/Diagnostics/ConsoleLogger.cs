@@ -28,7 +28,9 @@ namespace ConsoleApplication1.Diagnostics
 			_processId = processId;
 			_machineName = machineName;
 			// Do stuff in the constructor
-			_telemetryClient.Context.User.Id = Environment.UserName;
+			
+            _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
+            _telemetryClient.Context.User.Id = Environment.UserName;
             _telemetryClient.Context.Session.Id = Guid.NewGuid().ToString();
             _telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
 
@@ -169,24 +171,24 @@ namespace ConsoleApplication1.Diagnostics
 
 
 
-		public void Special(
+		public void Specially(
 			ConsoleApplication1.Loggers.Special special)
 		{
-			Sample.Current.Special(
+			Sample.Current.Specially(
 				_actorId, 
 				_processId, 
 				_machineName, 
 				special
 			);
 
-			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Special");
+			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Specially");
            
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tspecial.ToString():\t{special.ToString()}");
 			_telemetryClient.TrackEvent(
-	            nameof(Special),
+	            nameof(Specially),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
 	                {"Actor", _actorId.ToString()},

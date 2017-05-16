@@ -9,7 +9,7 @@ namespace ConsoleApplication1.Loggers
         void Error(Exception exception);
         void SayGoodbye(string goodbye, DateTime nightTime);
 
-        void Special(Special special);
+        void Specially(Special special);
     }
 
     public class Special
