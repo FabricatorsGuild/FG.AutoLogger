@@ -1,0 +1,101 @@
+{
+  "Loggers": [
+    {
+      "Name": "IStatelessRunnerServiceLogger",
+      "StartId": 1000,
+      "ImplicitArguments": [
+        {
+          "Name": "context",
+          "Type": "ServiceContext"
+        }
+      ],
+      "OverrideArguments": []
+    }
+  ],
+  "Name": "DefaultEventSource",
+  "ProviderName": "StatelessRunnerService-Default",
+  "Keywords": [],
+  "TypeTemplates": [
+    {
+      "Name": "Process",
+      "CLRType": "System.Diagnostics.Process",
+      "Arguments": [
+        {
+          "Name": "processId",
+          "Type": "int",
+          "Assignment": "$this.ProcessId"
+        }
+      ]
+    },
+    {
+      "Name": "Exception",
+      "CLRType": "System.Exception",
+      "Arguments": [
+        {
+          "Name": "message",
+          "Type": "string",
+          "Assignment": "$this.Message"
+        },
+        {
+          "Name": "source",
+          "Type": "string",
+          "Assignment": "$this.Source"
+        },
+        {
+          "Name": "exceptionTypeName",
+          "Type": "string",
+          "Assignment": "$this.GetType().FullName"
+        },
+        {
+          "Name": "exception",
+          "Type": "string",
+          "Assignment": "$this.AsJson()"
+        }
+      ]
+    },
+    {
+      "Name": "ServiceContext",
+      "CLRType": "System.Fabric.ServiceContext",
+      "Arguments": [
+        {
+          "Assignment": "$this.ServiceName.ToString()",
+          "Name": "serviceName",
+          "Type": "string"
+        },
+        {
+          "Assignment": "$this.ServiceTypeName",
+          "Name": "serviceTypeName",
+          "Type": "string"
+        },
+        {
+          "Assignment": "$this.GetReplicaOrInstanceId()",
+          "Name": "replicaOrInstanceId",
+          "Type": "long"
+        },
+        {
+          "Assignment": "$this.PartitionId",
+          "Name": "partitionId",
+          "Type": "Guid"
+        },
+        {
+          "Assignment": "$this.CodePackageActivationContext.ApplicationName",
+          "Name": "applicationName",
+          "Type": "string"
+        },
+        {
+          "Assignment": "$this.CodePackageActivationContext.ApplicationTypeName",
+          "Name": "applicationTypeName",
+          "Type": "string"
+        },
+        {
+          "Assignment": "$this.NodeContext.NodeName",
+          "Name": "nodeName",
+          "Type": "string"
+        }
+      ]
+    }
+  ],
+  "Settings": {
+    "AutogenerateLoggerInterfaces": false
+  }
+}
