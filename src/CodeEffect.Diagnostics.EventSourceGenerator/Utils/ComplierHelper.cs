@@ -40,6 +40,17 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
             var commandLineForProject = commandLineArgumentsBuilder.ToString();
 
             var cscExePath = System.IO.Path.Combine(cscToolPath, @"csc.exe");
+            var roslynDirectory = System.IO.Path.Combine(cscToolPath, "roslyn");
+            if (System.IO.Directory.Exists(roslynDirectory))
+            {
+                var roslynCscExePath = System.IO.Path.Combine(roslynDirectory, @"csc.exe");
+                if (System.IO.File.Exists(roslynCscExePath))
+                {
+                    LogMessage($"Found roslyn compiler at {roslynCscExePath}");
+                    cscExePath = roslynCscExePath;
+                }
+            }
+            
             LogMessage($"Compiling sources {cscExePath} {commandLineForProject}");
 
             var process = Process.Start(new ProcessStartInfo(cscExePath, commandLineForProject) { CreateNoWindow = true });
