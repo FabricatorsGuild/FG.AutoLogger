@@ -4,7 +4,7 @@ using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
 {
-    public class LoggerImplementationAITelemetryRendererExtension : AITelemetryRendererExtensionBase, ILoggerImplementationEventRenderer
+    public class LoggerImplementationEventAITelemetryRendererExtension : AITelemetryRendererExtensionBase, ILoggerImplementationEventRenderer
     {
         public string Render(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventModel model)
         {

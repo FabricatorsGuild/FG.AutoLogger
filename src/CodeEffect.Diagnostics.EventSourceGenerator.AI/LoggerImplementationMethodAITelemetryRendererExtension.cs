@@ -25,7 +25,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@";
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@";
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@";
-        private const string Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION = @"_loopOperationHolder.Telemetry.Properties.Add(""@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@"", @@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@);";
+        private const string Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION = @"_@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Telemetry.Properties.Add(""@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@"", @@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@);";
         private const string Template_LOGGER_METHOD_TRACKOPERATIONSTART_DECLARATION = @"            _@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(""@@LOGGER_METHOD_TRACKOPERATION_NAME@@"");
 	       @@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@
 ";
@@ -74,7 +74,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             var output = Template_LOGGER_METHOD_TRACKOPERATIONSTART_DECLARATION;
             output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_NAME, operationName);
 
-            var arguments = new EventArgumentsListBuilder("", RenderDictionaryKeyValueAdd, "\r\n			");
+            var arguments = new EventArgumentsListBuilder("", arg => RenderDictionaryKeyValueAdd(arg, operationName), "\r\n			");
             foreach (var argumentModel in model.GetAllArgumentsExpanded(directArgumentAssignments: false))
             {
                 arguments.Append(argumentModel);
@@ -168,11 +168,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             return new KeyValuePair<string, string>(keyOutput, assignment);
         }
 
-        private string RenderDictionaryKeyValueAdd(EventArgumentModel model)
+        private string RenderDictionaryKeyValueAdd(EventArgumentModel model, string operationName)
         {
             var value = CreateDictionaryKeyValue(model);
 
             var output = Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION;
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_NAME, operationName);
             output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME, value.Key);
             output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT, value.Value);
 

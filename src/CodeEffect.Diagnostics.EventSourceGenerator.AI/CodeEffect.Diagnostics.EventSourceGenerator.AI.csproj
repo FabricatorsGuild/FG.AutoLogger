@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AITelemetryRendererExtensionBase.cs" />
-    <Compile Include="LoggerImplementationAITelemetryRendererExtension.cs" />
+    <Compile Include="LoggerImplementationEventAITelemetryRendererExtension.cs" />
     <Compile Include="LoggerImplementationConstructorAITelemetryRendererExtension.cs" />
     <Compile Include="LoggerImplementationMembersAITelemetryRendererExtension.cs" />
     <Compile Include="LoggerImplementationMethodAITelemetryRendererExtension.cs" />
