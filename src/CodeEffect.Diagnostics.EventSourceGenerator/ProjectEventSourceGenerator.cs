@@ -28,11 +28,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             // Do not continue if no changes are detected, saving time on compilation etc
             if (!project.HasProjectChanges)
             {
+                LogMessage("Ignoring to build and render the project as no changes were detected");
                 return project;
             }
 
             builders = new IProjectBuilder[]
             {
+                new ProjectRefenceCopyBuilder(), 
                 new ProjectPrecompileBuilder(), 
                 new ProjectExtensionsDiscoverBuilder(),
                 new ProjectLoggerDiscoverBuilder(),
