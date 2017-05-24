@@ -11,7 +11,7 @@ The purpose is to remove a lot of the manual writing and maintainance of EventSo
 
 ## Adding EventSources to a project
 
-1) Add the NuGet package ``CodeEffect.Diagnostics.EventSourceGenerator.MSBuild`` to a project in Visual Studio. (Non-listed NuGet-package, install with ``Install-Package CodeEffect.Diagnostics.EventSourceGenerator.MSBuild -Version 1.0.2.1``)
+1) Add the NuGet package ``CodeEffect.Diagnostics.EventSourceGenerator.MSBuild`` to a project in Visual Studio. (Non-listed NuGet-package, install with ``Install-Package CodeEffect.Diagnostics.EventSourceGenerator -Version 1.1.0.2`` and ``Install-Package CodeEffect.Diagnostics.EventSourceGenerator.AI -Version 1.1.0.2``
 2) Add any number of loggers to the project [Adding Loggers to a project](#adding-loggers-to-a-project)
 3) Build the project.
 4) [Modify](#mofifying-an-eventsource-file) the ``DefaultEventSource.eventsource`` file -or- create a new ``*EventSource.eventsource.json`` file in your project
