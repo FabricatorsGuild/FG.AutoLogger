@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Fabric;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
@@ -26,7 +29,8 @@ namespace StatelessRunnerService
             /*
             telemetryClient.Context.User.Id = Environment.UserName;
             telemetryClient.Context.Session.Id = Guid.NewGuid().ToString();
-            telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();             */
+            telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();            
+            */
         }
 
         /// <summary>
@@ -61,6 +65,10 @@ namespace StatelessRunnerService
 
                 try
                 {
+                    if ((iterations % 5) == 0)
+                    {
+                        throw new NotSupportedException("Bogus exception to show exception logging. Happens every 1/5 iteration.");
+                    }
                     await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
                 }
                 finally
