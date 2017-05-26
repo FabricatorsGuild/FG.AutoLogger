@@ -199,5 +199,67 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
+		private const int StartHelloEventId = 6006;
+
+		[Event(StartHelloEventId, Level = EventLevel.LogAlways, Message = "Start Hello", Keywords = Keywords.Console, Opcode = EventOpcode.Start)]
+		private void StartHello(
+			string actor, 
+			int processId, 
+			string machineName)
+		{
+			WriteEvent(
+				StartHelloEventId, 
+				actor, 
+				processId, 
+				machineName);
+		}
+
+		[NonEvent]
+		public void StartHello(
+			Microsoft.ServiceFabric.Actors.ActorId actorId, 
+			int processId, 
+			string machineName)
+		{
+			if (this.IsEnabled())
+			{
+				StartHello(
+					actorId.ToString(), 
+					processId, 
+					Environment.MachineName);
+			}
+		}
+
+
+		private const int StopHelloEventId = 7007;
+
+		[Event(StopHelloEventId, Level = EventLevel.LogAlways, Message = "Stop Hello", Keywords = Keywords.Console, Opcode = EventOpcode.Stop)]
+		private void StopHello(
+			string actor, 
+			int processId, 
+			string machineName)
+		{
+			WriteEvent(
+				StopHelloEventId, 
+				actor, 
+				processId, 
+				machineName);
+		}
+
+		[NonEvent]
+		public void StopHello(
+			Microsoft.ServiceFabric.Actors.ActorId actorId, 
+			int processId, 
+			string machineName)
+		{
+			if (this.IsEnabled())
+			{
+				StopHello(
+					actorId.ToString(), 
+					processId, 
+					Environment.MachineName);
+			}
+		}
+
+
 	}
 }

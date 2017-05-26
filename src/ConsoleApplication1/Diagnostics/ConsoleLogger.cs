@@ -7,6 +7,7 @@ using ConsoleApplication1.Loggers;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace ConsoleApplication1.Diagnostics
@@ -196,6 +197,57 @@ namespace ConsoleApplication1.Diagnostics
                     {"MachineName", Environment.MachineName},
                     {"Special", special.ToString()}
 	            });
+    
+		}
+
+
+
+
+		public void StartHello(
+			)
+		{
+			Sample.Current.StartHello(
+				_actorId, 
+				_processId, 
+				_machineName
+			);
+
+			System.Diagnostics.Debug.WriteLine($"[Console] ERR: StartHello");
+           
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+			_helloStopwatch.Restart();
+            var helloOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("hello");
+	       helloOperationHolder.Telemetry.Properties.Add("Actor", _actorId.ToString());
+			helloOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
+			helloOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
+	       OperationHolder.StartOperation(helloOperationHolder);
+    
+		}
+
+		private System.Diagnostics.Stopwatch _helloStopwatch = new System.Diagnostics.Stopwatch();
+
+
+
+		public void StopHello(
+			)
+		{
+			Sample.Current.StopHello(
+				_actorId, 
+				_processId, 
+				_machineName
+			);
+
+			System.Diagnostics.Debug.WriteLine($"[Console] ERR: StopHello");
+           
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+			_helloStopwatch.Stop();
+	        var helloOperationHolder = OperationHolder.StopOperation();
+	        _telemetryClient.StopOperation(helloOperationHolder);
+	        helloOperationHolder.Dispose();
     
 		}
 

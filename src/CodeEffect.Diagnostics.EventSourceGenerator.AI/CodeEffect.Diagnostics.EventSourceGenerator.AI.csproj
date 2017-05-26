@@ -56,6 +56,7 @@
     <Compile Include="LoggerImplementationMembersAITelemetryRendererExtension.cs" />
     <Compile Include="LoggerImplementationMethodAITelemetryRendererExtension.cs" />
     <Compile Include="LoggerImplementationUsingAITelemetryRendererExtension.cs" />
+    <Compile Include="OperationHolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

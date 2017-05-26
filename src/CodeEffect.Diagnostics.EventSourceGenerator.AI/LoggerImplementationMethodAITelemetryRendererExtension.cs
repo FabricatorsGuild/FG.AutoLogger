@@ -25,12 +25,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@";
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@";
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@";
-        private const string Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION = @"_@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Telemetry.Properties.Add(""@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@"", @@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@);";
-        private const string Template_LOGGER_METHOD_TRACKOPERATIONSTART_DECLARATION = @"            _@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(""@@LOGGER_METHOD_TRACKOPERATION_NAME@@"");
+        private const string Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION = @"@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Telemetry.Properties.Add(""@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@"", @@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@);";
+        private const string Template_LOGGER_METHOD_TRACKOPERATIONSTART_DECLARATION = @"            var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(""@@LOGGER_METHOD_TRACKOPERATION_NAME@@"");
 	       @@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@
+	       OperationHolder.StartOperation(@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
 ";
-        private const string Template_LOGGER_METHOD_TRACKOPERATIONSTOP_DECLARATION = @"            _telemetryClient.StopOperation(_@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
-	            _@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Dispose();
+        private const string Template_LOGGER_METHOD_TRACKOPERATIONSTOP_DECLARATION = @"	        var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = OperationHolder.StopOperation();
+	        _telemetryClient.StopOperation(@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
+	        @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Dispose();
 ";
 
         private const string Variable_LOGGER_METHOD_TRACKEXCEPTION_EVENTNAME = @"@@LOGGER_METHOD_TRACKEXCEPTION_EVENTNAME@@";

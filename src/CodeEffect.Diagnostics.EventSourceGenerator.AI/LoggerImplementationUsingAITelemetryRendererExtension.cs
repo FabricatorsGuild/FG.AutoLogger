@@ -9,6 +9,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             var output = @"using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 ";
 
             return output;

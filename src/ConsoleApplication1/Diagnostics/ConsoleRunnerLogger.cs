@@ -7,6 +7,7 @@ using ConsoleApplication1.Loggers;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace ConsoleApplication1.Diagnostics
@@ -204,16 +205,16 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
 			_loopStopwatch.Restart();
-            _loopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("loop");
-	       _loopOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
-			_loopOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
-			_loopOperationHolder.Telemetry.Properties.Add("Actor", _actorId.ToString());
+            var loopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("loop");
+	       loopOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
+			loopOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
+			loopOperationHolder.Telemetry.Properties.Add("Actor", _actorId.ToString());
+	       OperationHolder.StartOperation(loopOperationHolder);
     
 		}
 
 		private System.Diagnostics.Stopwatch _loopStopwatch = new System.Diagnostics.Stopwatch();
 
-		private IOperationHolder<RequestTelemetry> _loopOperationHolder;
 
 
 		public void StopLoop(
@@ -231,8 +232,9 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
 			_loopStopwatch.Stop();
-            _telemetryClient.StopOperation(_loopOperationHolder);
-	            _loopOperationHolder.Dispose();
+	        var loopOperationHolder = OperationHolder.StopOperation();
+	        _telemetryClient.StopOperation(loopOperationHolder);
+	        loopOperationHolder.Dispose();
     
 		}
 
