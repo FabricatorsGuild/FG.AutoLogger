@@ -25,6 +25,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
             HelpText = "Generates a JSON schema for the EventSource model")]
         public bool GenerateSchema { get; set; }
 
+        [Option('f', "force", Default = false,
+            HelpText = "Force update")]
+        public bool ForceUpdate { get; set; }
 
 
     }
