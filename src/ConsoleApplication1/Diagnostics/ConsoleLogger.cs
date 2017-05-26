@@ -50,6 +50,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayHello");
            
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
@@ -57,7 +58,8 @@ namespace ConsoleApplication1.Diagnostics
 	            nameof(SayHello),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"Actor", _actorId.ToString()},
+	                {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()},
                     {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
                     {"Message", message}
@@ -81,6 +83,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Message");
            
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
@@ -88,7 +91,8 @@ namespace ConsoleApplication1.Diagnostics
 	            nameof(Message),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"Actor", _actorId.ToString()},
+	                {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()},
                     {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
                     {"Message", message}
@@ -112,6 +116,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"[Console, Error] ERR: Error");
            
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\texception.Message:\t{exception.Message}");
@@ -123,7 +128,8 @@ namespace ConsoleApplication1.Diagnostics
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
                     { "Name", "Error" },
-	                {"Actor", _actorId.ToString()},
+	                {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()},
                     {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
                     {"Message", exception.Message},
@@ -152,6 +158,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayGoodbye");
            
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tgoodbye:\t{goodbye}");
@@ -160,7 +167,8 @@ namespace ConsoleApplication1.Diagnostics
 	            nameof(SayGoodbye),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"Actor", _actorId.ToString()},
+	                {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()},
                     {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
                     {"Goodbye", goodbye},
@@ -185,6 +193,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Specially");
            
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tspecial.ToString():\t{special.ToString()}");
@@ -192,7 +201,8 @@ namespace ConsoleApplication1.Diagnostics
 	            nameof(Specially),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"Actor", _actorId.ToString()},
+	                {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()},
                     {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
                     {"Special", special.ToString()}
@@ -215,11 +225,13 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: StartHello");
            
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			_helloStopwatch.Restart();
             var helloOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("hello");
-	       helloOperationHolder.Telemetry.Properties.Add("Actor", _actorId.ToString());
+	       helloOperationHolder.Telemetry.Properties.Add("ActorId", _actorId.ToString());
+			helloOperationHolder.Telemetry.Properties.Add("ActorIdType", _actorId.Kind.ToString());
 			helloOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
 			helloOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
 	       OperationHolder.StartOperation(helloOperationHolder);
@@ -242,6 +254,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: StopHello");
            
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			_helloStopwatch.Stop();

@@ -91,9 +91,14 @@
       "CLRType": "Microsoft.ServiceFabric.Actors.ActorId",
       "Arguments": [
         {
-          "Name": "actor",
+          "Name": "actorId",
           "Type": "string",
           "Assignment": "$this.ToString()"
+        },
+        {
+          "Name": "actorIdType",
+          "Type": "string",
+          "Assignment": "$this.Kind.ToString()"
         }
       ]
     }

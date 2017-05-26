@@ -13,16 +13,18 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int SayHelloEventId = 1001;
 
-		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Console)]
+		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{4}", Keywords = Keywords.Console)]
 		private void SayHello(
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			int processId, 
 			string machineName, 
 			string message)
 		{
 			WriteEvent(
 				SayHelloEventId, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				processId, 
 				machineName, 
 				message);
@@ -39,6 +41,7 @@ namespace ConsoleApplication1.Diagnostics
 			{
 				SayHello(
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					processId, 
 					Environment.MachineName, 
 					message);
@@ -48,16 +51,18 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int MessageEventId = 2002;
 
-		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Console)]
+		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{4}", Keywords = Keywords.Console)]
 		private void Message(
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			int processId, 
 			string machineName, 
 			string message)
 		{
 			WriteEvent(
 				MessageEventId, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				processId, 
 				machineName, 
 				message);
@@ -74,6 +79,7 @@ namespace ConsoleApplication1.Diagnostics
 			{
 				Message(
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					processId, 
 					Environment.MachineName, 
 					message);
@@ -83,9 +89,10 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int ErrorEventId = 3003;
 
-		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Console | Keywords.Error)]
+		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{4}", Keywords = Keywords.Console | Keywords.Error)]
 		private void Error(
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			int processId, 
 			string machineName, 
 			string message, 
@@ -95,7 +102,8 @@ namespace ConsoleApplication1.Diagnostics
 		{
 			WriteEvent(
 				ErrorEventId, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				processId, 
 				machineName, 
 				message, 
@@ -115,6 +123,7 @@ namespace ConsoleApplication1.Diagnostics
 			{
 				Error(
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					processId, 
 					Environment.MachineName, 
 					exception.Message, 
@@ -127,9 +136,10 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int SayGoodbyeEventId = 4004;
 
-		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "Say Goodbye {3} {4}", Keywords = Keywords.Console)]
+		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "Say Goodbye {4} {5}", Keywords = Keywords.Console)]
 		private void SayGoodbye(
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			int processId, 
 			string machineName, 
 			string goodbye, 
@@ -137,7 +147,8 @@ namespace ConsoleApplication1.Diagnostics
 		{
 			WriteEvent(
 				SayGoodbyeEventId, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				processId, 
 				machineName, 
 				goodbye, 
@@ -156,6 +167,7 @@ namespace ConsoleApplication1.Diagnostics
 			{
 				SayGoodbye(
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					processId, 
 					Environment.MachineName, 
 					goodbye, 
@@ -166,16 +178,18 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int SpeciallyEventId = 5005;
 
-		[Event(SpeciallyEventId, Level = EventLevel.LogAlways, Message = "Specially {3}", Keywords = Keywords.Console)]
+		[Event(SpeciallyEventId, Level = EventLevel.LogAlways, Message = "Specially {4}", Keywords = Keywords.Console)]
 		private void Specially(
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			int processId, 
 			string machineName, 
 			string special)
 		{
 			WriteEvent(
 				SpeciallyEventId, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				processId, 
 				machineName, 
 				special);
@@ -192,6 +206,7 @@ namespace ConsoleApplication1.Diagnostics
 			{
 				Specially(
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					processId, 
 					Environment.MachineName, 
 					special.ToString());
@@ -203,13 +218,15 @@ namespace ConsoleApplication1.Diagnostics
 
 		[Event(StartHelloEventId, Level = EventLevel.LogAlways, Message = "Start Hello", Keywords = Keywords.Console, Opcode = EventOpcode.Start)]
 		private void StartHello(
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			int processId, 
 			string machineName)
 		{
 			WriteEvent(
 				StartHelloEventId, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				processId, 
 				machineName);
 		}
@@ -224,6 +241,7 @@ namespace ConsoleApplication1.Diagnostics
 			{
 				StartHello(
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					processId, 
 					Environment.MachineName);
 			}
@@ -234,13 +252,15 @@ namespace ConsoleApplication1.Diagnostics
 
 		[Event(StopHelloEventId, Level = EventLevel.LogAlways, Message = "Stop Hello", Keywords = Keywords.Console, Opcode = EventOpcode.Stop)]
 		private void StopHello(
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			int processId, 
 			string machineName)
 		{
 			WriteEvent(
 				StopHelloEventId, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				processId, 
 				machineName);
 		}
@@ -255,6 +275,7 @@ namespace ConsoleApplication1.Diagnostics
 			{
 				StopHello(
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					processId, 
 					Environment.MachineName);
 			}
