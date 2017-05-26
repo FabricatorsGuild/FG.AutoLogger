@@ -8,6 +8,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
     {
         private EventArgumentModel[] _implicitArguments;
         private EventArgumentModel[] _overrideArguments;
+        private EventModel[] _events;
 
         [JsonIgnore]
         public string SourceFileName { get; set; }
@@ -32,8 +33,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
             get { return _overrideArguments ?? new EventArgumentModel[0]; }
             set { _overrideArguments = value; }
         }
+
         [JsonIgnore]
-        public EventModel[] Events { get; set; }
+        public EventModel[] Events
+        {
+            get { return _events ?? new EventModel[0]; }
+            set { _events = value; }
+        }
+
         [JsonIgnore]
         public EventSourceModel EventSource { get; set; }
 
