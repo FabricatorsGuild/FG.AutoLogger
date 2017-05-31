@@ -24,7 +24,7 @@ namespace ConsoleApplication1
                 using (dependencyLogger.RecieveMessage("hello_recieved"))
 
                 {
-                    using (dependencyLogger.CallExternalComponent("goodbye_call", "dsaöjflsd fsdf"))
+                    using (dependencyLogger.CallExternalComponent(new Uri("https://goodbye_call"), "dsaöjflsd fsdf"))
                     {
                         Task.Delay(1000).GetAwaiter().GetResult();
                     }

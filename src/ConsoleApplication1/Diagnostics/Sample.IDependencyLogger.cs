@@ -14,7 +14,7 @@ namespace ConsoleApplication1.Diagnostics
 		private const int StartCallExternalComponentEventId = 2001;
 
 		[Event(StartCallExternalComponentEventId, Level = EventLevel.LogAlways, Message = "Start Call External Component {2} {3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Start)]
-		public void StartCallExternalComponent(
+		private void StartCallExternalComponent(
 			int processId, 
 			string machineName, 
 			string requestName, 
@@ -28,11 +28,28 @@ namespace ConsoleApplication1.Diagnostics
 				content);
 		}
 
+		[NonEvent]
+		public void StartCallExternalComponent(
+			int processId, 
+			string machineName, 
+			System.Uri requestName, 
+			string content)
+		{
+			if (this.IsEnabled())
+			{
+				StartCallExternalComponent(
+					processId, 
+					Environment.MachineName, 
+					requestName.ToString(), 
+					content);
+			}
+		}
+
 
 		private const int StopCallExternalComponentEventId = 4002;
 
 		[Event(StopCallExternalComponentEventId, Level = EventLevel.LogAlways, Message = "Stop Call External Component {2} {3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop)]
-		public void StopCallExternalComponent(
+		private void StopCallExternalComponent(
 			int processId, 
 			string machineName, 
 			string requestName, 
@@ -44,6 +61,23 @@ namespace ConsoleApplication1.Diagnostics
 				machineName, 
 				requestName, 
 				content);
+		}
+
+		[NonEvent]
+		public void StopCallExternalComponent(
+			int processId, 
+			string machineName, 
+			System.Uri requestName, 
+			string content)
+		{
+			if (this.IsEnabled())
+			{
+				StopCallExternalComponent(
+					processId, 
+					Environment.MachineName, 
+					requestName.ToString(), 
+					content);
+			}
 		}
 
 

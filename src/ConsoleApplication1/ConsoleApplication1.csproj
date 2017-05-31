@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>efbfbd36efbfbdefbfbdefbfbd74efbfbd7ad19fefbfbd47efbfbd6eefbfbd</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>efbfbd596675efbfbddf8b7d5c0611efbfbdefbfbd1eefbfbd</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
