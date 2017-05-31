@@ -52,69 +52,34 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
             }
             
             LogMessage($"Compiling sources {cscExePath} {commandLineForProject}");
-
-            var process = Process.Start(new ProcessStartInfo(cscExePath, commandLineForProject) { CreateNoWindow = true });
             Assembly compiledAssembly = null;
-            process.Exited += (sender, args) =>
+
+            try
             {
-                compiledAssembly = Assembly.LoadFile(tempOutput);
-            };
-            
-
-            var timeoutchecker = TimeSpan.Zero;            
-            while ((!process.HasExited) && (timeoutchecker.TotalMilliseconds < 30000))
-            {
-                System.Threading.Tasks.Task.Delay(100).GetAwaiter().GetResult();
-                timeoutchecker += TimeSpan.FromMilliseconds(100);
-            }
-
-            return compiledAssembly;
-            /*
-
-            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            var roslynDirectory = System.IO.Path.Combine(baseDirectory, "roslyn");
-            var roslynBinDirectory = System.IO.Path.Combine(baseDirectory, "bin/roslyn");
-            if (!System.IO.Directory.Exists(roslynBinDirectory))
-            {
-                System.IO.Directory.CreateDirectory(roslynBinDirectory);
-                foreach (var filePath in System.IO.Directory.GetFiles(roslynDirectory))
+                var process = Process.Start(new ProcessStartInfo(cscExePath, commandLineForProject) {CreateNoWindow = true});
+                process.Exited += (sender, args) =>
                 {
-                    var fileName = System.IO.Path.GetFileName(filePath);
-                    var newFilePath = System.IO.Path.Combine(roslynBinDirectory, fileName);
-                    if (!System.IO.File.Exists(newFilePath))
-                    {
-                        System.IO.File.Copy(filePath, newFilePath);
-                    }
+                    compiledAssembly = Assembly.LoadFile(tempOutput);
+                };
+
+
+                var timeoutchecker = TimeSpan.Zero;
+                while ((!process.HasExited) && (timeoutchecker.TotalMilliseconds < 30000))
+                {
+                    System.Threading.Tasks.Task.Delay(100).GetAwaiter().GetResult();
+                    timeoutchecker += TimeSpan.FromMilliseconds(100);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (System.IO.File.Exists(errorLogFile))
+                {
+                    var errorLogFileContent = System.IO.File.ReadAllText(errorLogFile);
+                    LogError(errorLogFileContent);
                 }
             }
 
-            var parameters = new CompilerParameters();
-
-            foreach (var referenceItem in referenceItems)
-            {
-                parameters.ReferencedAssemblies.Add(referenceItem.Name);
-            }
-
-            //parameters.ReferencedAssemblies.Add("System.dll");
-            parameters.GenerateExecutable = false;
-            parameters.GenerateInMemory = true;
-            if (platform == "x64")
-            {
-                parameters.CompilerOptions = "/platform:x64";
-            }
-
-            parameters.IncludeDebugInformation = false;
-            //var cSharpCodeProvider = new CSharpCodeProvider();
-            var cSharpCodeProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
-            var compilerResults = compile(cSharpCodeProvider, parameters);
-            foreach (CompilerError compilerResultsError in compilerResults.Errors)
-            {
-                LogWarning(compilerResultsError.ToString());
-            }
-
-            return compilerResults.CompiledAssembly;
-            */
+            return compiledAssembly;
         }
 
         public Assembly Compile(string cscToolPath, string code, IEnumerable<ProjectItem> referenceItems)

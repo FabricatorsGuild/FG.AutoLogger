@@ -10,6 +10,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 
         public void PassAlongLoggers(IWithLogging nextBuilder)
         {
+            if( nextBuilder == null ) return;
             nextBuilder.SetLogMessage(_logMessage);
             nextBuilder.SetLogWarning(_logWarning);
             nextBuilder.SetLogError(_logError);

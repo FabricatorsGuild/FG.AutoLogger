@@ -58,9 +58,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tests
             }
         }
     }
-    // ReSharper restore InconsistentNaming
 
-
-    // ReSharper disable InconsistentNaming
-    // ReSharper restore InconsistentNaming
+    // ReSharper restore InconsistentNaming 
 }

@@ -11,83 +11,34 @@ namespace ConsoleApplication1.Diagnostics
 	internal sealed partial class Sample
 	{
 
-		private const int SayHelloEventId = 1001;
+		private const int SayHelloEventId = 3001;
 
-		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Console)]
-		private void SayHello(
-			string actor, 
-			int processId, 
-			string machineName, 
+		[Event(SayHelloEventId, Level = EventLevel.LogAlways, Message = "{0}", Keywords = Keywords.Console)]
+		public void SayHello(
 			string message)
 		{
 			WriteEvent(
 				SayHelloEventId, 
-				actor, 
-				processId, 
-				machineName, 
 				message);
 		}
 
-		[NonEvent]
-		public void SayHello(
-			Microsoft.ServiceFabric.Actors.ActorId actorId, 
-			int processId, 
-			string machineName, 
-			string message)
-		{
-			if (this.IsEnabled())
-			{
-				SayHello(
-					actorId.ToString(), 
-					processId, 
-					Environment.MachineName, 
-					message);
-			}
-		}
 
+		private const int MessageEventId = 6002;
 
-		private const int MessageEventId = 2002;
-
-		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Console)]
-		private void Message(
-			string actor, 
-			int processId, 
-			string machineName, 
+		[Event(MessageEventId, Level = EventLevel.LogAlways, Message = "{0}", Keywords = Keywords.Console)]
+		public void Message(
 			string message)
 		{
 			WriteEvent(
 				MessageEventId, 
-				actor, 
-				processId, 
-				machineName, 
 				message);
 		}
 
-		[NonEvent]
-		public void Message(
-			Microsoft.ServiceFabric.Actors.ActorId actorId, 
-			int processId, 
-			string machineName, 
-			string message)
-		{
-			if (this.IsEnabled())
-			{
-				Message(
-					actorId.ToString(), 
-					processId, 
-					Environment.MachineName, 
-					message);
-			}
-		}
 
+		private const int ErrorEventId = 9003;
 
-		private const int ErrorEventId = 3003;
-
-		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Console | Keywords.Error)]
+		[Event(ErrorEventId, Level = EventLevel.LogAlways, Message = "{0}", Keywords = Keywords.Console | Keywords.Error)]
 		private void Error(
-			string actor, 
-			int processId, 
-			string machineName, 
 			string message, 
 			string source, 
 			string exceptionTypeName, 
@@ -95,9 +46,6 @@ namespace ConsoleApplication1.Diagnostics
 		{
 			WriteEvent(
 				ErrorEventId, 
-				actor, 
-				processId, 
-				machineName, 
 				message, 
 				source, 
 				exceptionTypeName, 
@@ -106,17 +54,11 @@ namespace ConsoleApplication1.Diagnostics
 
 		[NonEvent]
 		public void Error(
-			Microsoft.ServiceFabric.Actors.ActorId actorId, 
-			int processId, 
-			string machineName, 
 			System.Exception exception)
 		{
 			if (this.IsEnabled())
 			{
 				Error(
-					actorId.ToString(), 
-					processId, 
-					Environment.MachineName, 
 					exception.Message, 
 					exception.Source, 
 					exception.GetType().FullName, 
@@ -125,77 +67,75 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int SayGoodbyeEventId = 4004;
+		private const int SayGoodbyeEventId = 12004;
 
-		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "Say Goodbye {3} {4}", Keywords = Keywords.Console)]
+		[Event(SayGoodbyeEventId, Level = EventLevel.LogAlways, Message = "Say Goodbye {0} {1}", Keywords = Keywords.Console)]
 		private void SayGoodbye(
-			string actor, 
-			int processId, 
-			string machineName, 
 			string goodbye, 
 			string nightTime)
 		{
 			WriteEvent(
 				SayGoodbyeEventId, 
-				actor, 
-				processId, 
-				machineName, 
 				goodbye, 
 				nightTime);
 		}
 
 		[NonEvent]
 		public void SayGoodbye(
-			Microsoft.ServiceFabric.Actors.ActorId actorId, 
-			int processId, 
-			string machineName, 
 			string goodbye, 
 			System.DateTime nightTime)
 		{
 			if (this.IsEnabled())
 			{
 				SayGoodbye(
-					actorId.ToString(), 
-					processId, 
-					Environment.MachineName, 
 					goodbye, 
 					nightTime.ToString());
 			}
 		}
 
 
-		private const int SpeciallyEventId = 5005;
+		private const int SpeciallyEventId = 15005;
 
-		[Event(SpeciallyEventId, Level = EventLevel.LogAlways, Message = "Specially {3}", Keywords = Keywords.Console)]
+		[Event(SpeciallyEventId, Level = EventLevel.LogAlways, Message = "Specially {0}", Keywords = Keywords.Console)]
 		private void Specially(
-			string actor, 
-			int processId, 
-			string machineName, 
 			string special)
 		{
 			WriteEvent(
 				SpeciallyEventId, 
-				actor, 
-				processId, 
-				machineName, 
 				special);
 		}
 
 		[NonEvent]
 		public void Specially(
-			Microsoft.ServiceFabric.Actors.ActorId actorId, 
-			int processId, 
-			string machineName, 
 			ConsoleApplication1.Loggers.Special special)
 		{
 			if (this.IsEnabled())
 			{
 				Specially(
-					actorId.ToString(), 
-					processId, 
-					Environment.MachineName, 
 					special.ToString());
 			}
+		}
+
+
+		private const int StartHelloEventId = 18006;
+
+		[Event(StartHelloEventId, Level = EventLevel.LogAlways, Message = "Start Hello", Keywords = Keywords.Console, Opcode = EventOpcode.Start)]
+		public void StartHello(
+			)
+		{
+			WriteEvent(
+				StartHelloEventId);
+		}
+
+
+		private const int StopHelloEventId = 21007;
+
+		[Event(StopHelloEventId, Level = EventLevel.LogAlways, Message = "Stop Hello", Keywords = Keywords.Console, Opcode = EventOpcode.Stop)]
+		public void StopHello(
+			)
+		{
+			WriteEvent(
+				StopHelloEventId);
 		}
 
 

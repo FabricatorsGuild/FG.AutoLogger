@@ -11,6 +11,7 @@
         public const string Template_METHOD_ARGUMENT_DECLARATION = @"@@ARGUMENT_CLR_TYPE@@ @@ARGUMENT_NAME@@";
 
         public const string Variable_LOGGER_METHOD_NAME = @"@@LOGGER_METHOD_NAME@@";
+        public const string Variable_LOGGER_METHOD_RETURNTYPE = @"@@LOGGER_METHOD_RETURNTYPE@@";
         public const string Variable_LOGGER_METHOD_ARGUMENTS = @"@@LOGGER_METHOD_ARGUMENTS@@";
         public const string Variable_LOGGER_METHOD_IMPLEMENTATION = @"@@LOGGER_METHOD_IMPLEMENTATION@@";
 
@@ -19,7 +20,7 @@
 
 
         public const string Template_LOGGER_METHOD = @"
-		public void @@LOGGER_METHOD_NAME@@(
+		public @@LOGGER_METHOD_RETURNTYPE@@ @@LOGGER_METHOD_NAME@@(
 			@@LOGGER_METHOD_ARGUMENTS@@)
 		{
 @@LOGGER_METHOD_IMPLEMENTATION@@    

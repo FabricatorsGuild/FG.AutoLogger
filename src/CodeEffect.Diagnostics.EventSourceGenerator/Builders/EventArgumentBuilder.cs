@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
@@ -16,13 +17,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             }
 
             var type = model.Type;
-            if (IsComplexType(model.Type))
+            if (TypeExtensions.IsComplexType(model.Type))
             {
-                model.TypeTemplate =  eventSource.TypeTemplates.GetTypeTemplate(model.Type);
+                model.TypeTemplate = this.GetTypeTemplate(project, eventSource.TypeTemplates, model);
                 if (model.TypeTemplate != null)
                 {
-                    var parsedType = ParseType(model.TypeTemplate.CLRType);
-                    var renderedType = RenderCLRType(parsedType);
+                    var parsedType = TypeExtensions.ParseType(model.TypeTemplate.CLRType);
+                    var renderedType = TypeExtensions.RenderCLRType(parsedType);
                     if (renderedType == "string" && (parsedType != typeof(string)))
                     {
                         type = model.TypeTemplate.CLRType;
@@ -40,57 +41,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 }  
             }
             model.CLRType = type;
-        }
-
-        private static Type ParseType(string type)
-        {
-            switch (type.ToLowerInvariant())
-            {
-                case ("string"):
-                case ("system.string"):
-                    return typeof(string);
-                case ("int"):
-                case ("system.int32"):
-                    return typeof(int);
-                case ("long"):
-                case ("system.int64"):
-                    return typeof(long);
-                case ("bool"):
-                case ("system.boolean"):
-                    return typeof(bool);
-                case ("datetime"):
-                case ("system.dateTime"):
-                    return typeof(System.DateTime);
-                case ("guid"):
-                case ("system.guid"):
-                    return typeof(Guid);
-                default:
-                    return typeof(object);
-            }
-        }        
-
-        private static string RenderCLRType(Type type)
-        {
-            if (type == typeof(string))
-                return @"string";
-            if (type == typeof(int))
-                return @"int";
-            if (type == typeof(long))
-                return @"long";
-            if (type == typeof(bool))
-                return @"bool";
-            if (type == typeof(DateTime))
-                return @"DateTime";
-            if (type == typeof(Guid))
-                return @"Guid";
-
-            return @"string";
-        }
-
-        private static bool IsComplexType(string type)
-        {
-            var parsedType = ParseType(type);
-            return parsedType == typeof(object);
         }
     }
 }

@@ -21,7 +21,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     {
                         if (System.IO.File.Exists(destination))
                         {
-                            LogMessage($"Ignored copying reference {destination} as it already exists");
+                            System.IO.File.Copy(reference.Name, destination, overwrite: true);
+                            LogMessage($"Overwriting reference {destination} as it already exists");
                         }
                         else
                         {

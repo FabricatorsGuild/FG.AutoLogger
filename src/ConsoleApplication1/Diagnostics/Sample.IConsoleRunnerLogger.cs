@@ -11,141 +11,66 @@ namespace ConsoleApplication1.Diagnostics
 	internal sealed partial class Sample
 	{
 
-		private const int RunnerCreatedEventId = 2001;
+		private const int RunnerCreatedEventId = 4001;
 
 		[Event(RunnerCreatedEventId, Level = EventLevel.LogAlways, Message = "Runner Created", Keywords = Keywords.ConsoleRunner)]
-		private void RunnerCreated(
-			int processId, 
-			string machineName, 
-			string actor)
+		public void RunnerCreated(
+			)
 		{
 			WriteEvent(
-				RunnerCreatedEventId, 
-				processId, 
-				machineName, 
-				actor);
-		}
-
-		[NonEvent]
-		public void RunnerCreated(
-			int processId, 
-			string machineName, 
-			Microsoft.ServiceFabric.Actors.ActorId actorId)
-		{
-			if (this.IsEnabled())
-			{
-				RunnerCreated(
-					processId, 
-					Environment.MachineName, 
-					actorId.ToString());
-			}
+				RunnerCreatedEventId);
 		}
 
 
-		private const int RunnerDestroyedEventId = 4002;
+		private const int RunnerDestroyedEventId = 8002;
 
 		[Event(RunnerDestroyedEventId, Level = EventLevel.LogAlways, Message = "Runner Destroyed", Keywords = Keywords.ConsoleRunner)]
-		private void RunnerDestroyed(
-			int processId, 
-			string machineName, 
-			string actor)
+		public void RunnerDestroyed(
+			)
 		{
 			WriteEvent(
-				RunnerDestroyedEventId, 
-				processId, 
-				machineName, 
-				actor);
-		}
-
-		[NonEvent]
-		public void RunnerDestroyed(
-			int processId, 
-			string machineName, 
-			Microsoft.ServiceFabric.Actors.ActorId actorId)
-		{
-			if (this.IsEnabled())
-			{
-				RunnerDestroyed(
-					processId, 
-					Environment.MachineName, 
-					actorId.ToString());
-			}
+				RunnerDestroyedEventId);
 		}
 
 
-		private const int WaitingForKeyPressEventId = 6003;
+		private const int WaitingForKeyPressEventId = 12003;
 
 		[Event(WaitingForKeyPressEventId, Level = EventLevel.LogAlways, Message = "Waiting For Key Press", Keywords = Keywords.ConsoleRunner)]
-		private void WaitingForKeyPress(
-			int processId, 
-			string machineName, 
-			string actor)
+		public void WaitingForKeyPress(
+			)
 		{
 			WriteEvent(
-				WaitingForKeyPressEventId, 
-				processId, 
-				machineName, 
-				actor);
-		}
-
-		[NonEvent]
-		public void WaitingForKeyPress(
-			int processId, 
-			string machineName, 
-			Microsoft.ServiceFabric.Actors.ActorId actorId)
-		{
-			if (this.IsEnabled())
-			{
-				WaitingForKeyPress(
-					processId, 
-					Environment.MachineName, 
-					actorId.ToString());
-			}
+				WaitingForKeyPressEventId);
 		}
 
 
-		private const int KeyPressedEventId = 8004;
+		private const int KeyPressedEventId = 16004;
 
-		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {3}", Keywords = Keywords.ConsoleRunner)]
+		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {0}", Keywords = Keywords.ConsoleRunner)]
 		private void KeyPressed(
-			int processId, 
-			string machineName, 
-			string actor, 
 			string key)
 		{
 			WriteEvent(
 				KeyPressedEventId, 
-				processId, 
-				machineName, 
-				actor, 
 				key);
 		}
 
 		[NonEvent]
 		public void KeyPressed(
-			int processId, 
-			string machineName, 
-			Microsoft.ServiceFabric.Actors.ActorId actorId, 
 			System.ConsoleKey key)
 		{
 			if (this.IsEnabled())
 			{
 				KeyPressed(
-					processId, 
-					Environment.MachineName, 
-					actorId.ToString(), 
 					key.ToString());
 			}
 		}
 
 
-		private const int UnsupportedKeyErrorEventId = 10005;
+		private const int UnsupportedKeyErrorEventId = 20005;
 
-		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.ConsoleRunner | Keywords.Error)]
+		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{0}", Keywords = Keywords.ConsoleRunner | Keywords.Error)]
 		private void UnsupportedKeyError(
-			int processId, 
-			string machineName, 
-			string actor, 
 			string message, 
 			string source, 
 			string exceptionTypeName, 
@@ -153,9 +78,6 @@ namespace ConsoleApplication1.Diagnostics
 		{
 			WriteEvent(
 				UnsupportedKeyErrorEventId, 
-				processId, 
-				machineName, 
-				actor, 
 				message, 
 				source, 
 				exceptionTypeName, 
@@ -164,17 +86,11 @@ namespace ConsoleApplication1.Diagnostics
 
 		[NonEvent]
 		public void UnsupportedKeyError(
-			int processId, 
-			string machineName, 
-			Microsoft.ServiceFabric.Actors.ActorId actorId, 
 			System.Exception ex)
 		{
 			if (this.IsEnabled())
 			{
 				UnsupportedKeyError(
-					processId, 
-					Environment.MachineName, 
-					actorId.ToString(), 
 					ex.Message, 
 					ex.Source, 
 					ex.GetType().FullName, 
@@ -183,98 +99,46 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int StartLoopEventId = 12006;
+		private const int StartLoopEventId = 24006;
 
 		[Event(StartLoopEventId, Level = EventLevel.LogAlways, Message = "Start Loop", Keywords = Keywords.ConsoleRunner, Opcode = EventOpcode.Start)]
-		private void StartLoop(
-			int processId, 
-			string machineName, 
-			string actor)
+		public void StartLoop(
+			)
 		{
 			WriteEvent(
-				StartLoopEventId, 
-				processId, 
-				machineName, 
-				actor);
-		}
-
-		[NonEvent]
-		public void StartLoop(
-			int processId, 
-			string machineName, 
-			Microsoft.ServiceFabric.Actors.ActorId actorId)
-		{
-			if (this.IsEnabled())
-			{
-				StartLoop(
-					processId, 
-					Environment.MachineName, 
-					actorId.ToString());
-			}
+				StartLoopEventId);
 		}
 
 
-		private const int StopLoopEventId = 14007;
+		private const int StopLoopEventId = 28007;
 
 		[Event(StopLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Loop", Keywords = Keywords.ConsoleRunner, Opcode = EventOpcode.Stop)]
-		private void StopLoop(
-			int processId, 
-			string machineName, 
-			string actor)
+		public void StopLoop(
+			)
 		{
 			WriteEvent(
-				StopLoopEventId, 
-				processId, 
-				machineName, 
-				actor);
-		}
-
-		[NonEvent]
-		public void StopLoop(
-			int processId, 
-			string machineName, 
-			Microsoft.ServiceFabric.Actors.ActorId actorId)
-		{
-			if (this.IsEnabled())
-			{
-				StopLoop(
-					processId, 
-					Environment.MachineName, 
-					actorId.ToString());
-			}
+				StopLoopEventId);
 		}
 
 
-		private const int RandomIntsGeneratedEventId = 16008;
+		private const int RandomIntsGeneratedEventId = 32008;
 
-		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {3}", Keywords = Keywords.ConsoleRunner)]
+		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {0}", Keywords = Keywords.ConsoleRunner)]
 		private void RandomIntsGenerated(
-			int processId, 
-			string machineName, 
-			string actor, 
 			string values)
 		{
 			WriteEvent(
 				RandomIntsGeneratedEventId, 
-				processId, 
-				machineName, 
-				actor, 
 				values);
 		}
 
 		[NonEvent]
 		public void RandomIntsGenerated(
-			int processId, 
-			string machineName, 
-			Microsoft.ServiceFabric.Actors.ActorId actorId, 
 			int[] values)
 		{
 			if (this.IsEnabled())
 			{
 				RandomIntsGenerated(
-					processId, 
-					Environment.MachineName, 
-					actorId.ToString(), 
 					values.ToString());
 			}
 		}

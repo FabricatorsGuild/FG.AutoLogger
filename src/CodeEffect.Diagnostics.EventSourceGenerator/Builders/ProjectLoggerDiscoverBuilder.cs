@@ -22,7 +22,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             LogMessage($"Scanning {files.Length} project file{(files.Length == 1 ? "" : "s")} for loggers");
             var loggerTemplates = new List<LoggerTemplateModel>();
             var loggerProjectItems = files.OfType<LoggerTemplateModel>(ProjectItemType.LoggerInterface);
-            var referenceProjectItems = files.OfType(ProjectItemType.Reference).ToArray();
 
             var foundLoggerTemplates =  CompileAndEvaluateInterface(model.DynamicAssembly, loggerProjectItems);
 
@@ -70,7 +69,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                                 Include = include
                             };
                             var eventSourceEvents = new List<EventModel>();
-                            foreach (var methodInfo in type.GetMethods())
+                            foreach (var methodInfo in type.GetAllInterfaceMethods())
                             {
                                 var eventSourceEventArguments = new List<EventArgumentModel>();
                                 var eventSourceEvent = new EventModel()
@@ -87,6 +86,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                                     });
                                 }
                                 eventSourceEvent.Arguments = eventSourceEventArguments.ToArray();
+                                eventSourceEvent.ReturnType = methodInfo.ReturnType.FullName != "System.Void" ? methodInfo.ReturnType?.GetFriendlyName() : null;
                                 eventSourceEvents.Add(eventSourceEvent);
                             }
 

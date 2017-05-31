@@ -56,7 +56,9 @@
     <Compile Include="LoggerImplementationMembersAITelemetryRendererExtension.cs" />
     <Compile Include="LoggerImplementationMethodAITelemetryRendererExtension.cs" />
     <Compile Include="LoggerImplementationUsingAITelemetryRendererExtension.cs" />
+    <Compile Include="OperationHolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScopeWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ApplicationInsights.config" />
@@ -67,6 +69,10 @@
     <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
       <Project>{714C6060-43CC-4314-A233-8E74D65D014C}</Project>
       <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\CodeEffect.Diagnostics.EventSourceGenerator.csproj">
+      <Project>{1837b79f-c48f-4d7e-8121-02026c1ea5fc}</Project>
+      <Name>CodeEffect.Diagnostics.EventSourceGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

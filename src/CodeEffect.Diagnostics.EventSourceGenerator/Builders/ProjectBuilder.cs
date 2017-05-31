@@ -9,6 +9,18 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 {
     public class ProjectBuilder : BaseWithLogging, IProjectBuilder
     {
+        public Microsoft.Build.Evaluation.Project QuickLoadProjectReference(string projectFileReference)
+        {
+            Microsoft.Build.Evaluation.Project project = null;
+            using (var projectFileReader = XmlReader.Create(projectFileReference))
+            {
+                project = new Microsoft.Build.Evaluation.Project(projectFileReader);
+                LogMessage($"Loaded referenced project {projectFileReference} from XML with {project.Items.Count} items");
+
+                return project;
+            }
+        }
+
         public void Build(Project model)
         {
             LogMessage($"Scanning project {model.ProjectFilePath} for eventsource definitions");
@@ -62,7 +74,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 }
 
                 foreach (var projectItem in project.Items.Where(item =>
-                    item.EvaluatedInclude.Matches(@"(^|\\)[^\\]*BuilderExtension.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
+                    item.EvaluatedInclude.Matches(@"(^|\\)[^\\]*Extension.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
                     && item.ItemType == "Compile"))
                 {
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);
@@ -93,6 +105,20 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     if (System.IO.File.Exists(projectItemFilePath))
                     {
                         projectItems.Add(new ProjectItem(ProjectItemType.Reference, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
+                    }
+                    else
+                    {
+                        var referencedProject = QuickLoadProjectReference(referencedProjectPath);
+                        var referencedProjectSubOutputPath =
+                            referencedProject.Items.FirstOrDefault(item => item.ItemType.Equals("_OutputPathItem", StringComparison.InvariantCultureIgnoreCase))?
+                                .EvaluatedInclude;
+                        
+                        referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), referencedProjectSubOutputPath);
+                        projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
+                        if (System.IO.File.Exists(projectItemFilePath))
+                        {
+                            projectItems.Add(new ProjectItem(ProjectItemType.Reference, projectItemFilePath) { Include = projectItem.EvaluatedInclude });
+                        }
                     }
                 }
 

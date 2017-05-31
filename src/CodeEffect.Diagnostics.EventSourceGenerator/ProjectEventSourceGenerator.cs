@@ -8,10 +8,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
 {
     public class ProjectEventSourceGenerator : BaseWithLogging
     {
-        public Project Run(string projectBasePath, string cscToolPath, bool saveChanges = false)
+        public Project Run(string projectBasePath, string cscToolPath, bool saveChanges = false, bool forceUpdate = false)
         {
 
-            var project = new Project() { ProjectFilePath = projectBasePath, CscToolPath = cscToolPath};
+            var project = new Project() { ProjectFilePath = projectBasePath, CscToolPath = cscToolPath, ForceUpdate = forceUpdate};
 
             var builders = new IProjectBuilder[]
             {
@@ -26,7 +26,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             }
 
             // Do not continue if no changes are detected, saving time on compilation etc
-            if (!project.HasProjectChanges)
+            if ((!project.HasProjectChanges) && (!project.ForceUpdate))
             {
                 LogMessage("Ignoring to build and render the project as no changes were detected");
                 return project;
@@ -37,6 +37,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 new ProjectRefenceCopyBuilder(), 
                 new ProjectPrecompileBuilder(), 
                 new ProjectExtensionsDiscoverBuilder(),
+                new ProjectDefaultExtensionsBuilder(),
                 new ProjectLoggerDiscoverBuilder(),
                 new ProjectReferenceItemRemoverBuilder(), 
                 new ProjectDefaultEventSourceBuilder(),
