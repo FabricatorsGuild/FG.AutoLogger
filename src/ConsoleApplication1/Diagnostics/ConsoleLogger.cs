@@ -14,20 +14,12 @@ namespace ConsoleApplication1.Diagnostics
 {
 	internal sealed class ConsoleLogger : IConsoleLogger
 	{
-		private readonly Microsoft.ServiceFabric.Actors.ActorId _actorId;
-		private readonly int _processId;
-		private readonly string _machineName;
 		// Hello from extension
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public ConsoleLogger(
-			Microsoft.ServiceFabric.Actors.ActorId actorId,
-			int processId,
-			string machineName)
+			)
 		{
-			_actorId = actorId;
-			_processId = processId;
-			_machineName = machineName;
 			// Do stuff in the constructor
 			
             _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
@@ -41,28 +33,17 @@ namespace ConsoleApplication1.Diagnostics
 			string message)
 		{
 			Sample.Current.SayHello(
-				_actorId, 
-				_processId, 
-				_machineName, 
 				message
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayHello");
            
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
 			_telemetryClient.TrackEvent(
 	            nameof(SayHello),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()},
-                    {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"Message", message}
+	                {"Message", message}
 	            });
     
 		}
@@ -74,28 +55,17 @@ namespace ConsoleApplication1.Diagnostics
 			string message)
 		{
 			Sample.Current.Message(
-				_actorId, 
-				_processId, 
-				_machineName, 
 				message
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Message");
            
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
 			_telemetryClient.TrackEvent(
 	            nameof(Message),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()},
-                    {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"Message", message}
+	                {"Message", message}
 	            });
     
 		}
@@ -107,18 +77,11 @@ namespace ConsoleApplication1.Diagnostics
 			System.Exception exception)
 		{
 			Sample.Current.Error(
-				_actorId, 
-				_processId, 
-				_machineName, 
 				exception
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[Console, Error] ERR: Error");
            
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\texception.Message:\t{exception.Message}");
 			System.Diagnostics.Debug.WriteLine($"\texception.Source:\t{exception.Source}");
 			System.Diagnostics.Debug.WriteLine($"\texception.GetType().FullName:\t{exception.GetType().FullName}");
@@ -128,11 +91,7 @@ namespace ConsoleApplication1.Diagnostics
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
                     { "Name", "Error" },
-	                {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()},
-                    {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"Message", exception.Message},
+	                {"Message", exception.Message},
                     {"Source", exception.Source},
                     {"ExceptionTypeName", exception.GetType().FullName},
                     {"Exception", exception.AsJson()}
@@ -148,30 +107,19 @@ namespace ConsoleApplication1.Diagnostics
 			System.DateTime nightTime)
 		{
 			Sample.Current.SayGoodbye(
-				_actorId, 
-				_processId, 
-				_machineName, 
 				goodbye, 
 				nightTime
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayGoodbye");
            
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tgoodbye:\t{goodbye}");
 			System.Diagnostics.Debug.WriteLine($"\tnightTime.ToString():\t{nightTime.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(SayGoodbye),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()},
-                    {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"Goodbye", goodbye},
+	                {"Goodbye", goodbye},
                     {"NightTime", nightTime.ToString()}
 	            });
     
@@ -184,28 +132,17 @@ namespace ConsoleApplication1.Diagnostics
 			ConsoleApplication1.Loggers.Special special)
 		{
 			Sample.Current.Specially(
-				_actorId, 
-				_processId, 
-				_machineName, 
 				special
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Specially");
            
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tspecial.ToString():\t{special.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(Specially),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()},
-                    {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"Special", special.ToString()}
+	                {"Special", special.ToString()}
 	            });
     
 		}
@@ -217,23 +154,14 @@ namespace ConsoleApplication1.Diagnostics
 			)
 		{
 			Sample.Current.StartHello(
-				_actorId, 
-				_processId, 
-				_machineName
+				
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: StartHello");
            
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			_helloStopwatch.Restart();
             var helloOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("hello");
-	       helloOperationHolder.Telemetry.Properties.Add("ActorId", _actorId.ToString());
-			helloOperationHolder.Telemetry.Properties.Add("ActorIdType", _actorId.Kind.ToString());
-			helloOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
-			helloOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
+	       
 	       OperationHolder.StartOperation(helloOperationHolder);
     
 		}
@@ -246,17 +174,11 @@ namespace ConsoleApplication1.Diagnostics
 			)
 		{
 			Sample.Current.StopHello(
-				_actorId, 
-				_processId, 
-				_machineName
+				
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[Console] ERR: StopHello");
            
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			_helloStopwatch.Stop();
 	        var helloOperationHolder = OperationHolder.StopOperation();
 	        _telemetryClient.StopOperation(helloOperationHolder);

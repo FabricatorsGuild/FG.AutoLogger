@@ -37,6 +37,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 new ProjectRefenceCopyBuilder(), 
                 new ProjectPrecompileBuilder(), 
                 new ProjectExtensionsDiscoverBuilder(),
+                new ProjectDefaultExtensionsBuilder(),
                 new ProjectLoggerDiscoverBuilder(),
                 new ProjectReferenceItemRemoverBuilder(), 
                 new ProjectDefaultEventSourceBuilder(),

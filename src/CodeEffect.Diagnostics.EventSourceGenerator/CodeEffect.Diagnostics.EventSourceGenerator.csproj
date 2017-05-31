@@ -57,6 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\LoggerEventScopeExpanderBuilder.cs" />
+    <Compile Include="Extensions\ExceptionTypeTemplateExtension.cs" />
+    <Compile Include="Builders\ProjectDefaultExtensionsBuilder.cs" />
     <Compile Include="Builders\ProjectPrecompileBuilder.cs" />
     <Compile Include="Builders\ProjectRefenceCopyBuilder.cs" />
     <Compile Include="Builders\ProjectSummaryBuilder.cs" />

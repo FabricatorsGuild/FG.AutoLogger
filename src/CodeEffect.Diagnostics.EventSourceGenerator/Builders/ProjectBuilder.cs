@@ -74,7 +74,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 }
 
                 foreach (var projectItem in project.Items.Where(item =>
-                    item.EvaluatedInclude.Matches(@"(^|\\)[^\\]*BuilderExtension.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
+                    item.EvaluatedInclude.Matches(@"(^|\\)[^\\]*Extension.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
                     && item.ItemType == "Compile"))
                 {
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);

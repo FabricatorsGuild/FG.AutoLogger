@@ -40,5 +40,5 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
                 }
             }
         }
-    }
+    }    
 }

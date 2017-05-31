@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Security.Policy;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
 {
@@ -22,17 +24,28 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
 	            });
 ";
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_NAME = @"@@LOGGER_METHOD_TRACKOPERATION_NAME@@";
+        private const string Variable_LOGGER_METHOD_TRACKOPERATION_REQUESTNAME = @"@@LOGGER_METHOD_TRACKOPERATION_REQUESTNAME@@";
+        private const string Variable_LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE = @"@@LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE@@";
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@";
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@";
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT = @"@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@";
+        private const string Variable_LOGGER_METHOD_TRACKOPERATION_METHOD_ARGUMENTS_ASSIGNMENT = @"@@LOGGER_METHOD_TRACKOPERATION_METHOD_ARGUMENTS_ASSIGNMENT@@";
+        private const string Variable_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_METHOD_NAME = @"@@LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_METHOD_NAME@@";
+
         private const string Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION = @"@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Telemetry.Properties.Add(""@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@"", @@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@);";
-        private const string Template_LOGGER_METHOD_TRACKOPERATIONSTART_DECLARATION = @"            var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(""@@LOGGER_METHOD_TRACKOPERATION_NAME@@"");
+        private const string Template_LOGGER_METHOD_TRACKOPERATIONSTART_DECLARATION = @"
+			var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(@@LOGGER_METHOD_TRACKOPERATION_REQUESTNAME@@);
 	       @@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@
 	       OperationHolder.StartOperation(@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
 ";
+        private const string Template_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTART_DECLARATION = @"
+			var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<@@LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE@@Telemetry>(@@LOGGER_METHOD_TRACKOPERATION_REQUESTNAME@@);
+			@@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@
+			return new ScopeWrapper<@@LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE@@Telemetry>(_telemetryClient, @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder, () => @@LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_METHOD_NAME@@(@@LOGGER_METHOD_TRACKOPERATION_METHOD_ARGUMENTS_ASSIGNMENT@@));
+";
         private const string Template_LOGGER_METHOD_TRACKOPERATIONSTOP_DECLARATION = @"	        var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = OperationHolder.StopOperation();
-	        _telemetryClient.StopOperation(@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
-	        @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Dispose();
+			_telemetryClient.StopOperation(@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
+			@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Dispose();
 ";
 
         private const string Variable_LOGGER_METHOD_TRACKEXCEPTION_EVENTNAME = @"@@LOGGER_METHOD_TRACKEXCEPTION_EVENTNAME@@";
@@ -54,10 +67,20 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
         {
             if (model.OpCode == EventOpcode.Start)
             {
+                if ((model.ReturnType == "System.IDisposable") && (model.Name.StartsWith("Start")))
+                {
+                    return RenderStartScopedOperation(model);
+                }
+
                 return RenderStartOperation(model);
             }
             else if (model.OpCode == EventOpcode.Stop)
             {
+                if (model.CorrelatesTo?.ReturnType == "System.IDisposable" && (model.CorrelatesTo?.Name.StartsWith("Start") ?? false))
+                {
+                    return RenderStopScopedOperation(model);
+                }
+
                 return RenderStopOperation(model);
             }
 
@@ -69,12 +92,75 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             return RenderTrackEvent(model);
         }
 
+        private string RenderStopScopedOperation(EventModel model)
+        {
+            return "";
+        }
+
+        private string RenderStartScopedOperation(EventModel model)
+        {
+            var operationName = GetEventOperationName(model);
+
+            var output = Template_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTART_DECLARATION;
+
+            var requestName = "";
+            var requestArgumentName = GetRequestNameArgument(model);
+            if (requestArgumentName != null)
+            {
+                requestName = requestArgumentName.Name;
+            }
+            else
+            {
+                requestName = $"\"{operationName}\"";
+            }
+
+            var telemetryType = "Request";
+            if (model.Name.Matches(@"(call|send)", StringComparison.InvariantCultureIgnoreCase, false))
+            {
+                telemetryType = "Dependency";
+            }
+
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_NAME, operationName);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_REQUESTNAME, requestName);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE, telemetryType);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_METHOD_NAME, model.CorrelatesTo.Name);
+
+            var arguments = new EventArgumentsListBuilder("", arg => RenderDictionaryKeyValueAdd(arg, operationName), "\r\n			");
+            foreach (var argumentModel in model.GetAllArgumentsExpanded(directArgumentAssignments: false))
+            {
+                arguments.Append(argumentModel);
+            }
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION, arguments.ToString());
+
+
+            var stopOperationArguments = new EventArgumentsListBuilder("", arg => $"{arg.Name}", ",");
+            foreach (var argumentModel in model.GetAllNonImplicitArguments())
+            {
+                stopOperationArguments.Append(argumentModel);
+            }
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_METHOD_ARGUMENTS_ASSIGNMENT, stopOperationArguments.ToString());
+
+            return output;
+        }
+
         private string RenderStartOperation(EventModel model)
         {
             var operationName = GetEventOperationName(model);
 
             var output = Template_LOGGER_METHOD_TRACKOPERATIONSTART_DECLARATION;
+
+            var requestName = "";
+            var requestArgumentName = GetRequestNameArgument(model);
+            if (requestArgumentName != null)
+            {
+                requestName = requestArgumentName.Name;
+            }
+            else
+            {
+                requestName = $"\"{operationName}\"";
+            }
             output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_NAME, operationName);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_REQUESTNAME, requestName);
 
             var arguments = new EventArgumentsListBuilder("", arg => RenderDictionaryKeyValueAdd(arg, operationName), "\r\n			");
             foreach (var argumentModel in model.GetAllArgumentsExpanded(directArgumentAssignments: false))

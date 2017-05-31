@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 {
-    public class EventArgumentModel
+    public class EventArgumentModel : ICloneable
     {
         public string Name { get; set; }
         public string Type { get; set; }
@@ -87,6 +87,22 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
                 default:
                     return typeof(object);
             }
+        }
+
+        public object Clone()
+        {
+            return new EventArgumentModel()
+            {
+                Name = this.Name,
+                Type = this.Type,
+                CLRType = this.CLRType,
+                AssignedCLRType = this.AssignedCLRType,
+                Assignment = this.Assignment,
+                IsImplicit = this.IsImplicit,
+                TypeTemplate = this.TypeTemplate,
+                TemplatedParentArgument = this.TemplatedParentArgument,
+                IsOverriden = this.IsOverriden,
+            };
         }
     }
 }

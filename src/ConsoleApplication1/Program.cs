@@ -13,9 +13,23 @@ namespace ConsoleApplication1
         static void Main(string[] args)
         {
             ObjectMother.Current.GetName();
-            IConsoleRunnerLogger logger = new ConsoleRunnerLogger(Process.GetCurrentProcess().Id, Environment.MachineName, new ActorId("xxx"));
+            /*IConsoleRunnerLogger logger = new ConsoleRunnerLogger(Process.GetCurrentProcess().Id, Environment.MachineName, new ActorId("xxx"));
             var consoleRunner = new ConsoleRunner(logger) { Process = Process.GetCurrentProcess(), Name = ObjectMother.Current.GetName() };
-            consoleRunner.Run();
+            consoleRunner.Run();*/
+
+            var dependencyLogger = new DependencyLogger(Process.GetCurrentProcess().Id, Environment.MachineName);
+
+            while (true)
+            {
+                using (dependencyLogger.RecieveMessage("hello_recieved"))
+
+                {
+                    using (dependencyLogger.CallExternalComponent("goodbye_call", "dsaöjflsd fsdf"))
+                    {
+                        Task.Delay(1000).GetAwaiter().GetResult();
+                    }
+                }
+            }
         }
     }
 }

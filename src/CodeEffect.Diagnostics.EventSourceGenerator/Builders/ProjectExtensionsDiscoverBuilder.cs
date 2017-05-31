@@ -17,7 +17,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
     {
         public void Build(Project model)
         {
-            model.Extensions = DiscoverExtensions(model.ProjectItems, model.DynamicAssembly);
+            var extensions = model.Extensions?.ToList() ?? new List<IExtension>();
+            extensions.AddRange(DiscoverExtensions(model.ProjectItems, model.DynamicAssembly));
+            model.Extensions = extensions.ToArray();
         }
 
         private IExtension[] DiscoverExtensions(IEnumerable<ProjectItem> projectFiles, Assembly dynamicAssembly)
