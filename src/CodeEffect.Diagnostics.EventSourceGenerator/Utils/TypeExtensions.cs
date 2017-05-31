@@ -26,6 +26,58 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
             {typeof(void), "void"}
         };
 
+
+        public static Type ParseType(string type)
+        {
+            switch (type.ToLowerInvariant())
+            {
+                case ("string"):
+                case ("system.string"):
+                    return typeof(string);
+                case ("int"):
+                case ("system.int32"):
+                    return typeof(int);
+                case ("long"):
+                case ("system.int64"):
+                    return typeof(long);
+                case ("bool"):
+                case ("system.boolean"):
+                    return typeof(bool);
+                case ("datetime"):
+                case ("system.dateTime"):
+                    return typeof(System.DateTime);
+                case ("guid"):
+                case ("system.guid"):
+                    return typeof(Guid);
+                default:
+                    return typeof(object);
+            }
+        }
+
+        public static string RenderCLRType(Type type)
+        {
+            if (type == typeof(string))
+                return @"string";
+            if (type == typeof(int))
+                return @"int";
+            if (type == typeof(long))
+                return @"long";
+            if (type == typeof(bool))
+                return @"bool";
+            if (type == typeof(DateTime))
+                return @"DateTime";
+            if (type == typeof(Guid))
+                return @"Guid";
+
+            return @"string";
+        }
+
+        public static bool IsComplexType(string type)
+        {
+            var parsedType = ParseType(type);
+            return parsedType == typeof(object);
+        }
+
         public static string GetFriendlyName(this Type type)
         {
             string friendlyName;

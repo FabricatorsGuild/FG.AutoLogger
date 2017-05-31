@@ -53,4 +53,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Samples
                 _logger.RunnerDestroyed();
             }
         }
+    
+    }
 }

@@ -12,6 +12,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public int? Id { get; set; }
         public string Name { get; set; }
         public EventArgumentModel[] Arguments { get; set; }
+        public string ReturnType { get; set; }
         public System.Diagnostics.Tracing.EventLevel Level { get; set; }
         public KeywordModel[] Keywords { get; set; }
         public EventOpcode? OpCode { get; set; }

@@ -1,7 +1,7 @@
 {
   "ProviderName": "CE-CodeEffect.Diagnostics.EventSourceGenerator-sample",
   "Settings": {
-    "AutogenerateLoggerInterfaces":  true 
+    "AutogenerateLoggerInterfaces":  false 
   },
   "Keywords": [
     "HostInitialization",
@@ -9,57 +9,6 @@
     "Infrastructure"
   ],
   "TypeTemplates": [
-    {
-      "Name": "Actor",
-      "CLRType": "Microsoft.ServiceFabric.Actors.Runtime.Actor",
-      "Arguments": [
-        {
-          "Assignment": "$this.GetType().ToString()",
-          "Name": "actorType",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.Id.ToString()",
-          "Name": "actorId",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.ActorService.Context.CodePackageActivationContext.ApplicationTypeName",
-          "Name": "applicationTypeName",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.ActorService.Context.CodePackageActivationContext.ApplicationName",
-          "Name": "applicationName",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.ActorService.Context.ServiceTypeName",
-          "Name": "serviceTypeName",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.ActorService.Context.ServiceName.ToString()",
-          "Name": "serviceName",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.ActorService.Context.PartitionId",
-          "Name": "partitionId",
-          "Type": "Guid"
-        },
-        {
-          "Assignment": "$this.ActorService.Context.ReplicaId",
-          "Name": "replicaOrInstanceId",
-          "Type": "long"
-        },
-        {
-          "Assignment": "$this.ActorService.Context.NodeContext.NodeName",
-          "Name": "nodeName",
-          "Type": "string"
-        }
-      ]
-    },
     {
       "Name": "Exception",
       "CLRType": "System.Exception",
@@ -85,46 +34,11 @@
           "Type": "string"
         }
       ]
-    },
-    {
-      "Name": "ActorId",
-      "CLRType": "Microsoft.ServiceFabric.Actors.ActorId",
-      "Arguments": [
-        {
-          "Name": "actorId",
-          "Type": "string",
-          "Assignment": "$this.ToString()"
-        },
-        {
-          "Name": "actorIdType",
-          "Type": "string",
-          "Assignment": "$this.Kind.ToString()"
-        }
-      ]
     }
   ],
   "Loggers": [
     {
-      "Name": "IConsoleLogger",
-      "StartId": 1000,
-      "ImplicitArguments": [
-        {
-          "Name": "actorId",
-          "Type": "ActorId"
-        },
-        {
-          "Name": "processId",
-          "Type": "int"
-        },
-        {
-          "Name": "machineName",
-          "Type": "string",
-          "Assignment": "Environment.MachineName"
-        }
-      ]
-    },
-    {
-      "Name": "IConsoleRunnerLogger",
+      "Name": "IDependencyLogger",
       "StartId": 2000,
       "ImplicitArguments": [
         {
@@ -135,10 +49,6 @@
           "Name": "machineName",
           "Type": "string",
           "Assignment": "Environment.MachineName"
-        },
-        {
-          "Name": "actorId",
-          "Type": "ActorId"
         }
       ],
       "OverrideArguments": []

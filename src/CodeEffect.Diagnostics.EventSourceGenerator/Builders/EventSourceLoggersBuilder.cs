@@ -20,7 +20,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             {
                 new LoggerTemplateBuilder(),
                 new LoggerKeywordsBuilder(),
-                new EventSourceCorrelatingEventsBuilder(), 
+                new EventSourceCorrelatingEventsBuilder(),
+                new LoggerEventScopeExpanderBuilder(),
                 new LoggerImplicitArgumentsBuilder(),
                 new LoggerOverrideArgumentsBuilder(), 
                 new EventSourceEventsBuilder(),

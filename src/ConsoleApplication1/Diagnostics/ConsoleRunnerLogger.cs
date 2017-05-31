@@ -14,20 +14,12 @@ namespace ConsoleApplication1.Diagnostics
 {
 	internal sealed class ConsoleRunnerLogger : IConsoleRunnerLogger
 	{
-		private readonly int _processId;
-		private readonly string _machineName;
-		private readonly Microsoft.ServiceFabric.Actors.ActorId _actorId;
 		// Hello from extension
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public ConsoleRunnerLogger(
-			int processId,
-			string machineName,
-			Microsoft.ServiceFabric.Actors.ActorId actorId)
+			)
 		{
-			_processId = processId;
-			_machineName = machineName;
-			_actorId = actorId;
 			// Do stuff in the constructor
 			
             _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
@@ -41,25 +33,16 @@ namespace ConsoleApplication1.Diagnostics
 			)
 		{
 			Sample.Current.RunnerCreated(
-				_processId, 
-				_machineName, 
-				_actorId
+				
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: RunnerCreated");
            
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(RunnerCreated),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()}
+	                
 	            });
     
 		}
@@ -71,25 +54,16 @@ namespace ConsoleApplication1.Diagnostics
 			)
 		{
 			Sample.Current.RunnerDestroyed(
-				_processId, 
-				_machineName, 
-				_actorId
+				
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: RunnerDestroyed");
            
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(RunnerDestroyed),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()}
+	                
 	            });
     
 		}
@@ -101,25 +75,16 @@ namespace ConsoleApplication1.Diagnostics
 			)
 		{
 			Sample.Current.WaitingForKeyPress(
-				_processId, 
-				_machineName, 
-				_actorId
+				
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: WaitingForKeyPress");
            
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(WaitingForKeyPress),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()}
+	                
 	            });
     
 		}
@@ -131,28 +96,17 @@ namespace ConsoleApplication1.Diagnostics
 			System.ConsoleKey key)
 		{
 			Sample.Current.KeyPressed(
-				_processId, 
-				_machineName, 
-				_actorId, 
 				key
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: KeyPressed");
            
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tkey.ToString():\t{key.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(KeyPressed),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()},
-                    {"Key", key.ToString()}
+	                {"Key", key.ToString()}
 	            });
     
 		}
@@ -164,18 +118,11 @@ namespace ConsoleApplication1.Diagnostics
 			System.Exception ex)
 		{
 			Sample.Current.UnsupportedKeyError(
-				_processId, 
-				_machineName, 
-				_actorId, 
 				ex
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner, Error] ERR: UnsupportedKeyError");
            
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tex.Message:\t{ex.Message}");
 			System.Diagnostics.Debug.WriteLine($"\tex.Source:\t{ex.Source}");
 			System.Diagnostics.Debug.WriteLine($"\tex.GetType().FullName:\t{ex.GetType().FullName}");
@@ -185,11 +132,7 @@ namespace ConsoleApplication1.Diagnostics
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
                     { "Name", "UnsupportedKeyError" },
-	                {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()},
-                    {"Message", ex.Message},
+	                {"Message", ex.Message},
                     {"Source", ex.Source},
                     {"ExceptionTypeName", ex.GetType().FullName},
                     {"Exception", ex.AsJson()}
@@ -204,23 +147,14 @@ namespace ConsoleApplication1.Diagnostics
 			)
 		{
 			Sample.Current.StartLoop(
-				_processId, 
-				_machineName, 
-				_actorId
+				
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: StartLoop");
            
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_loopStopwatch.Restart();
             var loopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("loop");
-	       loopOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
-			loopOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
-			loopOperationHolder.Telemetry.Properties.Add("ActorId", _actorId.ToString());
-			loopOperationHolder.Telemetry.Properties.Add("ActorIdType", _actorId.Kind.ToString());
+	       
 	       OperationHolder.StartOperation(loopOperationHolder);
     
 		}
@@ -233,17 +167,11 @@ namespace ConsoleApplication1.Diagnostics
 			)
 		{
 			Sample.Current.StopLoop(
-				_processId, 
-				_machineName, 
-				_actorId
+				
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: StopLoop");
            
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_loopStopwatch.Stop();
 	        var loopOperationHolder = OperationHolder.StopOperation();
 	        _telemetryClient.StopOperation(loopOperationHolder);
@@ -258,28 +186,17 @@ namespace ConsoleApplication1.Diagnostics
 			int[] values)
 		{
 			Sample.Current.RandomIntsGenerated(
-				_processId, 
-				_machineName, 
-				_actorId, 
 				values
 			);
 
 			System.Diagnostics.Debug.WriteLine($"[ConsoleRunner] ERR: RandomIntsGenerated");
            
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
-			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tvalues.ToString():\t{values.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(RandomIntsGenerated),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
-	                {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"ActorId", _actorId.ToString()},
-                    {"ActorIdType", _actorId.Kind.ToString()},
-                    {"Values", values.ToString()}
+	                {"Values", values.ToString()}
 	            });
     
 		}

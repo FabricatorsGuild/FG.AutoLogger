@@ -10,11 +10,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var eventSource = eventSourceProjectItem.Content;
             if (eventSource == null)
             {
-                LogError($"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
+                LogError(
+                    $"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
                 return;
             }
 
-            Build(eventSource, model);
+            Build(project, eventSource, model);
         }
 
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel logger, EventModel model)
@@ -22,7 +23,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             Build(project, eventSourceProjectItem, model);
         }
 
-        private void Build(EventSourceModel eventSource, EventModel model)
+        private void Build(Project project, EventSourceModel eventSource, EventModel model)
         {
             if (eventSource == null)
             {
@@ -32,13 +33,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             foreach (var argument in model.GetAllArguments())
             {
-                var template = eventSource.TypeTemplates.GetTypeTemplate(argument.Type);
-                if (template != null)
+                if (TypeExtensions.IsComplexType(argument.Type) && (argument.TypeTemplate == null))
                 {
-                    argument.TypeTemplate = template;
+                    var template = this.GetTypeTemplate(project, eventSource.TypeTemplates, argument);
+                    if (template != null)
+                    {
+                        argument.TypeTemplate = template;
+                    }
                 }
             }
-
         }
     }
 }

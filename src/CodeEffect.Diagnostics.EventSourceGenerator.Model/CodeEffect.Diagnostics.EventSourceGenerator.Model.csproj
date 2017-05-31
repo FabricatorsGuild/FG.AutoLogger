@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseTemplateExtension.cs" />
     <Compile Include="BaseWithLogging.cs" />
     <Compile Include="EventArgumentModel.cs" />
     <Compile Include="EventArgumentsListBuilder.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="IProjectBuilder.cs" />
     <Compile Include="IProjectRenderer.cs" />
     <Compile Include="IRenderer.cs" />
+    <Compile Include="ITypeTemplateDefinition.cs" />
     <Compile Include="IWithLogging.cs" />
     <Compile Include="KeywordExtensions.cs" />
     <Compile Include="KeywordModel.cs" />

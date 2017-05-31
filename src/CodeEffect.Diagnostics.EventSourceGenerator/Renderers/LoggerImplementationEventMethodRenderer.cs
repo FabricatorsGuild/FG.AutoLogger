@@ -41,9 +41,23 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 return "";
             }
 
+            var eventName = model.Name;
+
+            if ((model.ReturnType == "System.IDisposable") && (model.Name.StartsWith("Start")))
+            {
+                eventName = model.Name.Substring("Start".Length);
+            }
+            /*
+            else if (model.CorrelatesTo?.ReturnType == "System.IDisposable" && (model.CorrelatesTo?.Name.StartsWith("Start") ?? false))
+            {
+                return "";
+            }
+            */
+
             var output = LoggerImplementationEventMethodTemplate.Template_LOGGER_METHOD;
-            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_NAME, model.Name);
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_NAME, eventName);
             output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_RETURNTYPE, model.ReturnType ?? "void");
 
             var methodArguments = new EventArgumentsListBuilder(
                 RenderMethodArgument, LoggerImplementationEventMethodTemplate.Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER);
