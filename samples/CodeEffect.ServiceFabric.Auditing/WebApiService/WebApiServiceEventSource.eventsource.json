@@ -1,0 +1,35 @@
+{
+  "Loggers": [
+    {
+      "Name": "IWebApiLogger",
+      "StartId": 100,
+      "ImplicitArguments": [
+        {
+          "Name": "context",
+          "Type": "StatelessServiceContext"
+        }
+      ],
+      "OverrideArguments": []
+    },
+    {
+      "Name": "IServicesCommunicationLogger",
+      "StartId": 100,
+      "ImplicitArguments": [
+        {
+          "Name": "context",
+          "Type": "StatelessServiceContext"
+        }
+      ],
+      "OverrideArguments": [
+      ]
+    }
+  ],
+  "Name": "WebApiServiceEventSource",
+  "ProviderName": "CodeEffect-ServiceFabric-Auditing-WebApi",
+  "Keywords": [],
+  "TypeTemplates": [
+  ],
+  "Settings": {
+    "AutogenerateLoggerInterfaces": false
+  }
+}

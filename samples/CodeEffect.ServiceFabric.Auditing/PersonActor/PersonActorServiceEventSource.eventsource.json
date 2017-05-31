@@ -1,0 +1,62 @@
+{
+  "Loggers": [
+    {
+      "Name": "IPersonActorLogger",
+      "StartId": 100,
+      "ImplicitArguments": [
+        {
+          "Name": "actor",
+          "Type": "Actor"
+        },
+        {
+          "Name": "correlationId",
+          "Type": "Guid"
+        },
+        {
+          "Name": "message",
+          "Type": "string"
+        }
+      ],
+      "OverrideArguments": []
+    },
+    {
+      "Name": "IPersonActorServiceLogger",
+      "StartId": 200,
+      "ImplicitArguments": [
+        {
+          "Name": "actorService",
+          "Type": "ActorService"
+        },
+        {
+          "Name": "correlationId",
+          "Type": "Guid"
+        },
+        {
+          "Name": "message",
+          "Type": "string"
+        }
+      ],
+      "OverrideArguments": []
+    },
+    {
+      "Name": "IServicesCommunicationLogger",
+      "StartId": 1000,
+      "ImplicitArguments": [
+        {
+          "Name": "context",
+          "Type": "StatefulServiceContext"
+        }
+      ],
+      "OverrideArguments": [
+      ]
+    }
+  ],
+  "Name": "PersonActorServiceEventSource",
+  "ProviderName": "CodeEffect-ServiceFabric-Auditing-PersonActorService",
+  "Keywords": [],
+  "TypeTemplates": [
+  ],
+  "Settings": {
+    "AutogenerateLoggerInterfaces": false
+  }
+}
