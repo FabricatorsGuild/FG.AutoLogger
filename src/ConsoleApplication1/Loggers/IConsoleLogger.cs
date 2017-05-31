@@ -10,6 +10,9 @@ namespace ConsoleApplication1.Loggers
         void SayGoodbye(string goodbye, DateTime nightTime);
 
         void Specially(Special special);
+
+        void StartHello();
+        void StopHello();
     }
 
     public class Special

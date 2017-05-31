@@ -29,7 +29,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             eventSource.Keywords = allKeywords.ToArray();
 
-            foreach (var loggerEvent in model.Events)
+            foreach (var loggerEvent in model.Events ?? new EventModel[0])
             {
                 loggerEvent.Keywords = loggerEvent.Keywords.Add(keyword);
             }

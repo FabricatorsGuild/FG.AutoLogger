@@ -57,7 +57,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 var roslynDirectory = System.IO.Path.Combine(baseDirectory, "roslyn");
 
-                var project = projectEventSourceGenerator.Run(projectFilePath, roslynDirectory, t.SaveChanges);
+                var project = projectEventSourceGenerator.Run(projectFilePath, roslynDirectory, t.SaveChanges, t.ForceUpdate);
 
                 if (t.DisplayOutput)
                 {

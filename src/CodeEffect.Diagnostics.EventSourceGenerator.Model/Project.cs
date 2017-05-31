@@ -15,5 +15,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public Assembly DynamicAssembly { get; set; }
         public string SummaryHash { get; set; }
         public bool HasProjectChanges { get; set; }
+        public bool ForceUpdate { get; set; }
     }
 }

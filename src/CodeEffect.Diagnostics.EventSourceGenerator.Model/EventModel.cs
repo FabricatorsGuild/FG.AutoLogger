@@ -36,7 +36,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
                     AssignedCLRType = argument.AssignedCLRType,
                     CLRType = argument.CLRType,
                     IsImplicit = true,
-                    IsOverriden = false
+                    IsOverriden = false,
+                    TypeTemplate = argument.TypeTemplate,
+                    TemplatedParentArgument = argument.TemplatedParentArgument                   
                 };
                 index++;
             }

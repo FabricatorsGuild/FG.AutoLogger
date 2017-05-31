@@ -70,7 +70,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                                 Include = include
                             };
                             var eventSourceEvents = new List<EventModel>();
-                            foreach (var methodInfo in type.GetMethods())
+                            foreach (var methodInfo in type.GetAllInterfaceMethods())
                             {
                                 var eventSourceEventArguments = new List<EventArgumentModel>();
                                 var eventSourceEvent = new EventModel()

@@ -17,13 +17,15 @@ namespace ConsoleApplication1.Diagnostics
 		private void RunnerCreated(
 			int processId, 
 			string machineName, 
-			string actor)
+			string actorId, 
+			string actorIdType)
 		{
 			WriteEvent(
 				RunnerCreatedEventId, 
 				processId, 
 				machineName, 
-				actor);
+				actorId, 
+				actorIdType);
 		}
 
 		[NonEvent]
@@ -37,7 +39,8 @@ namespace ConsoleApplication1.Diagnostics
 				RunnerCreated(
 					processId, 
 					Environment.MachineName, 
-					actorId.ToString());
+					actorId.ToString(), 
+					actorId.Kind.ToString());
 			}
 		}
 
@@ -48,13 +51,15 @@ namespace ConsoleApplication1.Diagnostics
 		private void RunnerDestroyed(
 			int processId, 
 			string machineName, 
-			string actor)
+			string actorId, 
+			string actorIdType)
 		{
 			WriteEvent(
 				RunnerDestroyedEventId, 
 				processId, 
 				machineName, 
-				actor);
+				actorId, 
+				actorIdType);
 		}
 
 		[NonEvent]
@@ -68,7 +73,8 @@ namespace ConsoleApplication1.Diagnostics
 				RunnerDestroyed(
 					processId, 
 					Environment.MachineName, 
-					actorId.ToString());
+					actorId.ToString(), 
+					actorId.Kind.ToString());
 			}
 		}
 
@@ -79,13 +85,15 @@ namespace ConsoleApplication1.Diagnostics
 		private void WaitingForKeyPress(
 			int processId, 
 			string machineName, 
-			string actor)
+			string actorId, 
+			string actorIdType)
 		{
 			WriteEvent(
 				WaitingForKeyPressEventId, 
 				processId, 
 				machineName, 
-				actor);
+				actorId, 
+				actorIdType);
 		}
 
 		[NonEvent]
@@ -99,25 +107,28 @@ namespace ConsoleApplication1.Diagnostics
 				WaitingForKeyPress(
 					processId, 
 					Environment.MachineName, 
-					actorId.ToString());
+					actorId.ToString(), 
+					actorId.Kind.ToString());
 			}
 		}
 
 
 		private const int KeyPressedEventId = 8004;
 
-		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {3}", Keywords = Keywords.ConsoleRunner)]
+		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {4}", Keywords = Keywords.ConsoleRunner)]
 		private void KeyPressed(
 			int processId, 
 			string machineName, 
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			string key)
 		{
 			WriteEvent(
 				KeyPressedEventId, 
 				processId, 
 				machineName, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				key);
 		}
 
@@ -134,6 +145,7 @@ namespace ConsoleApplication1.Diagnostics
 					processId, 
 					Environment.MachineName, 
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					key.ToString());
 			}
 		}
@@ -141,11 +153,12 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int UnsupportedKeyErrorEventId = 10005;
 
-		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.ConsoleRunner | Keywords.Error)]
+		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{4}", Keywords = Keywords.ConsoleRunner | Keywords.Error)]
 		private void UnsupportedKeyError(
 			int processId, 
 			string machineName, 
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			string message, 
 			string source, 
 			string exceptionTypeName, 
@@ -155,7 +168,8 @@ namespace ConsoleApplication1.Diagnostics
 				UnsupportedKeyErrorEventId, 
 				processId, 
 				machineName, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				message, 
 				source, 
 				exceptionTypeName, 
@@ -175,6 +189,7 @@ namespace ConsoleApplication1.Diagnostics
 					processId, 
 					Environment.MachineName, 
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					ex.Message, 
 					ex.Source, 
 					ex.GetType().FullName, 
@@ -189,13 +204,15 @@ namespace ConsoleApplication1.Diagnostics
 		private void StartLoop(
 			int processId, 
 			string machineName, 
-			string actor)
+			string actorId, 
+			string actorIdType)
 		{
 			WriteEvent(
 				StartLoopEventId, 
 				processId, 
 				machineName, 
-				actor);
+				actorId, 
+				actorIdType);
 		}
 
 		[NonEvent]
@@ -209,7 +226,8 @@ namespace ConsoleApplication1.Diagnostics
 				StartLoop(
 					processId, 
 					Environment.MachineName, 
-					actorId.ToString());
+					actorId.ToString(), 
+					actorId.Kind.ToString());
 			}
 		}
 
@@ -220,13 +238,15 @@ namespace ConsoleApplication1.Diagnostics
 		private void StopLoop(
 			int processId, 
 			string machineName, 
-			string actor)
+			string actorId, 
+			string actorIdType)
 		{
 			WriteEvent(
 				StopLoopEventId, 
 				processId, 
 				machineName, 
-				actor);
+				actorId, 
+				actorIdType);
 		}
 
 		[NonEvent]
@@ -240,25 +260,28 @@ namespace ConsoleApplication1.Diagnostics
 				StopLoop(
 					processId, 
 					Environment.MachineName, 
-					actorId.ToString());
+					actorId.ToString(), 
+					actorId.Kind.ToString());
 			}
 		}
 
 
 		private const int RandomIntsGeneratedEventId = 16008;
 
-		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {3}", Keywords = Keywords.ConsoleRunner)]
+		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {4}", Keywords = Keywords.ConsoleRunner)]
 		private void RandomIntsGenerated(
 			int processId, 
 			string machineName, 
-			string actor, 
+			string actorId, 
+			string actorIdType, 
 			string values)
 		{
 			WriteEvent(
 				RandomIntsGeneratedEventId, 
 				processId, 
 				machineName, 
-				actor, 
+				actorId, 
+				actorIdType, 
 				values);
 		}
 
@@ -275,6 +298,7 @@ namespace ConsoleApplication1.Diagnostics
 					processId, 
 					Environment.MachineName, 
 					actorId.ToString(), 
+					actorId.Kind.ToString(), 
 					values.ToString());
 			}
 		}

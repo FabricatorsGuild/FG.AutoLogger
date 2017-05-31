@@ -7,6 +7,7 @@ using ConsoleApplication1.Loggers;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace ConsoleApplication1.Diagnostics
@@ -50,13 +51,15 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(RunnerCreated),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
 	                {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
-                    {"Actor", _actorId.ToString()}
+                    {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()}
 	            });
     
 		}
@@ -78,13 +81,15 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(RunnerDestroyed),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
 	                {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
-                    {"Actor", _actorId.ToString()}
+                    {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()}
 	            });
     
 		}
@@ -106,13 +111,15 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(WaitingForKeyPress),
 	            new System.Collections.Generic.Dictionary<string, string>()
 	            {
 	                {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
-                    {"Actor", _actorId.ToString()}
+                    {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()}
 	            });
     
 		}
@@ -135,6 +142,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tkey.ToString():\t{key.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(KeyPressed),
@@ -142,7 +150,8 @@ namespace ConsoleApplication1.Diagnostics
 	            {
 	                {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
-                    {"Actor", _actorId.ToString()},
+                    {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()},
                     {"Key", key.ToString()}
 	            });
     
@@ -166,6 +175,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tex.Message:\t{ex.Message}");
 			System.Diagnostics.Debug.WriteLine($"\tex.Source:\t{ex.Source}");
 			System.Diagnostics.Debug.WriteLine($"\tex.GetType().FullName:\t{ex.GetType().FullName}");
@@ -177,7 +187,8 @@ namespace ConsoleApplication1.Diagnostics
                     { "Name", "UnsupportedKeyError" },
 	                {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
-                    {"Actor", _actorId.ToString()},
+                    {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()},
                     {"Message", ex.Message},
                     {"Source", ex.Source},
                     {"ExceptionTypeName", ex.GetType().FullName},
@@ -203,17 +214,19 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_loopStopwatch.Restart();
-            _loopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("loop");
-	       _loopOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
-			_loopOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
-			_loopOperationHolder.Telemetry.Properties.Add("Actor", _actorId.ToString());
+            var loopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("loop");
+	       loopOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
+			loopOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
+			loopOperationHolder.Telemetry.Properties.Add("ActorId", _actorId.ToString());
+			loopOperationHolder.Telemetry.Properties.Add("ActorIdType", _actorId.Kind.ToString());
+	       OperationHolder.StartOperation(loopOperationHolder);
     
 		}
 
 		private System.Diagnostics.Stopwatch _loopStopwatch = new System.Diagnostics.Stopwatch();
 
-		private IOperationHolder<RequestTelemetry> _loopOperationHolder;
 
 
 		public void StopLoop(
@@ -230,9 +243,11 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			_loopStopwatch.Stop();
-            _telemetryClient.StopOperation(_loopOperationHolder);
-	            _loopOperationHolder.Dispose();
+	        var loopOperationHolder = OperationHolder.StopOperation();
+	        _telemetryClient.StopOperation(loopOperationHolder);
+	        loopOperationHolder.Dispose();
     
 		}
 
@@ -254,6 +269,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\t_actorId.ToString():\t{_actorId.ToString()}");
+			System.Diagnostics.Debug.WriteLine($"\t_actorId.Kind.ToString():\t{_actorId.Kind.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tvalues.ToString():\t{values.ToString()}");
 			_telemetryClient.TrackEvent(
 	            nameof(RandomIntsGenerated),
@@ -261,7 +277,8 @@ namespace ConsoleApplication1.Diagnostics
 	            {
 	                {"ProcessId", _processId.ToString()},
                     {"MachineName", Environment.MachineName},
-                    {"Actor", _actorId.ToString()},
+                    {"ActorId", _actorId.ToString()},
+                    {"ActorIdType", _actorId.Kind.ToString()},
                     {"Values", values.ToString()}
 	            });
     

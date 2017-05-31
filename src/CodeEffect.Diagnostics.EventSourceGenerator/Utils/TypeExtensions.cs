@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
 {
@@ -57,6 +58,32 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
             }
 
             return friendlyName;
+        }
+
+
+        public static IEnumerable<MethodInfo> GetAllInterfaceMethods(this Type type)
+        {
+            var methodInfos = new List<MethodInfo>();
+
+            GetAllInterfaceMethodsInternal(type, methodInfos);
+
+            return methodInfos;
+        }
+
+        private static void GetAllInterfaceMethodsInternal(Type type, List<MethodInfo> accumulator)
+        {
+            foreach (var methodInfo in type.GetMethods())
+            {
+                if (!accumulator.Contains(methodInfo))
+                {
+                    accumulator.Add(methodInfo);
+                }
+            }
+
+            foreach (var typeInterface in type.GetInterfaces())
+            {
+                GetAllInterfaceMethodsInternal(typeInterface, accumulator);
+            }           
         }
     }
 }
