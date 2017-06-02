@@ -41,49 +41,39 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
 
         Task<byte[]> IServiceRemotingClient.RequestResponseAsync(ServiceRemotingMessageHeaders messageHeaders, byte[] requestBody)
         {
-            if (ServiceRequestContext.Current != null && ServiceRequestContext.Current.Headers.Any())
+            var customServiceRequestHeader = UpdateAndGetMessageHeaders(messageHeaders);
+            var actorMessageHeaders = GetActorMessageHeaders(messageHeaders);
+            using (_logger.CallService(_serviceUri, actorMessageHeaders, customServiceRequestHeader))
             {
-                messageHeaders.AddHeaders(ServiceRequestContext.Current.Headers);
-            }
-            var headers = messageHeaders.GetCustomServiceRequestHeader(_logger) ?? new CustomServiceRequestHeader();
-            try
-            {
-                _logger.StartMessageSend(_serviceUri, headers);
-                var result = this._innerClient.RequestResponseAsync(messageHeaders, requestBody);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.FailedtoSendMessage(_serviceUri, headers, ex);
-                throw ex;
-            }
-            finally
-            {
-                _logger.StopMessageSend(_serviceUri, headers);
+                try
+                {
+                    var result = this._innerClient.RequestResponseAsync(messageHeaders, requestBody);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.CallServiceFailed(_serviceUri, actorMessageHeaders, customServiceRequestHeader, ex);
+                    throw;
+                }
             }
         }
 
         void IServiceRemotingClient.SendOneWay(ServiceRemotingMessageHeaders messageHeaders, byte[] requestBody)
         {
-            if (ServiceRequestContext.Current != null && ServiceRequestContext.Current.Headers.Any())
+            var customServiceRequestHeader = UpdateAndGetMessageHeaders(messageHeaders);
+            var actorMessageHeaders = GetActorMessageHeaders(messageHeaders);
+            using (_logger.CallService(_serviceUri, actorMessageHeaders, customServiceRequestHeader))
             {
-                messageHeaders.AddHeaders(ServiceRequestContext.Current.Headers);
+                try
+                {
+                    this._innerClient.SendOneWay(messageHeaders, requestBody);
+                }
+                catch (Exception ex)
+                {
+                    _logger.CallServiceFailed(_serviceUri, actorMessageHeaders, customServiceRequestHeader, ex);
+                    throw;
+                }         
             }
-            var headers = messageHeaders.GetCustomServiceRequestHeader(_logger) ?? new CustomServiceRequestHeader();
-            try
-            {
-                _logger.StartMessageSend(_serviceUri, headers);
-                this._innerClient.SendOneWay(messageHeaders, requestBody);
-            }
-            catch (Exception ex)
-            {
-                _logger.FailedtoSendMessage(_serviceUri, headers, ex);
-                throw ex;
-            }
-            finally
-            {
-                _logger.StopMessageSend(_serviceUri, headers);
-            }         
         }
 
         public ResolvedServicePartition ResolvedServicePartition
@@ -101,6 +91,34 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
         {
             get { return this._innerClient.Endpoint; }
             set { this._innerClient.Endpoint = value; }
+        }
+
+        private ActorMessageHeaders GetActorMessageHeaders(ServiceRemotingMessageHeaders messageHeaders)
+        {
+            ActorMessageHeaders actorMessageHeaders = null;
+            if (ActorMessageHeaders.TryFromServiceMessageHeaders(messageHeaders, out actorMessageHeaders))
+            {
+                
+            }
+            return actorMessageHeaders;
+        }
+
+        private CustomServiceRequestHeader UpdateAndGetMessageHeaders(ServiceRemotingMessageHeaders messageHeaders)
+        {
+            if ((ServiceRequestContext.Current != null) && (ServiceRequestContext.Current?.Headers?.Any() ?? false))
+            {
+                messageHeaders.AddHeaders(ServiceRequestContext.Current.Headers);
+            }
+            else if (ServiceRequestContext.Current?.CorrelationId != null || ServiceRequestContext.Current?.UserId != null)
+            {
+                var header = new CustomServiceRequestHeader()
+                    .AddHeader("correlation-id", ServiceRequestContext.Current.CorrelationId)
+                    .AddHeader("user-id", ServiceRequestContext.Current.UserId);
+
+                messageHeaders.AddHeader(header);
+            }
+            var customServiceRequestHeader = messageHeaders.GetCustomServiceRequestHeader(_logger) ?? new CustomServiceRequestHeader();
+            return customServiceRequestHeader;
         }
     }
 }

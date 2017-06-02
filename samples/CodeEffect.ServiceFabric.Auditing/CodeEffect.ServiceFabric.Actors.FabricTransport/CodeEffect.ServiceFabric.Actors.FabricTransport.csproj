@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>efbfbd3defbfbdefbfbdefbfbd7cefbfbd18efbfbd34533d7c4cefbfbd08</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>5fefbfbd29efbfbd246448efbfbdefbfbdefbfbd6ad58eefbfbd56</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -128,6 +128,7 @@
     </Compile>
     <Compile Include="Diagnostics\LoggerTypeTemplates\ActorServiceTypeTemplateExtension.cs" />
     <Compile Include="Diagnostics\LoggerTypeTemplates\ActorTypeTemplateExtension.cs" />
+    <Compile Include="Diagnostics\LoggerTypeTemplates\ActorMessageHeadersTypeTemplateExtension.cs" />
     <Compile Include="Diagnostics\LoggerTypeTemplates\CustomServiceRequestHeaderTypeTemplateExtension.cs" />
     <Compile Include="Diagnostics\IActorServiceCommunicationLogger.cs" />
     <Compile Include="Diagnostics\LoggerTypeTemplates\StatefulServiceContextTypeTemplateExtension.cs" />

@@ -29,9 +29,14 @@ namespace WebApiService.Controllers
 
 	    private static PartitionHelper _partitionHelper;
 
+	    private ServiceRequestContextWrapper _contextScope;
+
         public ValuesController(StatelessServiceContext context)
         {
             _correlationId = Guid.NewGuid().ToString();
+
+            _contextScope = new ServiceRequestContextWrapper() {CorrelationId = _correlationId, UserId = "mainframe64/Kapten_rödskägg"};
+
             _logger = new WebApiLogger(context);
             _servicesCommunicationLogger = new ServicesCommunicationLogger(context);
 
@@ -42,8 +47,11 @@ namespace WebApiService.Controllers
 
 	    protected override void Dispose(bool disposing)
 	    {
-	        base.Dispose(disposing);            
-	    }
+	        base.Dispose(disposing);
+
+            _contextScope.Dispose();
+
+        }
 
 	    // GET api/values 
 		public async Task<IDictionary<string, IDictionary<string, Person>>> Get()
@@ -51,22 +59,19 @@ namespace WebApiService.Controllers
             var serviceUri = new Uri($"{FabricRuntime.GetActivationContext().ApplicationName}/PersonActorService");
             var allPersons = new Dictionary<string, IDictionary<string, Person>>();
 
-            using (new ServiceRequestContextWrapper() {CorrelationId = _correlationId, UserId = "mainframe64/Kapten_rödskägg"})
-		    {
-		        var partitionKeys = await _partitionHelper.GetInt64Partitions(serviceUri);
-		        foreach (var partitionKey in partitionKeys)
-		        {
-		            var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client.ActorProxyFactory(_servicesCommunicationLogger);
-		            var proxy = actorProxyFactory.CreateActorServiceProxy<IPersonActorService>(
-		                serviceUri,
-		                partitionKey.LowKey);
+            var partitionKeys = await _partitionHelper.GetInt64Partitions(serviceUri);
+            foreach (var partitionKey in partitionKeys)
+            {
+                var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client.ActorProxyFactory(_servicesCommunicationLogger);
+                var proxy = actorProxyFactory.CreateActorServiceProxy<IPersonActorService>(
+                    serviceUri,
+                    partitionKey.LowKey);
 
-		            var persons = await proxy.GetPersons(CancellationToken.None);
-		            allPersons.Add(partitionKey.LowKey.ToString(), persons);
-		        }
-		    }
+                var persons = await proxy.GetPersons(CancellationToken.None);
+                allPersons.Add(partitionKey.LowKey.ToString(), persons);
+            }
 
-		    return allPersons;
+            return allPersons;
 		}
 
 		// GET api/values/5 

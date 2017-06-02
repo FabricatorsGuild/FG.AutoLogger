@@ -1,8 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+using Microsoft.Build.Framework;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
+using PersonActor.Diagnostics;
 using PersonActor.Interfaces;
 
 namespace PersonActor
@@ -10,9 +13,12 @@ namespace PersonActor
 	[StatePersistence(StatePersistence.Persisted)]
 	internal class PersonActor : Actor, IPersonActor
 	{
+	    private Func<IPersonActorLogger> _loggerFactory;
+
 		public PersonActor(ActorService actorService, ActorId actorId)
 			: base(actorService, actorId)
 		{
+            _loggerFactory = () => new PersonActorLogger(this, new Guid(ServiceRequestContext.Current?.CorrelationId ?? Guid.NewGuid().ToString()), "kuk");
 		}
 
 		protected override Task OnActivateAsync()
@@ -30,8 +36,9 @@ namespace PersonActor
 
 		public Task SetTitleAsync(string title, CancellationToken cancellationToken)
 		{
-            
-			return this.StateManager.AddOrUpdateStateAsync("state", new Person() { Name = this.GetActorId().GetStringId(), Title = title }, (key, value) => new Person(){Name = value.Name, Title = title}, CancellationToken.None);
+            _loggerFactory().TitleSet(title);
+
+            return this.StateManager.AddOrUpdateStateAsync("state", new Person() { Name = this.GetActorId().GetStringId(), Title = title }, (key, value) => new Person(){Name = value.Name, Title = title}, CancellationToken.None);
 		}
 	}
 

@@ -52,26 +52,19 @@ namespace PersonActor
 			{
 				foreach (var name in ObjectMother.Names)
 				{
-				    var correlationId = Guid.NewGuid();
-				    var actorProxyFactory =
-				        new ActorProxyFactory(
-				            callbackClient =>
-				                FabricTransportActorRemotingHelpers.CreateServiceRemotingClientFactory(typeof(IPersonActorService), callbackClient, _communicationLogger,
-				                    correlationId.ToString()));
-                    //var actorProxyFactory = new ActorProxyFactory();
-				    await actorProxyFactory.RunInContext(async factory =>
-				        {
-				            var title = ObjectMother.Titles[Environment.TickCount % ObjectMother.Titles.Length];
+                    var correlationId = Guid.NewGuid().ToString();
+                    using (new ServiceRequestContextWrapper() {CorrelationId = correlationId, UserId = "mainframe64/service_itself"})
+				    {
+                        var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client.ActorProxyFactory(_communicationLogger);
 
-				            var proxy = actorProxyFactory.CreateActorProxy<IPersonActor>(new ActorId(name));
-				            await proxy.SetTitleAsync(title, cancellationToken);
+                        var title = ObjectMother.Titles[Environment.TickCount % ObjectMother.Titles.Length];
 
-				            _logger.PersonGenerated(name, title);
+                        var proxy = actorProxyFactory.CreateActorProxy<IPersonActor>(new ActorId(name));
+                        await proxy.SetTitleAsync(title, cancellationToken);
 
-				        },
-				        _communicationLogger,
-				        new CustomServiceRequestHeader(new Dictionary<string, string>() {{"name", "service itself"}, {"correlation-id", Guid.NewGuid().ToString()}})
-				    );
+                        _logger.PersonGenerated(name, title);
+
+                    }
 
 					await Task.Delay(200000, cancellationToken);						
 				}

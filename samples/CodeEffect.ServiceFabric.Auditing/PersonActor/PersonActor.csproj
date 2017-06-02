@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>24efbfbd4defbfbd74efbfbd5c7befbfbd2258efbfbdefbfbdefbfbd75</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>56efbfbd4fefbfbd45efbfbd7a36123eefbfbdefbfbd287eefbfbdefbfbd</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup>
     <UpdateServiceFabricManifestEnabled>true</UpdateServiceFabricManifestEnabled>

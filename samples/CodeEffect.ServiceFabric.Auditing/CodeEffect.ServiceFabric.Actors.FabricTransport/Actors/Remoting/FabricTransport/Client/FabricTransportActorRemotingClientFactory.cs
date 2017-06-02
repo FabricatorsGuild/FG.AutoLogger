@@ -41,6 +41,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
         public Task<OperationRetryControl> ReportOperationExceptionAsync(IServiceRemotingClient client, ExceptionInformation exceptionInformation, OperationRetrySettings retrySettings,
             CancellationToken cancellationToken)
         {
+            _logger.FailedtoSendMessage(new Uri(client.Endpoint.Address), ServiceRequestContext.Current?.Headers.GetCustomHeader(), exceptionInformation.Exception);
             return _innerClientFactory.ReportOperationExceptionAsync(client, exceptionInformation, retrySettings, cancellationToken);
         }
 

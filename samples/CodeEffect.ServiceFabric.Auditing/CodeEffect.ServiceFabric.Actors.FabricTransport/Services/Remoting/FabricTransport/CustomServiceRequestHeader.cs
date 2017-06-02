@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
+using CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerTypeTemplates;
 using CodeEffect.ServiceFabric.Actors.FabricTransport.Utils;
 using Microsoft.ServiceFabric.Services.Remoting;
 
@@ -37,16 +39,20 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
             _needsPackaging = true;
         }
 
-        public void AddHeader(string name, string value)
+        public CustomServiceRequestHeader AddHeader(string name, string value)
         {
             _headers.Add(name, value);
             _needsPackaging = true;
+
+            return this;
         }
 
-        public void AddHeader(KeyValuePair<string, string> header)
+        public CustomServiceRequestHeader AddHeader(KeyValuePair<string, string> header)
         {
             _headers.Add(header.Key, header.Value);
             _needsPackaging = true;
+
+            return this;
         }
 
         private CustomServiceRequestHeader(byte[] bytes)
@@ -125,6 +131,15 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
                 Pack();
             }
             return _bytes;
+        }
+
+    }
+
+    public static class CustomServiceRequestHeaderExtensions
+    {
+        public static CustomServiceRequestHeader GetCustomHeader(this IEnumerable<ServiceRequestHeader> headers)
+        {
+            return (CustomServiceRequestHeader)headers.FirstOrDefault(h => h is CustomServiceRequestHeader);
         }
     }
 }

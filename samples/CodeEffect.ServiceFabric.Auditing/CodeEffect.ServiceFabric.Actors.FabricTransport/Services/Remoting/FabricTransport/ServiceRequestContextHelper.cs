@@ -13,6 +13,7 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
     {
         public ServiceRequestContextWrapper()
         {
+            //TODO: Should check for ambient context and preserve it?
             ServiceRequestContext.Current = new ServiceRequestContext();
         }
 
@@ -71,6 +72,7 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
         {
             if (disposing)
             {
+                //TODO: Should check if ambient context was used and not dispose it?
                 ServiceRequestContext.Current = null;
             }
         }

@@ -8,7 +8,6 @@ namespace WebApiService.Diagnostics
         IActorServiceCommunicationLogger,
         IPartitionHelperLogger,
         IServiceClientLogger
-
     {
     }
 }

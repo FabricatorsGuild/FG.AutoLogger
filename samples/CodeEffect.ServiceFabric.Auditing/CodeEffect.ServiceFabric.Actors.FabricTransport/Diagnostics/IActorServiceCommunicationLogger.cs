@@ -17,8 +17,5 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics
 
         void ActorMessageHandled(string methodName, CustomServiceRequestHeader headers);
 
-        void FailedToGetActorMethodName(ActorMessageHeaders actorMessageHeaders, Exception ex);
-
-        void FailedToReadActorMessageHeaders(ServiceRemotingMessageHeaders serviceRemotingMessageHeaders, Exception ex);
     }
 }

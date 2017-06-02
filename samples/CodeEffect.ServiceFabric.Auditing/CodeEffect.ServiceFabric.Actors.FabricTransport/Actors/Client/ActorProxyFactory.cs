@@ -13,7 +13,7 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
     public class ActorProxyFactory : IActorProxyFactory
     {
         private readonly object _lock = new object();
-        private IActorProxyFactory _innerActorProxyFactory;
+        private volatile IActorProxyFactory _innerActorProxyFactory;
 
         public IServiceCommunicationLogger Logger { get; private set; }
 
@@ -39,10 +39,9 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
 
             lock (_lock)
             {
-                if (_innerActorProxyFactory != null)
+                if (_innerActorProxyFactory == null)
                 {
-                    _innerActorProxyFactory =
-                        new Microsoft.ServiceFabric.Actors.Client.ActorProxyFactory(client => CreateServiceRemotingClientFactory(client, actorInterfaceType));
+                    _innerActorProxyFactory = new Microsoft.ServiceFabric.Actors.Client.ActorProxyFactory(client => CreateServiceRemotingClientFactory(client, actorInterfaceType));
                 }
                 return _innerActorProxyFactory;
             }
@@ -66,14 +65,14 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
         public TServiceInterface CreateActorServiceProxy<TServiceInterface>(Uri serviceUri, ActorId actorId, string listenerName = null) where TServiceInterface : IService
         {
             var proxy = GetInnerFactory(typeof(TServiceInterface)).CreateActorServiceProxy<TServiceInterface>(serviceUri, actorId, listenerName);
-            UpdateRequestContext(proxy.GetServiceContext().ServiceName);
+            UpdateRequestContext(serviceUri);
             return proxy;
         }
 
         public TServiceInterface CreateActorServiceProxy<TServiceInterface>(Uri serviceUri, long partitionKey, string listenerName = null) where TServiceInterface : IService
         {
             var proxy = GetInnerFactory(typeof(TServiceInterface)).CreateActorServiceProxy<TServiceInterface>(serviceUri, partitionKey, listenerName);
-            UpdateRequestContext(proxy.GetServiceContext().ServiceName);
+            UpdateRequestContext(serviceUri);
             return proxy;
         }
 
