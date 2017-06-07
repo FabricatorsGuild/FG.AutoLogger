@@ -30,10 +30,13 @@ namespace WebApiService
 		}
 
 		public void ActivatingController(
-			)
+			string correlationId,
+			string userId)
 		{
 			WebApiServiceEventSource.Current.ActivatingController(
-				_context
+				_context, 
+				correlationId, 
+				userId
 			);
 			_telemetryClient.TrackEvent(
 	            nameof(ActivatingController),
@@ -45,7 +48,9 @@ namespace WebApiService
                     {"PartitionId", _context.PartitionId.ToString()},
                     {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
                     {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName}
+                    {"NodeName", _context.NodeContext.NodeName},
+                    {"CorrelationId", correlationId},
+                    {"UserId", userId}
 	            });
     
 		}
@@ -82,6 +87,97 @@ namespace WebApiService
 	        var getAllOperationHolder = OperationHolder.StopOperation();
 			_telemetryClient.StopOperation(getAllOperationHolder);
 			getAllOperationHolder.Dispose();
+    
+		}
+
+
+
+		public System.IDisposable RecieveWebApiRequest(
+			System.Uri requestUri,
+			string payload,
+			string correlationId,
+			string userId)
+		{
+			WebApiServiceEventSource.Current.StartRecieveWebApiRequest(
+				_context, 
+				requestUri, 
+				payload, 
+				correlationId, 
+				userId
+			);
+
+			var recieveWebApiRequestOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString());
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ApplicationName", _context.CodePackageActivationContext.ApplicationName);
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName);
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("NodeName", _context.NodeContext.NodeName);
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("RequestUri", requestUri.ToString());
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("Payload", payload);
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("CorrelationId", correlationId);
+			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("UserId", userId);
+			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveWebApiRequestOperationHolder, () => StopRecieveWebApiRequest(requestUri,payload,correlationId,userId));
+    
+		}
+
+
+
+		public void StopRecieveWebApiRequest(
+			System.Uri requestUri,
+			string payload,
+			string correlationId,
+			string userId)
+		{
+			WebApiServiceEventSource.Current.StopRecieveWebApiRequest(
+				_context, 
+				requestUri, 
+				payload, 
+				correlationId, 
+				userId
+			);
+    
+		}
+
+
+
+		public void RecieveWebApiRequestFailed(
+			System.Uri requestUri,
+			string payload,
+			string correlationId,
+			string userId,
+			System.Exception exception)
+		{
+			WebApiServiceEventSource.Current.RecieveWebApiRequestFailed(
+				_context, 
+				requestUri, 
+				payload, 
+				correlationId, 
+				userId, 
+				exception
+			);
+			_telemetryClient.TrackException(
+	            exception,
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+                    { "Name", "RecieveWebApiRequestFailed" },
+	                {"ServiceName", _context.ServiceName.ToString()},
+                    {"ServiceTypeName", _context.ServiceTypeName},
+                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
+                    {"PartitionId", _context.PartitionId.ToString()},
+                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
+                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
+                    {"NodeName", _context.NodeContext.NodeName},
+                    {"RequestUri", requestUri.ToString()},
+                    {"Payload", payload},
+                    {"CorrelationId", correlationId},
+                    {"UserId", userId},
+                    {"Message", exception.Message},
+                    {"Source", exception.Source},
+                    {"ExceptionTypeName", exception.GetType().FullName},
+                    {"Exception", exception.AsJson()}
+	            });
     
 		}
 

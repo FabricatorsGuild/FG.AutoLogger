@@ -18,7 +18,7 @@ namespace PersonActor
 		public PersonActor(ActorService actorService, ActorId actorId)
 			: base(actorService, actorId)
 		{
-            _loggerFactory = () => new PersonActorLogger(this, new Guid(ServiceRequestContext.Current?.CorrelationId ?? Guid.NewGuid().ToString()), "kuk");
+            _loggerFactory = () => new PersonActorLogger(this, ServiceRequestContext.Current);
 		}
 
 		protected override Task OnActivateAsync()

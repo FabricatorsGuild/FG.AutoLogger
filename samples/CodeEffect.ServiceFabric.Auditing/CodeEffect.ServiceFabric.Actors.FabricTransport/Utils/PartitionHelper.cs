@@ -22,25 +22,22 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Utils
             return partitionsString.ToString();
         }
 
-        private readonly IPartitionHelperLogger _logger;
-
         private readonly IDictionary<Uri, IEnumerable<Int64RangePartitionInformation>> _partitions;
 
-        public PartitionHelper(IPartitionHelperLogger logger)
+        public PartitionHelper()
         {
-            _logger = logger;
             _partitions = new ConcurrentDictionary<Uri, IEnumerable<Int64RangePartitionInformation>>();
         }
 
-        public async Task<IEnumerable<Int64RangePartitionInformation>> GetInt64Partitions(Uri serviceUri)
+        public async Task<IEnumerable<Int64RangePartitionInformation>> GetInt64Partitions(Uri serviceUri, IPartitionHelperLogger logger)
         {
-            _logger.EnumeratingPartitions(serviceUri);
+            logger.EnumeratingPartitions(serviceUri);
 
             if (_partitions.ContainsKey(serviceUri))
             {
                 
                 var partitions = _partitions[serviceUri];
-                _logger.EnumeratedExistingPartitions(serviceUri, partitions);
+                logger.EnumeratedExistingPartitions(serviceUri, partitions);
             }
 
             try
@@ -62,12 +59,12 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Utils
                 }
                 _partitions.Add(serviceUri, partitionKeys);
 
-                _logger.EnumeratedAndCachedPartitions(serviceUri, partitionKeys);
+                logger.EnumeratedAndCachedPartitions(serviceUri, partitionKeys);
                 return partitionKeys;
             }
             catch (Exception ex)
             {
-                _logger.FailedToEnumeratePartitions(serviceUri, ex);
+                logger.FailedToEnumeratePartitions(serviceUri, ex);
                 throw ex;
             }
         }

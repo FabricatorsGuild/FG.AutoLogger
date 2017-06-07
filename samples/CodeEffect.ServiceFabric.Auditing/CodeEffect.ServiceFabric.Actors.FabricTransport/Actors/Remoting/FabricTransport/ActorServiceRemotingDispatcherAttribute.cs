@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.ServiceFabric.Actors.Remoting.Runtime;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 
@@ -52,7 +53,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport
                 // Ignore
                 // TODO: Should probably log this.
             }
-            return new CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorServiceRemotingDispatcher(actorService);
+            return new CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorServiceRemotingDispatcher(actorService, new ActorServiceRemotingDispatcher(actorService), null);
         }
     }
 }

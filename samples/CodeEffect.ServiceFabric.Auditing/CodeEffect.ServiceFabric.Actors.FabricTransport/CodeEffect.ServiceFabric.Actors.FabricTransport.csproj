@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>5fefbfbd29efbfbd246448efbfbdefbfbdefbfbd6ad58eefbfbd56</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>7f730a3befbfbd664aefbfbd5b792e10efbfbdefbfbd20efbfbd</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -117,7 +117,7 @@
     <Compile Include="Actors\Remoting\FabricTransport\FabricTransportActorRemotingProviderAttribute.cs" />
     <Compile Include="Actors\Remoting\FabricTransport\FabricTransportRemotingExceptionHandlerAttribute.cs" />
     <Compile Include="Actors\Remoting\Runtime\ActorMessageHeaders.cs" />
-    <Compile Include="Actors\Remoting\Runtime\ActorServiceMethodInvocationInfo.cs" />
+    <Compile Include="Actors\Remoting\Runtime\ActorServiceListerenerExtensions.cs" />
     <Compile Include="Actors\Remoting\Runtime\ActorServiceRemotingDispatcher.cs" />
     <Compile Include="Actors\Remoting\Runtime\ActorServiceRemotingDispatcherExtensions.cs" />
     <Compile Include="Actors\Remoting\Runtime\ServiceRemotingMessageHeadersExtensions.cs" />
@@ -131,6 +131,7 @@
     <Compile Include="Diagnostics\LoggerTypeTemplates\ActorMessageHeadersTypeTemplateExtension.cs" />
     <Compile Include="Diagnostics\LoggerTypeTemplates\CustomServiceRequestHeaderTypeTemplateExtension.cs" />
     <Compile Include="Diagnostics\IActorServiceCommunicationLogger.cs" />
+    <Compile Include="Diagnostics\LoggerTypeTemplates\ServiceRemotingMessageHeadersTypeTemplateExtension.cs" />
     <Compile Include="Diagnostics\LoggerTypeTemplates\StatefulServiceContextTypeTemplateExtension.cs" />
     <Compile Include="Diagnostics\LoggerTypeTemplates\StatelessServiceContextTypeTemplateExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,11 +145,12 @@
     <Compile Include="Services\Remoting\FabricTransport\ServiceRemotingMessageHeadersExtensions.cs" />
     <Compile Include="Services\Remoting\FabricTransport\ServiceRequestContext.cs" />
     <Compile Include="Services\Remoting\FabricTransport\ServiceRequestContextHelper.cs" />
+    <Compile Include="Services\Remoting\FabricTransport\ServiceRequestContextKeys.cs" />
+    <Compile Include="Services\Remoting\FabricTransport\ServiceRequestContextWrapper.cs" />
     <Compile Include="Services\Remoting\FabricTransport\ServiceRequestHeader.cs" />
     <Compile Include="Services\Remoting\FabricTransport\ServiceRequestHeaderAttribute.cs" />
     <Compile Include="Services\Remoting\FabricTransport\ServiceRequestHeaderExtensions.cs" />
     <Compile Include="Services\Remoting\Runtime\Client\AuditedServiceProxyFactory.cs" />
-    <Compile Include="Services\Remoting\Runtime\ServiceMethodInvocationInfo.cs" />
     <Compile Include="Services\Remoting\Runtime\ServiceRemotingDispatcher.cs" />
     <Compile Include="Services\Remoting\Runtime\ServiceRemotingDispatcherAttribute.cs" />
     <Compile Include="Services\Remoting\Runtime\ServiceRemotingDispatcherExtensions.cs" />

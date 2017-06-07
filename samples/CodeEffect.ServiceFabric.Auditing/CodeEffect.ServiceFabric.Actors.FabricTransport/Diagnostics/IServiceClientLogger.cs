@@ -1,19 +1,23 @@
 using System;
 using System.Collections.Generic;
 using CodeEffect.ServiceFabric.Actors.Remoting.Runtime;
+using Microsoft.ServiceFabric.Services.Remoting;
 
 namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
 {
     public interface IServiceClientLogger
     {
-        IDisposable CallService(Uri requestUri, ActorMessageHeaders actorMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader);
+        IDisposable CallActor(Uri requestUri, string actorMethodName, ActorMessageHeaders actorMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader);
 
-        void CallServiceFailed(Uri requestUri, ActorMessageHeaders actorMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader, Exception ex);
+        void CallActorFailed(Uri requestUri, string actorMethodName, ActorMessageHeaders actorMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader, Exception ex);
 
 
 
-        void StartMessageSend(Uri requestUri, CustomServiceRequestHeader headers);
-        void StopMessageSend(Uri requestUri, CustomServiceRequestHeader headers);
+        IDisposable CallService(Uri requestUri, string serviceMethodName, ServiceRemotingMessageHeaders serviceMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader);
+
+        void CallServiceFailed(Uri requestUri, string serviceMethodName, ServiceRemotingMessageHeaders serviceMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader, Exception ex);
+
+
         void FailedtoSendMessage(Uri requestUri, CustomServiceRequestHeader header, Exception ex);
 
 

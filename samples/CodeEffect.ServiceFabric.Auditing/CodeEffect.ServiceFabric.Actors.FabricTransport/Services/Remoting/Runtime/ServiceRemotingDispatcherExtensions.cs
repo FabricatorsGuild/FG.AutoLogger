@@ -20,8 +20,10 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.Runtime
                 var methodDispatcher = methodDispatcherMap?.GetType()
                     .InvokeMember("Item", BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty, null, methodDispatcherMap,
                         new object[] {interfaceId});
-                var getMethodNameMethodInfo = methodDispatcher?.GetType()
-                    .GetMethod("Microsoft.ServiceFabric.Services.Remoting.IMethodDispatcher.GetMethodName", BindingFlags.NonPublic | BindingFlags.Instance);
+                var getMethodNameMethodInfo =
+                    methodDispatcher?.GetType().GetInterface("Microsoft.ServiceFabric.Services.Remoting.IMethodDispatcher").GetMethod("GetMethodName");
+                //var getMethodNameMethodInfo = methodDispatcher?.GetType()
+                //    .GetMethod("Microsoft.ServiceFabric.Services.Remoting.IMethodDispatcher.GetMethodName", BindingFlags.NonPublic | BindingFlags.Instance);
                 var methodName = getMethodNameMethodInfo?.Invoke(methodDispatcher, new object[] {methodId}) as string;
                 return methodName;
             }
@@ -30,26 +32,6 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.Runtime
                 // Ignore
                 return null;
             }
-        }
-
-        public static Task RunInRequestContext(this IServiceRemotingMessageHandler serviceRemotingDispatcher, Action action, IEnumerable<ServiceRequestHeader> headers)
-        {
-            return ServiceRequestContextHelper.RunInRequestContext(action, headers);
-        }
-
-        public static Task RunInRequestContext(this IServiceRemotingMessageHandler serviceRemotingDispatcher, Func<Task> action, IEnumerable<ServiceRequestHeader> headers)
-        {
-            return ServiceRequestContextHelper.RunInRequestContext(action, headers);
-        }
-
-        public static Task<TResult> RunInRequestContext<TResult>(this IServiceRemotingMessageHandler serviceRemotingDispatcher, Func<Task<TResult>> action, IEnumerable<ServiceRequestHeader> headers)
-        {
-            return ServiceRequestContextHelper.RunInRequestContext(action, headers);
-        }
-
-        public static Task<TResult> RunInRequestContext<TResult>(this IServiceRemotingMessageHandler serviceRemotingDispatcher, Func<Task<TResult>> action, params ServiceRequestHeader[] headers)
-        {
-            return ServiceRequestContextHelper.RunInRequestContext(action, headers);
         }
     }
 }

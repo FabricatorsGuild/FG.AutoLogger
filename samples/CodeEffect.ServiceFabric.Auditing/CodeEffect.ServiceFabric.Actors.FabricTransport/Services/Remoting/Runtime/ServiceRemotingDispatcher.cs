@@ -7,120 +7,87 @@ using CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics;
 using CodeEffect.ServiceFabric.Actors.FabricTransport.Utils;
 using CodeEffect.ServiceFabric.Actors.Remoting.Runtime;
 using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+using CodeEffect.ServiceFabric.Services.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 
 namespace CodeEffect.ServiceFabric.Services.Remoting.Runtime
 {
+
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-    public class ServiceRemotingDispatcher : Microsoft.ServiceFabric.Services.Remoting.Runtime.ServiceRemotingDispatcher
+    public class ServiceRemotingDispatcher : IServiceRemotingMessageHandler
     {
-        private readonly ServiceContext _serviceContext;
+        private static readonly IDictionary<long, string> ServiceMethodMap = new ConcurrentDictionary<long, string>();
+
         private readonly IService _service;
-        private static readonly IDictionary<long, string> MethodMap = new ConcurrentDictionary<long, string>();
-
-        public IServiceCommunicationLogger CommunicationLogger { get; set; }
-
-        private string GetMethodName(int interfaceId, int methodId)
+        private readonly IServiceRemotingMessageHandler _innerMessageHandler;
+        private readonly IServiceCommunicationLogger _logger;
+        
+        private string GetServiceMethodName(int interfaceId, int methodId)
         {
             try
             {
                 var lookup = HashUtil.Combine(interfaceId, methodId);
-                if (MethodMap.ContainsKey(lookup))
+                if (ServiceMethodMap.ContainsKey(lookup))
                 {
-                    return MethodMap[lookup];
+                    return ServiceMethodMap[lookup];
                 }
-                var methodName = this.GetMethodDispatcherMapName(interfaceId, methodId);
-                MethodMap[lookup] = methodName;
+                var methodName = ((Microsoft.ServiceFabric.Services.Remoting.Runtime.ServiceRemotingDispatcher)_innerMessageHandler).GetMethodDispatcherMapName(interfaceId, methodId);
+                ServiceMethodMap[lookup] = methodName;
                 return methodName;
             }
             catch (Exception ex)
             {
                 // Ignored
-                CommunicationLogger?.FailedToGetServiceMethodName(interfaceId, methodId, ex);
+                _logger?.FailedToGetServiceMethodName(_service.GetServiceContext().ServiceName, interfaceId, methodId, ex);
             }
-            return "-";
+            return null;
         }
 
-        public ServiceRemotingDispatcher(ServiceContext serviceContext, IService service) : base(serviceContext, service)
+        public ServiceRemotingDispatcher(IService service, IServiceRemotingMessageHandler innerMessageHandler, IServiceCommunicationLogger logger)
         {
-            _serviceContext = serviceContext;
             _service = service;
+            _innerMessageHandler = innerMessageHandler;
+            _logger = logger;
         }
 
-        protected virtual void TrackMethod(ServiceMethodInvocationInfo serviceMethodInvocationInfo)
+        public Task<byte[]> RequestResponseAsync(IServiceRemotingRequestContext requestContext, ServiceRemotingMessageHeaders messageHeaders, byte[] requestBody)
         {
-            /*
-            var requestTelemetry = new RequestTelemetry(methodName,
-                        startTime: start,
-                        duration: DateTime.Now - start,
-                        responseCode: "200",
-                        success: true)
-            { };
-            requestTelemetry.Properties.Add("ServiceName", _serviceContext.ServiceName.ToString());
-            requestTelemetry.Properties.Add("ServiceInterfaceId", messageHeaders.InterfaceId.ToString());
-            requestTelemetry.Properties.Add("ReplicaOrInstanceId", _serviceContext.ReplicaOrInstanceId.ToString());
-            requestTelemetry.Properties.Add("PartitionId", _serviceContext.PartitionId.ToString());
-            requestTelemetry.Properties.Add("NodeName", _serviceContext.NodeContext.NodeName);
-            requestTelemetry.Properties.Add("Method", methodName);
-            requestTelemetry.Properties.Add("MethodId", messageHeaders.MethodId.ToString());
-            requestTelemetry.Properties.Add("InvocationId", messageHeaders.InvocationId);
-
-            _telemetryClient.TrackRequest(requestTelemetry);
-            */
+            var customHeader = messageHeaders.GetCustomServiceRequestHeader(_logger) ?? new CustomServiceRequestHeader();
+            return RequestResponseServiceMessageAsync(requestContext, messageHeaders, requestBody, customHeader);
         }
 
-        protected virtual void TrackException(ServiceMethodInvocationInfo serviceMethodInvocationInfo, Exception exception)
+        private async Task<byte[]> RequestResponseServiceMessageAsync(
+            IServiceRemotingRequestContext requestContext,
+            ServiceRemotingMessageHeaders messageHeaders,
+            byte[] requestBody,
+            CustomServiceRequestHeader customHeader)
         {
-            /*
-            var properties = new Dictionary<string, string>();
-            properties.Add("ServiceName", _serviceContext.ServiceName.ToString());
-            properties.Add("ServiceInterfaceId", messageHeaders.InterfaceId.ToString());
-            properties.Add("ReplicaOrInstanceId", _serviceContext.ReplicaOrInstanceId.ToString());
-            properties.Add("PartitionId", _serviceContext.PartitionId.ToString());
-            properties.Add("NodeName", _serviceContext.NodeContext.NodeName);
-            properties.Add("Method", methodName);
-            properties.Add("MethodId", messageHeaders.MethodId.ToString());
-            properties.Add("InvocationId", messageHeaders.InvocationId);
+            var methodName = GetServiceMethodName(messageHeaders.InterfaceId, messageHeaders.MethodId);
 
-            _telemetryClient.TrackException(ex, properties);
-            */
-        }
-
-        public override void HandleOneWay(IServiceRemotingRequestContext requestContext, ServiceRemotingMessageHeaders messageHeaders, byte[] requestBody)
-        {
-            base.HandleOneWay(requestContext, messageHeaders, requestBody);
-        }
-
-        public override async Task<byte[]> RequestResponseAsync(IServiceRemotingRequestContext requestContext, ServiceRemotingMessageHeaders messageHeaders, byte[] requestBodyBytes)
-        {
-            var methodName = GetMethodName(messageHeaders.InterfaceId, messageHeaders.MethodId);
-            var customHeader = messageHeaders.GetCustomServiceRequestHeader(CommunicationLogger) ?? new CustomServiceRequestHeader();
-
-            CommunicationLogger?.StartMessageRecieved(methodName, customHeader);
 
             byte[] result = null;
-            try
+            using (new ServiceRequestContextWrapper(customHeader))
             {
-                result = await this.RunInRequestContext(
-                    async () => await base.RequestResponseAsync(
-                        requestContext,
-                        messageHeaders,
-                        requestBodyBytes),
-                    customHeader);
-
-                CommunicationLogger?.MessageDispatched(methodName, customHeader);
-            }
-            catch (Exception ex)
-            {
-                CommunicationLogger?.MessageFailed(methodName, customHeader, ex);
-                throw;
-            }
-            finally
-            {
-                CommunicationLogger?.StopMessageRecieved(methodName, customHeader);
+                using (_logger?.RecieveServiceMessage(_service.GetServiceContext().ServiceName, methodName, messageHeaders, customHeader))
+                {
+                    try
+                    {
+                        result = await _innerMessageHandler.RequestResponseAsync(requestContext, messageHeaders, requestBody);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger?.RecieveServiceMessageFailed(_service.GetServiceContext().ServiceName, methodName, messageHeaders, customHeader, ex);
+                        throw;
+                    }
+                }
             }
             return result;
         }
+
+        public void HandleOneWay(IServiceRemotingRequestContext requestContext, ServiceRemotingMessageHeaders messageHeaders, byte[] requestBody)
+        {
+            throw new NotImplementedException();
+        }        
     }
 }

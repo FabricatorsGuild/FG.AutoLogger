@@ -13,7 +13,7 @@ namespace WebApiService
 
 		private const int ActivatingControllerEventId = 101;
 
-		[Event(ActivatingControllerEventId, Level = EventLevel.LogAlways, Message = "Activating Controller", Keywords = Keywords.WebApi)]
+		[Event(ActivatingControllerEventId, Level = EventLevel.LogAlways, Message = "Activating Controller {7} {8}", Keywords = Keywords.WebApi)]
 		private void ActivatingController(
 			string serviceName, 
 			string serviceTypeName, 
@@ -21,7 +21,9 @@ namespace WebApiService
 			Guid partitionId, 
 			string applicationName, 
 			string applicationTypeName, 
-			string nodeName)
+			string nodeName, 
+			string correlationId, 
+			string userId)
 		{
 			WriteEvent(
 				ActivatingControllerEventId, 
@@ -31,12 +33,16 @@ namespace WebApiService
 				partitionId, 
 				applicationName, 
 				applicationTypeName, 
-				nodeName);
+				nodeName, 
+				correlationId, 
+				userId);
 		}
 
 		[NonEvent]
 		public void ActivatingController(
-			System.Fabric.StatelessServiceContext context)
+			System.Fabric.StatelessServiceContext context, 
+			string correlationId, 
+			string userId)
 		{
 			if (this.IsEnabled())
 			{
@@ -47,7 +53,9 @@ namespace WebApiService
 					context.PartitionId, 
 					context.CodePackageActivationContext.ApplicationName, 
 					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName);
+					context.NodeContext.NodeName, 
+					correlationId, 
+					userId);
 			}
 		}
 
@@ -130,6 +138,190 @@ namespace WebApiService
 					context.CodePackageActivationContext.ApplicationName, 
 					context.CodePackageActivationContext.ApplicationTypeName, 
 					context.NodeContext.NodeName);
+			}
+		}
+
+
+		private const int StartRecieveWebApiRequestEventId = 404;
+
+		[Event(StartRecieveWebApiRequestEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Web Api Request {7} {8} {9} {10}", Keywords = Keywords.WebApi, Opcode = EventOpcode.Start)]
+		private void StartRecieveWebApiRequest(
+			string serviceName, 
+			string serviceTypeName, 
+			long replicaOrInstanceId, 
+			Guid partitionId, 
+			string applicationName, 
+			string applicationTypeName, 
+			string nodeName, 
+			string requestUri, 
+			string payload, 
+			string correlationId, 
+			string userId)
+		{
+			WriteEvent(
+				StartRecieveWebApiRequestEventId, 
+				serviceName, 
+				serviceTypeName, 
+				replicaOrInstanceId, 
+				partitionId, 
+				applicationName, 
+				applicationTypeName, 
+				nodeName, 
+				requestUri, 
+				payload, 
+				correlationId, 
+				userId);
+		}
+
+		[NonEvent]
+		public void StartRecieveWebApiRequest(
+			System.Fabric.StatelessServiceContext context, 
+			System.Uri requestUri, 
+			string payload, 
+			string correlationId, 
+			string userId)
+		{
+			if (this.IsEnabled())
+			{
+				StartRecieveWebApiRequest(
+					context.ServiceName.ToString(), 
+					context.ServiceTypeName, 
+					context.InstanceId, 
+					context.PartitionId, 
+					context.CodePackageActivationContext.ApplicationName, 
+					context.CodePackageActivationContext.ApplicationTypeName, 
+					context.NodeContext.NodeName, 
+					requestUri.ToString(), 
+					payload, 
+					correlationId, 
+					userId);
+			}
+		}
+
+
+		private const int StopRecieveWebApiRequestEventId = 505;
+
+		[Event(StopRecieveWebApiRequestEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Web Api Request {7} {8} {9} {10}", Keywords = Keywords.WebApi, Opcode = EventOpcode.Stop)]
+		private void StopRecieveWebApiRequest(
+			string serviceName, 
+			string serviceTypeName, 
+			long replicaOrInstanceId, 
+			Guid partitionId, 
+			string applicationName, 
+			string applicationTypeName, 
+			string nodeName, 
+			string requestUri, 
+			string payload, 
+			string correlationId, 
+			string userId)
+		{
+			WriteEvent(
+				StopRecieveWebApiRequestEventId, 
+				serviceName, 
+				serviceTypeName, 
+				replicaOrInstanceId, 
+				partitionId, 
+				applicationName, 
+				applicationTypeName, 
+				nodeName, 
+				requestUri, 
+				payload, 
+				correlationId, 
+				userId);
+		}
+
+		[NonEvent]
+		public void StopRecieveWebApiRequest(
+			System.Fabric.StatelessServiceContext context, 
+			System.Uri requestUri, 
+			string payload, 
+			string correlationId, 
+			string userId)
+		{
+			if (this.IsEnabled())
+			{
+				StopRecieveWebApiRequest(
+					context.ServiceName.ToString(), 
+					context.ServiceTypeName, 
+					context.InstanceId, 
+					context.PartitionId, 
+					context.CodePackageActivationContext.ApplicationName, 
+					context.CodePackageActivationContext.ApplicationTypeName, 
+					context.NodeContext.NodeName, 
+					requestUri.ToString(), 
+					payload, 
+					correlationId, 
+					userId);
+			}
+		}
+
+
+		private const int RecieveWebApiRequestFailedEventId = 606;
+
+		[Event(RecieveWebApiRequestFailedEventId, Level = EventLevel.LogAlways, Message = "{11}", Keywords = Keywords.WebApi)]
+		private void RecieveWebApiRequestFailed(
+			string serviceName, 
+			string serviceTypeName, 
+			long replicaOrInstanceId, 
+			Guid partitionId, 
+			string applicationName, 
+			string applicationTypeName, 
+			string nodeName, 
+			string requestUri, 
+			string payload, 
+			string correlationId, 
+			string userId, 
+			string message, 
+			string source, 
+			string exceptionTypeName, 
+			string exception)
+		{
+			WriteEvent(
+				RecieveWebApiRequestFailedEventId, 
+				serviceName, 
+				serviceTypeName, 
+				replicaOrInstanceId, 
+				partitionId, 
+				applicationName, 
+				applicationTypeName, 
+				nodeName, 
+				requestUri, 
+				payload, 
+				correlationId, 
+				userId, 
+				message, 
+				source, 
+				exceptionTypeName, 
+				exception);
+		}
+
+		[NonEvent]
+		public void RecieveWebApiRequestFailed(
+			System.Fabric.StatelessServiceContext context, 
+			System.Uri requestUri, 
+			string payload, 
+			string correlationId, 
+			string userId, 
+			System.Exception exception)
+		{
+			if (this.IsEnabled())
+			{
+				RecieveWebApiRequestFailed(
+					context.ServiceName.ToString(), 
+					context.ServiceTypeName, 
+					context.InstanceId, 
+					context.PartitionId, 
+					context.CodePackageActivationContext.ApplicationName, 
+					context.CodePackageActivationContext.ApplicationTypeName, 
+					context.NodeContext.NodeName, 
+					requestUri.ToString(), 
+					payload, 
+					correlationId, 
+					userId, 
+					exception.Message, 
+					exception.Source, 
+					exception.GetType().FullName, 
+					exception.AsJson());
 			}
 		}
 

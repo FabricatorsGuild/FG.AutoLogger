@@ -11,14 +11,14 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerType
                   ""CLRType"": ""CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader"",
                   ""Arguments"": [
                     {
-                      ""Name"": ""user"",
+                      ""Name"": ""userId"",
                       ""Type"": ""string"",
-                      ""Assignment"": ""$this?.GetHeader(\""name\"")""
+                      ""Assignment"": ""$this?.GetHeader(\""userId\"")""
                     },
                     {
                       ""Name"": ""correlationId"",
                       ""Type"": ""string"",
-                      ""Assignment"": ""$this?.GetHeader(\""correlation-id\"")""
+                      ""Assignment"": ""$this?.GetHeader(\""correlationId\"")""
                     }
                   ]
                 }";

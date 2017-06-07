@@ -15,18 +15,15 @@ namespace PersonActor
 	internal sealed class PersonActorLogger : IPersonActorLogger
 	{
 		private readonly Microsoft.ServiceFabric.Actors.Runtime.Actor _actor;
-		private readonly Guid _correlationId;
-		private readonly string _message;
+		private readonly CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public PersonActorLogger(
 			Microsoft.ServiceFabric.Actors.Runtime.Actor actor,
-			Guid correlationId,
-			string message)
+			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
 		{
 			_actor = actor;
-			_correlationId = correlationId;
-			_message = message;
+			_context = context;
 			
             _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
             _telemetryClient.Context.User.Id = Environment.UserName;
@@ -41,8 +38,7 @@ namespace PersonActor
 		{
 			PersonActorServiceEventSource.Current.PersonActivated(
 				_actor, 
-				_correlationId, 
-				_message, 
+				_context, 
 				name, 
 				title
 			);
@@ -59,8 +55,9 @@ namespace PersonActor
                     {"PartitionId", _actor.ActorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actor.ActorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", _correlationId.ToString()},
-                    {"Message", _message},
+                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]},
                     {"Name", name},
                     {"Title", title}
 	            });
@@ -74,8 +71,7 @@ namespace PersonActor
 		{
 			PersonActorServiceEventSource.Current.PersonLoaded(
 				_actor, 
-				_correlationId, 
-				_message
+				_context
 			);
 			_telemetryClient.TrackEvent(
 	            nameof(PersonLoaded),
@@ -90,8 +86,9 @@ namespace PersonActor
                     {"PartitionId", _actor.ActorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actor.ActorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", _correlationId.ToString()},
-                    {"Message", _message}
+                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]}
 	            });
     
 		}
@@ -103,8 +100,7 @@ namespace PersonActor
 		{
 			PersonActorServiceEventSource.Current.TitleSet(
 				_actor, 
-				_correlationId, 
-				_message, 
+				_context, 
 				title
 			);
 			_telemetryClient.TrackEvent(
@@ -120,8 +116,9 @@ namespace PersonActor
                     {"PartitionId", _actor.ActorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actor.ActorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", _correlationId.ToString()},
-                    {"Message", _message},
+                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]},
                     {"Title", title}
 	            });
     

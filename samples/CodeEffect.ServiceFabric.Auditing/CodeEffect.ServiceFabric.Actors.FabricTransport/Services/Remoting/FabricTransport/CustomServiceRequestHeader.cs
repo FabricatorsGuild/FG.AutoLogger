@@ -113,6 +113,8 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
             return _headers.ContainsKey(name) ? _headers[name] : null;
         }
 
+        public string this[string index] => GetHeader(index);
+
         public ServiceRemotingMessageHeaders ToServiceMessageHeaders()
         {
             if (_needsPackaging)
@@ -132,6 +134,7 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
             }
             return _bytes;
         }
+
 
     }
 

@@ -16,6 +16,7 @@ using Microsoft.ServiceFabric.Actors.Remoting.FabricTransport.Runtime;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
+	using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 	using PersonActor.Diagnostics;
 	using PersonActor.Interfaces;
 
@@ -29,21 +30,16 @@ namespace PersonActor
 
         public PersonActorService(StatefulServiceContext context, ActorTypeInformation actorTypeInfo, Func<ActorService, ActorId, ActorBase> actorFactory = null, Func<ActorBase, IActorStateProvider, IActorStateManager> stateManagerFactory = null, IActorStateProvider stateProvider = null, ActorServiceSettings settings = null) : base(context, actorTypeInfo, actorFactory, stateManagerFactory, stateProvider, settings)
         {
-            _logger = new PersonActorServiceLogger(this, Guid.NewGuid(), "");
+            _logger = new PersonActorServiceLogger(this, ServiceRequestContext.Current);
             _communicationLogger = new ServicesCommunicationLogger(this.Context);            
 		}
 
 		protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
 		{
-			return new[]
-			{
-				new ServiceReplicaListener(ctxt => new FabricTransportActorServiceRemotingListener(ctxt,
-				new ActorServiceRemotingDispatcher(this), new FabricTransportRemotingListenerSettings()
-					{
-						MaxConcurrentCalls = 1000,
-					}
-				))
-			};
+		    return new[]
+		    {
+                this.CreateServiceReplicaListener(_communicationLogger),
+		    };
 		}
 
 		protected override async Task RunAsync(CancellationToken cancellationToken)
@@ -53,7 +49,7 @@ namespace PersonActor
 				foreach (var name in ObjectMother.Names)
 				{
                     var correlationId = Guid.NewGuid().ToString();
-                    using (new ServiceRequestContextWrapper() {CorrelationId = correlationId, UserId = "mainframe64/service_itself"})
+                    using (new ServiceRequestContextWrapper() {CorrelationId = correlationId, UserId = Environment.UserDomainName})
 				    {
                         var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client.ActorProxyFactory(_communicationLogger);
 
@@ -63,7 +59,6 @@ namespace PersonActor
                         await proxy.SetTitleAsync(title, cancellationToken);
 
                         _logger.PersonGenerated(name, title);
-
                     }
 
 					await Task.Delay(200000, cancellationToken);						

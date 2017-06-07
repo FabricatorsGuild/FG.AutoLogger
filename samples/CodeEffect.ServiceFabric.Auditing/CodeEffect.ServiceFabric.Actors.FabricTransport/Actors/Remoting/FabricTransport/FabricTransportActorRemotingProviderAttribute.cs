@@ -15,6 +15,7 @@ using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 using Microsoft.ServiceFabric.Services.Remoting;
+using Microsoft.ServiceFabric.Services.Remoting.Builder;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Runtime;
@@ -79,7 +80,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport
             }            
         }
 
-        public static IServiceRemotingClientFactory CreateServiceRemotingClientFactory(Type actorInterfaceType, IServiceRemotingCallbackClient callbackClient, IServiceCommunicationLogger logger, string correlationId)
+        public static IServiceRemotingClientFactory CreateServiceRemotingClientFactory(Type actorInterfaceType, IServiceRemotingCallbackClient callbackClient, IServiceCommunicationLogger logger, string correlationId, MethodDispatcherBase methdoDispatcher)
         {
             var fabricTransportSettings = GetDefaultFabricTransportSettings("TransportSettings");
             var exceptionHandlers = GetExceptionHandlers(actorInterfaceType);
@@ -90,7 +91,8 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport
                         callbackClient,
                         (IServicePartitionResolver) null,
                         exceptionHandlers,
-                        traceId: correlationId), logger);
+                        traceId: correlationId), 
+                    logger, methdoDispatcher);
         }
         
 
@@ -174,7 +176,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport
                 callbackClient,
                 (IServicePartitionResolver)null,
                 exceptionHandlers,
-                traceId: (string)null), null);
+                traceId: (string)null), null, null);
         }
 
         public override IServiceRemotingListener CreateServiceRemotingListener(ActorService actorService)

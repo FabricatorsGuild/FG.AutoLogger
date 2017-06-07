@@ -13,7 +13,7 @@ namespace PersonActor
 
 		private const int PersonActivatedEventId = 101;
 
-		[Event(PersonActivatedEventId, Level = EventLevel.LogAlways, Message = "{10}", Keywords = Keywords.PersonActor)]
+		[Event(PersonActivatedEventId, Level = EventLevel.LogAlways, Message = "Person Activated {12} {13}", Keywords = Keywords.PersonActor)]
 		private void PersonActivated(
 			string actorType, 
 			string actorId, 
@@ -24,8 +24,9 @@ namespace PersonActor
 			Guid partitionId, 
 			long replicaOrInstanceId, 
 			string nodeName, 
-			Guid correlationId, 
-			string message, 
+			string correlationId, 
+			string userId, 
+			string requestId, 
 			string name, 
 			string title)
 		{
@@ -41,7 +42,8 @@ namespace PersonActor
 				replicaOrInstanceId, 
 				nodeName, 
 				correlationId, 
-				message, 
+				userId, 
+				requestId, 
 				name, 
 				title);
 		}
@@ -49,8 +51,7 @@ namespace PersonActor
 		[NonEvent]
 		public void PersonActivated(
 			Microsoft.ServiceFabric.Actors.Runtime.Actor actor, 
-			Guid correlationId, 
-			string message, 
+			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context, 
 			string name, 
 			string title)
 		{
@@ -66,8 +67,9 @@ namespace PersonActor
 					actor.ActorService.Context.PartitionId, 
 					actor.ActorService.Context.ReplicaId, 
 					actor.ActorService.Context.NodeContext.NodeName, 
-					correlationId, 
-					message, 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"], 
 					name, 
 					title);
 			}
@@ -76,7 +78,7 @@ namespace PersonActor
 
 		private const int PersonLoadedEventId = 202;
 
-		[Event(PersonLoadedEventId, Level = EventLevel.LogAlways, Message = "{10}", Keywords = Keywords.PersonActor)]
+		[Event(PersonLoadedEventId, Level = EventLevel.LogAlways, Message = "Person Loaded", Keywords = Keywords.PersonActor)]
 		private void PersonLoaded(
 			string actorType, 
 			string actorId, 
@@ -87,8 +89,9 @@ namespace PersonActor
 			Guid partitionId, 
 			long replicaOrInstanceId, 
 			string nodeName, 
-			Guid correlationId, 
-			string message)
+			string correlationId, 
+			string userId, 
+			string requestId)
 		{
 			WriteEvent(
 				PersonLoadedEventId, 
@@ -102,14 +105,14 @@ namespace PersonActor
 				replicaOrInstanceId, 
 				nodeName, 
 				correlationId, 
-				message);
+				userId, 
+				requestId);
 		}
 
 		[NonEvent]
 		public void PersonLoaded(
 			Microsoft.ServiceFabric.Actors.Runtime.Actor actor, 
-			Guid correlationId, 
-			string message)
+			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
 		{
 			if (this.IsEnabled())
 			{
@@ -123,15 +126,16 @@ namespace PersonActor
 					actor.ActorService.Context.PartitionId, 
 					actor.ActorService.Context.ReplicaId, 
 					actor.ActorService.Context.NodeContext.NodeName, 
-					correlationId, 
-					message);
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]);
 			}
 		}
 
 
 		private const int TitleSetEventId = 303;
 
-		[Event(TitleSetEventId, Level = EventLevel.LogAlways, Message = "{10}", Keywords = Keywords.PersonActor)]
+		[Event(TitleSetEventId, Level = EventLevel.LogAlways, Message = "Title Set {12}", Keywords = Keywords.PersonActor)]
 		private void TitleSet(
 			string actorType, 
 			string actorId, 
@@ -142,8 +146,9 @@ namespace PersonActor
 			Guid partitionId, 
 			long replicaOrInstanceId, 
 			string nodeName, 
-			Guid correlationId, 
-			string message, 
+			string correlationId, 
+			string userId, 
+			string requestId, 
 			string title)
 		{
 			WriteEvent(
@@ -158,15 +163,15 @@ namespace PersonActor
 				replicaOrInstanceId, 
 				nodeName, 
 				correlationId, 
-				message, 
+				userId, 
+				requestId, 
 				title);
 		}
 
 		[NonEvent]
 		public void TitleSet(
 			Microsoft.ServiceFabric.Actors.Runtime.Actor actor, 
-			Guid correlationId, 
-			string message, 
+			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context, 
 			string title)
 		{
 			if (this.IsEnabled())
@@ -181,8 +186,9 @@ namespace PersonActor
 					actor.ActorService.Context.PartitionId, 
 					actor.ActorService.Context.ReplicaId, 
 					actor.ActorService.Context.NodeContext.NodeName, 
-					correlationId, 
-					message, 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"], 
 					title);
 			}
 		}

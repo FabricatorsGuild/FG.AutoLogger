@@ -9,12 +9,8 @@
           "Type": "Actor"
         },
         {
-          "Name": "correlationId",
-          "Type": "Guid"
-        },
-        {
-          "Name": "message",
-          "Type": "string"
+          "Name": "context",
+          "Type": "ServiceRequestContext"
         }
       ],
       "OverrideArguments": []
@@ -28,12 +24,8 @@
           "Type": "ActorService"
         },
         {
-          "Name": "correlationId",
-          "Type": "Guid"
-        },
-        {
-          "Name": "message",
-          "Type": "string"
+          "Name": "context",
+          "Type": "ServiceRequestContext"
         }
       ],
       "OverrideArguments": []
@@ -55,6 +47,27 @@
   "ProviderName": "CodeEffect-ServiceFabric-Auditing-PersonActorService",
   "Keywords": [],
   "TypeTemplates": [
+    {
+      "Name": "ServiceRequestContext",
+      "CLRType": "CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext",
+      "Arguments": [
+        {
+          "Assignment": "CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?[\"correlationId\"]",
+          "Name": "correlationId",
+          "Type": "string"
+        },
+        {
+          "Assignment": "CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?[\"userId\"]",
+          "Name": "userId",
+          "Type": "string"
+        },
+        {
+          "Assignment": "CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?[\"requestId\"]",
+          "Name": "requestId",
+          "Type": "string"
+        }
+      ]
+    }
   ],
   "Settings": {
     "AutogenerateLoggerInterfaces": false

@@ -7,6 +7,7 @@ using CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics;
 using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
+using Microsoft.ServiceFabric.Services.Remoting.Builder;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
 
 namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
@@ -15,11 +16,13 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
     {
         private readonly ICommunicationClientFactory<IServiceRemotingClient> _innerClientFactory;
         private readonly IServiceCommunicationLogger _logger;
+        private readonly MethodDispatcherBase _methodDispatcher;
 
-        public FabricTransportActorRemotingClientFactory(ICommunicationClientFactory<IServiceRemotingClient> innerClientFactory, IServiceCommunicationLogger logger)
+        public FabricTransportActorRemotingClientFactory(ICommunicationClientFactory<IServiceRemotingClient> innerClientFactory, IServiceCommunicationLogger logger, MethodDispatcherBase methodDispatcher)
         {
             _innerClientFactory = innerClientFactory;
             _logger = logger;
+            _methodDispatcher = methodDispatcher;
             _innerClientFactory.ClientConnected += OnClientConnected;
             _innerClientFactory.ClientDisconnected += OnClientDisconnected;
         }
@@ -28,14 +31,14 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
             OperationRetrySettings retrySettings, CancellationToken cancellationToken)
         {
             var client = await _innerClientFactory.GetClientAsync(serviceUri, partitionKey, targetReplicaSelector, listenerName, retrySettings, cancellationToken);
-            return new FabricTransportActorRemotingClient(client, serviceUri, _logger);
+            return new FabricTransportActorRemotingClient(client, serviceUri, _logger, _methodDispatcher);
         }
 
         public async Task<IServiceRemotingClient> GetClientAsync(ResolvedServicePartition previousRsp, TargetReplicaSelector targetReplicaSelector, string listenerName, OperationRetrySettings retrySettings,
             CancellationToken cancellationToken)
         {
             var client = await _innerClientFactory.GetClientAsync(previousRsp, targetReplicaSelector, listenerName, retrySettings, cancellationToken);
-            return new FabricTransportActorRemotingClient(client, previousRsp.ServiceName, _logger);
+            return new FabricTransportActorRemotingClient(client, previousRsp.ServiceName, _logger, _methodDispatcher);
         }
 
         public Task<OperationRetryControl> ReportOperationExceptionAsync(IServiceRemotingClient client, ExceptionInformation exceptionInformation, OperationRetrySettings retrySettings,

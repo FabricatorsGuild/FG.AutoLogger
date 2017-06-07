@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>1e7d3eefbfbd1defbfbd10efbfbd48efbfbd1407efbfbd052f</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>efbfbdefbfbdefbfbdefbfbdefbfbdefbfbd02efbfbdefbfbdde92efbfbdefbfbd49</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
@@ -157,6 +157,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ILoggableController.cs" />
     <Compile Include="Diagnostics\IServicesCommunicationLogger.cs" />
     <Compile Include="Diagnostics\IWebApiLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,14 +1,13 @@
-﻿using System;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
 
 namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerTypeTemplates
 {
-    public class ActorMessageHeadersTypeTemplateExtension : BaseTemplateExtension<CustomServiceRequestHeader>
+    public class ServiceRemotingMessageHeadersTypeTemplateExtension : BaseTemplateExtension<CustomServiceRequestHeader>
     {
         private string Definition = @"{
-                  ""Name"": ""ActorMessageHeaders"",
-                  ""CLRType"": ""CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders"",
+                  ""Name"": ""ServiceRemotingMessageHeaders"",
+                  ""CLRType"": ""Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders"",
                   ""Arguments"": [
                     {
                       ""Name"": ""InterfaceId"",
@@ -19,15 +18,10 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerType
                       ""Name"": ""MethodId"",
                       ""Type"": ""int"",
                       ""Assignment"": ""($this?.MethodId ?? 0)""
-                    },
-                    {
-                      ""Name"": ""ActorId"",
-                      ""Type"": ""string"",
-                      ""Assignment"": ""$this?.ActorId.ToString()""
                     }
                   ]
                 }";
-                
+
         protected override string GetDefinition()
         {
             return Definition;

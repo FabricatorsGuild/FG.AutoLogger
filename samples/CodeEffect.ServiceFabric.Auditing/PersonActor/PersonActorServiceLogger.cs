@@ -15,18 +15,15 @@ namespace PersonActor
 	internal sealed class PersonActorServiceLogger : IPersonActorServiceLogger
 	{
 		private readonly Microsoft.ServiceFabric.Actors.Runtime.ActorService _actorService;
-		private readonly Guid _correlationId;
-		private readonly string _message;
+		private readonly CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public PersonActorServiceLogger(
 			Microsoft.ServiceFabric.Actors.Runtime.ActorService actorService,
-			Guid correlationId,
-			string message)
+			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
 		{
 			_actorService = actorService;
-			_correlationId = correlationId;
-			_message = message;
+			_context = context;
 			
             _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
             _telemetryClient.Context.User.Id = Environment.UserName;
@@ -41,8 +38,7 @@ namespace PersonActor
 		{
 			PersonActorServiceEventSource.Current.PersonGenerated(
 				_actorService, 
-				_correlationId, 
-				_message, 
+				_context, 
 				name, 
 				title
 			);
@@ -58,8 +54,9 @@ namespace PersonActor
                     {"PartitionId", _actorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", _correlationId.ToString()},
-                    {"Message", _message},
+                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]},
                     {"Name", name},
                     {"Title", title}
 	            });

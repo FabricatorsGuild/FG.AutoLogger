@@ -39,7 +39,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.Runtime
             catch (Exception ex)
             {
                 // ignored
-                logger?.FailedToReadActorMessageHeaders(messageHeaders, ex);
+                logger?.FailedToReadActorMessageHeaders( messageHeaders, ex);
             }
             return null;
         }

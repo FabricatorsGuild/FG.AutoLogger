@@ -19,33 +19,51 @@ using WebApiService.Diagnostics;
 
 namespace WebApiService.Controllers
 {
+    [ServiceRequestActionFilter]
+	public class ValuesController : ApiController, ILoggableController
+    {
+        private readonly object _lock = new object();
 
-	[ServiceRequestActionFilter]
-	public class ValuesController : ApiController
-	{
 		private readonly IWebApiLogger _logger;
 		private readonly IServicesCommunicationLogger _servicesCommunicationLogger;
-	    private readonly string _correlationId;
 
-	    private static PartitionHelper _partitionHelper;
+        private static PartitionHelper _partitionHelper;
 
-	    private ServiceRequestContextWrapper _contextScope;
+	    private readonly ServiceRequestContextWrapper _contextScope;        
 
         public ValuesController(StatelessServiceContext context)
         {
-            _correlationId = Guid.NewGuid().ToString();
-
-            _contextScope = new ServiceRequestContextWrapper() {CorrelationId = _correlationId, UserId = "mainframe64/Kapten_rödskägg"};
+            _contextScope = new ServiceRequestContextWrapper() {CorrelationId = Guid.NewGuid().ToString(), UserId = "mainframe64/Kapten_rödskägg"};
 
             _logger = new WebApiLogger(context);
             _servicesCommunicationLogger = new ServicesCommunicationLogger(context);
 
-            _partitionHelper = new PartitionHelper(_servicesCommunicationLogger);
-
-            _logger.ActivatingController();            
+            _logger.ActivatingController(_contextScope.CorrelationId, _contextScope.UserId);            
 		}
 
-	    protected override void Dispose(bool disposing)
+        private PartitionHelper GetOrCreatePartitionHelper()
+        {
+            if (_partitionHelper != null)
+            {
+                return _partitionHelper;
+            }
+
+            lock (_lock)
+            {
+                if (_partitionHelper == null)
+                {
+                    _partitionHelper = new PartitionHelper();
+                }
+                return _partitionHelper;
+            }
+        }
+
+
+        public IDisposable RequestLoggingContext { get; set; }
+
+        public IWebApiLogger Logger => _logger;
+
+        protected override void Dispose(bool disposing)
 	    {
 	        base.Dispose(disposing);
 
@@ -59,7 +77,7 @@ namespace WebApiService.Controllers
             var serviceUri = new Uri($"{FabricRuntime.GetActivationContext().ApplicationName}/PersonActorService");
             var allPersons = new Dictionary<string, IDictionary<string, Person>>();
 
-            var partitionKeys = await _partitionHelper.GetInt64Partitions(serviceUri);
+            var partitionKeys = await GetOrCreatePartitionHelper().GetInt64Partitions(serviceUri, _servicesCommunicationLogger);
             foreach (var partitionKey in partitionKeys)
             {
                 var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client.ActorProxyFactory(_servicesCommunicationLogger);
@@ -127,6 +145,5 @@ namespace WebApiService.Controllers
 
 			return serviceRequestHeaders.ToArray();
 		}
-
-	}
+    }
 }
