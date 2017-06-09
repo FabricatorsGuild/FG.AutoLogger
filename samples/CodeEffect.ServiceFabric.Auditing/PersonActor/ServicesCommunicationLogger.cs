@@ -8,16 +8,17 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using CodeEffect.Diagnostics.EventSourceGenerator.AI;
+using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
 
 
 namespace PersonActor
 {
-	internal sealed class ServicesCommunicationLogger : IServicesCommunicationLogger
+	internal sealed class CommunicationLogger : ICommunicationLogger
 	{
 		private readonly System.Fabric.StatefulServiceContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
-		public ServicesCommunicationLogger(
+		public CommunicationLogger(
 			System.Fabric.StatefulServiceContext context)
 		{
 			_context = context;
@@ -43,7 +44,7 @@ namespace PersonActor
 				customServiceRequestHeader
 			);
 
-			var recieveActorMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString());
+			var recieveActorMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveActorMessage");
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.ReplicaOrInstanceId.ToString());
@@ -207,7 +208,7 @@ namespace PersonActor
 				customServiceRequestHeader
 			);
 
-			var recieveServiceMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString());
+			var recieveServiceMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveServiceMessage");
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.ReplicaOrInstanceId.ToString());
@@ -373,7 +374,7 @@ namespace PersonActor
 				customServiceRequestHeader
 			);
 
-			var callActorOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString());
+			var callActorOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callActor");
 			callActorOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
 			callActorOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.ReplicaOrInstanceId.ToString());
@@ -470,7 +471,7 @@ namespace PersonActor
 				customServiceRequestHeader
 			);
 
-			var callServiceOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString());
+			var callServiceOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callService");
 			callServiceOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
 			callServiceOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
 			callServiceOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.ReplicaOrInstanceId.ToString());
@@ -768,7 +769,9 @@ namespace PersonActor
     
 		}
 
-
-
+	    public void ServiceClientFailed(Uri requestUri, CustomServiceRequestHeader customServiceRequestHeader, Exception ex)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

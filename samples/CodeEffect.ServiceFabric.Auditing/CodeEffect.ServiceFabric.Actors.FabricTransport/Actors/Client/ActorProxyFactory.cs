@@ -19,12 +19,12 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
     {
         private readonly object _lock = new object();
         private volatile IActorProxyFactory _innerActorProxyFactory;
-        private volatile MethodDispatcherBase _methodDispatcher;
-        private ConcurrentDictionary<int, ConcurrentDictionary<int, string>> _actorMethodNameMap;
+        private volatile MethodDispatcherBase _actorMethodDispatcher;
+        private volatile MethodDispatcherBase _serviceMethodDispatcher;
 
-        public IServiceCommunicationLogger Logger { get; private set; }
+        private IServiceClientLogger Logger { get; set; }
 
-        public ActorProxyFactory(IServiceCommunicationLogger logger)
+        public ActorProxyFactory(IServiceClientLogger logger)
         {
             Logger = logger;
         }
@@ -37,7 +37,8 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
                 serviceRemotingCallbackClient, 
                 Logger,
                 ServiceRequestContext.Current?[ServiceRequestContextKeys.CorrelationId],
-                _methodDispatcher);
+                _actorMethodDispatcher, 
+                _serviceMethodDispatcher);
         }
 
         private IActorProxyFactory GetInnerFactory(Type actorInterfaceType)
@@ -60,18 +61,27 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
 
         private MethodDispatcherBase GetOrDiscoverActorMethodDispatcher(Type actorInterfaceType)
         {
-            if (_methodDispatcher != null)
+            if (_actorMethodDispatcher != null)
             {
-                return _methodDispatcher;
+                return _actorMethodDispatcher;
             }
 
             lock (_lock)
             {
-                if (_methodDispatcher == null)
-                {
-                    _methodDispatcher = GetActorMethodInformation(actorInterfaceType);
-                }
-                return _methodDispatcher;
+                return _actorMethodDispatcher ?? (_actorMethodDispatcher = GetActorMethodInformation(actorInterfaceType));
+            }
+        }
+
+        private MethodDispatcherBase GetOrDiscoverServiceMethodDispatcher(Type serviceInterfaceType)
+        {
+            if (_serviceMethodDispatcher != null)
+            {
+                return _serviceMethodDispatcher;
+            }
+
+            lock (_lock)
+            {
+                return _serviceMethodDispatcher ?? (_serviceMethodDispatcher = GetServiceMethodInformation(serviceInterfaceType));
             }
         }
 
@@ -93,6 +103,7 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
 
         public TServiceInterface CreateActorServiceProxy<TServiceInterface>(Uri serviceUri, ActorId actorId, string listenerName = null) where TServiceInterface : IService
         {
+            GetOrDiscoverServiceMethodDispatcher(typeof(TServiceInterface));
             var proxy = GetInnerFactory(typeof(TServiceInterface)).CreateActorServiceProxy<TServiceInterface>(serviceUri, actorId, listenerName);
             UpdateRequestContext(serviceUri);
             return proxy;
@@ -100,6 +111,7 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
 
         public TServiceInterface CreateActorServiceProxy<TServiceInterface>(Uri serviceUri, long partitionKey, string listenerName = null) where TServiceInterface : IService
         {
+            GetOrDiscoverServiceMethodDispatcher(typeof(TServiceInterface));
             var proxy = GetInnerFactory(typeof(TServiceInterface)).CreateActorServiceProxy<TServiceInterface>(serviceUri, partitionKey, listenerName);
             UpdateRequestContext(serviceUri);
             return proxy;
@@ -118,41 +130,56 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client
             }
         }
 
+        private MethodDispatcherBase GetServiceMethodInformation(Type serviceInterfaceType)
+        {
+            var codeBuilderType = typeof(Microsoft.ServiceFabric.Services.Remoting.Client.ServiceProxyFactory)?.Assembly.GetType(
+                "Microsoft.ServiceFabric.Services.Remoting.Builder.ServiceCodeBuilder");
+
+            var getOrCreateMethodDispatcher = codeBuilderType?.GetMethod("GetOrCreateMethodDispatcher", BindingFlags.Public | BindingFlags.Static);
+            var methodDispatcherBase = getOrCreateMethodDispatcher?.Invoke(null, new object[] { serviceInterfaceType }) as MethodDispatcherBase;
+
+            return methodDispatcherBase;
+        }
+
         private MethodDispatcherBase GetActorMethodInformation(Type actorInterfaceType )
         {
-            var codeBuilder =
-                typeof(Microsoft.ServiceFabric.Actors.Client.ActorProxyFactory)?.Assembly.GetType(
-                        "Microsoft.ServiceFabric.Actors.Remoting.Builder.ActorCodeBuilder")?
-                    .GetField("Singleton", BindingFlags.NonPublic | BindingFlags.Static)?
-                    .GetValue(null);
+            var codeBuilderType = typeof(Microsoft.ServiceFabric.Actors.Client.ActorProxyFactory)?.Assembly.GetType(
+                "Microsoft.ServiceFabric.Actors.Remoting.Builder.ActorCodeBuilder");
+
+            var getOrCreateMethodDispatcher = codeBuilderType?.GetMethod("GetOrCreateMethodDispatcher", BindingFlags.Public | BindingFlags.Static);
+            var methodDispatcherBase = getOrCreateMethodDispatcher?.Invoke(null, new object[] { actorInterfaceType }) as MethodDispatcherBase;
+
+            return methodDispatcherBase;
+
+            //var codeBuilder = codeBuilderType?
+            //        .GetField("Singleton", BindingFlags.NonPublic | BindingFlags.Static)?
+            //        .GetValue(null);
 
 
-            var codeBuilderType = codeBuilder?.GetType();
-
+            /*
             var codeBuilderInterface = codeBuilderType?.GetInterface("ICodeBuilder");
             var getOrBuilderMethodDispatcherMethod = codeBuilderInterface?.GetMethod("GetOrBuilderMethodDispatcher");
             var methodDispatcher = getOrBuilderMethodDispatcherMethod?.Invoke(codeBuilder, new object[] { actorInterfaceType });
 
             var methodDispatcherType = methodDispatcher.GetType();
             var methodDispatcherBase = methodDispatcherType?.GetProperty("MethodDispatcher", BindingFlags.Public | BindingFlags.Instance)?.GetValue(methodDispatcher) as MethodDispatcherBase;
+            */
 
-            return methodDispatcherBase;
+            /*
+        var actorInterfaceTypeCodeBuilderMethodDispatcher = codeBuilder?.GetType().GetInterface("ICodeBuilder").GetMethod("GetOrBuilderMethodDispatcher").Invoke(codeBuilder, new object[] { actorInterfaceType });
+        actorInterfaceTypeCodeBuilderMethodDispatcher?.GetType().GetProperty("MethodDispatcher", BindingFlags.Public | BindingFlags.Instance).GetValue(codeBuilder.GetType().GetInterface("ICodeBuilder").GetMethod("GetOrBuilderMethodDispatcher").Invoke(codeBuilder, new object[] { actorInterfaceType }))
 
-                /*
-            var actorInterfaceTypeCodeBuilderMethodDispatcher = codeBuilder?.GetType().GetInterface("ICodeBuilder").GetMethod("GetOrBuilderMethodDispatcher").Invoke(codeBuilder, new object[] { actorInterfaceType });
-            actorInterfaceTypeCodeBuilderMethodDispatcher?.GetType().GetProperty("MethodDispatcher", BindingFlags.Public | BindingFlags.Instance).GetValue(codeBuilder.GetType().GetInterface("ICodeBuilder").GetMethod("GetOrBuilderMethodDispatcher").Invoke(codeBuilder, new object[] { actorInterfaceType }))
+        var getOrBuilderMethodDispatcherMethod =
+            codeBuilder.GetType().GetMethod("Microsoft.ServiceFabric.Services.Remoting.Builder.ICodeBuilder.GetOrBuilderMethodDispatcher");
 
-            var getOrBuilderMethodDispatcherMethod =
-                codeBuilder.GetType().GetMethod("Microsoft.ServiceFabric.Services.Remoting.Builder.ICodeBuilder.GetOrBuilderMethodDispatcher");
+        var eventCodeBuilderField = codeBuilder?.GetType().GetField("eventCodeBuilder", BindingFlags.Instance | BindingFlags.NonPublic);
+        var eventCodeBuilder = eventCodeBuilderField?.GetValue(codeBuilder);
 
-            var eventCodeBuilderField = codeBuilder?.GetType().GetField("eventCodeBuilder", BindingFlags.Instance | BindingFlags.NonPublic);
-            var eventCodeBuilder = eventCodeBuilderField?.GetValue(codeBuilder);
+        var buildMethodDispatcherMethod = eventCodeBuilder?.GetType().GetMethod("BuildMethodDispatcher", BindingFlags.Instance | BindingFlags.NonPublic);
+        var methodDispatcherBuildResult = buildMethodDispatcherMethod?.Invoke(eventCodeBuilder, new object[] {actorInterfaceType});
 
-            var buildMethodDispatcherMethod = eventCodeBuilder?.GetType().GetMethod("BuildMethodDispatcher", BindingFlags.Instance | BindingFlags.NonPublic);
-            var methodDispatcherBuildResult = buildMethodDispatcherMethod?.Invoke(eventCodeBuilder, new object[] {actorInterfaceType});
-
-            var methodDispatcherProperty = methodDispatcherBuildResult?.GetType().GetProperty("MethodDispatcher");
-            var methodDispatcherBase = methodDispatcherProperty?.GetValue(methodDispatcherBuildResult) as MethodDispatcherBase;*/
+        var methodDispatcherProperty = methodDispatcherBuildResult?.GetType().GetProperty("MethodDispatcher");
+        var methodDispatcherBase = methodDispatcherProperty?.GetValue(methodDispatcherBuildResult) as MethodDispatcherBase;*/
             return methodDispatcherBase;            
         }
 

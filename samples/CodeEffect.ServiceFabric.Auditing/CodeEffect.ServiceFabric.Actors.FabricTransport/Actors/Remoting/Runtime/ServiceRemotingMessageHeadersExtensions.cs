@@ -8,7 +8,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.Runtime
 {
     public static class ServiceRemotingMessageHeadersExtensions
     {
-        internal static CustomServiceRequestHeader GetCustomServiceRequestHeader(this ServiceRemotingMessageHeaders messageHeaders, IServiceCommunicationLogger logger)
+        internal static CustomServiceRequestHeader GetCustomServiceRequestHeader(this ServiceRemotingMessageHeaders messageHeaders, IServiceRemotingLogger logger)
         {
             try
             {

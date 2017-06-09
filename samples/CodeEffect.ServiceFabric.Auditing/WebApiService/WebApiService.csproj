@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>efbfbdefbfbdefbfbdefbfbdefbfbdefbfbd02efbfbdefbfbdde92efbfbdefbfbd49</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>43efbfbd272befbfbdefbfbd2befbfbd1befbfbdefbfbd5a19efbfbd</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,15 +40,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0.1-alpha4\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.AI, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0-alpha03\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll</HintPath>
+    <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.AI, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0.1-alpha4\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.Model, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0.1-alpha4\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.MSBuild, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -62,7 +62,7 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0-alpha03\lib\net452\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0.1-alpha4\lib\net452\Microsoft.AI.PerfCounterCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -75,7 +75,7 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.3.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0-alpha03\lib\net452\Microsoft.ApplicationInsights.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0.1-alpha4\lib\net452\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Build.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -121,7 +121,7 @@
       <HintPath>..\packages\Microsoft.ServiceFabric.Services.Remoting.2.6.204\lib\net45\Microsoft.ServiceFabric.Services.Remoting.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.0.1-alpha4\lib\net452\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">

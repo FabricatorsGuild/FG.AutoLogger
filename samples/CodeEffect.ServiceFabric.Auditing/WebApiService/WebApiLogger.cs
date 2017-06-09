@@ -106,7 +106,7 @@ namespace WebApiService
 				userId
 			);
 
-			var recieveWebApiRequestOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString());
+			var recieveWebApiRequestOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveWebApiRequest");
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());

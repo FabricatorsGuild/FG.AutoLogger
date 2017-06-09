@@ -57,7 +57,7 @@ namespace PersonActor
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
                     {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
                     {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]},
+                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
                     {"Name", name},
                     {"Title", title}
 	            });
@@ -88,7 +88,7 @@ namespace PersonActor
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
                     {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
                     {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]}
+                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]}
 	            });
     
 		}
@@ -118,7 +118,7 @@ namespace PersonActor
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
                     {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
                     {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]},
+                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
                     {"Title", title}
 	            });
     

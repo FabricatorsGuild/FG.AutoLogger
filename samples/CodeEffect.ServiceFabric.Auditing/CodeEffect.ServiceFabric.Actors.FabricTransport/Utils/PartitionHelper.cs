@@ -9,6 +9,9 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Utils
 {
     public class PartitionHelper
     {
+        private readonly object _lock = new object();
+
+        // ReSharper disable once UnusedMember.Global - Used for logging!
         public static string ToString(IEnumerable<Int64RangePartitionInformation> partitions)
         {
             var partitionsString = new StringBuilder();
@@ -33,31 +36,36 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Utils
         {
             logger.EnumeratingPartitions(serviceUri);
 
-            if (_partitions.ContainsKey(serviceUri))
+            lock (_lock)
             {
-                
-                var partitions = _partitions[serviceUri];
-                logger.EnumeratedExistingPartitions(serviceUri, partitions);
+                if (_partitions.ContainsKey(serviceUri))
+                {
+                    var partitions = _partitions[serviceUri];
+                    logger.EnumeratedExistingPartitions(serviceUri, partitions);
+                }
             }
 
             try
             {
                 var fabricClient = new FabricClient();
                 var servicePartitionList = await fabricClient.QueryManager.GetPartitionListAsync(serviceUri);
-                // For each partition, build a service partition client used to resolve the low key served by the partition.
                 IList<Int64RangePartitionInformation> partitionKeys = new List<Int64RangePartitionInformation>(servicePartitionList.Count);
                 foreach (var partition in servicePartitionList)
                 {
                     var partitionInfo = partition.PartitionInformation as Int64RangePartitionInformation;
                     if (partitionInfo == null)
                     {
-                        throw new InvalidOperationException(
-                            $"The service {serviceUri} should have a uniform Int64 partition. Instead: {partition.PartitionInformation.Kind}");
+                        throw new InvalidOperationException($"The service {serviceUri} should have a uniform Int64 partition. Instead: {partition.PartitionInformation.Kind}");
                     }
-
-                    partitionKeys.Add(partitionInfo);
+                    partitionKeys.Add(partitionInfo);                    
                 }
-                _partitions.Add(serviceUri, partitionKeys);
+                lock (_lock)
+                {
+                    if (!_partitions.ContainsKey(serviceUri))
+                    {
+                        _partitions.Add(serviceUri, partitionKeys);
+                    }
+                }
 
                 logger.EnumeratedAndCachedPartitions(serviceUri, partitionKeys);
                 return partitionKeys;
@@ -65,7 +73,7 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Utils
             catch (Exception ex)
             {
                 logger.FailedToEnumeratePartitions(serviceUri, ex);
-                throw ex;
+                throw new PartitionEnumerationException(serviceUri, ex);
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics;
 using CodeEffect.ServiceFabric.Services.Communication;
+using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Actors.Generator;
 using Microsoft.ServiceFabric.Actors.Remoting;
 using Microsoft.ServiceFabric.Actors.Remoting.FabricTransport;
@@ -80,7 +81,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport
             }            
         }
 
-        public static IServiceRemotingClientFactory CreateServiceRemotingClientFactory(Type actorInterfaceType, IServiceRemotingCallbackClient callbackClient, IServiceCommunicationLogger logger, string correlationId, MethodDispatcherBase methdoDispatcher)
+        public static IServiceRemotingClientFactory CreateServiceRemotingClientFactory(Type actorInterfaceType, IServiceRemotingCallbackClient callbackClient, IServiceClientLogger logger, string correlationId, MethodDispatcherBase actorMethodDispatcher, MethodDispatcherBase serviceMethodDispatcher)
         {
             var fabricTransportSettings = GetDefaultFabricTransportSettings("TransportSettings");
             var exceptionHandlers = GetExceptionHandlers(actorInterfaceType);
@@ -92,7 +93,9 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport
                         (IServicePartitionResolver) null,
                         exceptionHandlers,
                         traceId: correlationId), 
-                    logger, methdoDispatcher);
+                    logger, 
+                    actorMethodDispatcher,
+                    serviceMethodDispatcher);
         }
         
 
@@ -176,7 +179,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport
                 callbackClient,
                 (IServicePartitionResolver)null,
                 exceptionHandlers,
-                traceId: (string)null), null, null);
+                traceId: (string)null), null, null, null);
         }
 
         public override IServiceRemotingListener CreateServiceRemotingListener(ActorService actorService)

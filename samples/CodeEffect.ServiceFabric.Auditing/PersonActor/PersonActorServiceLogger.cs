@@ -56,9 +56,81 @@ namespace PersonActor
                     {"NodeName", _actorService.Context.NodeContext.NodeName},
                     {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
                     {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]},
+                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
                     {"Name", name},
                     {"Title", title}
+	            });
+    
+		}
+
+
+
+		public System.IDisposable RunAsyncLoop(
+			)
+		{
+			PersonActorServiceEventSource.Current.StartRunAsyncLoop(
+				_actorService, 
+				_context
+			);
+
+			var runAsyncLoopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"] ?? "runAsyncLoop");
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ActorType", _actorService.ActorTypeInformation.ImplementationType.ToString());
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actorService.Context.CodePackageActivationContext.ApplicationTypeName);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ApplicationName", _actorService.Context.CodePackageActivationContext.ApplicationName);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _actorService.Context.ServiceTypeName);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ServiceName", _actorService.Context.ServiceName.ToString());
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("PartitionId", _actorService.Context.PartitionId.ToString());
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _actorService.Context.ReplicaId.ToString());
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("NodeName", _actorService.Context.NodeContext.NodeName);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]);
+			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, runAsyncLoopOperationHolder, () => StopRunAsyncLoop());
+    
+		}
+
+
+
+		public void StopRunAsyncLoop(
+			)
+		{
+			PersonActorServiceEventSource.Current.StopRunAsyncLoop(
+				_actorService, 
+				_context
+			);
+    
+		}
+
+
+
+		public void RunAsyncLoopFailed(
+			System.Exception ex)
+		{
+			PersonActorServiceEventSource.Current.RunAsyncLoopFailed(
+				_actorService, 
+				_context, 
+				ex
+			);
+			_telemetryClient.TrackException(
+	            ex,
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+                    { "Name", "RunAsyncLoopFailed" },
+	                {"ActorType", _actorService.ActorTypeInformation.ImplementationType.ToString()},
+                    {"ApplicationTypeName", _actorService.Context.CodePackageActivationContext.ApplicationTypeName},
+                    {"ApplicationName", _actorService.Context.CodePackageActivationContext.ApplicationName},
+                    {"ServiceTypeName", _actorService.Context.ServiceTypeName},
+                    {"ServiceName", _actorService.Context.ServiceName.ToString()},
+                    {"PartitionId", _actorService.Context.PartitionId.ToString()},
+                    {"ReplicaOrInstanceId", _actorService.Context.ReplicaId.ToString()},
+                    {"NodeName", _actorService.Context.NodeContext.NodeName},
+                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
+                    {"Message", ex.Message},
+                    {"Source", ex.Source},
+                    {"ExceptionTypeName", ex.GetType().FullName},
+                    {"Exception", ex.AsJson()}
 	            });
     
 		}

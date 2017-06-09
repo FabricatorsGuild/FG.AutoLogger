@@ -26,7 +26,7 @@ namespace PersonActor
 			string nodeName, 
 			string correlationId, 
 			string userId, 
-			string requestId, 
+			string requestUri, 
 			string name, 
 			string title)
 		{
@@ -43,7 +43,7 @@ namespace PersonActor
 				nodeName, 
 				correlationId, 
 				userId, 
-				requestId, 
+				requestUri, 
 				name, 
 				title);
 		}
@@ -69,7 +69,7 @@ namespace PersonActor
 					actor.ActorService.Context.NodeContext.NodeName, 
 					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
 					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"], 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"], 
 					name, 
 					title);
 			}
@@ -91,7 +91,7 @@ namespace PersonActor
 			string nodeName, 
 			string correlationId, 
 			string userId, 
-			string requestId)
+			string requestUri)
 		{
 			WriteEvent(
 				PersonLoadedEventId, 
@@ -106,7 +106,7 @@ namespace PersonActor
 				nodeName, 
 				correlationId, 
 				userId, 
-				requestId);
+				requestUri);
 		}
 
 		[NonEvent]
@@ -128,7 +128,7 @@ namespace PersonActor
 					actor.ActorService.Context.NodeContext.NodeName, 
 					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
 					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"]);
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]);
 			}
 		}
 
@@ -148,7 +148,7 @@ namespace PersonActor
 			string nodeName, 
 			string correlationId, 
 			string userId, 
-			string requestId, 
+			string requestUri, 
 			string title)
 		{
 			WriteEvent(
@@ -164,7 +164,7 @@ namespace PersonActor
 				nodeName, 
 				correlationId, 
 				userId, 
-				requestId, 
+				requestUri, 
 				title);
 		}
 
@@ -188,7 +188,7 @@ namespace PersonActor
 					actor.ActorService.Context.NodeContext.NodeName, 
 					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
 					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestId"], 
+					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"], 
 					title);
 			}
 		}

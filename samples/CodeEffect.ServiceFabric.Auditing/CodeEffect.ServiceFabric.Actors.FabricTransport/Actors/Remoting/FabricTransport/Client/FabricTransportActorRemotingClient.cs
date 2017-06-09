@@ -19,8 +19,9 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
     {
         private readonly IServiceRemotingClient _innerClient;
         private readonly Uri _serviceUri;
-        private readonly IServiceCommunicationLogger _logger;
-        private readonly MethodDispatcherBase _methodDispatcher;
+        private readonly IServiceClientLogger _logger;
+        private readonly MethodDispatcherBase _actorMethodDispatcher;
+        private readonly MethodDispatcherBase _serviceMethodDispatcher;
 
         private static readonly ConcurrentDictionary<long, string> ActorMethodMap = new ConcurrentDictionary<long, string>();
 
@@ -37,7 +38,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
                     return methodName;
                 }
 
-                methodName = _methodDispatcher.GetMethodDispatcherMapName(
+                methodName = _actorMethodDispatcher.GetMethodDispatcherMapName(
                     actorMessageHeaders.InterfaceId, actorMessageHeaders.MethodId);
                 ActorMethodMap[lookup] = methodName;
                 return methodName;
@@ -52,17 +53,38 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
 
         private string GetServiceMethodName(ServiceRemotingMessageHeaders messageHeaders)
         {
-            return "-";
-        }
+            if (messageHeaders == null) return null;
+            try
+            {
+                var methodName = "-";
+                var lookup = HashUtil.Combine(messageHeaders.InterfaceId, messageHeaders.MethodId);
+                if (ActorMethodMap.ContainsKey(lookup))
+                {
+                    methodName = ActorMethodMap[lookup];
+                    return methodName;
+                }
 
-        public IActorServiceCommunicationLogger CommunicationLogger { get; set; }
+                methodName = _serviceMethodDispatcher.GetMethodDispatcherMapName(
+                    messageHeaders.InterfaceId, messageHeaders.MethodId);
+                ActorMethodMap[lookup] = methodName;
+                return methodName;
+            }
+            catch (Exception ex)
+            {
+                // ignored
+                //_logger?.FailedToGetActorMethodName(actorMessageHeaders, ex);
+            }
+            return null;
+        }
         
-        public FabricTransportActorRemotingClient(IServiceRemotingClient innerClient, Uri serviceUri, IServiceCommunicationLogger logger, MethodDispatcherBase methodDispatcher)
+        public FabricTransportActorRemotingClient(IServiceRemotingClient innerClient, Uri serviceUri, IServiceClientLogger logger, 
+            MethodDispatcherBase actorMethodDispatcher, MethodDispatcherBase serviceMethodDispatcher)
         {
             _innerClient = innerClient;
             _serviceUri = serviceUri;
             _logger = logger;
-            _methodDispatcher = methodDispatcher;
+            _actorMethodDispatcher = actorMethodDispatcher;
+            _serviceMethodDispatcher = serviceMethodDispatcher;
         }
 
         ~FabricTransportActorRemotingClient()

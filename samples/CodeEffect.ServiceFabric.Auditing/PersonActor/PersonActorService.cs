@@ -26,12 +26,12 @@ namespace PersonActor
 	public class PersonActorService : ActorService, IPersonActorService
 	{
 		private readonly IPersonActorServiceLogger _logger;
-        private readonly IServicesCommunicationLogger _communicationLogger;
+        private readonly ICommunicationLogger _communicationLogger;
 
         public PersonActorService(StatefulServiceContext context, ActorTypeInformation actorTypeInfo, Func<ActorService, ActorId, ActorBase> actorFactory = null, Func<ActorBase, IActorStateProvider, IActorStateManager> stateManagerFactory = null, IActorStateProvider stateProvider = null, ActorServiceSettings settings = null) : base(context, actorTypeInfo, actorFactory, stateManagerFactory, stateProvider, settings)
         {
             _logger = new PersonActorServiceLogger(this, ServiceRequestContext.Current);
-            _communicationLogger = new ServicesCommunicationLogger(this.Context);            
+            _communicationLogger = new CommunicationLogger(this.Context);            
 		}
 
 		protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
@@ -49,19 +49,29 @@ namespace PersonActor
 				foreach (var name in ObjectMother.Names)
 				{
                     var correlationId = Guid.NewGuid().ToString();
-                    using (new ServiceRequestContextWrapper() {CorrelationId = correlationId, UserId = Environment.UserDomainName})
+				    using (new ServiceRequestContextWrapper() {CorrelationId = correlationId, UserId = Environment.UserName})
 				    {
-                        var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client.ActorProxyFactory(_communicationLogger);
+				        using (_logger.RunAsyncLoop())
+				        {
+				            try
+				            {
+				                var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client.ActorProxyFactory(_communicationLogger);
 
-                        var title = ObjectMother.Titles[Environment.TickCount % ObjectMother.Titles.Length];
+				                var title = ObjectMother.Titles[Environment.TickCount % ObjectMother.Titles.Length];
 
-                        var proxy = actorProxyFactory.CreateActorProxy<IPersonActor>(new ActorId(name));
-                        await proxy.SetTitleAsync(title, cancellationToken);
+				                var proxy = actorProxyFactory.CreateActorProxy<IPersonActor>(new ActorId(name));
+				                await proxy.SetTitleAsync(title, cancellationToken);
 
-                        _logger.PersonGenerated(name, title);
-                    }
+				                _logger.PersonGenerated(name, title);
+				            }
+				            catch (Exception ex)
+				            {
+				                _logger.RunAsyncLoopFailed(ex);
+				            }
+				        }
+				    }
 
-					await Task.Delay(200000, cancellationToken);						
+				    await Task.Delay(200000, cancellationToken);						
 				}
 			}
 		}
