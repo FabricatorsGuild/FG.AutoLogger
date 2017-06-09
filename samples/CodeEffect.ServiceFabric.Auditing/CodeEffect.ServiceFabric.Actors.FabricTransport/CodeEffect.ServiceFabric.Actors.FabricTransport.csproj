@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>7f730a3befbfbd664aefbfbd5b792e10efbfbdefbfbd20efbfbd</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>5fefbfbdefbfbdefbfbd7f1b093c2b2404efbfbd5defbfbd190a</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

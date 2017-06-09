@@ -12,7 +12,7 @@
       "OverrideArguments": []
     },
     {
-      "Name": "IServicesCommunicationLogger",
+      "Name": "ICommunicationLogger",
       "StartId": 100,
       "ImplicitArguments": [
         {

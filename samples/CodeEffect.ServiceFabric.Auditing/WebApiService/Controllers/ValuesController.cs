@@ -25,7 +25,7 @@ namespace WebApiService.Controllers
         private readonly object _lock = new object();
 
 		private readonly IWebApiLogger _logger;
-		private readonly IServicesCommunicationLogger _servicesCommunicationLogger;
+		private readonly ICommunicationLogger _servicesCommunicationLogger;
 
         private static PartitionHelper _partitionHelper;
 
@@ -36,7 +36,7 @@ namespace WebApiService.Controllers
             _contextScope = new ServiceRequestContextWrapper() {CorrelationId = Guid.NewGuid().ToString(), UserId = "mainframe64/Kapten_rödskägg"};
 
             _logger = new WebApiLogger(context);
-            _servicesCommunicationLogger = new ServicesCommunicationLogger(context);
+            _servicesCommunicationLogger = new CommunicationLogger(context);
 
             _logger.ActivatingController(_contextScope.CorrelationId, _contextScope.UserId);            
 		}

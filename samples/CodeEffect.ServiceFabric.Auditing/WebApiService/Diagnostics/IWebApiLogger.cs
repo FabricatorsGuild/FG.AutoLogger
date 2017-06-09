@@ -9,6 +9,7 @@ namespace WebApiService.Diagnostics
 	    void StartGetAll();
 	    void StopGetAll();
 
+
 	    IDisposable RecieveWebApiRequest(Uri requestUri, string payload, string correlationId, string userId);
         void RecieveWebApiRequestFailed(Uri requestUri, string payload, string correlationId, string userId, Exception exception);
     }

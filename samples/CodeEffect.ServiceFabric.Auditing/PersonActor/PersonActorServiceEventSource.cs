@@ -34,7 +34,7 @@ namespace PersonActor
 		{
 			public const EventKeywords PersonActor = (EventKeywords)0x1L;
 			public const EventKeywords PersonActorService = (EventKeywords)0x2L;
-			public const EventKeywords ServicesCommunication = (EventKeywords)0x4L;
+			public const EventKeywords Communication = (EventKeywords)0x4L;
 
 		}
 		#endregion Keywords
