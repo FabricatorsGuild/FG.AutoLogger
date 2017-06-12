@@ -55,6 +55,11 @@ namespace WebApiService
 	    public override Task OnActionExecutedAsync(HttpActionExecutedContext actionExecutedContext, CancellationToken cancellationToken)
 	    {
             var valuesController = actionExecutedContext.ActionContext.ControllerContext.Controller as ILoggableController;
+	        if (actionExecutedContext?.Exception != null)
+	        {
+	            valuesController?.Logger.RecieveWebApiRequestFailed(actionExecutedContext.Request.RequestUri, actionExecutedContext.Request.ToString(), ServiceRequestContext.Current?[ServiceRequestContextKeys.CorrelationId], ServiceRequestContext.Current?[ServiceRequestContextKeys.UserId], actionExecutedContext.Exception);
+	        }
+
             valuesController?.RequestLoggingContext?.Dispose();
 
             return base.OnActionExecutedAsync(actionExecutedContext, cancellationToken);
