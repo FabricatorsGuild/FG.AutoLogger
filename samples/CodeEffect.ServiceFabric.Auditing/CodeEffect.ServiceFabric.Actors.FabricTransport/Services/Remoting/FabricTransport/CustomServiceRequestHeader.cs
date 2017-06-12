@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerTypeTemplates;
 using CodeEffect.ServiceFabric.Actors.FabricTransport.Utils;
 using Microsoft.ServiceFabric.Services.Remoting;
 

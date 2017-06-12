@@ -198,6 +198,10 @@
       <Project>{35676703-7c42-423e-b292-2d79d3454241}</Project>
       <Name>CodeEffect.ServiceFabric.Actors.FabricTransport</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CodeEffect.ServiceFabric.Diagnostics\CodeEffect.ServiceFabric.Diagnostics.csproj">
+      <Project>{237c2a35-8ee4-45dc-aba0-4cdd3436aa57}</Project>
+      <Name>CodeEffect.ServiceFabric.Diagnostics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets" Condition="Exists('..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets')" />

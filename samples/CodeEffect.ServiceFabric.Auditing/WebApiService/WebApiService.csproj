@@ -215,6 +215,10 @@
       <Project>{35676703-7C42-423E-B292-2D79D3454241}</Project>
       <Name>CodeEffect.ServiceFabric.Actors.FabricTransport</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CodeEffect.ServiceFabric.Diagnostics\CodeEffect.ServiceFabric.Diagnostics.csproj">
+      <Project>{237c2a35-8ee4-45dc-aba0-4cdd3436aa57}</Project>
+      <Name>CodeEffect.ServiceFabric.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PersonActor.Interfaces\PersonActor.Interfaces.csproj">
       <Project>{66343026-F7ED-44F4-A0DB-652DBB9E3F39}</Project>
       <Name>PersonActor.Interfaces</Name>

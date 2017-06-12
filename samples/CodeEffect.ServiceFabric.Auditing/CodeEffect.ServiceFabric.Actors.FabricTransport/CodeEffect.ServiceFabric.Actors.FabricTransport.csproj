@@ -35,26 +35,6 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.Model, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.MSBuild, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\Microsoft.Build.Framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.ServiceFabric.Actors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
       <HintPath>..\packages\Microsoft.ServiceFabric.Actors.2.6.204\lib\net45\Microsoft.ServiceFabric.Actors.dll</HintPath>
     </Reference>
@@ -79,10 +59,6 @@
     </Reference>
     <Reference Include="Microsoft.ServiceFabric.Services.Remoting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
       <HintPath>..\packages\Microsoft.ServiceFabric.Services.Remoting.2.6.204\lib\net45\Microsoft.ServiceFabric.Services.Remoting.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\lib\net452\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -128,14 +104,7 @@
       <DependentUpon>DefaultEventSource.eventsource.json</DependentUpon>
     </Compile>
     <Compile Include="Diagnostics\IServiceRemotingLogger.cs" />
-    <Compile Include="Diagnostics\LoggerTypeTemplates\ActorServiceTypeTemplateExtension.cs" />
-    <Compile Include="Diagnostics\LoggerTypeTemplates\ActorTypeTemplateExtension.cs" />
-    <Compile Include="Diagnostics\LoggerTypeTemplates\ActorMessageHeadersTypeTemplateExtension.cs" />
-    <Compile Include="Diagnostics\LoggerTypeTemplates\CustomServiceRequestHeaderTypeTemplateExtension.cs" />
     <Compile Include="Diagnostics\IActorServiceCommunicationLogger.cs" />
-    <Compile Include="Diagnostics\LoggerTypeTemplates\ServiceRemotingMessageHeadersTypeTemplateExtension.cs" />
-    <Compile Include="Diagnostics\LoggerTypeTemplates\StatefulServiceContextTypeTemplateExtension.cs" />
-    <Compile Include="Diagnostics\LoggerTypeTemplates\StatelessServiceContextTypeTemplateExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Communication\ExceptionHandler.cs" />
     <Compile Include="Services\Remoting\FabricTransport\Client\FabricTransportServiceRemotingClient.cs" />
@@ -187,12 +156,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.ServiceFabric.Actors.2.6.204\build\Microsoft.ServiceFabric.Actors.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ServiceFabric.Actors.2.6.204\build\Microsoft.ServiceFabric.Actors.targets'))" />
-    <Error Condition="!Exists('..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets'))" />
   </Target>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties DefaultEventSource_1eventsource_1json__JSONSchema="https://raw.githubusercontent.com/FredrikGoransson/CodeEffect.Diagnostics.EventSourceGenerator/master/src/CodeEffect.Diagnostics.EventSourceGenerator.Schema/CodeEffect.Diagnostics.EventSourceGenerator.Model.json" />
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets" Condition="Exists('..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.0-alpha03\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets')" />
 </Project>
