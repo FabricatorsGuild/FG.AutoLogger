@@ -4,7 +4,7 @@ namespace ConsoleApplication1.Loggers
 {
     public interface IDependencyLogger
     {
-        IDisposable CallExternalComponent(string requestName, string content);
+        IDisposable CallExternalComponent(Uri requestName, string content);
 
         IDisposable RecieveMessage(string message);
     }

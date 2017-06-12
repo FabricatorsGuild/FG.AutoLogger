@@ -35,7 +35,7 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 		public System.IDisposable CallExternalComponent(
-			string requestName,
+			System.Uri requestName,
 			string content)
 		{
 			Sample.Current.StartCallExternalComponent(
@@ -49,14 +49,14 @@ namespace ConsoleApplication1.Diagnostics
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\trequestName:\t{requestName}");
+			System.Diagnostics.Debug.WriteLine($"\trequestName.ToString():\t{requestName.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tcontent:\t{content}");
 			_callExternalComponentStopwatch.Restart();
 
-			var callExternalComponentOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestName);
+			var callExternalComponentOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestName.ToString());
 			callExternalComponentOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
 			callExternalComponentOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
-			callExternalComponentOperationHolder.Telemetry.Properties.Add("RequestName", requestName);
+			callExternalComponentOperationHolder.Telemetry.Properties.Add("RequestName", requestName.ToString());
 			callExternalComponentOperationHolder.Telemetry.Properties.Add("Content", content);
 			return new ScopeWrapper<DependencyTelemetry>(_telemetryClient, callExternalComponentOperationHolder, () => StopCallExternalComponent(requestName,content));
     
@@ -67,7 +67,7 @@ namespace ConsoleApplication1.Diagnostics
 
 
 		public void StopCallExternalComponent(
-			string requestName,
+			System.Uri requestName,
 			string content)
 		{
 			Sample.Current.StopCallExternalComponent(
@@ -81,7 +81,7 @@ namespace ConsoleApplication1.Diagnostics
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\trequestName:\t{requestName}");
+			System.Diagnostics.Debug.WriteLine($"\trequestName.ToString():\t{requestName.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tcontent:\t{content}");
 			_callExternalComponentStopwatch.Stop();
     
