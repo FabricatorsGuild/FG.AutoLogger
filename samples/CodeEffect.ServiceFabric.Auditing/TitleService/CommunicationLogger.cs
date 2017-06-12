@@ -3,14 +3,14 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
-using PersonActor.Diagnostics;
+using TitleService.Diagnostics;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
-namespace PersonActor
+namespace TitleService
 {
 	internal sealed class CommunicationLogger : ICommunicationLogger
 	{
@@ -29,177 +29,13 @@ namespace PersonActor
 
 		}
 
-		public System.IDisposable RecieveActorMessage(
-			System.Uri requestUri,
-			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			PersonActorServiceEventSource.Current.StartRecieveActorMessage(
-				_context, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader
-			);
-
-			var recieveActorMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveActorMessage");
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.ReplicaOrInstanceId.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ApplicationName", _context.CodePackageActivationContext.ApplicationName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("NodeName", _context.NodeContext.NodeName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("RequestUri", requestUri.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorMethodName", actorMethodName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("InterfaceId", (actorMessageHeaders?.InterfaceId ?? 0).ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("MethodId", (actorMessageHeaders?.MethodId ?? 0).ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorId", actorMessageHeaders?.ActorId.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveActorMessageOperationHolder, () => StopRecieveActorMessage(requestUri,actorMethodName,actorMessageHeaders,customServiceRequestHeader));
-    
-		}
-
-
-
-		public void StopRecieveActorMessage(
-			System.Uri requestUri,
-			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			PersonActorServiceEventSource.Current.StopRecieveActorMessage(
-				_context, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
-
-
-
-		public void RecieveActorMessageFailed(
-			System.Uri requestUri,
-			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
-			System.Exception ex)
-		{
-			PersonActorServiceEventSource.Current.RecieveActorMessageFailed(
-				_context, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "RecieveActorMessageFailed" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.ReplicaOrInstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"RequestUri", requestUri.ToString()},
-                    {"ActorMethodName", actorMethodName},
-                    {"InterfaceId", (actorMessageHeaders?.InterfaceId ?? 0).ToString()},
-                    {"MethodId", (actorMessageHeaders?.MethodId ?? 0).ToString()},
-                    {"ActorId", actorMessageHeaders?.ActorId.ToString()},
-                    {"UserId", customServiceRequestHeader?.GetHeader("userId")},
-                    {"CorrelationId", customServiceRequestHeader?.GetHeader("correlationId")},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
-		public void FailedToGetActorMethodName(
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			System.Exception ex)
-		{
-			PersonActorServiceEventSource.Current.FailedToGetActorMethodName(
-				_context, 
-				actorMessageHeaders, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "FailedToGetActorMethodName" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.ReplicaOrInstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"InterfaceId", (actorMessageHeaders?.InterfaceId ?? 0).ToString()},
-                    {"MethodId", (actorMessageHeaders?.MethodId ?? 0).ToString()},
-                    {"ActorId", actorMessageHeaders?.ActorId.ToString()},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
-		public void FailedToReadActorMessageHeaders(
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceRemotingMessageHeaders,
-			System.Exception ex)
-		{
-			PersonActorServiceEventSource.Current.FailedToReadActorMessageHeaders(
-				_context, 
-				serviceRemotingMessageHeaders, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "FailedToReadActorMessageHeaders" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.ReplicaOrInstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"InterfaceId", (serviceRemotingMessageHeaders?.InterfaceId ?? 0).ToString()},
-                    {"MethodId", (serviceRemotingMessageHeaders?.MethodId ?? 0).ToString()},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
 		public System.IDisposable RecieveServiceMessage(
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
-			PersonActorServiceEventSource.Current.StartRecieveServiceMessage(
+			TitleActorServiceEventSource.Current.StartRecieveServiceMessage(
 				_context, 
 				requestUri, 
 				serviceMethodName, 
@@ -233,7 +69,7 @@ namespace PersonActor
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
-			PersonActorServiceEventSource.Current.StopRecieveServiceMessage(
+			TitleActorServiceEventSource.Current.StopRecieveServiceMessage(
 				_context, 
 				requestUri, 
 				serviceMethodName, 
@@ -252,7 +88,7 @@ namespace PersonActor
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
-			PersonActorServiceEventSource.Current.RecieveServiceMessageFailed(
+			TitleActorServiceEventSource.Current.RecieveServiceMessageFailed(
 				_context, 
 				requestUri, 
 				serviceMethodName, 
@@ -294,7 +130,7 @@ namespace PersonActor
 			int methodId,
 			System.Exception ex)
 		{
-			PersonActorServiceEventSource.Current.FailedToGetServiceMethodName(
+			TitleActorServiceEventSource.Current.FailedToGetServiceMethodName(
 				_context, 
 				requestUri, 
 				interfaceId, 
@@ -329,7 +165,7 @@ namespace PersonActor
 		public void StartRequestContext(
 			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
-			PersonActorServiceEventSource.Current.StartRequestContext(
+			TitleActorServiceEventSource.Current.StartRequestContext(
 				_context, 
 				headers
 			);
@@ -352,7 +188,7 @@ namespace PersonActor
 		public void StopRequestContext(
 			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
-			PersonActorServiceEventSource.Current.StopRequestContext(
+			TitleActorServiceEventSource.Current.StopRequestContext(
 				_context, 
 				headers
 			);
@@ -368,7 +204,7 @@ namespace PersonActor
 			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers,
 			System.Exception exception)
 		{
-			PersonActorServiceEventSource.Current.FailedRequestContext(
+			TitleActorServiceEventSource.Current.FailedRequestContext(
 				_context, 
 				headers, 
 				exception
@@ -400,7 +236,7 @@ namespace PersonActor
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceRemotingMessageHeaders,
 			System.Exception ex)
 		{
-			PersonActorServiceEventSource.Current.FailedToReadCustomServiceMessageHeader(
+			TitleActorServiceEventSource.Current.FailedToReadCustomServiceMessageHeader(
 				_context, 
 				serviceRemotingMessageHeaders, 
 				ex
@@ -432,7 +268,7 @@ namespace PersonActor
 		public void EnumeratingPartitions(
 			System.Uri serviceUri)
 		{
-			PersonActorServiceEventSource.Current.EnumeratingPartitions(
+			TitleActorServiceEventSource.Current.EnumeratingPartitions(
 				_context, 
 				serviceUri
 			);
@@ -458,7 +294,7 @@ namespace PersonActor
 			System.Uri serviceUri,
 			System.Exception ex)
 		{
-			PersonActorServiceEventSource.Current.FailedToEnumeratePartitions(
+			TitleActorServiceEventSource.Current.FailedToEnumeratePartitions(
 				_context, 
 				serviceUri, 
 				ex
@@ -490,7 +326,7 @@ namespace PersonActor
 			System.Uri serviceUri,
 			System.Collections.Generic.IEnumerable<System.Fabric.ServicePartitionInformation> partitions)
 		{
-			PersonActorServiceEventSource.Current.EnumeratedExistingPartitions(
+			TitleActorServiceEventSource.Current.EnumeratedExistingPartitions(
 				_context, 
 				serviceUri, 
 				partitions
@@ -518,7 +354,7 @@ namespace PersonActor
 			System.Uri serviceUri,
 			System.Collections.Generic.IEnumerable<System.Fabric.ServicePartitionInformation> partitions)
 		{
-			PersonActorServiceEventSource.Current.EnumeratedAndCachedPartitions(
+			TitleActorServiceEventSource.Current.EnumeratedAndCachedPartitions(
 				_context, 
 				serviceUri, 
 				partitions
@@ -548,7 +384,7 @@ namespace PersonActor
 			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
-			PersonActorServiceEventSource.Current.StartCallActor(
+			TitleActorServiceEventSource.Current.StartCallActor(
 				_context, 
 				requestUri, 
 				actorMethodName, 
@@ -583,7 +419,7 @@ namespace PersonActor
 			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
-			PersonActorServiceEventSource.Current.StopCallActor(
+			TitleActorServiceEventSource.Current.StopCallActor(
 				_context, 
 				requestUri, 
 				actorMethodName, 
@@ -602,7 +438,7 @@ namespace PersonActor
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
-			PersonActorServiceEventSource.Current.CallActorFailed(
+			TitleActorServiceEventSource.Current.CallActorFailed(
 				_context, 
 				requestUri, 
 				actorMethodName, 
@@ -645,7 +481,7 @@ namespace PersonActor
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
-			PersonActorServiceEventSource.Current.StartCallService(
+			TitleActorServiceEventSource.Current.StartCallService(
 				_context, 
 				requestUri, 
 				serviceMethodName, 
@@ -679,7 +515,7 @@ namespace PersonActor
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
-			PersonActorServiceEventSource.Current.StopCallService(
+			TitleActorServiceEventSource.Current.StopCallService(
 				_context, 
 				requestUri, 
 				serviceMethodName, 
@@ -698,7 +534,7 @@ namespace PersonActor
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
-			PersonActorServiceEventSource.Current.CallServiceFailed(
+			TitleActorServiceEventSource.Current.CallServiceFailed(
 				_context, 
 				requestUri, 
 				serviceMethodName, 
@@ -739,7 +575,7 @@ namespace PersonActor
 			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
-			PersonActorServiceEventSource.Current.ServiceClientFailed(
+			TitleActorServiceEventSource.Current.ServiceClientFailed(
 				_context, 
 				requestUri, 
 				customServiceRequestHeader, 

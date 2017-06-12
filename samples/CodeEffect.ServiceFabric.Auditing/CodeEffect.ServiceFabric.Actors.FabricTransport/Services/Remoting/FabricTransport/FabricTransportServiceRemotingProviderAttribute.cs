@@ -14,8 +14,6 @@ using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 
 namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
 {
-
-
     public class FabricTransportServiceRemotingProviderAttribute : Microsoft.ServiceFabric.Services.Remoting.FabricTransport.FabricTransportServiceRemotingProviderAttribute
     {
         public FabricTransportServiceRemotingProviderAttribute(params Type[] exceptionHandlerTypes)

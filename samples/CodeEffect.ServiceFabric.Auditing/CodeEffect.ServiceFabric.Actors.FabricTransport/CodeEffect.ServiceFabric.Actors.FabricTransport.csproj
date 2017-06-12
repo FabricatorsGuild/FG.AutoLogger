@@ -7,13 +7,13 @@
     <ProjectGuid>{35676703-7C42-423E-B292-2D79D3454241}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeEffect.ServiceFabric.Actors.FabricTransport</RootNamespace>
+    <RootNamespace>CodeEffect.ServiceFabric</RootNamespace>
     <AssemblyName>CodeEffect.ServiceFabric.Actors.FabricTransport</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>5fefbfbdefbfbdefbfbd7f1b093c2b2404efbfbd5defbfbd190a</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>efbfbdefbfbdefbfbdefbfbd4befbfbdefbfbd3964efbfbdefbfbd516befbfbdefbfbdefbfbd</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -114,10 +114,11 @@
     <Compile Include="Actors\Remoting\FabricTransport\ActorServiceRemotingDispatcherAttribute.cs" />
     <Compile Include="Actors\Remoting\FabricTransport\Client\FabricTransportActorRemotingClient.cs" />
     <Compile Include="Actors\Remoting\FabricTransport\Client\FabricTransportActorRemotingClientFactory.cs" />
+    <Compile Include="Actors\Remoting\FabricTransport\FabricTransportActorRemotingHelpers.cs" />
     <Compile Include="Actors\Remoting\FabricTransport\FabricTransportActorRemotingProviderAttribute.cs" />
     <Compile Include="Actors\Remoting\FabricTransport\FabricTransportRemotingExceptionHandlerAttribute.cs" />
     <Compile Include="Actors\Remoting\Runtime\ActorMessageHeaders.cs" />
-    <Compile Include="Actors\Remoting\Runtime\ActorServiceListerenerExtensions.cs" />
+    <Compile Include="Actors\Remoting\Runtime\ActorServiceListenerExtensions.cs" />
     <Compile Include="Actors\Remoting\Runtime\ActorServiceRemotingDispatcher.cs" />
     <Compile Include="Actors\Remoting\Runtime\ActorServiceRemotingDispatcherExtensions.cs" />
     <Compile Include="Actors\Remoting\Runtime\ServiceRemotingMessageHeadersExtensions.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Services\Remoting\FabricTransport\Client\FabricTransportServiceRemotingClient.cs" />
     <Compile Include="Services\Remoting\FabricTransport\Client\FabricTransportServiceRemotingClientFactory.cs" />
     <Compile Include="Services\Remoting\FabricTransport\CustomServiceRequestHeader.cs" />
+    <Compile Include="Services\Remoting\FabricTransport\FabricTransportServiceRemotingHelpers.cs" />
     <Compile Include="Services\Remoting\FabricTransport\FabricTransportServiceRemotingProviderAttribute.cs" />
     <Compile Include="Diagnostics\IServiceClientLogger.cs" />
     <Compile Include="Services\Remoting\FabricTransport\ServiceRemotingMessageHeadersExtensions.cs" />
@@ -149,11 +151,12 @@
     <Compile Include="Services\Remoting\FabricTransport\ServiceRequestHeader.cs" />
     <Compile Include="Services\Remoting\FabricTransport\ServiceRequestHeaderAttribute.cs" />
     <Compile Include="Services\Remoting\FabricTransport\ServiceRequestHeaderExtensions.cs" />
-    <Compile Include="Services\Remoting\Runtime\Client\AuditedServiceProxyFactory.cs" />
+    <Compile Include="Services\Remoting\Runtime\Client\ServiceProxyFactory.cs" />
+    <Compile Include="Services\Remoting\Runtime\Client\ServiceProxyFactoryBase.cs" />
+    <Compile Include="Services\Remoting\Runtime\ServiceListenerExtensions.cs" />
     <Compile Include="Services\Remoting\Runtime\ServiceRemotingDispatcher.cs" />
     <Compile Include="Services\Remoting\Runtime\ServiceRemotingDispatcherAttribute.cs" />
     <Compile Include="Services\Remoting\Runtime\ServiceRemotingDispatcherExtensions.cs" />
-    <Compile Include="Services\Runtime\ActorProxyFactory.cs" />
     <Compile Include="Services\Runtime\ApplicationUriBuilder.cs" />
     <Compile Include="Utils\HashUtil.cs" />
     <Compile Include="Services\Runtime\ServiceExtensions.cs" />

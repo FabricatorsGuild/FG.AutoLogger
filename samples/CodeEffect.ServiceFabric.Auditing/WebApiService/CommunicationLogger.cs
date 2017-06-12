@@ -29,406 +29,6 @@ namespace WebApiService
 
 		}
 
-		public System.IDisposable RecieveActorMessage(
-			System.Uri requestUri,
-			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			WebApiServiceEventSource.Current.StartRecieveActorMessage(
-				_context, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader
-			);
-
-			var recieveActorMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveActorMessage");
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ApplicationName", _context.CodePackageActivationContext.ApplicationName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("NodeName", _context.NodeContext.NodeName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("RequestUri", requestUri.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorMethodName", actorMethodName);
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("InterfaceId", (actorMessageHeaders?.InterfaceId ?? 0).ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("MethodId", (actorMessageHeaders?.MethodId ?? 0).ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorId", actorMessageHeaders?.ActorId.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveActorMessageOperationHolder, () => StopRecieveActorMessage(requestUri,actorMethodName,actorMessageHeaders,customServiceRequestHeader));
-    
-		}
-
-
-
-		public void StopRecieveActorMessage(
-			System.Uri requestUri,
-			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			WebApiServiceEventSource.Current.StopRecieveActorMessage(
-				_context, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
-
-
-
-		public void RecieveActorMessageFailed(
-			System.Uri requestUri,
-			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
-			System.Exception ex)
-		{
-			WebApiServiceEventSource.Current.RecieveActorMessageFailed(
-				_context, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "RecieveActorMessageFailed" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"RequestUri", requestUri.ToString()},
-                    {"ActorMethodName", actorMethodName},
-                    {"InterfaceId", (actorMessageHeaders?.InterfaceId ?? 0).ToString()},
-                    {"MethodId", (actorMessageHeaders?.MethodId ?? 0).ToString()},
-                    {"ActorId", actorMessageHeaders?.ActorId.ToString()},
-                    {"UserId", customServiceRequestHeader?.GetHeader("userId")},
-                    {"CorrelationId", customServiceRequestHeader?.GetHeader("correlationId")},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
-		public void FailedToGetActorMethodName(
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			System.Exception ex)
-		{
-			WebApiServiceEventSource.Current.FailedToGetActorMethodName(
-				_context, 
-				actorMessageHeaders, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "FailedToGetActorMethodName" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"InterfaceId", (actorMessageHeaders?.InterfaceId ?? 0).ToString()},
-                    {"MethodId", (actorMessageHeaders?.MethodId ?? 0).ToString()},
-                    {"ActorId", actorMessageHeaders?.ActorId.ToString()},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
-		public void FailedToReadActorMessageHeaders(
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceRemotingMessageHeaders,
-			System.Exception ex)
-		{
-			WebApiServiceEventSource.Current.FailedToReadActorMessageHeaders(
-				_context, 
-				serviceRemotingMessageHeaders, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "FailedToReadActorMessageHeaders" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"InterfaceId", (serviceRemotingMessageHeaders?.InterfaceId ?? 0).ToString()},
-                    {"MethodId", (serviceRemotingMessageHeaders?.MethodId ?? 0).ToString()},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
-		public System.IDisposable RecieveServiceMessage(
-			System.Uri requestUri,
-			string serviceMethodName,
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			WebApiServiceEventSource.Current.StartRecieveServiceMessage(
-				_context, 
-				requestUri, 
-				serviceMethodName, 
-				serviceMessageHeaders, 
-				customServiceRequestHeader
-			);
-
-			var recieveServiceMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveServiceMessage");
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ApplicationName", _context.CodePackageActivationContext.ApplicationName);
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName);
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("NodeName", _context.NodeContext.NodeName);
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("RequestUri", requestUri.ToString());
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ServiceMethodName", serviceMethodName);
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("InterfaceId", (serviceMessageHeaders?.InterfaceId ?? 0).ToString());
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("MethodId", (serviceMessageHeaders?.MethodId ?? 0).ToString());
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveServiceMessageOperationHolder, () => StopRecieveServiceMessage(requestUri,serviceMethodName,serviceMessageHeaders,customServiceRequestHeader));
-    
-		}
-
-
-
-		public void StopRecieveServiceMessage(
-			System.Uri requestUri,
-			string serviceMethodName,
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			WebApiServiceEventSource.Current.StopRecieveServiceMessage(
-				_context, 
-				requestUri, 
-				serviceMethodName, 
-				serviceMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
-
-
-
-		public void RecieveServiceMessageFailed(
-			System.Uri requestUri,
-			string serviceMethodName,
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
-			System.Exception ex)
-		{
-			WebApiServiceEventSource.Current.RecieveServiceMessageFailed(
-				_context, 
-				requestUri, 
-				serviceMethodName, 
-				serviceMessageHeaders, 
-				customServiceRequestHeader, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "RecieveServiceMessageFailed" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"RequestUri", requestUri.ToString()},
-                    {"ServiceMethodName", serviceMethodName},
-                    {"InterfaceId", (serviceMessageHeaders?.InterfaceId ?? 0).ToString()},
-                    {"MethodId", (serviceMessageHeaders?.MethodId ?? 0).ToString()},
-                    {"UserId", customServiceRequestHeader?.GetHeader("userId")},
-                    {"CorrelationId", customServiceRequestHeader?.GetHeader("correlationId")},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
-		public void FailedToGetServiceMethodName(
-			System.Uri requestUri,
-			int interfaceId,
-			int methodId,
-			System.Exception ex)
-		{
-			WebApiServiceEventSource.Current.FailedToGetServiceMethodName(
-				_context, 
-				requestUri, 
-				interfaceId, 
-				methodId, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "FailedToGetServiceMethodName" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"RequestUri", requestUri.ToString()},
-                    {"InterfaceId", interfaceId.ToString()},
-                    {"MethodId", methodId.ToString()},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
-		public void StartRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
-		{
-			WebApiServiceEventSource.Current.StartRequestContext(
-				_context, 
-				headers
-			);
-
-			var requestContextOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("requestContext");
-	       requestContextOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
-			requestContextOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
-			requestContextOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());
-			requestContextOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
-			requestContextOperationHolder.Telemetry.Properties.Add("ApplicationName", _context.CodePackageActivationContext.ApplicationName);
-			requestContextOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName);
-			requestContextOperationHolder.Telemetry.Properties.Add("NodeName", _context.NodeContext.NodeName);
-			requestContextOperationHolder.Telemetry.Properties.Add("Headers", headers.ToString());
-	       OperationHolder.StartOperation(requestContextOperationHolder);
-    
-		}
-
-
-
-		public void StopRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
-		{
-			WebApiServiceEventSource.Current.StopRequestContext(
-				_context, 
-				headers
-			);
-	        var requestContextOperationHolder = OperationHolder.StopOperation();
-			_telemetryClient.StopOperation(requestContextOperationHolder);
-			requestContextOperationHolder.Dispose();
-    
-		}
-
-
-
-		public void FailedRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers,
-			System.Exception exception)
-		{
-			WebApiServiceEventSource.Current.FailedRequestContext(
-				_context, 
-				headers, 
-				exception
-			);
-			_telemetryClient.TrackException(
-	            exception,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "FailedRequestContext" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"Headers", headers.ToString()},
-                    {"Message", exception.Message},
-                    {"Source", exception.Source},
-                    {"ExceptionTypeName", exception.GetType().FullName},
-                    {"Exception", exception.AsJson()}
-	            });
-    
-		}
-
-
-
-		public void FailedToReadCustomServiceMessageHeader(
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceRemotingMessageHeaders,
-			System.Exception ex)
-		{
-			WebApiServiceEventSource.Current.FailedToReadCustomServiceMessageHeader(
-				_context, 
-				serviceRemotingMessageHeaders, 
-				ex
-			);
-			_telemetryClient.TrackException(
-	            ex,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "FailedToReadCustomServiceMessageHeader" },
-	                {"ServiceName", _context.ServiceName.ToString()},
-                    {"ServiceTypeName", _context.ServiceTypeName},
-                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
-                    {"PartitionId", _context.PartitionId.ToString()},
-                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
-                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
-                    {"NodeName", _context.NodeContext.NodeName},
-                    {"InterfaceId", (serviceRemotingMessageHeaders?.InterfaceId ?? 0).ToString()},
-                    {"MethodId", (serviceRemotingMessageHeaders?.MethodId ?? 0).ToString()},
-                    {"Message", ex.Message},
-                    {"Source", ex.Source},
-                    {"ExceptionTypeName", ex.GetType().FullName},
-                    {"Exception", ex.AsJson()}
-	            });
-    
-		}
-
-
-
 		public void EnumeratingPartitions(
 			System.Uri serviceUri)
 		{
@@ -488,7 +88,7 @@ namespace WebApiService
 
 		public void EnumeratedExistingPartitions(
 			System.Uri serviceUri,
-			System.Collections.Generic.IEnumerable<System.Fabric.Int64RangePartitionInformation> partitions)
+			System.Collections.Generic.IEnumerable<System.Fabric.ServicePartitionInformation> partitions)
 		{
 			WebApiServiceEventSource.Current.EnumeratedExistingPartitions(
 				_context, 
@@ -516,7 +116,7 @@ namespace WebApiService
 
 		public void EnumeratedAndCachedPartitions(
 			System.Uri serviceUri,
-			System.Collections.Generic.IEnumerable<System.Fabric.Int64RangePartitionInformation> partitions)
+			System.Collections.Generic.IEnumerable<System.Fabric.ServicePartitionInformation> partitions)
 		{
 			WebApiServiceEventSource.Current.EnumeratedAndCachedPartitions(
 				_context, 
@@ -760,6 +360,109 @@ namespace WebApiService
                     {"RequestUri", requestUri.ToString()},
                     {"UserId", customServiceRequestHeader?.GetHeader("userId")},
                     {"CorrelationId", customServiceRequestHeader?.GetHeader("correlationId")},
+                    {"Message", ex.Message},
+                    {"Source", ex.Source},
+                    {"ExceptionTypeName", ex.GetType().FullName},
+                    {"Exception", ex.AsJson()}
+	            });
+    
+		}
+
+
+
+		public void StartRequestContext(
+			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+		{
+			WebApiServiceEventSource.Current.StartRequestContext(
+				_context, 
+				headers
+			);
+
+			var requestContextOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("requestContext");
+	       requestContextOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
+			requestContextOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
+			requestContextOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());
+			requestContextOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
+			requestContextOperationHolder.Telemetry.Properties.Add("ApplicationName", _context.CodePackageActivationContext.ApplicationName);
+			requestContextOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName);
+			requestContextOperationHolder.Telemetry.Properties.Add("NodeName", _context.NodeContext.NodeName);
+			requestContextOperationHolder.Telemetry.Properties.Add("Headers", headers.ToString());
+	       OperationHolder.StartOperation(requestContextOperationHolder);
+    
+		}
+
+
+
+		public void StopRequestContext(
+			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+		{
+			WebApiServiceEventSource.Current.StopRequestContext(
+				_context, 
+				headers
+			);
+	        var requestContextOperationHolder = OperationHolder.StopOperation();
+			_telemetryClient.StopOperation(requestContextOperationHolder);
+			requestContextOperationHolder.Dispose();
+    
+		}
+
+
+
+		public void FailedRequestContext(
+			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers,
+			System.Exception exception)
+		{
+			WebApiServiceEventSource.Current.FailedRequestContext(
+				_context, 
+				headers, 
+				exception
+			);
+			_telemetryClient.TrackException(
+	            exception,
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+                    { "Name", "FailedRequestContext" },
+	                {"ServiceName", _context.ServiceName.ToString()},
+                    {"ServiceTypeName", _context.ServiceTypeName},
+                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
+                    {"PartitionId", _context.PartitionId.ToString()},
+                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
+                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
+                    {"NodeName", _context.NodeContext.NodeName},
+                    {"Headers", headers.ToString()},
+                    {"Message", exception.Message},
+                    {"Source", exception.Source},
+                    {"ExceptionTypeName", exception.GetType().FullName},
+                    {"Exception", exception.AsJson()}
+	            });
+    
+		}
+
+
+
+		public void FailedToReadCustomServiceMessageHeader(
+			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceRemotingMessageHeaders,
+			System.Exception ex)
+		{
+			WebApiServiceEventSource.Current.FailedToReadCustomServiceMessageHeader(
+				_context, 
+				serviceRemotingMessageHeaders, 
+				ex
+			);
+			_telemetryClient.TrackException(
+	            ex,
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+                    { "Name", "FailedToReadCustomServiceMessageHeader" },
+	                {"ServiceName", _context.ServiceName.ToString()},
+                    {"ServiceTypeName", _context.ServiceTypeName},
+                    {"ReplicaOrInstanceId", _context.InstanceId.ToString()},
+                    {"PartitionId", _context.PartitionId.ToString()},
+                    {"ApplicationName", _context.CodePackageActivationContext.ApplicationName},
+                    {"ApplicationTypeName", _context.CodePackageActivationContext.ApplicationTypeName},
+                    {"NodeName", _context.NodeContext.NodeName},
+                    {"InterfaceId", (serviceRemotingMessageHeaders?.InterfaceId ?? 0).ToString()},
+                    {"MethodId", (serviceRemotingMessageHeaders?.MethodId ?? 0).ToString()},
                     {"Message", ex.Message},
                     {"Source", ex.Source},
                     {"ExceptionTypeName", ex.GetType().FullName},

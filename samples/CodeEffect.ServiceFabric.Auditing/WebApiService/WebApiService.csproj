@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>efbfbdefbfbdefbfbd4218274e79efbfbdefbfbd2eefbfbd53efbfbdefbfbd57</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>1defbfbd75efbfbdefbfbd0616586eefbfbd112cefbfbd5635efbfbd</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>

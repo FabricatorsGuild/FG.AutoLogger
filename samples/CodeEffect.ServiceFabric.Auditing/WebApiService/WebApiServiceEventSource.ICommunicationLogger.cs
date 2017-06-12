@@ -11,820 +11,7 @@ namespace WebApiService
 	internal sealed partial class WebApiServiceEventSource
 	{
 
-		private const int StartRecieveActorMessageEventId = 101;
-
-		[Event(StartRecieveActorMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Actor Message {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
-		private void StartRecieveActorMessage(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
-			string userId, 
-			string correlationId)
-		{
-			WriteEvent(
-				StartRecieveActorMessageEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
-				userId, 
-				correlationId);
-		}
-
-		[NonEvent]
-		public void StartRecieveActorMessage(
-			System.Fabric.StatelessServiceContext context, 
-			System.Uri requestUri, 
-			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			if (this.IsEnabled())
-			{
-				StartRecieveActorMessage(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					actorMethodName, 
-					(actorMessageHeaders?.InterfaceId ?? 0), 
-					(actorMessageHeaders?.MethodId ?? 0), 
-					actorMessageHeaders?.ActorId.ToString(), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"));
-			}
-		}
-
-
-		private const int StopRecieveActorMessageEventId = 202;
-
-		[Event(StopRecieveActorMessageEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Actor Message {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
-		private void StopRecieveActorMessage(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
-			string userId, 
-			string correlationId)
-		{
-			WriteEvent(
-				StopRecieveActorMessageEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
-				userId, 
-				correlationId);
-		}
-
-		[NonEvent]
-		public void StopRecieveActorMessage(
-			System.Fabric.StatelessServiceContext context, 
-			System.Uri requestUri, 
-			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			if (this.IsEnabled())
-			{
-				StopRecieveActorMessage(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					actorMethodName, 
-					(actorMessageHeaders?.InterfaceId ?? 0), 
-					(actorMessageHeaders?.MethodId ?? 0), 
-					actorMessageHeaders?.ActorId.ToString(), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"));
-			}
-		}
-
-
-		private const int RecieveActorMessageFailedEventId = 303;
-
-		[Event(RecieveActorMessageFailedEventId, Level = EventLevel.LogAlways, Message = "{14}", Keywords = Keywords.Communication)]
-		private void RecieveActorMessageFailed(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
-			string userId, 
-			string correlationId, 
-			string message, 
-			string source, 
-			string exceptionTypeName, 
-			string exception)
-		{
-			WriteEvent(
-				RecieveActorMessageFailedEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
-				userId, 
-				correlationId, 
-				message, 
-				source, 
-				exceptionTypeName, 
-				exception);
-		}
-
-		[NonEvent]
-		public void RecieveActorMessageFailed(
-			System.Fabric.StatelessServiceContext context, 
-			System.Uri requestUri, 
-			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
-			System.Exception ex)
-		{
-			if (this.IsEnabled())
-			{
-				RecieveActorMessageFailed(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					actorMethodName, 
-					(actorMessageHeaders?.InterfaceId ?? 0), 
-					(actorMessageHeaders?.MethodId ?? 0), 
-					actorMessageHeaders?.ActorId.ToString(), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"), 
-					ex.Message, 
-					ex.Source, 
-					ex.GetType().FullName, 
-					ex.AsJson());
-			}
-		}
-
-
-		private const int FailedToGetActorMethodNameEventId = 404;
-
-		[Event(FailedToGetActorMethodNameEventId, Level = EventLevel.LogAlways, Message = "{10}", Keywords = Keywords.Communication)]
-		private void FailedToGetActorMethodName(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
-			string message, 
-			string source, 
-			string exceptionTypeName, 
-			string exception)
-		{
-			WriteEvent(
-				FailedToGetActorMethodNameEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
-				message, 
-				source, 
-				exceptionTypeName, 
-				exception);
-		}
-
-		[NonEvent]
-		public void FailedToGetActorMethodName(
-			System.Fabric.StatelessServiceContext context, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			System.Exception ex)
-		{
-			if (this.IsEnabled())
-			{
-				FailedToGetActorMethodName(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					(actorMessageHeaders?.InterfaceId ?? 0), 
-					(actorMessageHeaders?.MethodId ?? 0), 
-					actorMessageHeaders?.ActorId.ToString(), 
-					ex.Message, 
-					ex.Source, 
-					ex.GetType().FullName, 
-					ex.AsJson());
-			}
-		}
-
-
-		private const int FailedToReadActorMessageHeadersEventId = 505;
-
-		[Event(FailedToReadActorMessageHeadersEventId, Level = EventLevel.LogAlways, Message = "{9}", Keywords = Keywords.Communication)]
-		private void FailedToReadActorMessageHeaders(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			int InterfaceId, 
-			int MethodId, 
-			string message, 
-			string source, 
-			string exceptionTypeName, 
-			string exception)
-		{
-			WriteEvent(
-				FailedToReadActorMessageHeadersEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				InterfaceId, 
-				MethodId, 
-				message, 
-				source, 
-				exceptionTypeName, 
-				exception);
-		}
-
-		[NonEvent]
-		public void FailedToReadActorMessageHeaders(
-			System.Fabric.StatelessServiceContext context, 
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceRemotingMessageHeaders, 
-			System.Exception ex)
-		{
-			if (this.IsEnabled())
-			{
-				FailedToReadActorMessageHeaders(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					(serviceRemotingMessageHeaders?.InterfaceId ?? 0), 
-					(serviceRemotingMessageHeaders?.MethodId ?? 0), 
-					ex.Message, 
-					ex.Source, 
-					ex.GetType().FullName, 
-					ex.AsJson());
-			}
-		}
-
-
-		private const int StartRecieveServiceMessageEventId = 606;
-
-		[Event(StartRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Service Message {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
-		private void StartRecieveServiceMessage(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string serviceMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string userId, 
-			string correlationId)
-		{
-			WriteEvent(
-				StartRecieveServiceMessageEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				serviceMethodName, 
-				InterfaceId, 
-				MethodId, 
-				userId, 
-				correlationId);
-		}
-
-		[NonEvent]
-		public void StartRecieveServiceMessage(
-			System.Fabric.StatelessServiceContext context, 
-			System.Uri requestUri, 
-			string serviceMethodName, 
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			if (this.IsEnabled())
-			{
-				StartRecieveServiceMessage(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					serviceMethodName, 
-					(serviceMessageHeaders?.InterfaceId ?? 0), 
-					(serviceMessageHeaders?.MethodId ?? 0), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"));
-			}
-		}
-
-
-		private const int StopRecieveServiceMessageEventId = 707;
-
-		[Event(StopRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Service Message {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
-		private void StopRecieveServiceMessage(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string serviceMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string userId, 
-			string correlationId)
-		{
-			WriteEvent(
-				StopRecieveServiceMessageEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				serviceMethodName, 
-				InterfaceId, 
-				MethodId, 
-				userId, 
-				correlationId);
-		}
-
-		[NonEvent]
-		public void StopRecieveServiceMessage(
-			System.Fabric.StatelessServiceContext context, 
-			System.Uri requestUri, 
-			string serviceMethodName, 
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			if (this.IsEnabled())
-			{
-				StopRecieveServiceMessage(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					serviceMethodName, 
-					(serviceMessageHeaders?.InterfaceId ?? 0), 
-					(serviceMessageHeaders?.MethodId ?? 0), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"));
-			}
-		}
-
-
-		private const int RecieveServiceMessageFailedEventId = 808;
-
-		[Event(RecieveServiceMessageFailedEventId, Level = EventLevel.LogAlways, Message = "{13}", Keywords = Keywords.Communication)]
-		private void RecieveServiceMessageFailed(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string serviceMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string userId, 
-			string correlationId, 
-			string message, 
-			string source, 
-			string exceptionTypeName, 
-			string exception)
-		{
-			WriteEvent(
-				RecieveServiceMessageFailedEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				serviceMethodName, 
-				InterfaceId, 
-				MethodId, 
-				userId, 
-				correlationId, 
-				message, 
-				source, 
-				exceptionTypeName, 
-				exception);
-		}
-
-		[NonEvent]
-		public void RecieveServiceMessageFailed(
-			System.Fabric.StatelessServiceContext context, 
-			System.Uri requestUri, 
-			string serviceMethodName, 
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
-			System.Exception ex)
-		{
-			if (this.IsEnabled())
-			{
-				RecieveServiceMessageFailed(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					serviceMethodName, 
-					(serviceMessageHeaders?.InterfaceId ?? 0), 
-					(serviceMessageHeaders?.MethodId ?? 0), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"), 
-					ex.Message, 
-					ex.Source, 
-					ex.GetType().FullName, 
-					ex.AsJson());
-			}
-		}
-
-
-		private const int FailedToGetServiceMethodNameEventId = 909;
-
-		[Event(FailedToGetServiceMethodNameEventId, Level = EventLevel.LogAlways, Message = "{10}", Keywords = Keywords.Communication)]
-		private void FailedToGetServiceMethodName(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			int interfaceId, 
-			int methodId, 
-			string message, 
-			string source, 
-			string exceptionTypeName, 
-			string exception)
-		{
-			WriteEvent(
-				FailedToGetServiceMethodNameEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				interfaceId, 
-				methodId, 
-				message, 
-				source, 
-				exceptionTypeName, 
-				exception);
-		}
-
-		[NonEvent]
-		public void FailedToGetServiceMethodName(
-			System.Fabric.StatelessServiceContext context, 
-			System.Uri requestUri, 
-			int interfaceId, 
-			int methodId, 
-			System.Exception ex)
-		{
-			if (this.IsEnabled())
-			{
-				FailedToGetServiceMethodName(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					interfaceId, 
-					methodId, 
-					ex.Message, 
-					ex.Source, 
-					ex.GetType().FullName, 
-					ex.AsJson());
-			}
-		}
-
-
-		private const int StartRequestContextEventId = 1010;
-
-		[Event(StartRequestContextEventId, Level = EventLevel.LogAlways, Message = "Start Request Context {7}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
-		private void StartRequestContext(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string headers)
-		{
-			WriteEvent(
-				StartRequestContextEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				headers);
-		}
-
-		[NonEvent]
-		public void StartRequestContext(
-			System.Fabric.StatelessServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
-		{
-			if (this.IsEnabled())
-			{
-				StartRequestContext(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					headers.ToString());
-			}
-		}
-
-
-		private const int StopRequestContextEventId = 1111;
-
-		[Event(StopRequestContextEventId, Level = EventLevel.LogAlways, Message = "Stop Request Context {7}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
-		private void StopRequestContext(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string headers)
-		{
-			WriteEvent(
-				StopRequestContextEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				headers);
-		}
-
-		[NonEvent]
-		public void StopRequestContext(
-			System.Fabric.StatelessServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
-		{
-			if (this.IsEnabled())
-			{
-				StopRequestContext(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					headers.ToString());
-			}
-		}
-
-
-		private const int FailedRequestContextEventId = 1212;
-
-		[Event(FailedRequestContextEventId, Level = EventLevel.LogAlways, Message = "{8}", Keywords = Keywords.Communication)]
-		private void FailedRequestContext(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string headers, 
-			string message, 
-			string source, 
-			string exceptionTypeName, 
-			string exception)
-		{
-			WriteEvent(
-				FailedRequestContextEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				headers, 
-				message, 
-				source, 
-				exceptionTypeName, 
-				exception);
-		}
-
-		[NonEvent]
-		public void FailedRequestContext(
-			System.Fabric.StatelessServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers, 
-			System.Exception exception)
-		{
-			if (this.IsEnabled())
-			{
-				FailedRequestContext(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					headers.ToString(), 
-					exception.Message, 
-					exception.Source, 
-					exception.GetType().FullName, 
-					exception.AsJson());
-			}
-		}
-
-
-		private const int FailedToReadCustomServiceMessageHeaderEventId = 1313;
-
-		[Event(FailedToReadCustomServiceMessageHeaderEventId, Level = EventLevel.LogAlways, Message = "{9}", Keywords = Keywords.Communication)]
-		private void FailedToReadCustomServiceMessageHeader(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			int InterfaceId, 
-			int MethodId, 
-			string message, 
-			string source, 
-			string exceptionTypeName, 
-			string exception)
-		{
-			WriteEvent(
-				FailedToReadCustomServiceMessageHeaderEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				InterfaceId, 
-				MethodId, 
-				message, 
-				source, 
-				exceptionTypeName, 
-				exception);
-		}
-
-		[NonEvent]
-		public void FailedToReadCustomServiceMessageHeader(
-			System.Fabric.StatelessServiceContext context, 
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceRemotingMessageHeaders, 
-			System.Exception ex)
-		{
-			if (this.IsEnabled())
-			{
-				FailedToReadCustomServiceMessageHeader(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.InstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					(serviceRemotingMessageHeaders?.InterfaceId ?? 0), 
-					(serviceRemotingMessageHeaders?.MethodId ?? 0), 
-					ex.Message, 
-					ex.Source, 
-					ex.GetType().FullName, 
-					ex.AsJson());
-			}
-		}
-
-
-		private const int EnumeratingPartitionsEventId = 1414;
+		private const int EnumeratingPartitionsEventId = 201;
 
 		[Event(EnumeratingPartitionsEventId, Level = EventLevel.LogAlways, Message = "Enumerating Partitions {7}", Keywords = Keywords.Communication)]
 		private void EnumeratingPartitions(
@@ -869,7 +56,7 @@ namespace WebApiService
 		}
 
 
-		private const int FailedToEnumeratePartitionsEventId = 1515;
+		private const int FailedToEnumeratePartitionsEventId = 402;
 
 		[Event(FailedToEnumeratePartitionsEventId, Level = EventLevel.LogAlways, Message = "{8}", Keywords = Keywords.Communication)]
 		private void FailedToEnumeratePartitions(
@@ -927,7 +114,7 @@ namespace WebApiService
 		}
 
 
-		private const int EnumeratedExistingPartitionsEventId = 1616;
+		private const int EnumeratedExistingPartitionsEventId = 603;
 
 		[Event(EnumeratedExistingPartitionsEventId, Level = EventLevel.LogAlways, Message = "Enumerated Existing Partitions {7} {8}", Keywords = Keywords.Communication)]
 		private void EnumeratedExistingPartitions(
@@ -958,7 +145,7 @@ namespace WebApiService
 		public void EnumeratedExistingPartitions(
 			System.Fabric.StatelessServiceContext context, 
 			System.Uri serviceUri, 
-			System.Collections.Generic.IEnumerable<System.Fabric.Int64RangePartitionInformation> partitions)
+			System.Collections.Generic.IEnumerable<System.Fabric.ServicePartitionInformation> partitions)
 		{
 			if (this.IsEnabled())
 			{
@@ -976,7 +163,7 @@ namespace WebApiService
 		}
 
 
-		private const int EnumeratedAndCachedPartitionsEventId = 1717;
+		private const int EnumeratedAndCachedPartitionsEventId = 804;
 
 		[Event(EnumeratedAndCachedPartitionsEventId, Level = EventLevel.LogAlways, Message = "Enumerated And Cached Partitions {7} {8}", Keywords = Keywords.Communication)]
 		private void EnumeratedAndCachedPartitions(
@@ -1007,7 +194,7 @@ namespace WebApiService
 		public void EnumeratedAndCachedPartitions(
 			System.Fabric.StatelessServiceContext context, 
 			System.Uri serviceUri, 
-			System.Collections.Generic.IEnumerable<System.Fabric.Int64RangePartitionInformation> partitions)
+			System.Collections.Generic.IEnumerable<System.Fabric.ServicePartitionInformation> partitions)
 		{
 			if (this.IsEnabled())
 			{
@@ -1025,7 +212,7 @@ namespace WebApiService
 		}
 
 
-		private const int StartCallActorEventId = 1818;
+		private const int StartCallActorEventId = 1005;
 
 		[Event(StartCallActorEventId, Level = EventLevel.LogAlways, Message = "Start Call Actor {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
 		private void StartCallActor(
@@ -1091,7 +278,7 @@ namespace WebApiService
 		}
 
 
-		private const int StopCallActorEventId = 1919;
+		private const int StopCallActorEventId = 1206;
 
 		[Event(StopCallActorEventId, Level = EventLevel.LogAlways, Message = "Stop Call Actor {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
 		private void StopCallActor(
@@ -1157,7 +344,7 @@ namespace WebApiService
 		}
 
 
-		private const int CallActorFailedEventId = 2020;
+		private const int CallActorFailedEventId = 1407;
 
 		[Event(CallActorFailedEventId, Level = EventLevel.LogAlways, Message = "{14}", Keywords = Keywords.Communication)]
 		private void CallActorFailed(
@@ -1236,7 +423,7 @@ namespace WebApiService
 		}
 
 
-		private const int StartCallServiceEventId = 2121;
+		private const int StartCallServiceEventId = 1608;
 
 		[Event(StartCallServiceEventId, Level = EventLevel.LogAlways, Message = "Start Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
 		private void StartCallService(
@@ -1299,7 +486,7 @@ namespace WebApiService
 		}
 
 
-		private const int StopCallServiceEventId = 2222;
+		private const int StopCallServiceEventId = 1809;
 
 		[Event(StopCallServiceEventId, Level = EventLevel.LogAlways, Message = "Stop Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
 		private void StopCallService(
@@ -1362,7 +549,7 @@ namespace WebApiService
 		}
 
 
-		private const int CallServiceFailedEventId = 2323;
+		private const int CallServiceFailedEventId = 2010;
 
 		[Event(CallServiceFailedEventId, Level = EventLevel.LogAlways, Message = "{13}", Keywords = Keywords.Communication)]
 		private void CallServiceFailed(
@@ -1438,7 +625,7 @@ namespace WebApiService
 		}
 
 
-		private const int ServiceClientFailedEventId = 2424;
+		private const int ServiceClientFailedEventId = 2211;
 
 		[Event(ServiceClientFailedEventId, Level = EventLevel.LogAlways, Message = "{10}", Keywords = Keywords.Communication)]
 		private void ServiceClientFailed(
@@ -1495,6 +682,215 @@ namespace WebApiService
 					requestUri.ToString(), 
 					customServiceRequestHeader?.GetHeader("userId"), 
 					customServiceRequestHeader?.GetHeader("correlationId"), 
+					ex.Message, 
+					ex.Source, 
+					ex.GetType().FullName, 
+					ex.AsJson());
+			}
+		}
+
+
+		private const int StartRequestContextEventId = 2412;
+
+		[Event(StartRequestContextEventId, Level = EventLevel.LogAlways, Message = "Start Request Context {7}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		private void StartRequestContext(
+			string serviceName, 
+			string serviceTypeName, 
+			long replicaOrInstanceId, 
+			Guid partitionId, 
+			string applicationName, 
+			string applicationTypeName, 
+			string nodeName, 
+			string headers)
+		{
+			WriteEvent(
+				StartRequestContextEventId, 
+				serviceName, 
+				serviceTypeName, 
+				replicaOrInstanceId, 
+				partitionId, 
+				applicationName, 
+				applicationTypeName, 
+				nodeName, 
+				headers);
+		}
+
+		[NonEvent]
+		public void StartRequestContext(
+			System.Fabric.StatelessServiceContext context, 
+			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+		{
+			if (this.IsEnabled())
+			{
+				StartRequestContext(
+					context.ServiceName.ToString(), 
+					context.ServiceTypeName, 
+					context.InstanceId, 
+					context.PartitionId, 
+					context.CodePackageActivationContext.ApplicationName, 
+					context.CodePackageActivationContext.ApplicationTypeName, 
+					context.NodeContext.NodeName, 
+					headers.ToString());
+			}
+		}
+
+
+		private const int StopRequestContextEventId = 2613;
+
+		[Event(StopRequestContextEventId, Level = EventLevel.LogAlways, Message = "Stop Request Context {7}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		private void StopRequestContext(
+			string serviceName, 
+			string serviceTypeName, 
+			long replicaOrInstanceId, 
+			Guid partitionId, 
+			string applicationName, 
+			string applicationTypeName, 
+			string nodeName, 
+			string headers)
+		{
+			WriteEvent(
+				StopRequestContextEventId, 
+				serviceName, 
+				serviceTypeName, 
+				replicaOrInstanceId, 
+				partitionId, 
+				applicationName, 
+				applicationTypeName, 
+				nodeName, 
+				headers);
+		}
+
+		[NonEvent]
+		public void StopRequestContext(
+			System.Fabric.StatelessServiceContext context, 
+			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+		{
+			if (this.IsEnabled())
+			{
+				StopRequestContext(
+					context.ServiceName.ToString(), 
+					context.ServiceTypeName, 
+					context.InstanceId, 
+					context.PartitionId, 
+					context.CodePackageActivationContext.ApplicationName, 
+					context.CodePackageActivationContext.ApplicationTypeName, 
+					context.NodeContext.NodeName, 
+					headers.ToString());
+			}
+		}
+
+
+		private const int FailedRequestContextEventId = 2814;
+
+		[Event(FailedRequestContextEventId, Level = EventLevel.LogAlways, Message = "{8}", Keywords = Keywords.Communication)]
+		private void FailedRequestContext(
+			string serviceName, 
+			string serviceTypeName, 
+			long replicaOrInstanceId, 
+			Guid partitionId, 
+			string applicationName, 
+			string applicationTypeName, 
+			string nodeName, 
+			string headers, 
+			string message, 
+			string source, 
+			string exceptionTypeName, 
+			string exception)
+		{
+			WriteEvent(
+				FailedRequestContextEventId, 
+				serviceName, 
+				serviceTypeName, 
+				replicaOrInstanceId, 
+				partitionId, 
+				applicationName, 
+				applicationTypeName, 
+				nodeName, 
+				headers, 
+				message, 
+				source, 
+				exceptionTypeName, 
+				exception);
+		}
+
+		[NonEvent]
+		public void FailedRequestContext(
+			System.Fabric.StatelessServiceContext context, 
+			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers, 
+			System.Exception exception)
+		{
+			if (this.IsEnabled())
+			{
+				FailedRequestContext(
+					context.ServiceName.ToString(), 
+					context.ServiceTypeName, 
+					context.InstanceId, 
+					context.PartitionId, 
+					context.CodePackageActivationContext.ApplicationName, 
+					context.CodePackageActivationContext.ApplicationTypeName, 
+					context.NodeContext.NodeName, 
+					headers.ToString(), 
+					exception.Message, 
+					exception.Source, 
+					exception.GetType().FullName, 
+					exception.AsJson());
+			}
+		}
+
+
+		private const int FailedToReadCustomServiceMessageHeaderEventId = 3015;
+
+		[Event(FailedToReadCustomServiceMessageHeaderEventId, Level = EventLevel.LogAlways, Message = "{9}", Keywords = Keywords.Communication)]
+		private void FailedToReadCustomServiceMessageHeader(
+			string serviceName, 
+			string serviceTypeName, 
+			long replicaOrInstanceId, 
+			Guid partitionId, 
+			string applicationName, 
+			string applicationTypeName, 
+			string nodeName, 
+			int InterfaceId, 
+			int MethodId, 
+			string message, 
+			string source, 
+			string exceptionTypeName, 
+			string exception)
+		{
+			WriteEvent(
+				FailedToReadCustomServiceMessageHeaderEventId, 
+				serviceName, 
+				serviceTypeName, 
+				replicaOrInstanceId, 
+				partitionId, 
+				applicationName, 
+				applicationTypeName, 
+				nodeName, 
+				InterfaceId, 
+				MethodId, 
+				message, 
+				source, 
+				exceptionTypeName, 
+				exception);
+		}
+
+		[NonEvent]
+		public void FailedToReadCustomServiceMessageHeader(
+			System.Fabric.StatelessServiceContext context, 
+			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceRemotingMessageHeaders, 
+			System.Exception ex)
+		{
+			if (this.IsEnabled())
+			{
+				FailedToReadCustomServiceMessageHeader(
+					context.ServiceName.ToString(), 
+					context.ServiceTypeName, 
+					context.InstanceId, 
+					context.PartitionId, 
+					context.CodePackageActivationContext.ApplicationName, 
+					context.CodePackageActivationContext.ApplicationTypeName, 
+					context.NodeContext.NodeName, 
+					(serviceRemotingMessageHeaders?.InterfaceId ?? 0), 
+					(serviceRemotingMessageHeaders?.MethodId ?? 0), 
 					ex.Message, 
 					ex.Source, 
 					ex.GetType().FullName, 

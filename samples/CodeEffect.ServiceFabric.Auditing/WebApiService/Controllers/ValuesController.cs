@@ -80,7 +80,7 @@ namespace WebApiService.Controllers
             var partitionKeys = await GetOrCreatePartitionHelper().GetInt64Partitions(serviceUri, _servicesCommunicationLogger);
             foreach (var partitionKey in partitionKeys)
             {
-                var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.FabricTransport.Actors.Client.ActorProxyFactory(_servicesCommunicationLogger);
+                var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.Client.ActorProxyFactory(_servicesCommunicationLogger);
                 var proxy = actorProxyFactory.CreateActorServiceProxy<IPersonActorService>(
                     serviceUri,
                     partitionKey.LowKey);

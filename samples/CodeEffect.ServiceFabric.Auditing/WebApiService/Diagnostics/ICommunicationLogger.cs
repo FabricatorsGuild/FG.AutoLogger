@@ -5,7 +5,6 @@ using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
 namespace WebApiService.Diagnostics
 {
     public interface ICommunicationLogger : 
-        IActorServiceCommunicationLogger,
         IPartitionHelperLogger,
         IServiceClientLogger
     {

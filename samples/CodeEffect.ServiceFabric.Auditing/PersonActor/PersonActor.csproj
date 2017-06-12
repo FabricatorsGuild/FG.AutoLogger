@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <EventSourceGeneratorSummaryHash>efbfbdefbfbd1aefbfbd3857efbfbd1412efbfbdefbfbd01efbfbd61efbfbd18</EventSourceGeneratorSummaryHash>
+    <EventSourceGeneratorSummaryHash>efbfbdefbfbdefbfbdefbfbd435248efbfbd77efbfbd04efbfbd0d22efbfbd</EventSourceGeneratorSummaryHash>
   </PropertyGroup>
   <PropertyGroup>
     <UpdateServiceFabricManifestEnabled>true</UpdateServiceFabricManifestEnabled>
@@ -207,6 +207,10 @@
     <ProjectReference Include="..\PersonActor.Interfaces\PersonActor.Interfaces.csproj">
       <Project>{66343026-F7ED-44F4-A0DB-652DBB9E3F39}</Project>
       <Name>PersonActor.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TitleService\TitleService.csproj">
+      <Project>{995D119C-5B63-43D9-8A99-DC3DD1B5979D}</Project>
+      <Name>TitleService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

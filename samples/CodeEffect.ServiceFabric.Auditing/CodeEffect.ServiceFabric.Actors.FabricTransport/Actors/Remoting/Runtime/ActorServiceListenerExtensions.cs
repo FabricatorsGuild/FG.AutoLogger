@@ -7,7 +7,7 @@ using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 
 namespace CodeEffect.ServiceFabric.Actors.Remoting.Runtime
 {
-    public static class ActorServiceListerenerExtensions
+    public static class ActorServiceListenerExtensions
     {
         public static ServiceReplicaListener CreateServiceReplicaListener(this ActorService actorService, IActorServiceCommunicationLogger logger)
         {

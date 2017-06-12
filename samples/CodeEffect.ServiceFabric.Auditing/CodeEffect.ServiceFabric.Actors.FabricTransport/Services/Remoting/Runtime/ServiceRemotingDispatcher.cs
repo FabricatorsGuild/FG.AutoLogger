@@ -8,6 +8,7 @@ using CodeEffect.ServiceFabric.Actors.FabricTransport.Utils;
 using CodeEffect.ServiceFabric.Actors.Remoting.Runtime;
 using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
 using CodeEffect.ServiceFabric.Services.Runtime;
+using Microsoft.ServiceFabric.Actors.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 

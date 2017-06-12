@@ -9,6 +9,5 @@ namespace PersonActor.Diagnostics
         IPartitionHelperLogger,
         IServiceClientLogger
     {
-
     }
 }
