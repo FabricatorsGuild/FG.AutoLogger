@@ -53,7 +53,7 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tcontent:\t{content}");
 			_callExternalComponentStopwatch.Restart();
 
-			var callExternalComponentOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestName.ToString());
+			var callExternalComponentOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestName.ToString() ?? "callExternalComponent");
 			callExternalComponentOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
 			callExternalComponentOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
 			callExternalComponentOperationHolder.Telemetry.Properties.Add("RequestName", requestName.ToString());
