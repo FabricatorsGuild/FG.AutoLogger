@@ -11,9 +11,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         }
 
 
-        public static IEnumerable<ProjectItem> GetItemsExcludeType(this Project that, ProjectItemType excludedItemType)
+        public static IEnumerable<ProjectItem> GetItemsExcludeType(this IEnumerable<ProjectItem> that, ProjectItemType excludedItemType)
         {
-            return that.ProjectItems.Where(i => i.ItemType != excludedItemType);
+            return that.Where(i => i.ItemType != excludedItemType);
         }
 
         public static void AddProjectItem(this Project that, ProjectItem item)

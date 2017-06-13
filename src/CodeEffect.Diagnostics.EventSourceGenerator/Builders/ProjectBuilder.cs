@@ -62,8 +62,16 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 var platformProperty = project.Properties.FirstOrDefault(p => p.Name == "PlatformTarget")?.EvaluatedValue ?? "AnyCPU";
                 model.Platform = platformProperty;
 
-                var summaryHash = project.Properties.FirstOrDefault(p => p.Name == "EventSourceGeneratorSummaryHash")?.EvaluatedValue ?? "";
-                model.SummaryHash = summaryHash;
+                foreach (var projectItem in project.Items.Where(item =>
+                    item.EvaluatedInclude.Matches(@"*.eventsource.output.json", StringComparison.InvariantCultureIgnoreCase, useWildcards: true)
+                    && item.ItemType == "Content"))
+                {
+                    var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);                                        
+                    projectItems.Add(new ProjectItem<ProjectSummary>(ProjectItemType.ProjectSummary, projectItemFilePath)
+                    {
+                        Include = projectItem.EvaluatedInclude,
+                    });
+                }
 
                 foreach (var projectItem in project.Items.Where(item =>
                     item.EvaluatedInclude.Matches(@"(^|\\)I[^\\]*Logger.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
@@ -104,7 +112,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     var projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
                     if (System.IO.File.Exists(projectItemFilePath))
                     {
-                        projectItems.Add(new ProjectItem(ProjectItemType.Reference, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
+                        projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
                     }
                     else
                     {
@@ -117,7 +125,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                         projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
                         if (System.IO.File.Exists(projectItemFilePath))
                         {
-                            projectItems.Add(new ProjectItem(ProjectItemType.Reference, projectItemFilePath) { Include = projectItem.EvaluatedInclude });
+                            projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) { Include = projectItem.EvaluatedInclude });
                         }
                     }
                 }

@@ -9,8 +9,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
     {
         public void Build(Project model)
         {
-            var itemsWithoutReferences = model.GetItemsExcludeType(ProjectItemType.Reference);
+            var itemsWithoutReferences = model.ProjectItems.GetItemsExcludeType(ProjectItemType.Reference).GetItemsExcludeType(ProjectItemType.ProjectReference);
             model.ProjectItems = itemsWithoutReferences.ToArray();
+
+            
         }
     }
 }

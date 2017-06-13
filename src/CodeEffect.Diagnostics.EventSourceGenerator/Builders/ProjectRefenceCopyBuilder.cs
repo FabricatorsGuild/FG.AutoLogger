@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 
@@ -8,7 +9,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
     {
         public void Build(Project model)
         {
-            var references = model.ProjectItems.OfType(ProjectItemType.Reference);
+            var references = model.ProjectItems.OfType(ProjectItemType.Reference).Union(model.ProjectItems.OfType(ProjectItemType.ProjectReference));
             var tempOutput = System.IO.Path.Combine(System.IO.Path.GetTempPath(), model.ProjectFilePath.ToMD5().ToHex());
             var tempOutputPrimary = System.IO.Path.Combine(tempOutput, "a");
             var tempOutputSecondary = System.IO.Path.Combine(tempOutput, "b");

@@ -19,7 +19,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var files = projectFiles.ToArray();
 
             var extensionFiles = files.OfType(ProjectItemType.BuilderExtension);
-            var referenceFiles = files.OfType(ProjectItemType.Reference).ToArray();
+            var referenceFiles = files.OfType(ProjectItemType.Reference).Union(files.OfType(ProjectItemType.ProjectReference)).ToArray();
             var loggerProjectItems = files.OfType<LoggerTemplateModel>(ProjectItemType.LoggerInterface);
 
             var compileFiles = new List<ProjectItem>();

@@ -61,8 +61,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 new ProjectDefaultEventSourceDefinitionRenderer(),
                 new ProjectEventSourceRenderer(),
                 new ProjectLoggerRenderer(),
+                new ProjectSummaryRenderer(),
                 new ProjectRenderer() {SaveChanges = saveChanges},
-                new ProjectFilesRenderer() {SaveChanges = saveChanges}
+                new ProjectFilesRenderer() {SaveChanges = saveChanges},
             };
             foreach (var renderer in renderers.Union(project.GetExtensions<IProjectRenderer>()))
             {

@@ -13,7 +13,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string Platform { get; set; }
         public string CscToolPath { get; set; }
         public Assembly DynamicAssembly { get; set; }
-        public string SummaryHash { get; set; }
+        public ProjectSummary SummaryHash { get; set; }
         public bool HasProjectChanges { get; set; }
         public bool ForceUpdate { get; set; }
     }
