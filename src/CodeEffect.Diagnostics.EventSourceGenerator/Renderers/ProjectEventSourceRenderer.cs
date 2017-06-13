@@ -35,6 +35,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             };
             foreach (var renderer in eventSourceRenderers.Union(project.GetExtensions<IEventSourceRenderer>()))
             {
+                PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project, eventSourceProjectItem);
             }
         }

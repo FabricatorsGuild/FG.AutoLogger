@@ -48,6 +48,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             {
                 foreach (var renderer in loggerEventRenderers.Union(project.GetExtensions<ILoggerEventSourcePartialEventRenderer>()))
                 {
+                    PassAlongLoggers(renderer as IWithLogging);
                     var eventRender = renderer.Render(project, model, loggerEvent);
                     logger.AppendLine(eventRender);
                 }

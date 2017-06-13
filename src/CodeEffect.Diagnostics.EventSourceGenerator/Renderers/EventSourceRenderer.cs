@@ -35,6 +35,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             {
                 foreach (var renderer in eventRenderers.Union(project.GetExtensions<IEventRenderer>()))
                 {
+                    PassAlongLoggers(renderer as IWithLogging);
                     events.AppendLine(renderer.Render(project, eventSourceModel, eventSourceEvent));
                 }
             }
@@ -51,6 +52,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             {
                 foreach (var renderer in keywordsRenderers.Union(project.GetExtensions<IKeywordRenderer>()))
                 {
+                    PassAlongLoggers(renderer as IWithLogging);
                     keywords.AppendLine(renderer.Render(project, eventSourceModel, keyword));
                 }
             }
@@ -69,6 +71,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 {
                     foreach (var renderer in extensionRenderers.Union(project.GetExtensions<IExtensionsMethodRenderer>()))
                     {
+                        PassAlongLoggers(renderer as IWithLogging);
                         extensions.AppendLine(renderer.Render(project, eventSourceModel, extension));
                     }
                 }

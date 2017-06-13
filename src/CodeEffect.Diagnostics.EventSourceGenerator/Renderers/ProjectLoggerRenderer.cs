@@ -43,6 +43,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }.Union(project.GetExtensions<ILoggerImplementationRenderer>()).ToArray();
             foreach (var renderer in loggerRenderers.Union(project.GetExtensions<ILoggerImplementationRenderer>()))
             {
+                PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project, loggerProjectItem);
             }
         }
@@ -63,6 +64,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }.Union(project.GetExtensions<ILoggerEventSourcePartialRenderer>()).ToArray();
             foreach (var renderer in loggerRenderers.Union(project.GetExtensions<ILoggerEventSourcePartialRenderer>()))
             {
+                PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project, loggerProjectItem);
             }
         }
