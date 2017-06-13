@@ -14,7 +14,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                         ProjectItemType.EventSource,
                         ProjectItemType.DefaultGeneratedEventSourceDefinition,
                         ProjectItemType.EventSourceLoggerPartial,
-                        ProjectItemType.LoggerImplementation))
+                        ProjectItemType.LoggerImplementation,
+                        ProjectItemType.ProjectSummary))
             {
 
                 var exists = System.IO.File.Exists(output.Name);

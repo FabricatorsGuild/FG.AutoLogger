@@ -63,6 +63,7 @@
     <Compile Include="Builders\ProjectPrecompileBuilder.cs" />
     <Compile Include="Builders\ProjectRefenceCopyBuilder.cs" />
     <Compile Include="Builders\ProjectSummaryBuilder.cs" />
+    <Compile Include="Renderers\ProjectSummaryRenderer.cs" />
     <Compile Include="Utils\ComplierHelper.cs" />
     <Compile Include="Builders\EventArgumentExtensionMethodBuilder.cs" />
     <Compile Include="Builders\EventArgumentsBuilder.cs" />

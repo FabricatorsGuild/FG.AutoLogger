@@ -30,7 +30,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var builderExtensions = new List<IExtension>();
             var extensionFiles = files.OfType(ProjectItemType.BuilderExtension);
             var currentAssemblyFileName = System.IO.Path.GetFileName(this.GetType().Assembly.CodeBase);
-            var referenceFiles = files.OfType(ProjectItemType.Reference)
+            var referenceFiles = files.OfType(ProjectItemType.Reference).Union(files.OfType(ProjectItemType.ProjectReference))
                 .Where(r => ! System.IO.Path.GetFileName(r.Name).Equals(currentAssemblyFileName, StringComparison.InvariantCultureIgnoreCase))
                 .ToArray();
 

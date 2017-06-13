@@ -90,6 +90,7 @@
     <Compile Include="ProjectItem.cs" />
     <Compile Include="ProjectItemExtensions.cs" />
     <Compile Include="ProjectItemType.cs" />
+    <Compile Include="ProjectSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeTemplateExtensions.cs" />
     <Compile Include="TypeTemplateModel.cs" />
