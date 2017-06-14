@@ -51,7 +51,7 @@ namespace PersonActor
 		[NonEvent]
 		public void PersonActivated(
 			Microsoft.ServiceFabric.Actors.Runtime.Actor actor, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context, 
 			string name, 
 			string title)
 		{
@@ -67,9 +67,9 @@ namespace PersonActor
 					actor.ActorService.Context.PartitionId, 
 					actor.ActorService.Context.ReplicaId, 
 					actor.ActorService.Context.NodeContext.NodeName, 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"], 
 					name, 
 					title);
 			}
@@ -112,7 +112,7 @@ namespace PersonActor
 		[NonEvent]
 		public void PersonLoaded(
 			Microsoft.ServiceFabric.Actors.Runtime.Actor actor, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
 		{
 			if (this.IsEnabled())
 			{
@@ -126,9 +126,9 @@ namespace PersonActor
 					actor.ActorService.Context.PartitionId, 
 					actor.ActorService.Context.ReplicaId, 
 					actor.ActorService.Context.NodeContext.NodeName, 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]);
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]);
 			}
 		}
 
@@ -171,7 +171,7 @@ namespace PersonActor
 		[NonEvent]
 		public void TitleSet(
 			Microsoft.ServiceFabric.Actors.Runtime.Actor actor, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context, 
 			string title)
 		{
 			if (this.IsEnabled())
@@ -186,9 +186,9 @@ namespace PersonActor
 					actor.ActorService.Context.PartitionId, 
 					actor.ActorService.Context.ReplicaId, 
 					actor.ActorService.Context.NodeContext.NodeName, 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"], 
 					title);
 			}
 		}

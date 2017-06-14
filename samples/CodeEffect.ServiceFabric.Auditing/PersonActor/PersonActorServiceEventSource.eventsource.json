@@ -46,29 +46,7 @@
   "Name": "PersonActorServiceEventSource",
   "ProviderName": "CodeEffect-ServiceFabric-Auditing-PersonActorService",
   "Keywords": [],
-  "TypeTemplates": [
-    {
-      "Name": "ServiceRequestContext",
-      "CLRType": "CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext",
-      "Arguments": [
-        {
-          "Assignment": "CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?[\"correlationId\"]",
-          "Name": "correlationId",
-          "Type": "string"
-        },
-        {
-          "Assignment": "CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?[\"userId\"]",
-          "Name": "userId",
-          "Type": "string"
-        },
-        {
-          "Assignment": "CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?[\"requestUri\"]",
-          "Name": "requestUri",
-          "Type": "string"
-        }
-      ]
-    }
-  ],
+  "TypeTemplates": [],
   "Settings": {
     "AutogenerateLoggerInterfaces": false
   }

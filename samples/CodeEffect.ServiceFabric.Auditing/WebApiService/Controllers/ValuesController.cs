@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Fabric;
 using System.Linq;
@@ -7,13 +6,10 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using CodeEffect.ServiceFabric.Actors.FabricTransport.Utils;
-using CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.Client;
+using FG.ServiceFabric.Services.Remoting.FabricTransport;
+using FG.ServiceFabric.Services.Remoting.Runtime.Client;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Client;
-using Microsoft.ServiceFabric.Services.Runtime;
 using PersonActor.Interfaces;
 using WebApiService.Diagnostics;
 
@@ -80,7 +76,7 @@ namespace WebApiService.Controllers
             var partitionKeys = await GetOrCreatePartitionHelper().GetInt64Partitions(serviceUri, _servicesCommunicationLogger);
             foreach (var partitionKey in partitionKeys)
             {
-                var actorProxyFactory = new CodeEffect.ServiceFabric.Actors.Client.ActorProxyFactory(_servicesCommunicationLogger);
+                var actorProxyFactory = new FG.ServiceFabric.Actors.Client.ActorProxyFactory(_servicesCommunicationLogger);
                 var proxy = actorProxyFactory.CreateActorServiceProxy<IPersonActorService>(
                     serviceUri,
                     partitionKey.LowKey);

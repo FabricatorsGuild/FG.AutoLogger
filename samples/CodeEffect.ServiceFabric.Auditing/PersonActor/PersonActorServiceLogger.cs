@@ -15,12 +15,12 @@ namespace PersonActor
 	internal sealed class PersonActorServiceLogger : IPersonActorServiceLogger
 	{
 		private readonly Microsoft.ServiceFabric.Actors.Runtime.ActorService _actorService;
-		private readonly CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _context;
+		private readonly FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public PersonActorServiceLogger(
 			Microsoft.ServiceFabric.Actors.Runtime.ActorService actorService,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
 		{
 			_actorService = actorService;
 			_context = context;
@@ -54,9 +54,9 @@ namespace PersonActor
                     {"PartitionId", _actorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
-                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
+                    {"CorrelationId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestUri", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
                     {"Name", name},
                     {"Title", title}
 	            });
@@ -73,7 +73,7 @@ namespace PersonActor
 				_context
 			);
 
-			var runAsyncLoopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"] ?? "runAsyncLoop");
+			var runAsyncLoopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"] ?? "runAsyncLoop");
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ActorType", _actorService.ActorTypeInformation.ImplementationType.ToString());
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actorService.Context.CodePackageActivationContext.ApplicationTypeName);
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ApplicationName", _actorService.Context.CodePackageActivationContext.ApplicationName);
@@ -82,9 +82,9 @@ namespace PersonActor
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("PartitionId", _actorService.Context.PartitionId.ToString());
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _actorService.Context.ReplicaId.ToString());
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("NodeName", _actorService.Context.NodeContext.NodeName);
-			runAsyncLoopOperationHolder.Telemetry.Properties.Add("CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]);
-			runAsyncLoopOperationHolder.Telemetry.Properties.Add("UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]);
-			runAsyncLoopOperationHolder.Telemetry.Properties.Add("RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("CorrelationId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("UserId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]);
+			runAsyncLoopOperationHolder.Telemetry.Properties.Add("RequestUri", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]);
 			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, runAsyncLoopOperationHolder, () => StopRunAsyncLoop());
     
 		}
@@ -124,9 +124,9 @@ namespace PersonActor
                     {"PartitionId", _actorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
-                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
+                    {"CorrelationId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestUri", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
                     {"Message", ex.Message},
                     {"Source", ex.Source},
                     {"ExceptionTypeName", ex.GetType().FullName},

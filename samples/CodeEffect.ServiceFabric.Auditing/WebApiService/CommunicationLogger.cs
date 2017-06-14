@@ -145,8 +145,8 @@ namespace WebApiService
 		public System.IDisposable CallActor(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			WebApiServiceEventSource.Current.StartCallActor(
 				_context, 
@@ -180,8 +180,8 @@ namespace WebApiService
 		public void StopCallActor(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			WebApiServiceEventSource.Current.StopCallActor(
 				_context, 
@@ -198,8 +198,8 @@ namespace WebApiService
 		public void CallActorFailed(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
 			WebApiServiceEventSource.Current.CallActorFailed(
@@ -243,7 +243,7 @@ namespace WebApiService
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			WebApiServiceEventSource.Current.StartCallService(
 				_context, 
@@ -277,7 +277,7 @@ namespace WebApiService
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			WebApiServiceEventSource.Current.StopCallService(
 				_context, 
@@ -295,7 +295,7 @@ namespace WebApiService
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
 			WebApiServiceEventSource.Current.CallServiceFailed(
@@ -336,7 +336,7 @@ namespace WebApiService
 
 		public void ServiceClientFailed(
 			System.Uri requestUri,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
 			WebApiServiceEventSource.Current.ServiceClientFailed(
@@ -371,7 +371,7 @@ namespace WebApiService
 
 
 		public void StartRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
 			WebApiServiceEventSource.Current.StartRequestContext(
 				_context, 
@@ -394,7 +394,7 @@ namespace WebApiService
 
 
 		public void StopRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
 			WebApiServiceEventSource.Current.StopRequestContext(
 				_context, 
@@ -409,7 +409,7 @@ namespace WebApiService
 
 
 		public void FailedRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers,
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers,
 			System.Exception exception)
 		{
 			WebApiServiceEventSource.Current.FailedRequestContext(

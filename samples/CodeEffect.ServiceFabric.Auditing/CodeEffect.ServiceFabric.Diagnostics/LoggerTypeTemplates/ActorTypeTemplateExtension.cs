@@ -1,8 +1,7 @@
-using System;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
-namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerTypeTemplates
+namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates
 {
     public class ActorTypeTemplateExtension : BaseTemplateExtension<Actor>
     {        

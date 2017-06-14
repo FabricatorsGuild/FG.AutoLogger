@@ -32,8 +32,8 @@ namespace PersonActor
 		public System.IDisposable RecieveActorMessage(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			PersonActorServiceEventSource.Current.StartRecieveActorMessage(
 				_context, 
@@ -67,8 +67,8 @@ namespace PersonActor
 		public void StopRecieveActorMessage(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			PersonActorServiceEventSource.Current.StopRecieveActorMessage(
 				_context, 
@@ -85,8 +85,8 @@ namespace PersonActor
 		public void RecieveActorMessageFailed(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
 			PersonActorServiceEventSource.Current.RecieveActorMessageFailed(
@@ -127,7 +127,7 @@ namespace PersonActor
 
 
 		public void FailedToGetActorMethodName(
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
 			System.Exception ex)
 		{
 			PersonActorServiceEventSource.Current.FailedToGetActorMethodName(
@@ -197,7 +197,7 @@ namespace PersonActor
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			PersonActorServiceEventSource.Current.StartRecieveServiceMessage(
 				_context, 
@@ -231,7 +231,7 @@ namespace PersonActor
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			PersonActorServiceEventSource.Current.StopRecieveServiceMessage(
 				_context, 
@@ -249,7 +249,7 @@ namespace PersonActor
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
 			PersonActorServiceEventSource.Current.RecieveServiceMessageFailed(
@@ -327,7 +327,7 @@ namespace PersonActor
 
 
 		public void StartRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
 			PersonActorServiceEventSource.Current.StartRequestContext(
 				_context, 
@@ -350,7 +350,7 @@ namespace PersonActor
 
 
 		public void StopRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
 			PersonActorServiceEventSource.Current.StopRequestContext(
 				_context, 
@@ -365,7 +365,7 @@ namespace PersonActor
 
 
 		public void FailedRequestContext(
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers,
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers,
 			System.Exception exception)
 		{
 			PersonActorServiceEventSource.Current.FailedRequestContext(
@@ -545,8 +545,8 @@ namespace PersonActor
 		public System.IDisposable CallActor(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			PersonActorServiceEventSource.Current.StartCallActor(
 				_context, 
@@ -580,8 +580,8 @@ namespace PersonActor
 		public void StopCallActor(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			PersonActorServiceEventSource.Current.StopCallActor(
 				_context, 
@@ -598,8 +598,8 @@ namespace PersonActor
 		public void CallActorFailed(
 			System.Uri requestUri,
 			string actorMethodName,
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
 			PersonActorServiceEventSource.Current.CallActorFailed(
@@ -643,7 +643,7 @@ namespace PersonActor
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			PersonActorServiceEventSource.Current.StartCallService(
 				_context, 
@@ -677,7 +677,7 @@ namespace PersonActor
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			PersonActorServiceEventSource.Current.StopCallService(
 				_context, 
@@ -695,7 +695,7 @@ namespace PersonActor
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
 			PersonActorServiceEventSource.Current.CallServiceFailed(
@@ -736,7 +736,7 @@ namespace PersonActor
 
 		public void ServiceClientFailed(
 			System.Uri requestUri,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader,
 			System.Exception ex)
 		{
 			PersonActorServiceEventSource.Current.ServiceClientFailed(

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+using FG.ServiceFabric.Services.Remoting.FabricTransport;
 using WebApiService.Controllers;
 
 namespace WebApiService

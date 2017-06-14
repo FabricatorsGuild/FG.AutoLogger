@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
-using Microsoft.Build.Framework;
+using FG.ServiceFabric.Services.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using PersonActor.Diagnostics;
@@ -13,7 +12,7 @@ namespace PersonActor
 	[StatePersistence(StatePersistence.Persisted)]
 	internal class PersonActor : Actor, IPersonActor
 	{
-	    private Func<IPersonActorLogger> _loggerFactory;
+	    private readonly Func<IPersonActorLogger> _loggerFactory;
 
 		public PersonActor(ActorService actorService, ActorId actorId)
 			: base(actorService, actorId)

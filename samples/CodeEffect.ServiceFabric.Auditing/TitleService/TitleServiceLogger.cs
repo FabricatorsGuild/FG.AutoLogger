@@ -15,12 +15,12 @@ namespace TitleService
 	internal sealed class TitleServiceLogger : ITitleServiceLogger
 	{
 		private readonly System.Fabric.StatefulServiceContext _serviceContext;
-		private readonly CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _requestContext;
+		private readonly FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _requestContext;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public TitleServiceLogger(
 			System.Fabric.StatefulServiceContext serviceContext,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext requestContext)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext requestContext)
 		{
 			_serviceContext = serviceContext;
 			_requestContext = requestContext;
@@ -53,9 +53,9 @@ namespace TitleService
                     {"ApplicationName", _serviceContext.CodePackageActivationContext.ApplicationName},
                     {"ApplicationTypeName", _serviceContext.CodePackageActivationContext.ApplicationTypeName},
                     {"NodeName", _serviceContext.NodeContext.NodeName},
-                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
-                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
+                    {"CorrelationId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestUri", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
                     {"Person", person},
                     {"Title", title}
 	            });

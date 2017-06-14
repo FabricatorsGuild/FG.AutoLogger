@@ -1,7 +1,7 @@
 ﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+using FG.ServiceFabric.Services.Remoting.FabricTransport;
 
-namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerTypeTemplates
+namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates
 {
     public class ServiceRemotingMessageHeadersTypeTemplateExtension : BaseTemplateExtension<CustomServiceRequestHeader>
     {

@@ -254,8 +254,8 @@ namespace WebApiService
 			System.Fabric.StatelessServiceContext context, 
 			System.Uri requestUri, 
 			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			if (this.IsEnabled())
 			{
@@ -320,8 +320,8 @@ namespace WebApiService
 			System.Fabric.StatelessServiceContext context, 
 			System.Uri requestUri, 
 			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			if (this.IsEnabled())
 			{
@@ -394,8 +394,8 @@ namespace WebApiService
 			System.Fabric.StatelessServiceContext context, 
 			System.Uri requestUri, 
 			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
+			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
 			System.Exception ex)
 		{
 			if (this.IsEnabled())
@@ -464,7 +464,7 @@ namespace WebApiService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			if (this.IsEnabled())
 			{
@@ -527,7 +527,7 @@ namespace WebApiService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			if (this.IsEnabled())
 			{
@@ -598,7 +598,7 @@ namespace WebApiService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
 			System.Exception ex)
 		{
 			if (this.IsEnabled())
@@ -666,7 +666,7 @@ namespace WebApiService
 		public void ServiceClientFailed(
 			System.Fabric.StatelessServiceContext context, 
 			System.Uri requestUri, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
 			System.Exception ex)
 		{
 			if (this.IsEnabled())
@@ -718,7 +718,7 @@ namespace WebApiService
 		[NonEvent]
 		public void StartRequestContext(
 			System.Fabric.StatelessServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
 			if (this.IsEnabled())
 			{
@@ -763,7 +763,7 @@ namespace WebApiService
 		[NonEvent]
 		public void StopRequestContext(
 			System.Fabric.StatelessServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
 			if (this.IsEnabled())
 			{
@@ -816,7 +816,7 @@ namespace WebApiService
 		[NonEvent]
 		public void FailedRequestContext(
 			System.Fabric.StatelessServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers, 
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers, 
 			System.Exception exception)
 		{
 			if (this.IsEnabled())

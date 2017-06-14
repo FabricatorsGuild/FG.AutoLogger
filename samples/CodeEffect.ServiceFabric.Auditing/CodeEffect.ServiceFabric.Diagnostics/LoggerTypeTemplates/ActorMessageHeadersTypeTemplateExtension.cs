@@ -1,14 +1,13 @@
-﻿using System;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.ServiceFabric.Services.Remoting.FabricTransport;
 
-namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerTypeTemplates
+namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates
 {
     public class ActorMessageHeadersTypeTemplateExtension : BaseTemplateExtension<CustomServiceRequestHeader>
     {
         private string Definition = @"{
                   ""Name"": ""ActorMessageHeaders"",
-                  ""CLRType"": ""CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders"",
+                  ""CLRType"": ""FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders"",
                   ""Arguments"": [
                     {
                       ""Name"": ""InterfaceId"",

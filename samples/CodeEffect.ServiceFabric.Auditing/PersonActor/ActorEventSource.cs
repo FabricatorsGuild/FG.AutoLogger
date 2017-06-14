@@ -9,7 +9,7 @@ using Microsoft.ServiceFabric.Actors.Runtime;
 
 namespace PersonActor
 {
-	[EventSource(Name = "MyCompany-CodeEffect.ServiceFabric.Auditing-PersonActor")]
+	[EventSource(Name = "MyCompany-FG.ServiceFabric.Auditing-PersonActor")]
 	internal sealed class ActorEventSource : EventSource
 	{
 		public static readonly ActorEventSource Current = new ActorEventSource();

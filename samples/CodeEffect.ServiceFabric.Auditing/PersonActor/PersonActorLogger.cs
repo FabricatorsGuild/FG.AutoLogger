@@ -15,12 +15,12 @@ namespace PersonActor
 	internal sealed class PersonActorLogger : IPersonActorLogger
 	{
 		private readonly Microsoft.ServiceFabric.Actors.Runtime.Actor _actor;
-		private readonly CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _context;
+		private readonly FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public PersonActorLogger(
 			Microsoft.ServiceFabric.Actors.Runtime.Actor actor,
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext context)
 		{
 			_actor = actor;
 			_context = context;
@@ -55,9 +55,9 @@ namespace PersonActor
                     {"PartitionId", _actor.ActorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actor.ActorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
-                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
+                    {"CorrelationId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestUri", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
                     {"Name", name},
                     {"Title", title}
 	            });
@@ -86,9 +86,9 @@ namespace PersonActor
                     {"PartitionId", _actor.ActorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actor.ActorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
-                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]}
+                    {"CorrelationId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestUri", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]}
 	            });
     
 		}
@@ -116,9 +116,9 @@ namespace PersonActor
                     {"PartitionId", _actor.ActorService.Context.PartitionId.ToString()},
                     {"ReplicaOrInstanceId", _actor.ActorService.Context.ReplicaId.ToString()},
                     {"NodeName", _actor.ActorService.Context.NodeContext.NodeName},
-                    {"CorrelationId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
-                    {"UserId", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
-                    {"RequestUri", CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
+                    {"CorrelationId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]},
+                    {"UserId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]},
+                    {"RequestUri", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]},
                     {"Title", title}
 	            });
     

@@ -1,14 +1,13 @@
-﻿using System;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.ServiceFabric.Services.Remoting.FabricTransport;
 
-namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerTypeTemplates
+namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates
 {
     public class CustomServiceRequestHeaderTypeTemplateExtension : BaseTemplateExtension<CustomServiceRequestHeader>
     {
         private string Definition = @"{
                   ""Name"": ""CustomServiceRequestHeader"",
-                  ""CLRType"": ""CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader"",
+                  ""CLRType"": ""FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader"",
                   ""Arguments"": [
                     {
                       ""Name"": ""userId"",

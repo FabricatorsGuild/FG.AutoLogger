@@ -1,8 +1,7 @@
-﻿using System;
-using System.Fabric;
+﻿using System.Fabric;
 using CodeEffect.Diagnostics.EventSourceGenerator.Model;
 
-namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics.LoggerTypeTemplates
+namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates
 {
     public class StatefulServiceContextTypeTemplateExtension : BaseTemplateExtension<StatefulServiceContext>
     {

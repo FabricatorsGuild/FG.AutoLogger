@@ -47,7 +47,7 @@ namespace TitleService
 		[NonEvent]
 		public void UpdateTitle(
 			System.Fabric.StatefulServiceContext serviceContext, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext requestContext, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext requestContext, 
 			string person, 
 			string title)
 		{
@@ -61,9 +61,9 @@ namespace TitleService
 					serviceContext.CodePackageActivationContext.ApplicationName, 
 					serviceContext.CodePackageActivationContext.ApplicationTypeName, 
 					serviceContext.NodeContext.NodeName, 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
-					CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"], 
+					FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"], 
 					person, 
 					title);
 			}

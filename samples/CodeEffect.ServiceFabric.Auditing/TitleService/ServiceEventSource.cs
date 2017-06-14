@@ -9,7 +9,7 @@ using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace TitleService
 {
-    [EventSource(Name = "MyCompany-CodeEffect.ServiceFabric.Auditing-TitleService")]
+    [EventSource(Name = "MyCompany-FG.ServiceFabric.Auditing-TitleService")]
     internal sealed class ServiceEventSource : EventSource
     {
         public static readonly ServiceEventSource Current = new ServiceEventSource();

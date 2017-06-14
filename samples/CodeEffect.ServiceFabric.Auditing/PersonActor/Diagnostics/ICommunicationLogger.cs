@@ -1,12 +1,12 @@
-using CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics;
-using CodeEffect.ServiceFabric.Actors.FabricTransport.Utils;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+using FG.ServiceFabric.Diagnostics;
+using FG.ServiceFabric.Services.Remoting.Runtime.Client;
 
 namespace PersonActor.Diagnostics
 {
     public interface ICommunicationLogger :
         IActorServiceCommunicationLogger,
         IPartitionHelperLogger,
+        IActorClientLogger,
         IServiceClientLogger
     {
     }

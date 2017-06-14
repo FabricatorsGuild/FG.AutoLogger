@@ -9,7 +9,7 @@ using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace WebApiService
 {
-	[EventSource(Name = "MyCompany-CodeEffect.ServiceFabric.Auditing-WebApiService")]
+	[EventSource(Name = "MyCompany-FG.ServiceFabric.Auditing-WebApiService")]
 	internal sealed class ServiceEventSource : EventSource
 	{
 		public static readonly ServiceEventSource Current = new ServiceEventSource();

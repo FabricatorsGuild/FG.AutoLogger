@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeEffect.ServiceFabric.Actors.Client;
-using CodeEffect.ServiceFabric.Actors.Remoting.Runtime;
-using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+using FG.ServiceFabric.Actors.Client;
+using FG.ServiceFabric.Actors.Remoting.Runtime;
+using FG.ServiceFabric.Services.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Query;
 using Microsoft.ServiceFabric.Actors.Runtime;
@@ -53,7 +53,7 @@ namespace PersonActor
                         {
                             try
                             {
-                                var serviceProxyFactory = new CodeEffect.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(_communicationLogger);
+                                var serviceProxyFactory = new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(_communicationLogger);
                                 var serviceProxy = serviceProxyFactory.CreateServiceProxy<ITitleService>(
                                     new Uri($"{this.Context.CodePackageActivationContext.ApplicationName}/TitleService"), 
                                     new ServicePartitionKey(0));

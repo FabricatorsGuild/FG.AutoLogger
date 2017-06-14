@@ -52,7 +52,7 @@ namespace TitleService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			if (this.IsEnabled())
 			{
@@ -115,7 +115,7 @@ namespace TitleService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			if (this.IsEnabled())
 			{
@@ -186,7 +186,7 @@ namespace TitleService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
 			System.Exception ex)
 		{
 			if (this.IsEnabled())
@@ -307,7 +307,7 @@ namespace TitleService
 		[NonEvent]
 		public void StartRequestContext(
 			System.Fabric.StatefulServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
 			if (this.IsEnabled())
 			{
@@ -352,7 +352,7 @@ namespace TitleService
 		[NonEvent]
 		public void StopRequestContext(
 			System.Fabric.StatefulServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers)
 		{
 			if (this.IsEnabled())
 			{
@@ -405,7 +405,7 @@ namespace TitleService
 		[NonEvent]
 		public void FailedRequestContext(
 			System.Fabric.StatefulServiceContext context, 
-			System.Collections.Generic.IEnumerable<CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers, 
+			System.Collections.Generic.IEnumerable<FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestHeader> headers, 
 			System.Exception exception)
 		{
 			if (this.IsEnabled())
@@ -689,218 +689,7 @@ namespace TitleService
 		}
 
 
-		private const int StartCallActorEventId = 13013;
-
-		[Event(StartCallActorEventId, Level = EventLevel.LogAlways, Message = "Start Call Actor {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
-		private void StartCallActor(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
-			string userId, 
-			string correlationId)
-		{
-			WriteEvent(
-				StartCallActorEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
-				userId, 
-				correlationId);
-		}
-
-		[NonEvent]
-		public void StartCallActor(
-			System.Fabric.StatefulServiceContext context, 
-			System.Uri requestUri, 
-			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			if (this.IsEnabled())
-			{
-				StartCallActor(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.ReplicaOrInstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					actorMethodName, 
-					(actorMessageHeaders?.InterfaceId ?? 0), 
-					(actorMessageHeaders?.MethodId ?? 0), 
-					actorMessageHeaders?.ActorId.ToString(), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"));
-			}
-		}
-
-
-		private const int StopCallActorEventId = 14014;
-
-		[Event(StopCallActorEventId, Level = EventLevel.LogAlways, Message = "Stop Call Actor {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
-		private void StopCallActor(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
-			string userId, 
-			string correlationId)
-		{
-			WriteEvent(
-				StopCallActorEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
-				userId, 
-				correlationId);
-		}
-
-		[NonEvent]
-		public void StopCallActor(
-			System.Fabric.StatefulServiceContext context, 
-			System.Uri requestUri, 
-			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			if (this.IsEnabled())
-			{
-				StopCallActor(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.ReplicaOrInstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					actorMethodName, 
-					(actorMessageHeaders?.InterfaceId ?? 0), 
-					(actorMessageHeaders?.MethodId ?? 0), 
-					actorMessageHeaders?.ActorId.ToString(), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"));
-			}
-		}
-
-
-		private const int CallActorFailedEventId = 15015;
-
-		[Event(CallActorFailedEventId, Level = EventLevel.LogAlways, Message = "{14}", Keywords = Keywords.Communication)]
-		private void CallActorFailed(
-			string serviceName, 
-			string serviceTypeName, 
-			long replicaOrInstanceId, 
-			Guid partitionId, 
-			string applicationName, 
-			string applicationTypeName, 
-			string nodeName, 
-			string requestUri, 
-			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
-			string userId, 
-			string correlationId, 
-			string message, 
-			string source, 
-			string exceptionTypeName, 
-			string exception)
-		{
-			WriteEvent(
-				CallActorFailedEventId, 
-				serviceName, 
-				serviceTypeName, 
-				replicaOrInstanceId, 
-				partitionId, 
-				applicationName, 
-				applicationTypeName, 
-				nodeName, 
-				requestUri, 
-				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
-				userId, 
-				correlationId, 
-				message, 
-				source, 
-				exceptionTypeName, 
-				exception);
-		}
-
-		[NonEvent]
-		public void CallActorFailed(
-			System.Fabric.StatefulServiceContext context, 
-			System.Uri requestUri, 
-			string actorMethodName, 
-			CodeEffect.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
-			System.Exception ex)
-		{
-			if (this.IsEnabled())
-			{
-				CallActorFailed(
-					context.ServiceName.ToString(), 
-					context.ServiceTypeName, 
-					context.ReplicaOrInstanceId, 
-					context.PartitionId, 
-					context.CodePackageActivationContext.ApplicationName, 
-					context.CodePackageActivationContext.ApplicationTypeName, 
-					context.NodeContext.NodeName, 
-					requestUri.ToString(), 
-					actorMethodName, 
-					(actorMessageHeaders?.InterfaceId ?? 0), 
-					(actorMessageHeaders?.MethodId ?? 0), 
-					actorMessageHeaders?.ActorId.ToString(), 
-					customServiceRequestHeader?.GetHeader("userId"), 
-					customServiceRequestHeader?.GetHeader("correlationId"), 
-					ex.Message, 
-					ex.Source, 
-					ex.GetType().FullName, 
-					ex.AsJson());
-			}
-		}
-
-
-		private const int StartCallServiceEventId = 16016;
+		private const int StartCallServiceEventId = 13013;
 
 		[Event(StartCallServiceEventId, Level = EventLevel.LogAlways, Message = "Start Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
 		private void StartCallService(
@@ -941,7 +730,7 @@ namespace TitleService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			if (this.IsEnabled())
 			{
@@ -963,7 +752,7 @@ namespace TitleService
 		}
 
 
-		private const int StopCallServiceEventId = 17017;
+		private const int StopCallServiceEventId = 14014;
 
 		[Event(StopCallServiceEventId, Level = EventLevel.LogAlways, Message = "Stop Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
 		private void StopCallService(
@@ -1004,7 +793,7 @@ namespace TitleService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
 			if (this.IsEnabled())
 			{
@@ -1026,7 +815,7 @@ namespace TitleService
 		}
 
 
-		private const int CallServiceFailedEventId = 18018;
+		private const int CallServiceFailedEventId = 15015;
 
 		[Event(CallServiceFailedEventId, Level = EventLevel.LogAlways, Message = "{13}", Keywords = Keywords.Communication)]
 		private void CallServiceFailed(
@@ -1075,7 +864,7 @@ namespace TitleService
 			System.Uri requestUri, 
 			string serviceMethodName, 
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
 			System.Exception ex)
 		{
 			if (this.IsEnabled())
@@ -1102,7 +891,7 @@ namespace TitleService
 		}
 
 
-		private const int ServiceClientFailedEventId = 19019;
+		private const int ServiceClientFailedEventId = 16016;
 
 		[Event(ServiceClientFailedEventId, Level = EventLevel.LogAlways, Message = "{10}", Keywords = Keywords.Communication)]
 		private void ServiceClientFailed(
@@ -1143,7 +932,7 @@ namespace TitleService
 		public void ServiceClientFailed(
 			System.Fabric.StatefulServiceContext context, 
 			System.Uri requestUri, 
-			CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
+			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader, 
 			System.Exception ex)
 		{
 			if (this.IsEnabled())
