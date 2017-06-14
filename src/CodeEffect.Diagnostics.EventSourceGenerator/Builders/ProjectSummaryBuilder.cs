@@ -97,10 +97,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
         private ProjectSummary.ProjectSummaryProjectReferenceSummary GetProjectReferenceSummary(Project project, ProjectItem referenceProjectItem)
         {
-            string hash = null;
-            var content = System.IO.File.ReadAllBytes(referenceProjectItem.Name);
-            hash = content.ToMD5().ToHex();
-            return new ProjectSummary.ProjectSummaryProjectReferenceSummary() {ReferenceName = GetBaseName(project, referenceProjectItem), Hash = hash};
+            var contentWriteTime = System.IO.File.GetLastWriteTimeUtc(referenceProjectItem.Name);
+            var contentWriteTimeString = contentWriteTime.ToLongTimeString();
+            return new ProjectSummary.ProjectSummaryProjectReferenceSummary() {ReferenceName = GetBaseName(project, referenceProjectItem), Hash = contentWriteTimeString };
         }
 
         private string GetReferenceSummary(Project project, ProjectItem referenceProjectItem)
@@ -131,8 +130,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
         private ProjectSummary.ProjectSummaryCompileTarget GetLoggerSummary(Project project, ProjectItem loggerProjectItem)
         {
-            var content = System.IO.File.ReadAllText(loggerProjectItem.Name);
-            var hash = content.ToMD5().ToHex();
+            string hash = null;
+            var content = System.IO.File.ReadAllBytes(loggerProjectItem.Name);
+            hash = content.ToMD5().ToHex();
             return new ProjectSummary.ProjectSummaryCompileTarget() { Name = GetBaseName(project, loggerProjectItem), Hash = hash };
         }        
     }
