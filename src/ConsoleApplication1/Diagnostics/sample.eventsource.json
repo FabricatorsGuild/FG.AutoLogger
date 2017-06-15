@@ -52,6 +52,18 @@
         }
       ],
       "OverrideArguments": []
+    },
+    {
+      "Name": "IInfrastructureLogger",
+      "StartId": 3000,
+      "ImplicitArguments": [
+        {
+          "Name": "machineName",
+          "Type": "string",
+          "Assignment": "Environment.MachineName"
+        }
+      ],
+      "OverrideArguments": []
     }
   ],
   "Events": [

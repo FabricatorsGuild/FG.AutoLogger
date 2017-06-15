@@ -2,7 +2,7 @@
   "EventSources": [
     {
       "Name": "Diagnostics\\sample.eventsource.json",
-      "Hash": "75efbfbdefbfbdc887efbfbdefbfbd2d69efbfbdefbfbdefbfbde297bd76"
+      "Hash": "3fefbfbdefbfbd4defbfbd115d27efbfbdefbfbd69efbfbdefbfbdefbfbd1b42"
     }
   ],
   "References": [
@@ -39,11 +39,11 @@
   "ProjectReferences": [
     {
       "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.AI\\bin\\Debug\\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll",
-      "Hash": "efbfbd7a73efbfbd2822320a664fefbfbd52d2aeefbfbd6b"
+      "Hash": "08:47:26"
     },
     {
       "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\bin\\Debug\\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll",
-      "Hash": "05efbfbd3a62efbfbdefbfbd4861efbfbdefbfbdefbfbd14efbfbdefbfbddfaf"
+      "Hash": "14:28:18"
     }
   ],
   "CompileTargets": [
@@ -69,16 +69,20 @@
     },
     {
       "Name": "Loggers\\IConsoleLogger.cs",
-      "Hash": "efbfbdefbfbd1d6defbfbdefbfbdefbfbd4befbfbd03efbfbdefbfbdefbfbd2d6005"
+      "Hash": "7fefbfbdefbfbd0defbfbdefbfbdefbfbd30efbfbd0b4c65efbfbdefbfbd2625"
     },
     {
       "Name": "Loggers\\IConsoleRunnerLogger.cs",
-      "Hash": "efbfbdefbfbd5660efbfbd7778efbfbd3106efbfbdefbfbd71efbfbd5a"
+      "Hash": "efbfbdefbfbd0eefbfbdefbfbdefbfbd34efbfbd0cefbfbdefbfbdefbfbd50efbfbdefbfbdefbfbd"
     },
     {
       "Name": "Loggers\\IDependencyLogger.cs",
-      "Hash": "3c110d7e22efbfbdefbfbdefbfbdefbfbd7b2172efbfbdefbfbdefbfbd"
+      "Hash": "3472517fefbfbd335aefbfbd410472054663efbfbd6f"
+    },
+    {
+      "Name": "Loggers\\IInfrastructureLogger.cs",
+      "Hash": "cf91cea87b4a78efbfbdd0abefbfbdefbfbd69efbfbd38"
     }
   ],
-  "Hash": "efbfbd02efbfbd50efbfbd7f30efbfbd1201efbfbdefbfbdefbfbd114f"
+  "Hash": "efbfbd2161644defbfbd3ae59280efbfbd3befbfbd163471"
 }
