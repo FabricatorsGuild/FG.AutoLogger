@@ -41,7 +41,7 @@
   "ProjectReferences": [
     {
       "ReferenceName": "..\\CodeEffect.ServiceFabric.Diagnostics\\bin\\Debug\\CodeEffect.ServiceFabric.Diagnostics.EventSourceGenerator.dll",
-      "Hash": "08:53:28"
+      "Hash": "11:52:58"
     }
   ],
   "CompileTargets": [
@@ -54,5 +54,5 @@
       "Hash": "78efbfbd491523efbfbd3b7eefbfbdefbfbd0e4cefbfbdefbfbd3502"
     }
   ],
-  "Hash": "3aca9b4befbfbdefbfbd3defbfbd1cefbfbd51efbfbdefbfbdefbfbdefbfbd68"
+  "Hash": "d89befbfbd6dc5a8efbfbd323fefbfbd52efbfbdefbfbd4b24efbfbd"
 }

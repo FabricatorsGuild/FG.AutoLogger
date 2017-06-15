@@ -74,7 +74,7 @@ namespace PersonActor
                         }
                     }
 
-                    await Task.Delay(200000, cancellationToken);
+                    await Task.Delay(10000, cancellationToken);
                 }
             }
         }

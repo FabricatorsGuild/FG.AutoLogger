@@ -42,11 +42,11 @@
   "ProjectReferences": [
     {
       "ReferenceName": "..\\CodeEffect.ServiceFabric.Diagnostics\\bin\\Debug\\CodeEffect.ServiceFabric.Diagnostics.EventSourceGenerator.dll",
-      "Hash": "08:53:28"
+      "Hash": "11:52:58"
     },
     {
       "ReferenceName": "..\\PersonActor.Interfaces\\bin\\x64\\Debug\\PersonActor.Interfaces.dll",
-      "Hash": "08:53:28"
+      "Hash": "11:52:58"
     }
   ],
   "CompileTargets": [
@@ -63,5 +63,5 @@
       "Hash": "02efbfbdefbfbdefbfbdd984efbfbdefbfbd18efbfbdefbfbdefbfbdefbfbdefbfbd00"
     }
   ],
-  "Hash": "efbfbdefbfbdefbfbd6e75efbfbd43efbfbdefbfbdefbfbdefbfbd095a2defbfbd58"
+  "Hash": "32efbfbd77c2a02cefbfbd353befbfbd2307efbfbdefbfbdefbfbd"
 }
