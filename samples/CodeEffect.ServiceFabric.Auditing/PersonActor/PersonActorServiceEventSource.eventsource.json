@@ -1,7 +1,7 @@
 {
   "Loggers": [
     {
-      "Name": "IPersonActorLogger",
+      "Name": "IActorDomainLogger",
       "StartId": 100,
       "ImplicitArguments": [
         {
@@ -16,7 +16,7 @@
       "OverrideArguments": []
     },
     {
-      "Name": "IPersonActorServiceLogger",
+      "Name": "IServiceDomainLogger",
       "StartId": 200,
       "ImplicitArguments": [
         {
@@ -31,12 +31,24 @@
       "OverrideArguments": []
     },
     {
-      "Name": "ICommunicationLogger",
+      "Name": "IActorCommunicationLogger",
       "StartId": 1000,
       "ImplicitArguments": [
         {
-          "Name": "context",
-          "Type": "StatefulServiceContext"
+          "Name": "actor",
+          "Type": "Actor"
+        }
+      ],
+      "OverrideArguments": [
+      ]
+    },
+    {
+      "Name": "IServiceCommunicationLogger",
+      "StartId": 2000,
+      "ImplicitArguments": [
+        {
+          "Name": "actorService",
+          "Type": "ActorService"
         }
       ],
       "OverrideArguments": [

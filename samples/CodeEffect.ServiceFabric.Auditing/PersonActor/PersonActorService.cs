@@ -21,22 +21,22 @@ namespace PersonActor
 
     public class PersonActorService : ActorService, IPersonActorService
     {
-        private readonly IPersonActorServiceLogger _logger;
-        private readonly ICommunicationLogger _communicationLogger;
+        private readonly Func<IServiceDomainLogger> _serviceLoggerFactory;
+        private readonly Func<IServiceCommunicationLogger> _communicationLoggerFactory;
 
         public PersonActorService(StatefulServiceContext context, ActorTypeInformation actorTypeInfo, Func<ActorService, ActorId, ActorBase> actorFactory = null,
             Func<ActorBase, IActorStateProvider, IActorStateManager> stateManagerFactory = null, IActorStateProvider stateProvider = null,
             ActorServiceSettings settings = null) : base(context, actorTypeInfo, actorFactory, stateManagerFactory, stateProvider, settings)
         {
-            _logger = new PersonActorServiceLogger(this, ServiceRequestContext.Current);
-            _communicationLogger = new CommunicationLogger(this.Context);
+            //_serviceLoggerFactory = new Person(this, ServiceRequestContext.Current);
+            //_communicationLogger = new CommunicationLogger(this, ServiceRequestContext.Current);
         }
 
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
             return new[]
             {
-                this.CreateServiceReplicaListener(_communicationLogger),
+                this.CreateServiceReplicaListener(_communicationLoggerFactory()),
             };
         }
 
@@ -49,11 +49,13 @@ namespace PersonActor
                     var correlationId = Guid.NewGuid().ToString();
                     using (new ServiceRequestContextWrapper() {CorrelationId = correlationId, UserId = Environment.UserName})
                     {
-                        using (_logger.RunAsyncLoop())
+                        var serviceLogger = _serviceLoggerFactory();
+                        var communicationLogger = _communicationLoggerFactory();
+                        using (serviceLogger.RunAsyncLoop())
                         {
                             try
                             {
-                                var serviceProxyFactory = new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(_communicationLogger);
+                                var serviceProxyFactory = new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(communicationLogger);
                                 var serviceProxy = serviceProxyFactory.CreateServiceProxy<ITitleService>(
                                     new Uri($"{this.Context.CodePackageActivationContext.ApplicationName}/TitleService"), 
                                     new ServicePartitionKey(0));
@@ -61,15 +63,15 @@ namespace PersonActor
 
                                 var title = titles[Environment.TickCount % titles.Length];
 
-                                var actorProxyFactory = new ActorProxyFactory(_communicationLogger);
+                                var actorProxyFactory = new ActorProxyFactory(communicationLogger);
                                 var proxy = actorProxyFactory.CreateActorProxy<IPersonActor>(new ActorId(name));
                                 await proxy.SetTitleAsync(title, cancellationToken);
 
-                                _logger.PersonGenerated(name, title);
+                                serviceLogger.PersonGenerated(name, title);
                             }
                             catch (Exception ex)
                             {
-                                _logger.RunAsyncLoopFailed(ex);
+                                serviceLogger.RunAsyncLoopFailed(ex);
                             }
                         }
                     }

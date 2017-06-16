@@ -1,6 +1,6 @@
 namespace PersonActor.Diagnostics
 {
-	public interface IPersonActorLogger
+	public interface IActorDomainLogger
 	{
 		void PersonActivated(string name, string title);
 		void PersonLoaded();

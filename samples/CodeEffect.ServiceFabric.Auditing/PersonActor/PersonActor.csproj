@@ -45,27 +45,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.AI, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview003\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.Model, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.MSBuild, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FG.ServiceFabric.Actors.Remoting, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FG.ServiceFabric.Actors.Remoting.1.0.0-beta\lib\net452\FG.ServiceFabric.Actors.Remoting.dll</HintPath>
+    <Reference Include="FG.ServiceFabric.Actors.Remoting, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\FG.ServiceFabric.Actors.Remoting.1.0.0-beta2\lib\net452\FG.ServiceFabric.Actors.Remoting.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FG.ServiceFabric.Services.Remoting, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FG.ServiceFabric.Services.Remoting.1.0.0-beta\lib\net452\FG.ServiceFabric.Services.Remoting.dll</HintPath>
+    <Reference Include="FG.ServiceFabric.Services.Remoting, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\FG.ServiceFabric.Services.Remoting.1.0.0-beta2\lib\net452\FG.ServiceFabric.Services.Remoting.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -75,7 +75,7 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview003\lib\net452\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\Microsoft.AI.PerfCounterCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -88,15 +88,15 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.3.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview003\lib\net452\Microsoft.ApplicationInsights.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Build.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\lib\net452\Microsoft.Build.Framework.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\lib\net452\Microsoft.Build.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\lib\net452\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\lib\net452\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceFabric.Actors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
@@ -132,7 +132,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\lib\net452\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\lib\net452\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -157,45 +157,11 @@
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommunicationLogger.cs">
-      <AutoGen>true</AutoGen>
-      <AutoGenerated>LoggerImplementation</AutoGenerated>
-      <DependentUpon>PersonActorServiceEventSource.eventsource.json</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\IPersonActorLogger.cs" />
-    <Compile Include="Diagnostics\IPersonActorServiceLogger.cs" />
-    <Compile Include="Diagnostics\ICommunicationLogger.cs" />
-    <Compile Include="PersonActorLogger.cs">
-      <AutoGen>true</AutoGen>
-      <AutoGenerated>LoggerImplementation</AutoGenerated>
-      <DependentUpon>PersonActorServiceEventSource.eventsource.json</DependentUpon>
-    </Compile>
+    <Compile Include="Diagnostics\IActorDomainLogger.cs" />
+    <Compile Include="Diagnostics\IServiceCommunicationLogger.cs" />
+    <Compile Include="Diagnostics\IServiceDomainLogger.cs" />
+    <Compile Include="Diagnostics\IActorCommunicationLogger.cs" />
     <Compile Include="PersonActorService.cs" />
-    <Compile Include="PersonActorServiceEventSource.cs">
-      <AutoGen>true</AutoGen>
-      <AutoGenerated>EventSource</AutoGenerated>
-      <DependentUpon>PersonActorServiceEventSource.eventsource.json</DependentUpon>
-    </Compile>
-    <Compile Include="PersonActorServiceEventSource.ICommunicationLogger.cs">
-      <AutoGen>true</AutoGen>
-      <AutoGenerated>EventSourceLoggerPartial</AutoGenerated>
-      <DependentUpon>PersonActorServiceEventSource.eventsource.json</DependentUpon>
-    </Compile>
-    <Compile Include="PersonActorServiceEventSource.IPersonActorLogger.cs">
-      <AutoGen>true</AutoGen>
-      <AutoGenerated>EventSourceLoggerPartial</AutoGenerated>
-      <DependentUpon>PersonActorServiceEventSource.eventsource.json</DependentUpon>
-    </Compile>
-    <Compile Include="PersonActorServiceEventSource.IPersonActorServiceLogger.cs">
-      <AutoGen>true</AutoGen>
-      <AutoGenerated>EventSourceLoggerPartial</AutoGenerated>
-      <DependentUpon>PersonActorServiceEventSource.eventsource.json</DependentUpon>
-    </Compile>
-    <Compile Include="PersonActorServiceLogger.cs">
-      <AutoGen>true</AutoGen>
-      <AutoGenerated>LoggerImplementation</AutoGenerated>
-      <DependentUpon>PersonActorServiceEventSource.eventsource.json</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PersonActor.cs" />
     <Compile Include="Program.cs" />
@@ -205,11 +171,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="PersonActorServiceEventSource.eventsource.output.json">
-      <AutoGen>true</AutoGen>
-      <AutoGenerated>ProjectSummary</AutoGenerated>
-      <DependentUpon>PersonActorServiceEventSource.eventsource.json</DependentUpon>
     </Content>
     <None Include="Connected Services\Application Insights\ConnectedService.json" />
     <None Include="PersonActorServiceEventSource.eventsource.json">
@@ -244,8 +205,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.ServiceFabric.Actors.2.6.210\build\Microsoft.ServiceFabric.Actors.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ServiceFabric.Actors.2.6.210\build\Microsoft.ServiceFabric.Actors.targets'))" />
-    <Error Condition="!Exists('..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets'))" />
+    <Error Condition="!Exists('..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.ServiceFabric.Actors.2.6.210\build\Microsoft.ServiceFabric.Actors.targets" Condition="Exists('..\packages\Microsoft.ServiceFabric.Actors.2.6.210\build\Microsoft.ServiceFabric.Actors.targets')" />
-  <Import Project="..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets" Condition="Exists('..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview003\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets')" />
+  <Import Project="..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets" Condition="Exists('..\packages\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets')" />
 </Project>

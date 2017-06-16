@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FG.ServiceFabric.Services.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
+using Microsoft.ServiceFabric.Services.Remoting.Client;
 using PersonActor.Diagnostics;
 using PersonActor.Interfaces;
 
@@ -12,12 +13,15 @@ namespace PersonActor
 	[StatePersistence(StatePersistence.Persisted)]
 	internal class PersonActor : Actor, IPersonActor
 	{
-	    private readonly Func<IPersonActorLogger> _loggerFactory;
+	    private readonly Func<IActorDomainLogger> _actorLoggerFactory;
+	    private readonly Func<IActorCommunicationLogger> _communicationLoggerFactory;
 
 		public PersonActor(ActorService actorService, ActorId actorId)
 			: base(actorService, actorId)
 		{
-            _loggerFactory = () => new PersonActorLogger(this, ServiceRequestContext.Current);
+            //_actorLoggerFactory = () => new PersonActorLogger(this, ServiceRequestContext.Current);
+
+		    //_communicationLoggerFactory = () => new CommunicationLogger(this.ActorService, ServiceRequestContext.Current);
 		}
 
 		protected override Task OnActivateAsync()
@@ -33,12 +37,14 @@ namespace PersonActor
 			return state.Value;
 		}
 
-		public Task SetTitleAsync(string title, CancellationToken cancellationToken)
+		public async Task SetTitleAsync(string title, CancellationToken cancellationToken)
 		{
-            _loggerFactory().TitleSet(title);
+            _actorLoggerFactory().TitleSet(title);
 
-            return this.StateManager.AddOrUpdateStateAsync("state", new Person() { Name = this.GetActorId().GetStringId(), Title = title }, (key, value) => new Person(){Name = value.Name, Title = title}, CancellationToken.None);
-		}
+            await this.StateManager.AddOrUpdateStateAsync("state", new Person() { Name = this.GetActorId().GetStringId(), Title = title }, (key, value) => new Person(){Name = value.Name, Title = title}, CancellationToken.None);
+
+            //new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(_servicesCommunicationLogger);
+        }
 	}
 
 

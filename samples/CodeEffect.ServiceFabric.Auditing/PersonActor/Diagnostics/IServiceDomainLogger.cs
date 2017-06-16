@@ -2,8 +2,8 @@ using System;
 
 namespace PersonActor.Diagnostics
 {
-	public interface IPersonActorServiceLogger
-	{
+	public interface IServiceDomainLogger
+    {
 		void PersonGenerated(string name, string title);
 
 	    IDisposable RunAsyncLoop();
