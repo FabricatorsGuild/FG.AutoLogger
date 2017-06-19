@@ -26,24 +26,26 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public EventModel CorrelatesTo { get; set; }
         public void InsertImplicitArguments(EventArgumentModel[] implicitArguments)
         {
-            this.ImplicitArguments = new EventArgumentModel[implicitArguments.Length];
-            var index = 0;
+            var eventImplicitArguments = new List<EventArgumentModel>();
             foreach (var argument in implicitArguments)
             {
-                this.ImplicitArguments[index] = new EventArgumentModel(
-                    name: argument.Name,
-                    type: argument.Type,
-                    assignment: argument.Assignment)
+                if (!this.Arguments.Any(a => a.Name.Equals(argument.Name)))
                 {
-                    AssignedCLRType = argument.AssignedCLRType,
-                    CLRType = argument.CLRType,
-                    IsImplicit = true,
-                    IsOverriden = false,
-                    TypeTemplate = argument.TypeTemplate,
-                    TemplatedParentArgument = argument.TemplatedParentArgument                   
-                };
-                index++;
+                    eventImplicitArguments.Add(new EventArgumentModel(
+                        name: argument.Name,
+                        type: argument.Type,
+                        assignment: argument.Assignment)
+                    {
+                        AssignedCLRType = argument.AssignedCLRType,
+                        CLRType = argument.CLRType,
+                        IsImplicit = true,
+                        IsOverriden = false,
+                        TypeTemplate = argument.TypeTemplate,
+                        TemplatedParentArgument = argument.TemplatedParentArgument
+                    });
+                }
             }
+            this.ImplicitArguments = eventImplicitArguments.ToArray();
         }
 
         public void OverrideArguments(EventArgumentModel[] overrideArguments)
