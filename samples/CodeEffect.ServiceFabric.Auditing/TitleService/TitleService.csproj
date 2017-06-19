@@ -42,9 +42,14 @@
     <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.dll</HintPath>
+    </Reference>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.AI, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll</HintPath>
-      <Private>True</Private>
+    </Reference>
+    <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator.Model, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.Model.1.2.1-preview004\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll</HintPath>
     </Reference>
     <Reference Include="FG.ServiceFabric.Actors.Remoting, Version=1.0.1.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\FG.ServiceFabric.Actors.Remoting.1.0.1-beta4\lib\net452\FG.ServiceFabric.Actors.Remoting.dll</HintPath>
@@ -62,7 +67,6 @@
     </Reference>
     <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\Microsoft.AI.PerfCounterCollector.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.3.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
@@ -74,7 +78,6 @@
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\Microsoft.ApplicationInsights.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceFabric.Actors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
       <HintPath>..\packages\Microsoft.ServiceFabric.Actors.2.6.210\lib\net45\Microsoft.ServiceFabric.Actors.dll</HintPath>
@@ -109,7 +112,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.Model.1.2.1-preview004\lib\net452\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -28,8 +28,8 @@ namespace PersonActor
             Func<ActorBase, IActorStateProvider, IActorStateManager> stateManagerFactory = null, IActorStateProvider stateProvider = null,
             ActorServiceSettings settings = null) : base(context, actorTypeInfo, actorFactory, stateManagerFactory, stateProvider, settings)
         {
-            _serviceLoggerFactory = () => new ServiceDomainLogger(this, ServiceRequestContext.Current);
-            _communicationLoggerFactory = () => new CommunicationLogger(this);
+            //_serviceLoggerFactory = () => new ServiceDomainLogger(this, ServiceRequestContext.Current);
+            //_communicationLoggerFactory = () => new CommunicationLogger(this);
         }
 
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
