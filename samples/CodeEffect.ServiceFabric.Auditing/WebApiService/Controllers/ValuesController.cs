@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Fabric;
-using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using FG.ServiceFabric.Services.Remoting.FabricTransport;
+using Common;
 using FG.ServiceFabric.Services.Remoting.Runtime.Client;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Client;
@@ -25,11 +23,11 @@ namespace WebApiService.Controllers
 
         private static PartitionHelper _partitionHelper;
 
-	    private readonly ServiceRequestContextWrapper _contextScope;        
+	    private readonly ServiceRequestContextWrapperX _contextScope;        
 
         public ValuesController(StatelessServiceContext context)
         {
-            _contextScope = new ServiceRequestContextWrapper() {CorrelationId = Guid.NewGuid().ToString(), UserId = "mainframe64/Kapten_rödskägg"};
+            _contextScope = new ServiceRequestContextWrapperX(correlationId: Guid.NewGuid().ToString(), userId: "mainframe64/Kapten_rödskägg");
 
             _logger = new WebApiLogger(context);
             _servicesCommunicationLogger = new CommunicationLogger(context);
@@ -105,41 +103,6 @@ namespace WebApiService.Controllers
 
 			return person;
 
-		}
-
-		private IEnumerable<ServiceRequestHeader> GetQuerystringsAsServiceHeaders()
-		{
-			var queryNameValuePairs = this.Request.GetQueryNameValuePairs();
-			foreach (var queryNameValuePair in queryNameValuePairs)
-			{
-				yield return new NamedServiceRequestHeader(queryNameValuePair.Key, queryNameValuePair.Value);
-			}
-		}
-
-		private IEnumerable<ServiceRequestHeader> GetRequestHeaders(bool addQueryStrings = false)
-		{
-			var user = $"unknown-{DateTime.Now.Millisecond}";
-			var correlationId = Guid.NewGuid();
-			var serviceRequestHeaders = new List<ServiceRequestHeader>
-			{
-				new UserServiceRequestHeader(user),
-				new CorreleationIdServiceRequestHeader(correlationId)
-			};
-
-			foreach (var httpRequestHeader in this.Request.Headers)
-			{
-				serviceRequestHeaders.Add(new NamedServiceRequestHeader(httpRequestHeader.Key, httpRequestHeader.Value.FirstOrDefault()));
-			}
-			if (addQueryStrings)
-			{
-				var querystringsAsServiceHeaders = GetQuerystringsAsServiceHeaders();
-				if (querystringsAsServiceHeaders.Any())
-				{
-					serviceRequestHeaders.AddRange(GetQuerystringsAsServiceHeaders());
-				}
-			}
-
-			return serviceRequestHeaders.ToArray();
 		}
     }
 }

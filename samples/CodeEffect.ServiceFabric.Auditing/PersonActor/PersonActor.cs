@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using FG.ServiceFabric.Services.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
+using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
 using PersonActor.Diagnostics;
 using PersonActor.Interfaces;
+using TitleService;
 
 namespace PersonActor
 {
@@ -19,9 +21,8 @@ namespace PersonActor
 		public PersonActor(ActorService actorService, ActorId actorId)
 			: base(actorService, actorId)
 		{
-            //_actorLoggerFactory = () => new PersonActorLogger(this, ServiceRequestContext.Current);
-
-		    //_communicationLoggerFactory = () => new CommunicationLogger(this.ActorService, ServiceRequestContext.Current);
+            _actorLoggerFactory = () => new ActorDomainLogger(this, ServiceRequestContext.Current);
+		    _communicationLoggerFactory = () => new CommunicationLogger(this.ActorService);
 		}
 
 		protected override Task OnActivateAsync()
@@ -43,8 +44,13 @@ namespace PersonActor
 
             await this.StateManager.AddOrUpdateStateAsync("state", new Person() { Name = this.GetActorId().GetStringId(), Title = title }, (key, value) => new Person(){Name = value.Name, Title = title}, CancellationToken.None);
 
-            //new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(_servicesCommunicationLogger);
-        }
+			var serviceProxyFactory = new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(_communicationLoggerFactory());
+			var serviceProxy = serviceProxyFactory.CreateServiceProxy<ITitleService>(
+				new Uri($"{this.ActorService.Context.CodePackageActivationContext.ApplicationName}/TitleService"),
+				new ServicePartitionKey(0));
+
+			await serviceProxy.UpdateTitleAsync(this.GetActorId().GetStringId(), title, cancellationToken);
+		}
 	}
 
 

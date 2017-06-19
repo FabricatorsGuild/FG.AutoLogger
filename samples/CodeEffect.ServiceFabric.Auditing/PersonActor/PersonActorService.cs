@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Common;
 using FG.ServiceFabric.Actors.Client;
 using FG.ServiceFabric.Actors.Remoting.Runtime;
 using FG.ServiceFabric.Services.Remoting.FabricTransport;
@@ -28,8 +29,8 @@ namespace PersonActor
             Func<ActorBase, IActorStateProvider, IActorStateManager> stateManagerFactory = null, IActorStateProvider stateProvider = null,
             ActorServiceSettings settings = null) : base(context, actorTypeInfo, actorFactory, stateManagerFactory, stateProvider, settings)
         {
-            //_serviceLoggerFactory = () => new ServiceDomainLogger(this, ServiceRequestContext.Current);
-            //_communicationLoggerFactory = () => new CommunicationLogger(this);
+            _serviceLoggerFactory = () => new ServiceDomainLogger(this, ServiceRequestContext.Current);
+            _communicationLoggerFactory = () => new CommunicationLogger(this);
         }
 
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
@@ -47,34 +48,34 @@ namespace PersonActor
                 foreach (var name in ObjectMother.Names)
                 {
                     var correlationId = Guid.NewGuid().ToString();
-                    using (new ServiceRequestContextWrapper() {CorrelationId = correlationId, UserId = Environment.UserName})
-                    {
-                        var serviceLogger = _serviceLoggerFactory();
-                        var communicationLogger = _communicationLoggerFactory();
-                        using (serviceLogger.RunAsyncLoop())
-                        {
-                            try
-                            {
-                                var serviceProxyFactory = new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(communicationLogger);
-                                var serviceProxy = serviceProxyFactory.CreateServiceProxy<ITitleService>(
-                                    new Uri($"{this.Context.CodePackageActivationContext.ApplicationName}/TitleService"), 
-                                    new ServicePartitionKey(0));
-                                var titles = await serviceProxy.GetTitlesAsync(cancellationToken);
+					using (new ServiceRequestContextWrapperX(correlationId, Environment.UserName))
+					{
+						var serviceLogger = _serviceLoggerFactory();
+						var communicationLogger = _communicationLoggerFactory();
+						using (serviceLogger.RunAsyncLoop())
+						{
+							try
+							{
+								var serviceProxyFactory = new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(communicationLogger);
+								var serviceProxy = serviceProxyFactory.CreateServiceProxy<ITitleService>(
+									new Uri($"{this.Context.CodePackageActivationContext.ApplicationName}/TitleService"),
+									new ServicePartitionKey(0));
+								var titles = await serviceProxy.GetTitlesAsync(cancellationToken);
 
-                                var title = titles[Environment.TickCount % titles.Length];
+								var title = titles[Environment.TickCount % titles.Length];
 
-                                var actorProxyFactory = new ActorProxyFactory(communicationLogger);
-                                var proxy = actorProxyFactory.CreateActorProxy<IPersonActor>(new ActorId(name));
-                                await proxy.SetTitleAsync(title, cancellationToken);
+								var actorProxyFactory = new ActorProxyFactory(communicationLogger);
+								var proxy = actorProxyFactory.CreateActorProxy<IPersonActor>(new ActorId(name));
+								await proxy.SetTitleAsync(title, cancellationToken);
 
-                                serviceLogger.PersonGenerated(name, title);
-                            }
-                            catch (Exception ex)
-                            {
-                                serviceLogger.RunAsyncLoopFailed(ex);
-                            }
-                        }
-                    }
+								serviceLogger.PersonGenerated(name, title);
+							}
+							catch (Exception ex)
+							{
+								serviceLogger.RunAsyncLoopFailed(ex);
+							}
+						}
+					}
 
                     await Task.Delay(10000, cancellationToken);
                 }

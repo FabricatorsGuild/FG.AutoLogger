@@ -45,7 +45,6 @@ namespace PersonActor
 
 			var recieveActorMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveActorMessage");
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorId", _actor.ActorId.ToString());
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actor.ApplicationTypeName);
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ApplicationName", _actor.ApplicationName);
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _actor.ServiceTypeName);
@@ -105,7 +104,6 @@ namespace PersonActor
 	            {
                     { "Name", "RecieveActorMessageFailed" },
 	                {"ActorType", _actor.ActorType.ToString()},
-                    {"ActorId", _actor.ActorId.ToString()},
                     {"ApplicationTypeName", _actor.ApplicationTypeName},
                     {"ApplicationName", _actor.ApplicationName},
                     {"ServiceTypeName", _actor.ServiceTypeName},
@@ -145,7 +143,6 @@ namespace PersonActor
 	            {
                     { "Name", "FailedToGetActorMethodName" },
 	                {"ActorType", _actor.ActorType.ToString()},
-                    {"ActorId", _actor.ActorId.ToString()},
                     {"ApplicationTypeName", _actor.ApplicationTypeName},
                     {"ApplicationName", _actor.ApplicationName},
                     {"ServiceTypeName", _actor.ServiceTypeName},
@@ -586,12 +583,11 @@ namespace PersonActor
 
 			var callActorOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callActor");
 			callActorOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
-			callActorOperationHolder.Telemetry.Properties.Add("ActorId", _actor.ActorId.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actor.ApplicationTypeName);
 			callActorOperationHolder.Telemetry.Properties.Add("ApplicationName", _actor.ApplicationName);
 			callActorOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _actor.ServiceTypeName);
 			callActorOperationHolder.Telemetry.Properties.Add("ServiceName", _actor.ToString());
-			callActorOperationHolder.Telemetry.Properties.Add("PartitionId", _actor.PartitionId.ToString());
+			callActorOperationHolder.Telemetry.Properties.Add("PartitionId", _actor.PartitionId.ToString());	
 			callActorOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _actor.ReplicaOrInstanceId.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("NodeName", _actor.NodeName);
 			callActorOperationHolder.Telemetry.Properties.Add("RequestUri", requestUri.ToString());
@@ -646,7 +642,6 @@ namespace PersonActor
 	            {
                     { "Name", "CallActorFailed" },
 	                {"ActorType", _actor.ActorType.ToString()},
-                    {"ActorId", _actor.ActorId.ToString()},
                     {"ApplicationTypeName", _actor.ApplicationTypeName},
                     {"ApplicationName", _actor.ApplicationName},
                     {"ServiceTypeName", _actor.ServiceTypeName},

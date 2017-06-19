@@ -10,17 +10,17 @@ namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates
                   ""CLRType"": ""FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders"",
                   ""Arguments"": [
                     {
-                      ""Name"": ""InterfaceId"",
+                      ""Name"": ""interfaceId"",
                       ""Type"": ""int"",
                       ""Assignment"": ""($this?.InterfaceId ?? 0)""
                     },
                     {
-                      ""Name"": ""MethodId"",
+                      ""Name"": ""methodId"",
                       ""Type"": ""int"",
                       ""Assignment"": ""($this?.MethodId ?? 0)""
                     },
                     {
-                      ""Name"": ""ActorId"",
+                      ""Name"": ""actorId"",
                       ""Type"": ""string"",
                       ""Assignment"": ""$this?.ActorId.ToString()""
                     }
