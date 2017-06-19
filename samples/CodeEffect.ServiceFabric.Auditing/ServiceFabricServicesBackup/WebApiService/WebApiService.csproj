@@ -15,7 +15,6 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <EventSourceGeneratorSummaryHash>1defbfbd75efbfbdefbfbd0616586eefbfbd112cefbfbd5635efbfbd</EventSourceGeneratorSummaryHash>
-    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>

@@ -41,7 +41,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <IsServiceFabricServiceProject>true</IsServiceFabricServiceProject>
+    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CodeEffect.Diagnostics.EventSourceGenerator, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">

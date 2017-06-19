@@ -1,0 +1,65 @@
+{
+  "Loggers": [
+    {
+      "Name": "IActorDomainLogger",
+      "StartId": 100,
+      "ImplicitArguments": [
+        {
+          "Name": "actor",
+          "Type": "Actor"
+        },
+        {
+          "Name": "context",
+          "Type": "ServiceRequestContext"
+        }
+      ],
+      "OverrideArguments": []
+    },
+    {
+      "Name": "IServiceDomainLogger",
+      "StartId": 200,
+      "ImplicitArguments": [
+        {
+          "Name": "actorService",
+          "Type": "ActorService"
+        },
+        {
+          "Name": "context",
+          "Type": "ServiceRequestContext"
+        }
+      ],
+      "OverrideArguments": []
+    },
+    {
+      "Name": "IActorCommunicationLogger",
+      "StartId": 1000,
+      "ImplicitArguments": [
+        {
+          "Name": "actor",
+          "Type": "Actor"
+        }
+      ],
+      "OverrideArguments": [
+      ]
+    },
+    {
+      "Name": "IServiceCommunicationLogger",
+      "StartId": 2000,
+      "ImplicitArguments": [
+        {
+          "Name": "actorService",
+          "Type": "ActorService"
+        }
+      ],
+      "OverrideArguments": [
+      ]
+    }
+  ],
+  "Name": "PersonActorServiceEventSource",
+  "ProviderName": "CodeEffect-ServiceFabric-Auditing-PersonActorService",
+  "Keywords": [],
+  "TypeTemplates": [],
+  "Settings": {
+    "AutogenerateLoggerInterfaces": false
+  }
+}
