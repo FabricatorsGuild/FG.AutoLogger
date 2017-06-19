@@ -83,33 +83,53 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int StartRecieveMessageEventId = 6003;
 
-		[Event(StartRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Start)]
+		[Event(StartRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Start)]
 		public void StartRecieveMessage(
 			int processId, 
 			string machineName, 
+			string requestName, 
 			string message)
 		{
 			WriteEvent(
 				StartRecieveMessageEventId, 
 				processId, 
 				machineName, 
+				requestName, 
 				message);
 		}
 
 
 		private const int StopRecieveMessageEventId = 8004;
 
-		[Event(StopRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop)]
+		[Event(StopRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop)]
 		public void StopRecieveMessage(
 			int processId, 
 			string machineName, 
+			string requestName, 
 			string message)
 		{
 			WriteEvent(
 				StopRecieveMessageEventId, 
 				processId, 
 				machineName, 
+				requestName, 
 				message);
+		}
+
+
+		private const int DoDirtyStuffEventId = 10005;
+
+		[Event(DoDirtyStuffEventId, Level = EventLevel.LogAlways, Message = "Do Dirty Stuff", Keywords = Keywords.Dependency)]
+		public void DoDirtyStuff(
+			int processId, 
+			string machineName, 
+			string requestName)
+		{
+			WriteEvent(
+				DoDirtyStuffEventId, 
+				processId, 
+				machineName, 
+				requestName);
 		}
 
 

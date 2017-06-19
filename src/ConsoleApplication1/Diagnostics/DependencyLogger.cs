@@ -16,15 +16,18 @@ namespace ConsoleApplication1.Diagnostics
 	{
 		private readonly int _processId;
 		private readonly string _machineName;
+		private readonly string _requestName;
 		// Hello from extension
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
 		public DependencyLogger(
 			int processId,
-			string machineName)
+			string machineName,
+			string requestName)
 		{
 			_processId = processId;
 			_machineName = machineName;
+			_requestName = requestName;
 			// Do stuff in the constructor
 			
             _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
@@ -96,6 +99,7 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.StartRecieveMessage(
 				_processId, 
 				_machineName, 
+				_requestName, 
 				message
 			);
 
@@ -103,12 +107,14 @@ namespace ConsoleApplication1.Diagnostics
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+			System.Diagnostics.Debug.WriteLine($"\tSystem.Diagnostics.Process.GetCurrentProcess().Id.ToString():\t{System.Diagnostics.Process.GetCurrentProcess().Id.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
 			_recieveMessageStopwatch.Restart();
 
-			var recieveMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("recieveMessage");
+			var recieveMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(System.Diagnostics.Process.GetCurrentProcess().Id.ToString() ?? "recieveMessage");
 			recieveMessageOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
 			recieveMessageOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
+			recieveMessageOperationHolder.Telemetry.Properties.Add("RequestName", System.Diagnostics.Process.GetCurrentProcess().Id.ToString());
 			recieveMessageOperationHolder.Telemetry.Properties.Add("Message", message);
 			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveMessageOperationHolder, () => StopRecieveMessage(message));
     
@@ -124,6 +130,7 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.StopRecieveMessage(
 				_processId, 
 				_machineName, 
+				_requestName, 
 				message
 			);
 
@@ -131,8 +138,37 @@ namespace ConsoleApplication1.Diagnostics
            
 			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+			System.Diagnostics.Debug.WriteLine($"\tSystem.Diagnostics.Process.GetCurrentProcess().Id.ToString():\t{System.Diagnostics.Process.GetCurrentProcess().Id.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
 			_recieveMessageStopwatch.Stop();
+    
+		}
+
+
+
+
+		public void DoDirtyStuff(
+			)
+		{
+			Sample.Current.DoDirtyStuff(
+				_processId, 
+				_machineName, 
+				_requestName
+			);
+
+			System.Diagnostics.Debug.WriteLine($"[Dependency] ERR: DoDirtyStuff");
+           
+			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
+			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
+			System.Diagnostics.Debug.WriteLine($"\tSystem.Diagnostics.Process.GetCurrentProcess().Id.ToString():\t{System.Diagnostics.Process.GetCurrentProcess().Id.ToString()}");
+			_telemetryClient.TrackEvent(
+	            nameof(DoDirtyStuff),
+	            new System.Collections.Generic.Dictionary<string, string>()
+	            {
+	                {"ProcessId", _processId.ToString()},
+                    {"MachineName", Environment.MachineName},
+                    {"RequestName", System.Diagnostics.Process.GetCurrentProcess().Id.ToString()}
+	            });
     
 		}
 

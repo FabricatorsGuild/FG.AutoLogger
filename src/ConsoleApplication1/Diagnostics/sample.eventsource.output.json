@@ -2,7 +2,7 @@
   "EventSources": [
     {
       "Name": "Diagnostics\\sample.eventsource.json",
-      "Hash": "3fefbfbdefbfbd4defbfbd115d27efbfbdefbfbd69efbfbdefbfbdefbfbd1b42"
+      "Hash": "efbfbd79efbfbdefbfbd24efbfbdefbfbdefbfbd64efbfbdefbfbdefbfbd27c5b1"
     }
   ],
   "References": [
@@ -39,11 +39,11 @@
   "ProjectReferences": [
     {
       "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.AI\\bin\\Debug\\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll",
-      "Hash": "08:47:26"
+      "Hash": "06:52:40"
     },
     {
       "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\bin\\Debug\\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll",
-      "Hash": "14:28:18"
+      "Hash": "09:04:42"
     }
   ],
   "CompileTargets": [
@@ -77,12 +77,12 @@
     },
     {
       "Name": "Loggers\\IDependencyLogger.cs",
-      "Hash": "3472517fefbfbd335aefbfbd410472054663efbfbd6f"
+      "Hash": "3d3c03efbfbd4e1435efbfbd2d31531115efbfbd73efbfbd"
     },
     {
       "Name": "Loggers\\IInfrastructureLogger.cs",
       "Hash": "cf91cea87b4a78efbfbdd0abefbfbdefbfbd69efbfbd38"
     }
   ],
-  "Hash": "efbfbd2161644defbfbd3ae59280efbfbd3befbfbd163471"
+  "Hash": "efbfbd5120efbfbd6c6248efbfbdefbfbdefbfbdefbfbd646cefbfbd"
 }

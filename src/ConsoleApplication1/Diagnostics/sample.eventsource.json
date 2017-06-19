@@ -49,18 +49,11 @@
           "Name": "machineName",
           "Type": "string",
           "Assignment": "Environment.MachineName"
-        }
-      ],
-      "OverrideArguments": []
-    },
-    {
-      "Name": "IInfrastructureLogger",
-      "StartId": 3000,
-      "ImplicitArguments": [
+        },
         {
-          "Name": "machineName",
+          "Name": "requestName",
           "Type": "string",
-          "Assignment": "Environment.MachineName"
+          "Assignment": "System.Diagnostics.Process.GetCurrentProcess().Id.ToString()"
         }
       ],
       "OverrideArguments": []
