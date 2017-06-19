@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiService", "WebApiService\WebApiService.csproj", "{76CB4FBD-5C98-4C88-8DC6-7E4DD41A45EE}"
 EndProject
@@ -9,13 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonActor", "PersonActor\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonActor.Interfaces", "PersonActor.Interfaces\PersonActor.Interfaces.csproj", "{66343026-F7ED-44F4-A0DB-652DBB9E3F39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleConsoleApp", "SampleConsoleApp\SampleConsoleApp.csproj", "{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitleService", "TitleService\TitleService.csproj", "{995D119C-5B63-43D9-8A99-DC3DD1B5979D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeEffect.ServiceFabric.Diagnostics.EventSourceGenerator", "CodeEffect.ServiceFabric.Diagnostics\CodeEffect.ServiceFabric.Diagnostics.EventSourceGenerator.csproj", "{237C2A35-8EE4-45DC-ABA0-4CDD3436AA57}"
 EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "CodeEffect.ServiceFabric.Auditing", "CodeEffect.ServiceFabric.Auditing\CodeEffect.ServiceFabric.Auditing.sfproj", "{25494522-FFEF-4A23-9653-D052630A3258}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartUpApplicationInsightsDebug", "StartUpApplicationInsightsDebug\StartUpApplicationInsightsDebug.csproj", "{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,14 +43,6 @@ Global
 		{66343026-F7ED-44F4-A0DB-652DBB9E3F39}.Release|Any CPU.ActiveCfg = Release|x64
 		{66343026-F7ED-44F4-A0DB-652DBB9E3F39}.Release|x64.ActiveCfg = Release|x64
 		{66343026-F7ED-44F4-A0DB-652DBB9E3F39}.Release|x64.Build.0 = Release|x64
-		{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}.Debug|x64.Build.0 = Debug|Any CPU
-		{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}.Release|x64.ActiveCfg = Release|Any CPU
-		{377EBFC4-09F8-4F05-BA02-E5394DDE1F4A}.Release|x64.Build.0 = Release|Any CPU
 		{995D119C-5B63-43D9-8A99-DC3DD1B5979D}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{995D119C-5B63-43D9-8A99-DC3DD1B5979D}.Debug|x64.ActiveCfg = Debug|x64
 		{995D119C-5B63-43D9-8A99-DC3DD1B5979D}.Debug|x64.Build.0 = Debug|x64
@@ -73,6 +65,14 @@ Global
 		{25494522-FFEF-4A23-9653-D052630A3258}.Release|x64.ActiveCfg = Release|x64
 		{25494522-FFEF-4A23-9653-D052630A3258}.Release|x64.Build.0 = Release|x64
 		{25494522-FFEF-4A23-9653-D052630A3258}.Release|x64.Deploy.0 = Release|x64
+		{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}.Debug|x64.Build.0 = Debug|Any CPU
+		{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E57A37B-2AF2-4E5B-BC22-8A6BBC23D0DC}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

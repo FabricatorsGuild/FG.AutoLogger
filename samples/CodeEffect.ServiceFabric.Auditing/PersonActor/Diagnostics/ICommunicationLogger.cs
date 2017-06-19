@@ -3,11 +3,11 @@ using FG.ServiceFabric.Services.Remoting.Runtime.Client;
 
 namespace PersonActor.Diagnostics
 {
-    public interface IActorCommunicationLogger :
+    public interface ICommunicationLogger :
+        IActorServiceCommunicationLogger,
         IPartitionHelperLogger,
         IActorClientLogger,
         IServiceClientLogger
     {
-        
     }
 }

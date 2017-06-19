@@ -45,13 +45,11 @@
       <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FG.ServiceFabric.Actors.Remoting, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\FG.ServiceFabric.Actors.Remoting.1.0.0-beta2\lib\net452\FG.ServiceFabric.Actors.Remoting.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="FG.ServiceFabric.Actors.Remoting, Version=1.0.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\FG.ServiceFabric.Actors.Remoting.1.0.1-beta4\lib\net452\FG.ServiceFabric.Actors.Remoting.dll</HintPath>
     </Reference>
     <Reference Include="FG.ServiceFabric.Services.Remoting, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\FG.ServiceFabric.Services.Remoting.1.0.0-beta2\lib\net452\FG.ServiceFabric.Services.Remoting.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\FG.ServiceFabric.Services.Remoting.1.0.0-beta4\lib\net452\FG.ServiceFabric.Services.Remoting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -110,8 +108,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\lib\net452\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -143,6 +140,7 @@
   <ItemGroup>
     <Compile Include="LoggerTypeTemplates\ActorMessageHeadersTypeTemplateExtension.cs" />
     <Compile Include="LoggerTypeTemplates\ActorServiceTypeTemplateExtension.cs" />
+    <Compile Include="LoggerTypeTemplates\ActorOrActorServiceTypeTemplateExtension.cs" />
     <Compile Include="LoggerTypeTemplates\ActorTypeTemplateExtension.cs" />
     <Compile Include="LoggerTypeTemplates\CustomServiceRequestHeaderTypeTemplateExtension.cs" />
     <Compile Include="LoggerTypeTemplates\ServiceRemotingMessageHeadersTypeTemplateExtension.cs" />

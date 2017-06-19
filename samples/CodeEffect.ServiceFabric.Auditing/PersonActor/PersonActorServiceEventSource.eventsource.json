@@ -31,24 +31,12 @@
       "OverrideArguments": []
     },
     {
-      "Name": "IActorCommunicationLogger",
+      "Name": "ICommunicationLogger",
       "StartId": 1000,
       "ImplicitArguments": [
         {
           "Name": "actor",
-          "Type": "Actor"
-        }
-      ],
-      "OverrideArguments": [
-      ]
-    },
-    {
-      "Name": "IServiceCommunicationLogger",
-      "StartId": 2000,
-      "ImplicitArguments": [
-        {
-          "Name": "actorService",
-          "Type": "ActorService"
+          "Type": "ActorOrActorServiceDescription"
         }
       ],
       "OverrideArguments": [

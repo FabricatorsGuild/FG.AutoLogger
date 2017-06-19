@@ -1,0 +1,78 @@
+{
+  "EventSources": [
+    {
+      "Name": "DefaultEventSource.eventsource.json",
+      "Hash": "701bc883efbfbd2c76efbfbd4646efbfbdefbfbd227a79"
+    }
+  ],
+  "References": [
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\Microsoft.Build.Framework.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Actors.2.6.204\\lib\\net45\\Microsoft.ServiceFabric.Actors.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Data.2.6.204\\lib\\net45\\Microsoft.ServiceFabric.Data.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Data.2.6.204\\lib\\net45\\Microsoft.ServiceFabric.Data.Interfaces.dll",
+    "..\\packages\\Microsoft.ServiceFabric.FabricTransport.Internal.2.6.204\\lib\\net45\\Microsoft.ServiceFabric.FabricTransport.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.204\\lib\\net45\\Microsoft.ServiceFabric.Internal.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.204\\lib\\net45\\Microsoft.ServiceFabric.Internal.Strings.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Services.2.6.204\\lib\\net45\\Microsoft.ServiceFabric.Services.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Services.Remoting.2.6.204\\lib\\net45\\Microsoft.ServiceFabric.Services.Remoting.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\Newtonsoft.Json.dll",
+    "System.dll",
+    "System.Core.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.204\\lib\\net45\\System.Fabric.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.204\\lib\\net45\\System.Fabric.Management.ServiceModel.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.204\\lib\\net45\\System.Fabric.Management.ServiceModel.XmlSerializers.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.204\\lib\\net45\\System.Fabric.Strings.dll",
+    "System.Runtime.Serialization.dll",
+    "System.ServiceModel.dll",
+    "System.Xml.Linq.dll",
+    "System.Data.DataSetExtensions.dll",
+    "Microsoft.CSharp.dll",
+    "System.Data.dll",
+    "System.Net.Http.dll",
+    "System.Xml.dll"
+  ],
+  "ProjectReferences": [],
+  "CompileTargets": [
+    {
+      "Name": "Diagnostics\\LoggerTypeTemplates\\ActorServiceTypeTemplateExtension.cs",
+      "Hash": "18efbfbd3707efbfbd3eefbfbdefbfbd3e36efbfbdefbfbdefbfbdefbfbddd95"
+    },
+    {
+      "Name": "Diagnostics\\LoggerTypeTemplates\\ActorTypeTemplateExtension.cs",
+      "Hash": "58eea99b2eefbfbdefbfbd4eefbfbdefbfbd093b4fefbfbdefbfbd38"
+    },
+    {
+      "Name": "Diagnostics\\LoggerTypeTemplates\\CustomServiceRequestHeaderTypeTemplateExtension.cs",
+      "Hash": "efbfbdc8a6efbfbd4cefbfbdefbfbd23efbfbd4befbfbd41efbfbd1defbfbd"
+    },
+    {
+      "Name": "Diagnostics\\LoggerTypeTemplates\\StatefulServiceContextTypeTemplateExtension.cs",
+      "Hash": "34efbfbdefbfbd36efbfbdefbfbd1242efbfbdefbfbd6901efbfbd265476"
+    },
+    {
+      "Name": "Diagnostics\\LoggerTypeTemplates\\StatelessServiceContextTypeTemplateExtension.cs",
+      "Hash": "7b52efbfbd591b6875efbfbd24efbfbd67efbfbdefbfbdefbfbd7fefbfbd"
+    },
+    {
+      "Name": "Diagnostics\\IActorServiceCommunicationLogger.cs",
+      "Hash": "dcae4c490eefbfbdefbfbd76273641efbfbd66587522"
+    },
+    {
+      "Name": "Diagnostics\\IServiceClientLogger.cs",
+      "Hash": "efbfbd71efbfbd35efbfbd652b3a7b285a51e7acb7"
+    },
+    {
+      "Name": "Diagnostics\\IServiceCommunicationLogger.cs",
+      "Hash": "d880efbfbd186d3defbfbdefbfbdefbfbdefbfbd313fefbfbd003f37"
+    },
+    {
+      "Name": "Utils\\IPartitionHelperLogger.cs",
+      "Hash": "2704efbfbdefbfbd4654087b2fdf9f40efbfbd5650"
+    }
+  ],
+  "Hash": "20efbfbd767e7cefbfbdefbfbdefbfbd41efbfbdefbfbd0cefbfbdefbfbdefbfbdefbfbd"
+}

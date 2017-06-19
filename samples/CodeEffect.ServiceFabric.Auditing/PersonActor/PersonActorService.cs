@@ -22,14 +22,14 @@ namespace PersonActor
     public class PersonActorService : ActorService, IPersonActorService
     {
         private readonly Func<IServiceDomainLogger> _serviceLoggerFactory;
-        private readonly Func<IServiceCommunicationLogger> _communicationLoggerFactory;
+        private readonly Func<ICommunicationLogger> _communicationLoggerFactory;
 
         public PersonActorService(StatefulServiceContext context, ActorTypeInformation actorTypeInfo, Func<ActorService, ActorId, ActorBase> actorFactory = null,
             Func<ActorBase, IActorStateProvider, IActorStateManager> stateManagerFactory = null, IActorStateProvider stateProvider = null,
             ActorServiceSettings settings = null) : base(context, actorTypeInfo, actorFactory, stateManagerFactory, stateProvider, settings)
         {
-            //_serviceLoggerFactory = new Person(this, ServiceRequestContext.Current);
-            //_communicationLogger = new CommunicationLogger(this, ServiceRequestContext.Current);
+            _serviceLoggerFactory = () => new ServiceDomainLogger(this, ServiceRequestContext.Current);
+            _communicationLoggerFactory = () => new CommunicationLogger(this);
         }
 
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()

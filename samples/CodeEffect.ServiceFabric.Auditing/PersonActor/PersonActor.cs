@@ -14,7 +14,7 @@ namespace PersonActor
 	internal class PersonActor : Actor, IPersonActor
 	{
 	    private readonly Func<IActorDomainLogger> _actorLoggerFactory;
-	    private readonly Func<IActorCommunicationLogger> _communicationLoggerFactory;
+	    private readonly Func<ICommunicationLogger> _communicationLoggerFactory;
 
 		public PersonActor(ActorService actorService, ActorId actorId)
 			: base(actorService, actorId)
