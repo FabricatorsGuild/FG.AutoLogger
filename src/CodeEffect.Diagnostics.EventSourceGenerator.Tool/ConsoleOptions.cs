@@ -30,5 +30,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
         public bool ForceUpdate { get; set; }
 
 
+        [Option('i', "interactive", Default = false,
+            HelpText = "Interactive mode, requests and waits for user interaction")]
+        public bool Interactive { get; set; }
     }
 }

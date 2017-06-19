@@ -120,8 +120,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
 
                     Console.WriteLine($"Done generating JSON Schema");
                 }
+
+                if (t.Interactive)
+                {
+                    Console.ReadKey();
+                }
             });
-            Console.ReadKey();
         }
 
         private static void LogMessage(string message, EventLevel eventLevel)
