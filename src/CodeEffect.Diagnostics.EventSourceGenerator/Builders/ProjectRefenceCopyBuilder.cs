@@ -13,7 +13,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var tempOutput = System.IO.Path.Combine(System.IO.Path.GetTempPath(), model.ProjectFilePath.ToMD5().ToHex());
             var tempOutputPrimary = System.IO.Path.Combine(tempOutput, "a");
             var tempOutputSecondary = System.IO.Path.Combine(tempOutput, "b");
-            System.IO.Directory.CreateDirectory(tempOutput);
+            System.IO.Directory.CreateDirectory(tempOutputPrimary);
+            System.IO.Directory.CreateDirectory(tempOutputSecondary);
             foreach (var reference in references)
             {
                 CopyFileToDestination(reference, tempOutputPrimary, tempOutputSecondary);
@@ -42,7 +43,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 }
                 catch (Exception ex)
                 {
-                    LogWarning($"Failed to copy reference {reference.Name} to temp directory");
+                    LogWarning($"Failed to copy reference {reference.Name} to temp directory - {ex.Message}");
 
                     if (secondaryDestinationFolder != null)
                     {
