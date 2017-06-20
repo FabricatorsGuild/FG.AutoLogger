@@ -41,6 +41,18 @@
       ],
       "OverrideArguments": [
       ]
+    },
+    {
+      "Name": "IActorLogger",
+      "StartId": 2000,
+      "ImplicitArguments": [
+        {
+          "Name": "actor",
+          "Type": "ActorOrActorServiceDescription"
+        }
+      ],
+      "OverrideArguments": [
+      ]
     }
   ],
   "Name": "PersonActorServiceEventSource",

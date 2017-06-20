@@ -38,6 +38,8 @@ namespace TitleService
 
         public Task UpdateTitleAsync(string person, string title, CancellationToken cancellationToken)
         {
+
+
             throw new NotImplementedException();
         }
 
@@ -46,6 +48,12 @@ namespace TitleService
             throw new NotImplementedException();
         }
     }
+
+	public class PersonStatistics
+	{
+		public string Title { get; set; }
+		public string[] Persons { get; set; }
+	}
 
     public static class ObjectMother
     {

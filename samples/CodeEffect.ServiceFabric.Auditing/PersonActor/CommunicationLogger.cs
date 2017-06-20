@@ -587,7 +587,7 @@ namespace PersonActor
 			callActorOperationHolder.Telemetry.Properties.Add("ApplicationName", _actor.ApplicationName);
 			callActorOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _actor.ServiceTypeName);
 			callActorOperationHolder.Telemetry.Properties.Add("ServiceName", _actor.ToString());
-			callActorOperationHolder.Telemetry.Properties.Add("PartitionId", _actor.PartitionId.ToString());	
+			callActorOperationHolder.Telemetry.Properties.Add("PartitionId", _actor.PartitionId.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _actor.ReplicaOrInstanceId.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("NodeName", _actor.NodeName);
 			callActorOperationHolder.Telemetry.Properties.Add("RequestUri", requestUri.ToString());

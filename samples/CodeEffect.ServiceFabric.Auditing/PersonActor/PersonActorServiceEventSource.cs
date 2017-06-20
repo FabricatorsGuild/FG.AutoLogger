@@ -35,6 +35,7 @@ namespace PersonActor
 			public const EventKeywords ActorDomain = (EventKeywords)0x1L;
 			public const EventKeywords ServiceDomain = (EventKeywords)0x2L;
 			public const EventKeywords Communication = (EventKeywords)0x4L;
+			public const EventKeywords Actor = (EventKeywords)0x8L;
 
 		}
 		#endregion Keywords

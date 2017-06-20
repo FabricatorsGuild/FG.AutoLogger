@@ -4,6 +4,6 @@ namespace PersonActor.Diagnostics
 	{
 		void PersonActivated(string name, string title);
 		void PersonLoaded();
-		void TitleSet(string title); 
+		void TitleSet(string title);		
 	}
 }

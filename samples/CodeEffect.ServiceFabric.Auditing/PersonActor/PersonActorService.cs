@@ -56,6 +56,8 @@ namespace PersonActor
 						{
 							try
 							{
+								var proxY = ServiceProxy.Create<ITitleService>(new Uri("fjkdfkjsdf"));
+
 								var serviceProxyFactory = new FG.ServiceFabric.Services.Remoting.Runtime.Client.ServiceProxyFactory(communicationLogger);
 								var serviceProxy = serviceProxyFactory.CreateServiceProxy<ITitleService>(
 									new Uri($"{this.Context.CodePackageActivationContext.ApplicationName}/TitleService"),

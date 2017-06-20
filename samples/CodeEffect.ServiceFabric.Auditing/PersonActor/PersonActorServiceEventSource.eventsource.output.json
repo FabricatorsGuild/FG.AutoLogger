@@ -2,7 +2,7 @@
   "EventSources": [
     {
       "Name": "PersonActorServiceEventSource.eventsource.json",
-      "Hash": "efbfbd4324efbfbd2973efbfbd69efbfbdefbfbd4267efbfbdefbfbdefbfbdefbfbd"
+      "Hash": "0d6defbfbd3fefbfbdefbfbdefbfbd3cefbfbd48efbfbd71efbfbd43"
     }
   ],
   "References": [
@@ -39,7 +39,7 @@
   "ProjectReferences": [
     {
       "ReferenceName": "..\\CodeEffect.ServiceFabric.Diagnostics\\bin\\Debug\\CodeEffect.ServiceFabric.Diagnostics.EventSourceGenerator.dll",
-      "Hash": "20:31:40"
+      "Hash": "21:06:14"
     },
     {
       "ReferenceName": "..\\Common\\bin\\Debug\\Common.dll",
@@ -47,13 +47,17 @@
     },
     {
       "ReferenceName": "..\\PersonActor.Interfaces\\bin\\x64\\Debug\\PersonActor.Interfaces.dll",
-      "Hash": "19:50:16"
+      "Hash": "21:00:29"
     }
   ],
   "CompileTargets": [
     {
       "Name": "Diagnostics\\IActorDomainLogger.cs",
-      "Hash": "efbfbd315050efbfbd7eefbfbd2a3c6e0211efbfbd33efbfbd"
+      "Hash": "6defbfbdefbfbdefbfbd0f4257592a3260efbfbdefbfbd391818"
+    },
+    {
+      "Name": "Diagnostics\\IActorLogger.cs",
+      "Hash": "20381c655fefbfbd664fefbfbd7c2e2f30ec8c91"
     },
     {
       "Name": "Diagnostics\\ICommunicationLogger.cs",
@@ -64,5 +68,5 @@
       "Hash": "c98befbfbd3acda253efbfbd622a19efbfbd1befbfbd36efbfbd"
     }
   ],
-  "Hash": "efbfbdefbfbdefbfbd02efbfbdefbfbdefbfbd3defbfbdefbfbd45145eefbfbd00efbfbd"
+  "Hash": "3e28790eefbfbdefbfbd72efbfbd3fefbfbd27efbfbdefbfbd02d9a6"
 }
