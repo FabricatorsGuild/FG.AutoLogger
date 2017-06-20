@@ -39,7 +39,7 @@
         <SingletonPartition />
       </StatelessService>
     </Service>
-    <Service Name="PersonActorService" GeneratedIdRef="4030e1d3-ed3a-4e87-98a0-bebfcdbf1f67|Persisted">
+    <Service Name="PersonActorService" GeneratedIdRef="4792480e-003d-495d-8cdc-44bc05761024|Persisted">
       <StatefulService ServiceTypeName="PersonActorServiceType" TargetReplicaSetSize="[PersonActorService_TargetReplicaSetSize]" MinReplicaSetSize="[PersonActorService_MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="[PersonActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
