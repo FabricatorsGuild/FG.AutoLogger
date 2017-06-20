@@ -7,8 +7,8 @@
     <ProjectGuid>{F17DCC86-5A9A-48D0-AA6D-F895FD3B66A1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeEffect.Diagnostics.EventSourceGenerator.Schema</RootNamespace>
-    <AssemblyName>CodeEffect.Diagnostics.EventSourceGenerator.Schema</AssemblyName>
+    <RootNamespace>FG.Diagnostics.AutoLogger.Schema</RootNamespace>
+    <AssemblyName>FG.Diagnostics.AutoLogger.Schema</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\AutoLogger.Model.csproj">
       <Project>{714C6060-43CC-4314-A233-8E74D65D014C}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
+      <Name>AutoLogger.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

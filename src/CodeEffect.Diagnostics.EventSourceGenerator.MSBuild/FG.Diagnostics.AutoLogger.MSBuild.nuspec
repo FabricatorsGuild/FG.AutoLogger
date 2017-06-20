@@ -15,9 +15,11 @@
     <tags>ETW EventSource MSBuild</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="10.0.0" />
+      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$-preview01" />
     </dependencies>
   </metadata>
   <files>
+    <file src="build\**" target="build" />
     <file src="bin\Debug\*.dll" target="lib\net452" />
     <file src="bin\Debug\*.pdb" target="lib\net452" />
   </files>

@@ -164,13 +164,13 @@
     <None Include="Diagnostics\sample.eventsource.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.AI\CodeEffect.Diagnostics.EventSourceGenerator.AI.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.AI\AutoLogger.AI.csproj">
       <Project>{42202370-bac7-486b-ac92-5b247148e649}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator.AI</Name>
+      <Name>AutoLogger.AI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\AutoLogger.Model.csproj">
       <Project>{714C6060-43CC-4314-A233-8E74D65D014C}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
+      <Name>AutoLogger.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

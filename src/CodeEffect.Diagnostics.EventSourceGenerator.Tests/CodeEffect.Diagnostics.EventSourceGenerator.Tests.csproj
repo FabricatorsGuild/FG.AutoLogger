@@ -66,13 +66,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\AutoLogger.Model.csproj">
       <Project>{714C6060-43CC-4314-A233-8E74D65D014C}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
+      <Name>AutoLogger.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\CodeEffect.Diagnostics.EventSourceGenerator.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\AutoLogger.Generator.csproj">
       <Project>{1837B79F-C48F-4D7E-8121-02026C1EA5FC}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator</Name>
+      <Name>AutoLogger.Generator</Name>
     </ProjectReference>
     <ProjectReference Include="..\ConsoleApplication1\ConsoleApplication1.csproj">
       <Project>{A084D81A-47DC-41FA-A9E1-9CF5D9FF70E7}</Project>

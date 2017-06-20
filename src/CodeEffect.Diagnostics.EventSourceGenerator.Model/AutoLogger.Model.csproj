@@ -7,8 +7,8 @@
     <ProjectGuid>{714C6060-43CC-4314-A233-8E74D65D014C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeEffect.Diagnostics.EventSourceGenerator.Model</RootNamespace>
-    <AssemblyName>CodeEffect.Diagnostics.EventSourceGenerator.Model</AssemblyName>
+    <RootNamespace>FG.Diagnostics.AutoLogger.Model</RootNamespace>
+    <AssemblyName>FG.Diagnostics.AutoLogger.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -99,7 +99,7 @@
     <Compile Include="TypeTemplateModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CodeEffect.Diagnostics.EventSourceGenerator.Model.nuspec" />
+    <None Include="FG.Diagnostics.AutoLogger.Model.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

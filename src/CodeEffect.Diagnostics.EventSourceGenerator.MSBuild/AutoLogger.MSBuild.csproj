@@ -9,8 +9,8 @@
     <ProjectGuid>{41FDE7BF-94B1-4A51-AB58-7E94CFF6FD47}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeEffect.Diagnostics.EventSourceGenerator.MSBuild</RootNamespace>
-    <AssemblyName>CodeEffect.Diagnostics.EventSourceGenerator.MSBuild</AssemblyName>
+    <RootNamespace>FG.Diagnostics.AutoLogger.MSBuild</RootNamespace>
+    <AssemblyName>FG.Diagnostics.AutoLogger.MSBuild</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.nuspec" />
+    <None Include="FG.Diagnostics.AutoLogger.MSBuild.nuspec" />
     <None Include="build\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -73,13 +73,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\AutoLogger.Model.csproj">
       <Project>{714c6060-43cc-4314-a233-8e74d65d014c}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
+      <Name>AutoLogger.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\CodeEffect.Diagnostics.EventSourceGenerator.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\AutoLogger.Generator.csproj">
       <Project>{1837b79f-c48f-4d7e-8121-02026c1ea5fc}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator</Name>
+      <Name>AutoLogger.Generator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

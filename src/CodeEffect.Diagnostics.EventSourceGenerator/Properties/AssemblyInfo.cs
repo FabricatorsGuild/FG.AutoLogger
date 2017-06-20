@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CodeEffect.Diagnostics.EventSourceGenerator")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("FG.Diagnostics.AutoLogger.Generator")]
+[assembly: AssemblyDescription("Generators for AutoLogger templates")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CodeEffect.Diagnostics.EventSourceGenerator")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("Fabricators Guild")]
+[assembly: AssemblyProduct("FG.Diagnostics.AutoLogger")]
+[assembly: AssemblyCopyright("Copyright © Fabricators Guild 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

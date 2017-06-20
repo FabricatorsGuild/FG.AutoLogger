@@ -9,8 +9,8 @@
     <ProjectGuid>{E283C474-CE74-48FB-B3D9-193F493008D5}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeEffect.Diagnostics.EventSourceGenerator.Tool</RootNamespace>
-    <AssemblyName>CodeEffect.Diagnostics.EventSourceGenerator.Tool</AssemblyName>
+    <RootNamespace>FG.Diagnostics.AutoLogger.Tool</RootNamespace>
+    <AssemblyName>FG.Diagnostics.AutoLogger.Tool</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -64,17 +64,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\CodeEffect.Diagnostics.EventSourceGenerator.Model.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\AutoLogger.Model.csproj">
       <Project>{714c6060-43cc-4314-a233-8e74d65d014c}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Model</Name>
+      <Name>AutoLogger.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Schema\CodeEffect.Diagnostics.EventSourceGenerator.Schema.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Schema\AutoLogger.Schema.csproj">
       <Project>{F17DCC86-5A9A-48D0-AA6D-F895FD3B66A1}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator.Schema</Name>
+      <Name>AutoLogger.Schema</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\CodeEffect.Diagnostics.EventSourceGenerator.csproj">
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator\AutoLogger.Generator.csproj">
       <Project>{1837B79F-C48F-4D7E-8121-02026C1EA5FC}</Project>
-      <Name>CodeEffect.Diagnostics.EventSourceGenerator</Name>
+      <Name>AutoLogger.Generator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
