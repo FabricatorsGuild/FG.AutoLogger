@@ -21,13 +21,35 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
             var maxKeywordValue = that.Keywords.Max(k => k.Value) ?? 0;
             var newKeyword = new KeywordModel()
             {
-                Name = "Error",
+                Name = keywordName,
                 Value = (maxKeywordValue == 0 ? 1 : maxKeywordValue * 2)
             };
-            var keywords = new List<KeywordModel>(that.Keywords) {newKeyword};
             that.Keywords = that.Keywords.Add(newKeyword);
 
             return newKeyword;
+        }
+
+        public static EventTaskModel GetEventTask(this IEnumerable<EventTaskModel> that, string keywordName)
+        {
+            return that.FirstOrDefault(k => k.Name.Equals(keywordName, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public static EventTaskModel GetEventTask(this EventSourceModel that, string keywordName)
+        {
+            return that.Tasks.GetEventTask(keywordName);
+        }
+
+        public static EventTaskModel AddEventTask(this EventSourceModel that, string eventTaskName)
+        {
+            var maxEventTaskValue = that.Tasks.Max(k => k.Value) ?? 0;
+            var newEventTask = new EventTaskModel()
+            {
+                Name = eventTaskName,
+                Value = (maxEventTaskValue == 0 ? 1 : maxEventTaskValue * 2)
+            };
+            that.Tasks = that.Tasks.Add(newEventTask);
+
+            return newEventTask;
         }
 
         private static T[] Add<T>(this T[] that, T item)

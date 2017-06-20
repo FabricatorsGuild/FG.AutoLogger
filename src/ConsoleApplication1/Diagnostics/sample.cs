@@ -40,6 +40,16 @@ namespace ConsoleApplication1.Diagnostics
 		}
 		#endregion Keywords
 
+		#region Tasks
+
+		public static class Tasks
+		{
+			public const EventTask CallExternalComponent = (EventTask)0x1L;
+			public const EventTask RecieveMessage = (EventTask)0x2L;
+
+		}
+		#endregion Tasks
+
 		#region Events
 
 

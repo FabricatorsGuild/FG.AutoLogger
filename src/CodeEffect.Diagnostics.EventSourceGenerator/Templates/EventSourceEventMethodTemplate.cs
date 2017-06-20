@@ -7,7 +7,8 @@
         public const string Variable_EVENT_ID = @"@@EVENT_ID@@";
         public const string Variable_EVENT_LEVEL = @"@@EVENT_LEVEL@@";
         public const string Variable_EVENT_KEYWORDS_DECLARATION = @"@@EVENT_KEYWORDS_DECLARATION@@";
-        public const string Variable_EVENT_OPCODE_DECLARATION = @"@@EVENT_OPCODE_DECLARATION@@";        
+        public const string Variable_EVENT_OPCODE_DECLARATION = @"@@EVENT_OPCODE_DECLARATION@@";
+        public const string Variable_EVENT_TASK_DECLARATION = @"@@EVENT_TASK_DECLARATION@@";
         public const string Variable_EVENT_MESSAGE_FORMATTER = @"@@EVENT_MESSAGE_FORMATTER@@";
         public const string Variable_EVENT_METHOD_ACCESS = @"@@EVENT_METHOD_ACCESS@@";
         public const string Variable_EVENT_METHOD_ARGUMENTS = @"@@EVENT_METHOD_ARGUMENTS@@";
@@ -29,7 +30,7 @@
         public const string Template_EVENT_METHOD = @"
 		private const int @@EVENT_NAME@@EventId = @@EVENT_ID@@;
 
-		[Event(@@EVENT_NAME@@EventId, Level = EventLevel.@@EVENT_LEVEL@@, Message = ""@@EVENT_MESSAGE_FORMATTER@@""@@EVENT_KEYWORDS_DECLARATION@@@@EVENT_OPCODE_DECLARATION@@)]
+		[Event(@@EVENT_NAME@@EventId, Level = EventLevel.@@EVENT_LEVEL@@, Message = ""@@EVENT_MESSAGE_FORMATTER@@""@@EVENT_KEYWORDS_DECLARATION@@@@EVENT_OPCODE_DECLARATION@@@@EVENT_TASK_DECLARATION@@)]
 		@@EVENT_METHOD_ACCESS@@ void @@EVENT_NAME@@(
 			@@EVENT_METHOD_ARGUMENTS@@)
 		{

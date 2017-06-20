@@ -54,12 +54,14 @@
     <Compile Include="EventModel.cs" />
     <Compile Include="EventSourceModel.cs" />
     <Compile Include="EventSourceModelExtensions.cs" />
+    <Compile Include="EventTaskExtensions.cs" />
     <Compile Include="EventTaskModel.cs" />
     <Compile Include="ExtensionsMethodModel.cs" />
     <Compile Include="IBuilder.cs" />
     <Compile Include="IEventArgumentBuilder.cs" />
     <Compile Include="IEventRenderer.cs" />
     <Compile Include="IEventSourceBuilder.cs" />
+    <Compile Include="IEventTaskRenderer.cs" />
     <Compile Include="IExtension.cs" />
     <Compile Include="IEventBuilder.cs" />
     <Compile Include="IEventSourceRenderer.cs" />

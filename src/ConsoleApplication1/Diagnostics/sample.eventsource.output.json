@@ -39,11 +39,11 @@
   "ProjectReferences": [
     {
       "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.AI\\bin\\Debug\\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll",
-      "Hash": "06:52:40"
+      "Hash": "20:57:00"
     },
     {
       "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\bin\\Debug\\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll",
-      "Hash": "09:04:42"
+      "Hash": "20:19:23"
     }
   ],
   "CompileTargets": [
@@ -84,5 +84,5 @@
       "Hash": "cf91cea87b4a78efbfbdd0abefbfbdefbfbd69efbfbd38"
     }
   ],
-  "Hash": "efbfbd5120efbfbd6c6248efbfbdefbfbdefbfbdefbfbd646cefbfbd"
+  "Hash": "efbfbdefbfbd78d189efbfbdefbfbdefbfbd0f6cefbfbdefbfbd146cefbfbd03"
 }

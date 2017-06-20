@@ -9,6 +9,7 @@
         public const string Variable_EVENTSOURCE_NAME = @"@@EVENTSOURCE_NAME@@";
         public const string Variable_NAMESPACE_DECLARATION = @"@@NAMESPACE_DECLARATION@@";
         public const string Variable_KEYWORDS_DECLARATION = @"@@KEYWORDS_DECLARATION@@";
+        public const string Variable_EVENTTASKS_DECLARATION = @"@@EVENTTASKS_DECLARATION@@";
         public const string Variable_EVENTS_DECLARATION = @"@@EVENTS_DECLARATION@@";
         public const string Variable_EXTENSIONS_DECLARATION = @"@@EXTENSIONS_DECLARATION@@";
         public const string Template_EXTENSIONS_DECLARATION = @"
@@ -57,6 +58,14 @@ namespace @@NAMESPACE_DECLARATION@@
 @@KEYWORDS_DECLARATION@@
 		}
 		#endregion Keywords
+
+		#region Tasks
+
+		public static class Tasks
+		{
+@@EVENTTASKS_DECLARATION@@
+		}
+		#endregion Tasks
 
 		#region Events
 

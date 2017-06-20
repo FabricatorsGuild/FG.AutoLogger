@@ -13,7 +13,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int StartCallExternalComponentEventId = 2001;
 
-		[Event(StartCallExternalComponentEventId, Level = EventLevel.LogAlways, Message = "Start Call External Component {2} {3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Start)]
+		[Event(StartCallExternalComponentEventId, Level = EventLevel.LogAlways, Message = "Start Call External Component {2} {3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Start, Task = Tasks.CallExternalComponent)]
 		private void StartCallExternalComponent(
 			int processId, 
 			string machineName, 
@@ -48,7 +48,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int StopCallExternalComponentEventId = 4002;
 
-		[Event(StopCallExternalComponentEventId, Level = EventLevel.LogAlways, Message = "Stop Call External Component {2} {3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop)]
+		[Event(StopCallExternalComponentEventId, Level = EventLevel.LogAlways, Message = "Stop Call External Component {2} {3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop, Task = Tasks.CallExternalComponent)]
 		private void StopCallExternalComponent(
 			int processId, 
 			string machineName, 
@@ -83,7 +83,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int StartRecieveMessageEventId = 6003;
 
-		[Event(StartRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Start)]
+		[Event(StartRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Start, Task = Tasks.RecieveMessage)]
 		public void StartRecieveMessage(
 			int processId, 
 			string machineName, 
@@ -101,7 +101,7 @@ namespace ConsoleApplication1.Diagnostics
 
 		private const int StopRecieveMessageEventId = 8004;
 
-		[Event(StopRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop)]
+		[Event(StopRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop, Task = Tasks.RecieveMessage)]
 		public void StopRecieveMessage(
 			int processId, 
 			string machineName, 

@@ -50,7 +50,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }.Union(project.GetExtensions<IKeywordRenderer>()).ToArray();
             foreach (var keyword in eventSourceModel.Keywords ?? new KeywordModel[0])
             {
-                foreach (var renderer in keywordsRenderers.Union(project.GetExtensions<IKeywordRenderer>()))
+                foreach (var renderer in keywordsRenderers)
                 {
                     PassAlongLoggers(renderer as IWithLogging);
                     keywords.AppendLine(renderer.Render(project, eventSourceModel, keyword));
@@ -58,6 +58,21 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }
             output = output.Replace(EventSourceTemplate.Variable_KEYWORDS_DECLARATION, keywords.ToString());
 
+            // Render all tasks
+            var eventTasks = new StringBuilder();
+            var eventTaskRenderers = new IEventTaskRenderer[]
+            {
+                new EventSourceEventTaskRenderer(), 
+            }.Union(project.GetExtensions<IEventTaskRenderer>()).ToArray();
+            foreach (var eventTask in eventSourceModel.Tasks?? new EventTaskModel[0])
+            {
+                foreach (var renderer in eventTaskRenderers)
+                {
+                    PassAlongLoggers(renderer as IWithLogging);
+                    eventTasks.AppendLine(renderer.Render(project, eventSourceModel, eventTask));
+                }
+            }
+            output = output.Replace(EventSourceTemplate.Variable_EVENTTASKS_DECLARATION, eventTasks.ToString());
 
             // Render extensions
             if (eventSourceModel.Extensions != null && eventSourceModel.Extensions.Any())

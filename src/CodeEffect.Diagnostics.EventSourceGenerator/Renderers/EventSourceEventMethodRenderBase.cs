@@ -45,6 +45,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             var opCodeDeclaration = (opCode != null) ? $", Opcode = EventOpcode.{opCode}" : "";
             outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_OPCODE_DECLARATION, opCodeDeclaration);
 
+            var eventTask = (string) null;
+            if (model.Task != null)
+            {
+                eventTask = model.Task.Name;
+            }
+            var eventTaskDeclaration = (eventTask != null) ? $", Task = Tasks.{eventTask}" : "";
+            outputEventMethod = outputEventMethod.Replace(EventSourceEventMethodTemplate.Variable_EVENT_TASK_DECLARATION, eventTaskDeclaration);
+
             var eventMethodArgumentsDeclarationBuilder = new EventArgumentsListBuilder(
                 RenderEventMethodArgument, EventSourceEventMethodTemplate.Template_EVENT_METHOD_ARGUMENT_DELIMITER);
             var writeEventMethodCallArgument = new EventArgumentsListBuilder(

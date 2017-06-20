@@ -15,10 +15,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var keywords = value as KeywordModel[];
-            if (keywords == null) return;
+            var eventTask = value as EventTaskModel[];
+            if (eventTask == null) return;
 
-            serializer.Serialize(writer, keywords.Select(k => k.Name));
+            serializer.Serialize(writer, eventTask.Select(k => k.Name));
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
