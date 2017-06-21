@@ -75,7 +75,7 @@ namespace PersonActor
 
 		private const int StartRunAsyncLoopEventId = 402;
 
-		[Event(StartRunAsyncLoopEventId, Level = EventLevel.LogAlways, Message = "Start Run Async Loop", Keywords = Keywords.ServiceDomain, Opcode = EventOpcode.Start)]
+		[Event(StartRunAsyncLoopEventId, Level = EventLevel.LogAlways, Message = "Start Run Async Loop", Keywords = Keywords.ServiceDomain, Opcode = EventOpcode.Start, Task = Tasks.RunAsyncLoop)]
 		private void StartRunAsyncLoop(
 			string actorType, 
 			string applicationTypeName, 
@@ -129,7 +129,7 @@ namespace PersonActor
 
 		private const int StopRunAsyncLoopEventId = 603;
 
-		[Event(StopRunAsyncLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Run Async Loop", Keywords = Keywords.ServiceDomain, Opcode = EventOpcode.Stop)]
+		[Event(StopRunAsyncLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Run Async Loop", Keywords = Keywords.ServiceDomain, Opcode = EventOpcode.Stop, Task = Tasks.RunAsyncLoop)]
 		private void StopRunAsyncLoop(
 			string actorType, 
 			string applicationTypeName, 

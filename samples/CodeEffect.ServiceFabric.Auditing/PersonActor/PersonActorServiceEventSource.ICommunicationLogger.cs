@@ -13,7 +13,7 @@ namespace PersonActor
 
 		private const int StartRecieveActorMessageEventId = 1001;
 
-		[Event(StartRecieveActorMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Actor Message {8} {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		[Event(StartRecieveActorMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Actor Message {8} {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = Tasks.RecieveActorMessage)]
 		private void StartRecieveActorMessage(
 			string actorType, 
 			string applicationTypeName, 
@@ -82,7 +82,7 @@ namespace PersonActor
 
 		private const int StopRecieveActorMessageEventId = 2002;
 
-		[Event(StopRecieveActorMessageEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Actor Message {8} {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		[Event(StopRecieveActorMessageEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Actor Message {8} {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop, Task = Tasks.RecieveActorMessage)]
 		private void StopRecieveActorMessage(
 			string actorType, 
 			string applicationTypeName, 
@@ -367,7 +367,7 @@ namespace PersonActor
 
 		private const int StartRecieveServiceMessageEventId = 6006;
 
-		[Event(StartRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Service Message {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = EventTask.None)]
+		[Event(StartRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Service Message {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = Tasks.RecieveServiceMessage)]
 		private void StartRecieveServiceMessage(
 			string actorType, 
 			string actorId, 
@@ -436,7 +436,7 @@ namespace PersonActor
 
 		private const int StopRecieveServiceMessageEventId = 7007;
 
-		[Event(StopRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Service Message {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		[Event(StopRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Service Message {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop, Task = Tasks.RecieveServiceMessage)]
 		private void StopRecieveServiceMessage(
 			string actorType, 
 			string actorId, 
@@ -1117,7 +1117,7 @@ namespace PersonActor
 
 		private const int StartCallActorEventId = 18018;
 
-		[Event(StartCallActorEventId, Level = EventLevel.LogAlways, Message = "Start Call Actor {8} {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		[Event(StartCallActorEventId, Level = EventLevel.LogAlways, Message = "Start Call Actor {8} {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = Tasks.CallActor)]
 		private void StartCallActor(
 			string actorType, 
 			string applicationTypeName, 
@@ -1186,7 +1186,7 @@ namespace PersonActor
 
 		private const int StopCallActorEventId = 19019;
 
-		[Event(StopCallActorEventId, Level = EventLevel.LogAlways, Message = "Stop Call Actor {8} {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		[Event(StopCallActorEventId, Level = EventLevel.LogAlways, Message = "Stop Call Actor {8} {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop, Task = Tasks.CallActor)]
 		private void StopCallActor(
 			string actorType, 
 			string applicationTypeName, 
@@ -1337,7 +1337,7 @@ namespace PersonActor
 
 		private const int StartCallServiceEventId = 21021;
 
-		[Event(StartCallServiceEventId, Level = EventLevel.LogAlways, Message = "Start Call Service {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		[Event(StartCallServiceEventId, Level = EventLevel.LogAlways, Message = "Start Call Service {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = Tasks.CallService)]
 		private void StartCallService(
 			string actorType, 
 			string actorId, 
@@ -1406,7 +1406,7 @@ namespace PersonActor
 
 		private const int StopCallServiceEventId = 22022;
 
-		[Event(StopCallServiceEventId, Level = EventLevel.LogAlways, Message = "Stop Call Service {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		[Event(StopCallServiceEventId, Level = EventLevel.LogAlways, Message = "Stop Call Service {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop, Task = Tasks.CallService)]
 		private void StopCallService(
 			string actorType, 
 			string actorId, 
