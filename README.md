@@ -1,5 +1,13 @@
 # CodeEffect.Diagnostics.EventSourceGenerator
 
+* [Adding EventSources to a project](#adding-eventsources-to-a-project)
+* [Adding Loggers to a project](#adding-loggers-to-a-project)
+* [Modifying an .eventsource.json file](#modifying-an-eventsourcejson-file)
+* [The Generated output](#the-generated-output)
+* [Using the Eventsource](#using-the-eventsource)
+* [Generating EventSources and loggers](#generating-eventsources-and-loggers)
+
+
 EventSourceGenerator automatically generates ETW EventSources for C# .NET projects. It picks up [existing logger files](#adding-loggers-to-a-project) in the project and [metadata files](#modifying-an-eventsourcejson-file) describing the expected EventSource.
 
 The purpose is to remove a lot of the manual writing and maintainance of EventSource implemenations in solutions. Since it accepts logger interfaces as well, implementations of these interfaces can be passed around to classes that we don't want having a reference to the typical ``XXXEventSource.Current`` singleton. This makes the code 
@@ -283,6 +291,24 @@ This example shows the generated logger implementation for a logger with one met
 
 The resulting EventSource should primarily be used through the generated, concrete implementation classes based on loggers. These can be instantiated within a class and passed around to other classed and methods without creating a strong dependency on the Singleton implementation of the EventSource. The concrete logger implementations in turn use the Singleton accessor for the EventSource, but this is opaque to the user of the classes.
 
+## Generating EventSources and loggers
 
+There are currently two ways of generating concrete loggers and EventSource implementations in a project
+
+* Using the MSBuild NuGet that triggers a pre-build of related files and then includes the generated result. **NOTE: This method is currenly not working well with larger projects and may end up in .dlls shared between multiple projects using the MSBuild target being locked by overlapping MSBuild processes**
+* Using a separate Tool. Recommended is to add this tool to Visual Studio for easier access and use. The steps for doing that is included below
+
+### Adding the AutoLogger tool as a Visual Studio External Tool
+
+* Go to Tools > External Tools...
+* Click Add
+* Enter title "AutoLogger - Generate"
+* Command: ``[path to downloaded tool]/FG.Diagnostics.AutoLogger.Tool.exe``
+* Arguments: ``-o -s -p $(ProjectDir)$(ProjectFileName) -f``
+* Initial Directory: ``$(ProjectDir)``
+
+![Adding External Tool](https://github.com/FabricatorsGuild/FG.AutoLogger/raw/master/docs/Setting%20up%20Visual%20Studio%20External%20Tool.PNG)
+
+After doing this you can add a Keyboard shortcut for activating the tool in the project you are currently working in. If the External Tool you added above was number 2 in the list of External Tools, then simply add a Keyboard shortcut Tools > Options > Keyboard > Tools.ExternalCommands2 -> ``ALT+L``
 
 
