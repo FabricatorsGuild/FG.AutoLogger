@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$-preview02</version>
+    <version>$version$</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
@@ -21,7 +21,7 @@
       <dependency id="Microsoft.ApplicationInsights.PerfCounterCollector" version="2.3.0"/>
       <dependency id="Microsoft.ApplicationInsights.WindowsServer" version="2.3.0"/>
       <dependency id="Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel" version="2.3.0"/>
-      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$-preview02" />
+      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$" />
     </dependencies>
   </metadata>
   <files>
