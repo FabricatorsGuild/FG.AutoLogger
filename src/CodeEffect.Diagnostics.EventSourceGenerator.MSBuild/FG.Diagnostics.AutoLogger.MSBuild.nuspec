@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$-preview001</version>
+    <version>$version$-preview02</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
@@ -15,8 +15,8 @@
     <tags>ETW EventSource MSBuild</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="10.0.0" />
-      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$-preview01" />
-      <dependency id="FG.Diagnostics.AutoLogger.Generator" version="$version$-preview01" />
+      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$-preview02" />
+      <dependency id="FG.Diagnostics.AutoLogger.Generator" version="$version$-preview02" />
     </dependencies>
   </metadata>
   <files>

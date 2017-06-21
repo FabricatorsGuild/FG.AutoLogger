@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$-preview01</version>
+    <version>$version$-preview02</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
@@ -15,7 +15,7 @@
     <tags>ETW EventSource ApplicationInsights</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="10.0.0" />
-      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$-preview01" />
+      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$-preview02" />
     </dependencies>
   </metadata>
   <files>
