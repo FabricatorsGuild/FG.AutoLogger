@@ -18,7 +18,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Samples
 
             public void Run()
             {
-                System.Console.WriteLine("Console Runner running");
+                System.Console.WriteLine("Console Runner running. Press a key to start loop.");
+                System.Console.ReadKey();
 
                 var key = ConsoleKey.NoName;
                 while (key != ConsoleKey.X)

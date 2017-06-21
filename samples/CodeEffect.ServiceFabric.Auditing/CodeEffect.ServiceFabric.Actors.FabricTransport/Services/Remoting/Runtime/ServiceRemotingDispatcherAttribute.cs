@@ -53,7 +53,7 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.Runtime
                 // Ignore
                 // TODO: Should probably log this.
             }
-            return new CodeEffect.ServiceFabric.Services.Remoting.Runtime.ServiceRemotingDispatcher(serviceContext, service);
+            return new CodeEffect.ServiceFabric.Services.Remoting.Runtime.ServiceRemotingDispatcher(service, new Microsoft.ServiceFabric.Services.Remoting.Runtime.ServiceRemotingDispatcher(serviceContext, service), null);
         }
     }
 }

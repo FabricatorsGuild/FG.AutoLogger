@@ -107,7 +107,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             var requestArgumentName = GetRequestNameArgument(model);
             if (requestArgumentName != null)
             {
-                requestName = CreateDictionaryKeyValue(requestArgumentName).Value;                
+                requestName = $"{CreateDictionaryKeyValue(requestArgumentName).Value} ?? \"{operationName}\"";
             }
             else
             {

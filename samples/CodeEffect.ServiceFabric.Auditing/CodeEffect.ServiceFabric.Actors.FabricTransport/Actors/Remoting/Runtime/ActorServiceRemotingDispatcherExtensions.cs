@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
@@ -17,12 +18,12 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.Runtime
                 var methodDispatcherMapPropertyInfo = typeof(ActorService).GetProperty("MethodDispatcherMap",
                     BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.GetProperty);
                 var methodDispatcherMap = methodDispatcherMapPropertyInfo?.GetValue(actorService);
-                var getDispatcherMethodInfo = methodDispatcherMap?.GetType().GetMethod("GetDispatcher", new Type[] { typeof(int), typeof(int) });
+                var getDispatcherMethodInfo = methodDispatcherMap?.GetType().GetMethod("GetDispatcher", new Type[] {typeof(int), typeof(int)});
                 var methodDispatcher = getDispatcherMethodInfo?.Invoke(methodDispatcherMap,
-                    new object[] { interfaceId, methodId });
+                    new object[] {interfaceId, methodId});
                 var getMethodNameMethodInfo = methodDispatcher?.GetType().GetMethod("GetMethodName",
                     BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                var methodName = getMethodNameMethodInfo?.Invoke(methodDispatcher, new object[] { methodId }) as string;
+                var methodName = getMethodNameMethodInfo?.Invoke(methodDispatcher, new object[] {methodId}) as string;
                 return methodName;
             }
             catch (Exception)
@@ -31,5 +32,12 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.Runtime
             }
             return null;
         }
+
+        public static string GetMethodDispatcherMapName(this Microsoft.ServiceFabric.Services.Remoting.Builder.MethodDispatcherBase that, int interfaceId, int methodId)
+        {
+            Debug.Assert(that.InterfaceId != interfaceId);
+            return that.GetMethodName(methodId);
+        }
     }
+
 }

@@ -8,27 +8,30 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
             HelpText = "CS Project file to be processed.")]
         public string ProjectFile { get; set; }
 
-        [Option('v', "verbose", Default = true,
+        [Option('v', "verbose", DefaultValue = true,
             HelpText = "Prints all messages to standard output.")]
         public bool Verbose { get; set; }
 
-        [Option('o', "output", Default = false,
+        [Option('o', "output", DefaultValue = false,
             HelpText = "Prints out all generated output.")]
         public bool DisplayOutput { get; set; }
 
 
-        [Option('s', "save", Default = false,
+        [Option('s', "save", DefaultValue = false,
             HelpText = "Save all changes")]
         public bool SaveChanges { get; set; }
 
-        [Option('g', "generateSchema", Default = false,
+        [Option('g', "generateSchema", DefaultValue = false,
             HelpText = "Generates a JSON schema for the EventSource model")]
         public bool GenerateSchema { get; set; }
 
-        [Option('f', "force", Default = false,
+        [Option('f', "force", DefaultValue = false,
             HelpText = "Force update")]
         public bool ForceUpdate { get; set; }
 
 
+        [Option('i', "interactive", DefaultValue = false,
+            HelpText = "Interactive mode, requests and waits for user interaction")]
+        public bool Interactive { get; set; }
     }
 }

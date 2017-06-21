@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport;
-using CodeEffect.ServiceFabric.Actors.Remoting.Runtime;
+using FG.ServiceFabric.Actors.Remoting.FabricTransport;
+using FG.ServiceFabric.Actors.Remoting.Runtime;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information

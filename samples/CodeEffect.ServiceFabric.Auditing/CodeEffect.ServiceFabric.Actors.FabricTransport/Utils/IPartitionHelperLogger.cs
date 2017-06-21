@@ -8,7 +8,7 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Utils
     {
         void EnumeratingPartitions(Uri serviceUri);
         void FailedToEnumeratePartitions(Uri serviceUri, Exception ex);
-        void EnumeratedExistingPartitions(Uri serviceUri, IEnumerable<Int64RangePartitionInformation> partitions);
-        void EnumeratedAndCachedPartitions(Uri serviceUri, IEnumerable<Int64RangePartitionInformation> partitions);
+        void EnumeratedExistingPartitions(Uri serviceUri, IEnumerable<ServicePartitionInformation> partitions);
+        void EnumeratedAndCachedPartitions(Uri serviceUri, IEnumerable<ServicePartitionInformation> partitions);
     }
 }

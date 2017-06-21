@@ -1,26 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using CodeEffect.ServiceFabric.Actors.Remoting.Runtime;
 using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
 using Microsoft.ServiceFabric.Services.Remoting;
 
 namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics
-
 {
-    public interface IServiceCommunicationLogger : IServiceClientLogger
+    public interface IServiceCommunicationLogger : IServiceRemotingLogger
     {
-        void StartMessageRecieved(string methodName, CustomServiceRequestHeader headers);
-        void StopMessageRecieved(string methodName, CustomServiceRequestHeader headers);
+        IDisposable RecieveServiceMessage(Uri requestUri, string serviceMethodName, ServiceRemotingMessageHeaders serviceMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader);
 
-        void MessageDispatched(string methodName, CustomServiceRequestHeader headers);
+        void RecieveServiceMessageFailed(Uri requestUri, string serviceMethodName, ServiceRemotingMessageHeaders serviceMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader,
+            Exception ex);
 
-        void MessageFailed(string methodName, CustomServiceRequestHeader headers, Exception ex);
-
-        void MessageHandled(string methodName, CustomServiceRequestHeader headers);
-
-        void FailedToGetServiceMethodName(int interfaceId, int methodId, Exception ex);
-
-        void FailedToReadCustomServiceMessageHeader(ServiceRemotingMessageHeaders serviceRemotingMessageHeaders, Exception ex);
+        void FailedToGetServiceMethodName(Uri requestUri, int interfaceId, int methodId, Exception ex);
     }
-
-
 }

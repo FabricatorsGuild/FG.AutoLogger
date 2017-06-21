@@ -17,7 +17,7 @@ namespace ConsoleApplication1
             var consoleRunner = new ConsoleRunner(logger) { Process = Process.GetCurrentProcess(), Name = ObjectMother.Current.GetName() };
             consoleRunner.Run();*/
 
-            var dependencyLogger = new DependencyLogger(Process.GetCurrentProcess().Id, Environment.MachineName);
+            var dependencyLogger = new DependencyLogger(Process.GetCurrentProcess().Id, Environment.MachineName, 55.ToString());
 
             while (true)
             {

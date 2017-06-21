@@ -33,6 +33,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
 
         public KeywordModel[] Keywords { get; set; }        
 
+        public EventTaskModel[] Tasks { get; set; }
+
         public TypeTemplateModel[] TypeTemplates { get; set; }
 
         [JsonIgnore]

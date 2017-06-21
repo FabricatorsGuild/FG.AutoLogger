@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1837B79F-C48F-4D7E-8121-02026C1EA5FC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FG.Diagnostics.AutoLogger.Generator</RootNamespace>
+    <AssemblyName>FG.Diagnostics.AutoLogger.Generator</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Builders\EventSourceEventTaskBuilder.cs" />
+    <Compile Include="Builders\LoggerEventScopeExpanderBuilder.cs" />
+    <Compile Include="Extensions\ExceptionTypeTemplateExtension.cs" />
+    <Compile Include="Builders\ProjectDefaultExtensionsBuilder.cs" />
+    <Compile Include="Builders\ProjectPrecompileBuilder.cs" />
+    <Compile Include="Builders\ProjectRefenceCopyBuilder.cs" />
+    <Compile Include="Builders\ProjectSummaryBuilder.cs" />
+    <Compile Include="Renderers\EventSourceEventTaskRenderer.cs" />
+    <Compile Include="Renderers\ProjectSummaryRenderer.cs" />
+    <Compile Include="Templates\EventSourceEventTaskTemplate.cs" />
+    <Compile Include="Utils\ComplierHelper.cs" />
+    <Compile Include="Builders\EventArgumentExtensionMethodBuilder.cs" />
+    <Compile Include="Builders\EventArgumentsBuilder.cs" />
+    <Compile Include="Builders\EventArgumentsComplexityCheckBuilder.cs" />
+    <Compile Include="Builders\EventImplicitKeywordBuilder.cs" />
+    <Compile Include="Builders\EventSourceAutoGenerateLoggersBuilder.cs" />
+    <Compile Include="Builders\EventSourceCorrelatingEventsBuilder.cs" />
+    <Compile Include="Builders\EventTemplatedArgumentsBuilder.cs" />
+    <Compile Include="Builders\EventOverrideArgumentsBuilder.cs" />
+    <Compile Include="Templates\EventSourceKeywordTemplate.cs" />
+    <Compile Include="Templates\LoggerImplementationEventMethodTemplate.cs" />
+    <Compile Include="Templates\EventSourceTemplate.cs" />
+    <Compile Include="Templates\EventSourceEventMethodTemplate.cs" />
+    <Compile Include="Renderers\EventMethodBaseRenderer.cs" />
+    <Compile Include="Renderers\EventSourceEventMethodRenderBase.cs" />
+    <Compile Include="Renderers\EventSourceEventMethodRenderer.cs" />
+    <Compile Include="Renderers\EventSourceExtensionMethodRenderer.cs" />
+    <Compile Include="Renderers\EventSourceKeywordRenderer.cs" />
+    <Compile Include="Renderers\LoggerEventSourcePartialRenderer.cs" />
+    <Compile Include="Renderers\EventSourceNonEventMethodBaseRenderer.cs" />
+    <Compile Include="Renderers\EventSourceRenderer.cs" />
+    <Compile Include="Renderers\LoggerEventSourcePartialEventMethodRenderer.cs" />
+    <Compile Include="Renderers\LoggerEventSourcePartialNonEventMethodRenderer.cs" />
+    <Compile Include="Renderers\EventSourceNonEventMethodRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationEventMethodRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationMethodCallEventSourceEventRenderer.cs" />
+    <Compile Include="Renderers\LoggerImplementationRenderer.cs" />
+    <Compile Include="Renderers\ProjectDefaultEventSourceDefinitionRenderer.cs" />
+    <Compile Include="Renderers\ProjectEventSourceRenderer.cs" />
+    <Compile Include="Renderers\ProjectFilesRenderer.cs" />
+    <Compile Include="Renderers\ProjectLoggerRenderer.cs" />
+    <Compile Include="Renderers\ProjectRenderer.cs" />
+    <Compile Include="Templates\LoggerImplementationMethodCallEventSourceEventTemplate.cs" />
+    <Compile Include="Templates\EventSourceExtensionMethodTemplate.cs" />
+    <Compile Include="Templates\EventSourceNonEventMethodTemplate.cs" />
+    <Compile Include="Templates\LoggerImplementationTemplate.cs" />
+    <Compile Include="Templates\LoggerEventSourcePartialTemplate.cs" />
+    <Compile Include="Utils\ArrayExtensions.cs" />
+    <Compile Include="Builders\EventArgumentBuilder.cs" />
+    <Compile Include="Builders\EventIdBuilder.cs" />
+    <Compile Include="Builders\EventImplicitArgumentsBuilder.cs" />
+    <Compile Include="Builders\EventMessageFormatterBuilder.cs" />
+    <Compile Include="Builders\LoggerEventSourcePartialBuilder.cs" />
+    <Compile Include="Builders\LoggerImplementationBuilder.cs" />
+    <Compile Include="Builders\ProjectDefaultEventSourceBuilder.cs" />
+    <Compile Include="Builders\ProjectEventSourceBuilder.cs" />
+    <Compile Include="Builders\ProjectExtensionsDiscoverBuilder.cs" />
+    <Compile Include="Builders\ProjectLoggerDiscoverBuilder.cs" />
+    <Compile Include="Builders\EventSourceEventsBuilder.cs" />
+    <Compile Include="Builders\EventSourceExtensionsMethodsBuilder.cs" />
+    <Compile Include="Builders\EventSourceKeywordBuilder.cs" />
+    <Compile Include="Builders\EventSourceLoggersBuilder.cs" />
+    <Compile Include="Builders\ProjectReferenceItemRemoverBuilder.cs" />
+    <Compile Include="Builders\LoggerImplicitArgumentsBuilder.cs" />
+    <Compile Include="Builders\LoggerKeywordsBuilder.cs" />
+    <Compile Include="Builders\LoggerOverrideArgumentsBuilder.cs" />
+    <Compile Include="Builders\LoggerTemplateBuilder.cs" />
+    <Compile Include="Builders\ProjectBuilder.cs" />
+    <Compile Include="ProjectEventSourceGenerator.cs" />
+    <Compile Include="Utils\PathExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\StringMatchExtensions.cs" />
+    <Compile Include="Utils\TypeExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeEffect.Diagnostics.EventSourceGenerator.Model\AutoLogger.Model.csproj">
+      <Project>{714C6060-43CC-4314-A233-8E74D65D014C}</Project>
+      <Name>AutoLogger.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FG.Diagnostics.AutoLogger.Generator.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)nuget.exe pack $(ProjectPath) -OutputDirectory ./../../../../nugetfeed</PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)nuget.exe pack $(ProjectPath) -OutputDirectory ./../../../../nugetfeed</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -33,7 +33,7 @@ namespace WebApiService
 		public static class Keywords
 		{
 			public const EventKeywords WebApi = (EventKeywords)0x1L;
-			public const EventKeywords ServicesCommunication = (EventKeywords)0x2L;
+			public const EventKeywords Communication = (EventKeywords)0x2L;
 
 		}
 		#endregion Keywords

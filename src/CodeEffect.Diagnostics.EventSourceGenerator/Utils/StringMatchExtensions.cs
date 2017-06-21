@@ -29,6 +29,17 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
             return Regex.IsMatch(that, regExPattern, options);
         }
 
+
+        public static string ToMD5(this byte[] that)
+        {
+            var hash = System.Security.Cryptography.MD5.Create();
+
+            var output = hash.ComputeHash(that);
+
+            var result = Encoding.UTF8.GetString(output);
+            return result;
+        }
+
         public static string ToMD5(this string that)
         {
             var hash = System.Security.Cryptography.MD5.Create();

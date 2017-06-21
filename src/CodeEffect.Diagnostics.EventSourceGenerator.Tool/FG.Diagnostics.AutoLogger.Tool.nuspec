@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Added support for start/stop operations, errors/exceptions</releaseNotes>
+    <projectUrl>https://github.com/FredrikGoransson/CodeEffect.Diagnostics.EventSourceGenerator</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/FredrikGoransson/CodeEffect.Diagnostics.EventSourceGenerator/develop/nuget.icon-64.png</iconUrl>
+    <copyright>Copyright 2017</copyright>
+    <tags>ETW EventSource MSBuild</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="10.0.0" />
+      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$" />
+      <dependency id="FG.Diagnostics.AutoLogger.Generator" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\$configuration$\*.exe" target="tools" />
+    <file src="bin\$configuration$\*.dll" target="tools" />
+    <file src="bin\$configuration$\*.pdb" target="tools" />
+  </files>
+</package>

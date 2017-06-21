@@ -8,7 +8,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.Runtime
 {
     public static class ServiceRemotingMessageHeadersExtensions
     {
-        internal static CustomServiceRequestHeader GetCustomServiceRequestHeader(this ServiceRemotingMessageHeaders messageHeaders, IServiceCommunicationLogger logger)
+        internal static CustomServiceRequestHeader GetCustomServiceRequestHeader(this ServiceRemotingMessageHeaders messageHeaders, IServiceRemotingLogger logger)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace CodeEffect.ServiceFabric.Actors.Remoting.Runtime
             catch (Exception ex)
             {
                 // ignored
-                logger?.FailedToReadActorMessageHeaders(messageHeaders, ex);
+                logger?.FailedToReadActorMessageHeaders( messageHeaders, ex);
             }
             return null;
         }

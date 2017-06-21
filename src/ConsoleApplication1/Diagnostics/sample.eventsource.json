@@ -49,6 +49,11 @@
           "Name": "machineName",
           "Type": "string",
           "Assignment": "Environment.MachineName"
+        },
+        {
+          "Name": "requestName",
+          "Type": "string",
+          "Assignment": "System.Diagnostics.Process.GetCurrentProcess().Id.ToString()"
         }
       ],
       "OverrideArguments": []

@@ -32,12 +32,23 @@ namespace PersonActor
 		// inside EventSource that uses them.
 		public static class Keywords
 		{
-			public const EventKeywords PersonActor = (EventKeywords)0x1L;
-			public const EventKeywords PersonActorService = (EventKeywords)0x2L;
-			public const EventKeywords ServicesCommunication = (EventKeywords)0x4L;
+			public const EventKeywords ActorDomain = (EventKeywords)0x1L;
+			public const EventKeywords ServiceDomain = (EventKeywords)0x2L;
+			public const EventKeywords Communication = (EventKeywords)0x4L;
+			public const EventKeywords Actor = (EventKeywords)0x8L;
 
 		}
 		#endregion Keywords
+
+		#region Tasks
+		public static class Tasks
+		{
+			public const EventTask CallStuff = (EventTask)0x1L;
+		}
+		#endregion Tasks
+
+
+
 
 		#region Events
 

@@ -8,17 +8,13 @@ namespace CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics
 {
     public interface IActorServiceCommunicationLogger : IServiceCommunicationLogger
     {
-        void StartActorMessageRecieved(string methodName, CustomServiceRequestHeader headers);
-        void StopActorMessageRecieved(string methodName, CustomServiceRequestHeader headers);
+        IDisposable RecieveActorMessage(Uri requestUri, string actorMethodName, ActorMessageHeaders actorMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader);
 
-        void ActorMessageDispatched(string methodName, CustomServiceRequestHeader headers);
-
-        void ActorMessageFailed(string methodName, CustomServiceRequestHeader headers, Exception ex);
-
-        void ActorMessageHandled(string methodName, CustomServiceRequestHeader headers);
+        void RecieveActorMessageFailed(Uri requestUri, string actorMethodName, ActorMessageHeaders actorMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader,
+            Exception ex);
 
         void FailedToGetActorMethodName(ActorMessageHeaders actorMessageHeaders, Exception ex);
 
-        void FailedToReadActorMessageHeaders(ServiceRemotingMessageHeaders serviceRemotingMessageHeaders, Exception ex);
+        void FailedToReadActorMessageHeaders(ServiceRemotingMessageHeaders serviceRemotingMessageHeaders, Exception ex);        
     }
 }

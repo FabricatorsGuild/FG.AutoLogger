@@ -8,99 +8,127 @@ using CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics;
 using CodeEffect.ServiceFabric.Actors.FabricTransport.Utils;
 using CodeEffect.ServiceFabric.Actors.Remoting.Runtime;
 using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport;
+using CodeEffect.ServiceFabric.Services.Remoting.FabricTransport.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 using Microsoft.ServiceFabric.Services.Remoting;
+using Microsoft.ServiceFabric.Services.Remoting.Builder;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
 
 namespace CodeEffect.ServiceFabric.Actors.Remoting.FabricTransport.Client
 {
-    public class FabricTransportActorRemotingClient : IServiceRemotingClient, ICommunicationClient
+    public class FabricTransportActorRemotingClient : FabricTransportServiceRemotingClient
     {
-        private readonly IServiceRemotingClient _innerClient;
-        private readonly Uri _serviceUri;
-        private readonly IServiceCommunicationLogger _logger;
+        private readonly MethodDispatcherBase _actorMethodDispatcher;
+        private static readonly ConcurrentDictionary<long, string> ActorMethodMap = new ConcurrentDictionary<long, string>();
 
-        private static readonly ConcurrentDictionary<long, string> MethodMap = new ConcurrentDictionary<long, string>();
-
-        public IActorServiceCommunicationLogger CommunicationLogger { get; set; }
-        
-        public FabricTransportActorRemotingClient(IServiceRemotingClient innerClient, Uri serviceUri, IServiceCommunicationLogger logger)
+        private string GetActorMethodName(ActorMessageHeaders actorMessageHeaders)
         {
-            _innerClient = innerClient;
-            _serviceUri = serviceUri;
-            _logger = logger;
+            if (actorMessageHeaders == null) return null;
+            try
+            {
+                var methodName = "-";
+                var lookup = HashUtil.Combine(actorMessageHeaders.InterfaceId, actorMessageHeaders.MethodId);
+
+                if (ActorMethodMap.ContainsKey(lookup))
+                {
+                    methodName = ActorMethodMap[lookup];
+                    return methodName;
+                }
+
+                methodName = _actorMethodDispatcher.GetMethodDispatcherMapName(
+                    actorMessageHeaders.InterfaceId, actorMessageHeaders.MethodId);
+                ActorMethodMap[lookup] = methodName;
+                return methodName;
+            }
+            catch (Exception ex)
+            {
+                
+                // ignored
+                //_logger?.FailedToGetActorMethodName(actorMessageHeaders, ex);
+            }
+            return null;
+        }
+        
+        public FabricTransportActorRemotingClient(IServiceRemotingClient innerClient, Uri serviceUri, IServiceClientLogger logger, 
+            MethodDispatcherBase actorMethodDispatcher, MethodDispatcherBase serviceMethodDispatcher)
+            : base(innerClient, serviceUri, logger, serviceMethodDispatcher)
+        {
+            _actorMethodDispatcher = actorMethodDispatcher;
         }
 
         ~FabricTransportActorRemotingClient()
         {
-            if (this._innerClient == null) return;
+            if (this.InnerClient == null) return;
             // ReSharper disable once SuspiciousTypeConversion.Global
-            var disposable = this._innerClient as IDisposable;
+            var disposable = this.InnerClient as IDisposable;
             disposable?.Dispose();
+        }
+
+        protected override Task<byte[]> RequestServiceResponseAsync(ServiceRemotingMessageHeaders messageHeaders,
+            CustomServiceRequestHeader customServiceRequestHeader, byte[] requestBody)
+        {
+            var actorMessageHeaders = GetActorMessageHeaders(messageHeaders);
+            if (actorMessageHeaders != null)
+            {
+                return RequestActorResponseAsync(messageHeaders, actorMessageHeaders, customServiceRequestHeader, requestBody);
+            }
+            return base.RequestServiceResponseAsync(messageHeaders, customServiceRequestHeader, requestBody);
         }        
 
-        Task<byte[]> IServiceRemotingClient.RequestResponseAsync(ServiceRemotingMessageHeaders messageHeaders, byte[] requestBody)
+        private Task<byte[]> RequestActorResponseAsync(ServiceRemotingMessageHeaders messageHeaders, ActorMessageHeaders actorMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader, byte[] requestBody)
         {
-            if (ServiceRequestContext.Current != null && ServiceRequestContext.Current.Headers.Any())
+            var methodName = GetActorMethodName(actorMessageHeaders);
+            using (Logger.CallActor(ServiceUri, methodName, actorMessageHeaders, customServiceRequestHeader))
             {
-                messageHeaders.AddHeaders(ServiceRequestContext.Current.Headers);
-            }
-            var headers = messageHeaders.GetCustomServiceRequestHeader(_logger) ?? new CustomServiceRequestHeader();
-            try
-            {
-                _logger.StartMessageSend(_serviceUri, headers);
-                var result = this._innerClient.RequestResponseAsync(messageHeaders, requestBody);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.FailedtoSendMessage(_serviceUri, headers, ex);
-                throw ex;
-            }
-            finally
-            {
-                _logger.StopMessageSend(_serviceUri, headers);
+                try
+                {
+                    var result = this.InnerClient.RequestResponseAsync(messageHeaders, requestBody);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Logger.CallActorFailed(ServiceUri, methodName, actorMessageHeaders, customServiceRequestHeader, ex);
+                    throw;
+                }
             }
         }
 
-        void IServiceRemotingClient.SendOneWay(ServiceRemotingMessageHeaders messageHeaders, byte[] requestBody)
+        protected override Task<byte[]> SendServiceOneWay(ServiceRemotingMessageHeaders messageHeaders, CustomServiceRequestHeader customServiceRequestHeader, byte[] requestBody)
         {
-            if (ServiceRequestContext.Current != null && ServiceRequestContext.Current.Headers.Any())
+            var actorMessageHeaders = GetActorMessageHeaders(messageHeaders);
+            if (actorMessageHeaders != null)
             {
-                messageHeaders.AddHeaders(ServiceRequestContext.Current.Headers);
+                return SendActorOneWay(messageHeaders, actorMessageHeaders, customServiceRequestHeader, requestBody);
             }
-            var headers = messageHeaders.GetCustomServiceRequestHeader(_logger) ?? new CustomServiceRequestHeader();
-            try
+            return base.SendServiceOneWay(messageHeaders, customServiceRequestHeader, requestBody);
+        }
+        
+        private Task<byte[]> SendActorOneWay(ServiceRemotingMessageHeaders messageHeaders, ActorMessageHeaders actorMessageHeaders, CustomServiceRequestHeader customServiceRequestHeader, byte[] requestBody)
+        {
+            var methodName = GetActorMethodName(actorMessageHeaders);
+            using (Logger.CallActor(ServiceUri, methodName, actorMessageHeaders, customServiceRequestHeader))
             {
-                _logger.StartMessageSend(_serviceUri, headers);
-                this._innerClient.SendOneWay(messageHeaders, requestBody);
+                try
+                {
+                    var result = this.InnerClient.RequestResponseAsync(messageHeaders, requestBody);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Logger.CallActorFailed(ServiceUri, methodName, actorMessageHeaders, customServiceRequestHeader, ex);
+                    throw;
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.FailedtoSendMessage(_serviceUri, headers, ex);
-                throw ex;
-            }
-            finally
-            {
-                _logger.StopMessageSend(_serviceUri, headers);
-            }         
         }
 
-        public ResolvedServicePartition ResolvedServicePartition
+        private static ActorMessageHeaders GetActorMessageHeaders(ServiceRemotingMessageHeaders messageHeaders)
         {
-            get { return this._innerClient.ResolvedServicePartition; }
-            set { this._innerClient.ResolvedServicePartition = value; }
-        }
-
-        public string ListenerName
-        {
-            get { return this._innerClient.ListenerName; }
-            set { this._innerClient.ListenerName = value; }
-        }
-        public ResolvedServiceEndpoint Endpoint
-        {
-            get { return this._innerClient.Endpoint; }
-            set { this._innerClient.Endpoint = value; }
+            ActorMessageHeaders actorMessageHeaders = null;
+            if (ActorMessageHeaders.TryFromServiceMessageHeaders(messageHeaders, out actorMessageHeaders))
+            {
+                
+            }
+            return actorMessageHeaders;
         }
     }
 }

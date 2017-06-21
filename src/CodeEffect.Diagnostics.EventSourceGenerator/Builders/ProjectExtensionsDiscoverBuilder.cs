@@ -30,7 +30,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var builderExtensions = new List<IExtension>();
             var extensionFiles = files.OfType(ProjectItemType.BuilderExtension);
             var currentAssemblyFileName = System.IO.Path.GetFileName(this.GetType().Assembly.CodeBase);
-            var referenceFiles = files.OfType(ProjectItemType.Reference)
+            var referenceFiles = files.OfType(ProjectItemType.Reference).Union(files.OfType(ProjectItemType.ProjectReference))
                 .Where(r => ! System.IO.Path.GetFileName(r.Name).Equals(currentAssemblyFileName, StringComparison.InvariantCultureIgnoreCase))
                 .ToArray();
 
@@ -130,7 +130,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     {
                         try
                         {
-                            var extension = (IExtension)Activator.CreateInstance(type);
+                            var extension = (IExtension) Activator.CreateInstance(type);
                             extensions.Add(extension);
                         }
                         catch (Exception ex)
@@ -139,6 +139,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                         }
                     }
                 }
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                foreach (var exLoaderException in ex.LoaderExceptions)
+                {
+                    LogWarning($"Failed to compile/evaluate references - {exLoaderException.Message}\r\n{exLoaderException.StackTrace}");
+                }                
             }
             catch (Exception ex)
             {

@@ -81,6 +81,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             var eventSourceBuilders = new IEventSourceBuilder[]
             {
                 new EventSourceKeywordBuilder(),
+                new EventSourceEventTaskBuilder(),
                 new EventSourceAutoGenerateLoggersBuilder(), 
                 new EventSourceCorrelatingEventsBuilder(),
                 new EventSourceLoggersBuilder(),

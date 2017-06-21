@@ -1,7 +1,7 @@
 {
   "Loggers": [
     {
-      "Name": "IPersonActorLogger",
+      "Name": "IActorDomainLogger",
       "StartId": 100,
       "ImplicitArguments": [
         {
@@ -9,18 +9,14 @@
           "Type": "Actor"
         },
         {
-          "Name": "correlationId",
-          "Type": "Guid"
-        },
-        {
-          "Name": "message",
-          "Type": "string"
+          "Name": "context",
+          "Type": "ServiceRequestContext"
         }
       ],
       "OverrideArguments": []
     },
     {
-      "Name": "IPersonActorServiceLogger",
+      "Name": "IServiceDomainLogger",
       "StartId": 200,
       "ImplicitArguments": [
         {
@@ -28,23 +24,31 @@
           "Type": "ActorService"
         },
         {
-          "Name": "correlationId",
-          "Type": "Guid"
-        },
-        {
-          "Name": "message",
-          "Type": "string"
+          "Name": "context",
+          "Type": "ServiceRequestContext"
         }
       ],
       "OverrideArguments": []
     },
     {
-      "Name": "IServicesCommunicationLogger",
+      "Name": "ICommunicationLogger",
       "StartId": 1000,
       "ImplicitArguments": [
         {
-          "Name": "context",
-          "Type": "StatefulServiceContext"
+          "Name": "actor",
+          "Type": "ActorOrActorServiceDescription"
+        }
+      ],
+      "OverrideArguments": [
+      ]
+    },
+    {
+      "Name": "IActorLogger",
+      "StartId": 2000,
+      "ImplicitArguments": [
+        {
+          "Name": "actor",
+          "Type": "ActorOrActorServiceDescription"
         }
       ],
       "OverrideArguments": [
@@ -54,8 +58,7 @@
   "Name": "PersonActorServiceEventSource",
   "ProviderName": "CodeEffect-ServiceFabric-Auditing-PersonActorService",
   "Keywords": [],
-  "TypeTemplates": [
-  ],
+  "TypeTemplates": [],
   "Settings": {
     "AutogenerateLoggerInterfaces": false
   }

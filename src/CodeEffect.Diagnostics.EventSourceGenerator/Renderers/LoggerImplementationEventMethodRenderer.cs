@@ -74,6 +74,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>()).ToArray();
             foreach (var renderer in renderers)
             {
+                PassAlongLoggers(renderer as IWithLogging);
                 methodImplementation.Append(renderer.Render(project, loggerProjectItem, model));
             }
             output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_IMPLEMENTATION, methodImplementation.ToString());

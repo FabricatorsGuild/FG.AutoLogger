@@ -1,0 +1,54 @@
+{
+  "EventSources": [
+    {
+      "Name": "DefaultEventSource.eventsource.json",
+      "Hash": "efbfbdefbfbdefbfbd1b24782eefbfbd2eefbfbd30efbfbd16efbfbd1befbfbd"
+    }
+  ],
+  "References": [
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\\lib\\net45\\Microsoft.AI.Agent.Intercept.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\\lib\\net45\\Microsoft.AI.DependencyCollector.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\Microsoft.AI.PerfCounterCollector.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.3.0\\lib\\net45\\Microsoft.AI.ServerTelemetryChannel.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.Web.2.3.0\\lib\\net45\\Microsoft.AI.Web.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.2.3.0\\lib\\net45\\Microsoft.AI.WindowsServer.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\Microsoft.ApplicationInsights.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\Microsoft.Build.Framework.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Actors.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Actors.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Data.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Data.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Data.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Data.Interfaces.dll",
+    "..\\packages\\Microsoft.ServiceFabric.FabricTransport.Internal.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.FabricTransport.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\Microsoft.ServiceFabric.Internal.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\Microsoft.ServiceFabric.Internal.Strings.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Services.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Services.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Services.Remoting.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Services.Remoting.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.MSBuild.1.2.1-preview004\\lib\\net452\\Newtonsoft.Json.dll",
+    "System.dll",
+    "System.Core.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.Management.ServiceModel.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.Management.ServiceModel.XmlSerializers.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.Strings.dll",
+    "System.Runtime.Serialization.dll",
+    "System.ServiceModel.dll",
+    "System.Xml.Linq.dll",
+    "System.Data.DataSetExtensions.dll",
+    "Microsoft.CSharp.dll",
+    "System.Data.dll",
+    "System.Net.Http.dll",
+    "System.Xml.dll"
+  ],
+  "ProjectReferences": [],
+  "CompileTargets": [
+    {
+      "Name": "IConsoleRunnerLogger.cs",
+      "Hash": "5eefbfbd4cefbfbdefbfbd1a6f7072efbfbd27efbfbd32efbfbd2eefbfbd"
+    }
+  ],
+  "Hash": "33efbfbdefbfbd40efbfbd75071a36442732efbfbdefbfbd4e5e"
+}

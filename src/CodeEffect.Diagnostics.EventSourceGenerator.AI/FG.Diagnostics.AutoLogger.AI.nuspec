@@ -1,0 +1,31 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>First version</releaseNotes>
+    <projectUrl>https://github.com/FabricatorsGuild/FG.AutoLogger</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/FabricatorsGuild/FG.AutoLogger/develop/nuget.icon-64.png</iconUrl>
+    <copyright>Copyright 2017</copyright>
+    <tags>ETW EventSource ApplicationInsights</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="10.0.0" />
+      <dependency id="Microsoft.ApplicationInsights" version="2.3.0"/>
+      <dependency id="Microsoft.ApplicationInsights.Agent.Intercept" version="2.0.7"/>
+      <dependency id="Microsoft.ApplicationInsights.DependencyCollector" version="2.3.0"/>
+      <dependency id="Microsoft.ApplicationInsights.PerfCounterCollector" version="2.3.0"/>
+      <dependency id="Microsoft.ApplicationInsights.WindowsServer" version="2.3.0"/>
+      <dependency id="Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel" version="2.3.0"/>
+      <dependency id="FG.Diagnostics.AutoLogger.Model" version="$version$" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\$configuration$\*.dll" target="lib\net452" />
+    <file src="bin\$configuration$\*.pdb" target="lib\net452" />
+  </files>
+</package>

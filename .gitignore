@@ -251,5 +251,8 @@ paket-files/
 .idea/
 *.sln.iml
 
-# HeartBeat custom
+# NugetFeed ignore
 nugetfeed/*.nupkg
+
+# Built lib tools ignore
+lib/

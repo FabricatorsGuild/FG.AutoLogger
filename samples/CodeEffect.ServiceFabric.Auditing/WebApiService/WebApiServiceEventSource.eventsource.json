@@ -12,8 +12,8 @@
       "OverrideArguments": []
     },
     {
-      "Name": "IServicesCommunicationLogger",
-      "StartId": 100,
+      "Name": "ICommunicationLogger",
+      "StartId": 200,
       "ImplicitArguments": [
         {
           "Name": "context",

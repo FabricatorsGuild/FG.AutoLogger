@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using CodeEffect.ServiceFabric.Actors.FabricTransport.Diagnostics;
@@ -11,8 +12,11 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
 
         public ServiceRequestContext()
         {
+            _values = new ConcurrentDictionary<string, string>();
         }
+
         public ServiceRequestContext(IEnumerable<ServiceRequestHeader> headers)
+            : this()
         {
             Headers = headers;
         }
@@ -20,15 +24,18 @@ namespace CodeEffect.ServiceFabric.Services.Remoting.FabricTransport
         public IServiceCommunicationLogger Logger { get; set; }
 
         public IEnumerable<ServiceRequestHeader> Headers { get; set; }
-        public string CorrelationId { get; set; }
-
-        public Uri RequestUri { get; set; }
-
-        public string UserId { get; set; }
 
         public static void SetHeaders(IEnumerable<ServiceRequestHeader> headers)
         {
             Current.Headers = headers;
+        }
+
+        private readonly IDictionary<string, string> _values;
+
+        public string this[string index]
+        {
+            get { return _values.ContainsKey(index) ? _values[index] : null; }
+            set { _values[index] = value; }
         }
 
         public static ServiceRequestContext Current

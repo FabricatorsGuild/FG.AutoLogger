@@ -10,6 +10,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         LoggerInterface,
         BuilderExtension,
         Reference,
+        ProjectReference,
+        ProjectSummary,
         Unknown
     }
 }

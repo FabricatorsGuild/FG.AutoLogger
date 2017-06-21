@@ -84,6 +84,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }.Union(project.GetExtensions<ILoggerImplementationUsingRenderer>()).ToArray();
             foreach (var renderer in usingRenderers)
             {
+                PassAlongLoggers(renderer as IWithLogging);
                 usings.Append(renderer.Render(project, model));
             }
 
@@ -92,6 +93,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>()).ToArray();
             foreach (var renderer in memberRenderers)
             {
+                PassAlongLoggers(renderer as IWithLogging);
                 memberDeclarations.Append(renderer.Render(project, model));
             }
 
@@ -100,6 +102,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>()).ToArray();
             foreach (var renderer in constructorRenderers)
             {
+                PassAlongLoggers(renderer as IWithLogging);
                 constructorMemberAssignments.Append(renderer.Render(project, model));
             }
 
@@ -118,6 +121,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             {
                 foreach (var renderer in loggerEventRenderers)
                 {
+                    PassAlongLoggers(renderer as IWithLogging);
                     var eventRender = renderer.Render(project, model, loggerEvent);
                     logger.AppendLine(eventRender);
                 }

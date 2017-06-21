@@ -20,11 +20,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
             IEnumerable<ProjectItem> referenceItems)
         {
             var x64 = Environment.Is64BitProcess;
-            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
             var errorLogFile = System.IO.Path.GetTempFileName();
             var tempOutput = System.IO.Path.GetTempFileName();
-            var x64Swith = x64 ? " /platform:x64" : "";
             var references = referenceItems.Aggregate("", (s, i) => $"{s},\"{i.Name}\"").Substring(1);
             var sources = sourceItems.Aggregate("", (s, i) => $"{s} \"{i.Name}\"");
             var commandLineArgumentsBuilder = new StringBuilder();

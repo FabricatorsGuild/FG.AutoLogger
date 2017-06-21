@@ -1,0 +1,68 @@
+{
+  "EventSources": [
+    {
+      "Name": "WebApiServiceEventSource.eventsource.json",
+      "Hash": "235b7b6a4f566befbfbd795cefbfbdefbfbd7e6befbfbd1a"
+    }
+  ],
+  "References": [
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll",
+    "..\\packages\\FG.ServiceFabric.Actors.Remoting.1.0.1-beta4\\lib\\net452\\FG.ServiceFabric.Actors.Remoting.dll",
+    "..\\packages\\FG.ServiceFabric.Services.Remoting.1.0.0-beta4\\lib\\net452\\FG.ServiceFabric.Services.Remoting.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\\lib\\net45\\Microsoft.AI.Agent.Intercept.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\\lib\\net45\\Microsoft.AI.DependencyCollector.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\Microsoft.AI.PerfCounterCollector.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.3.0\\lib\\net45\\Microsoft.AI.ServerTelemetryChannel.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.Web.2.3.0\\lib\\net45\\Microsoft.AI.Web.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.2.3.0\\lib\\net45\\Microsoft.AI.WindowsServer.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\Microsoft.ApplicationInsights.dll",
+    "..\\packages\\Microsoft.Owin.3.1.0\\lib\\net45\\Microsoft.Owin.dll",
+    "..\\packages\\Microsoft.Owin.Host.HttpListener.3.1.0\\lib\\net45\\Microsoft.Owin.Host.HttpListener.dll",
+    "..\\packages\\Microsoft.Owin.Hosting.3.1.0\\lib\\net45\\Microsoft.Owin.Hosting.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Actors.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Actors.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Data.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Data.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Data.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Data.Interfaces.dll",
+    "..\\packages\\Microsoft.ServiceFabric.FabricTransport.Internal.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.FabricTransport.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\Microsoft.ServiceFabric.Internal.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\Microsoft.ServiceFabric.Internal.Strings.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Services.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Services.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Services.Remoting.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Services.Remoting.dll",
+    "..\\packages\\CodeEffect.Diagnostics.EventSourceGenerator.AI.1.2.1-preview004\\lib\\net452\\Newtonsoft.Json.dll",
+    "..\\packages\\Owin.1.0\\lib\\net40\\Owin.dll",
+    "System.dll",
+    "System.Core.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.Management.ServiceModel.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.Management.ServiceModel.XmlSerializers.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.Strings.dll",
+    "System.Net.Http.dll",
+    "..\\packages\\Microsoft.AspNet.WebApi.Client.5.2.3\\lib\\net45\\System.Net.Http.Formatting.dll",
+    "System.Runtime.Serialization.dll",
+    "System.ServiceModel.dll",
+    "..\\packages\\Microsoft.AspNet.WebApi.Core.5.2.3\\lib\\net45\\System.Web.Http.dll",
+    "..\\packages\\Microsoft.AspNet.WebApi.Owin.5.2.3\\lib\\net45\\System.Web.Http.Owin.dll"
+  ],
+  "ProjectReferences": [
+    {
+      "ReferenceName": "..\\CodeEffect.ServiceFabric.Diagnostics\\bin\\Debug\\CodeEffect.ServiceFabric.Diagnostics.EventSourceGenerator.dll",
+      "Hash": "12:03:53"
+    },
+    {
+      "ReferenceName": "..\\PersonActor.Interfaces\\bin\\x64\\Debug\\PersonActor.Interfaces.dll",
+      "Hash": "09:21:43"
+    }
+  ],
+  "CompileTargets": [
+    {
+      "Name": "Diagnostics\\ICommunicationLogger.cs",
+      "Hash": "efbfbd18efbfbdefbfbdefbfbdefbfbdcc9d287bd08defbfbdefbfbd1fefbfbd"
+    },
+    {
+      "Name": "Diagnostics\\IWebApiLogger.cs",
+      "Hash": "510654cba9527fefbfbdefbfbd6a0b07efbfbd6a5cefbfbd"
+    }
+  ],
+  "Hash": "673f25efbfbd0e2eefbfbdefbfbd1955efbfbdefbfbd04efbfbdefbfbdefbfbd"
+}
