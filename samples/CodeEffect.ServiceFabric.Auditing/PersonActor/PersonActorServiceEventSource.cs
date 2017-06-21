@@ -44,9 +44,8 @@ namespace PersonActor
 		public static class Tasks
 		{
 			public const EventTask CallStuff = (EventTask)0x1L;
-
 		}
-		#endregion Keywords
+		#endregion Tasks
 
 
 

@@ -367,7 +367,7 @@ namespace PersonActor
 
 		private const int StartRecieveServiceMessageEventId = 6006;
 
-		[Event(StartRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Service Message {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		[Event(StartRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Service Message {9} {10} {11} {12} {13} {14}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = EventTask.None)]
 		private void StartRecieveServiceMessage(
 			string actorType, 
 			string actorId, 

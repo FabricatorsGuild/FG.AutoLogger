@@ -1,13 +1,10 @@
-﻿using System;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Fabric;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FG.ServiceFabric.Services.Remoting.Runtime;
-using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
-using Microsoft.ServiceFabric.Services.Remoting;
 using Microsoft.ServiceFabric.Services.Runtime;
 using TitleService.Diagnostics;
 
@@ -16,6 +13,8 @@ namespace TitleService
     internal sealed class TitleService : StatefulService, ITitleService
     {
         private readonly ICommunicationLogger _communicationLogger;
+
+		private readonly IDictionary<string, PersonStatistics> _personStatistics = new ConcurrentDictionary<string, PersonStatistics>();
 
         public TitleService(StatefulServiceContext context)
             : base(context)
@@ -38,14 +37,19 @@ namespace TitleService
 
         public Task UpdateTitleAsync(string person, string title, CancellationToken cancellationToken)
         {
+	        var personStatistic = _personStatistics.ContainsKey(title) ? _personStatistics[title] : new PersonStatistics() {Title = title, Persons = new string[0]};
 
+	        var persons = new List<string>(personStatistic.Persons) {person};
+	        personStatistic.Persons = persons.ToArray();
 
-            throw new NotImplementedException();
+	        _personStatistics[title] = personStatistic;
+			return Task.FromResult(true);
         }
 
         public Task<string[]> GetPersonsWithTitleAsync(string title, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+			var personStatistic = _personStatistics.ContainsKey(title) ? _personStatistics[title] : new PersonStatistics() { Title = title, Persons = new string[0] };
+	        return Task.FromResult(personStatistic.Persons);
         }
     }
 
