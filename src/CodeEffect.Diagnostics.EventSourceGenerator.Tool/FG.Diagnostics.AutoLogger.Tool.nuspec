@@ -23,5 +23,6 @@
     <file src="bin\$configuration$\*.exe" target="tools" />
     <file src="bin\$configuration$\*.dll" target="tools" />
     <file src="bin\$configuration$\*.pdb" target="tools" />
+    <file src="bin\$configuration$\roslyn\*.*" target="tools\roslyn" />
   </files>
 </package>
