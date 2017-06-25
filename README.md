@@ -8,7 +8,7 @@
 * [Generating EventSources and loggers](#generating-eventsources-and-loggers)
 
 
-EventSourceGenerator automatically generates ETW EventSources for C# .NET projects. It picks up [existing logger files](#adding-loggers-to-a-project) in the project and [metadata files](#modifying-an-eventsourcejson-file) describing the expected EventSource.
+AutoLogger (previously EventSourceGenerator) automatically generates ETW EventSources(and potentially other log sources) for C# .NET projects. It picks up [existing logger files](#adding-loggers-to-a-project) in the project and [metadata files](#modifying-an-eventsourcejson-file) describing the expected EventSource.
 
 The purpose is to remove a lot of the manual writing and maintainance of EventSource implemenations in solutions. Since it accepts logger interfaces as well, implementations of these interfaces can be passed around to classes that we don't want having a reference to the typical ``XXXEventSource.Current`` singleton. This makes the code 
 
@@ -16,6 +16,152 @@ The purpose is to remove a lot of the manual writing and maintainance of EventSo
 2) Easier to read
 3) Easier to maintain
 4) Easier to test
+
+## Getting Started
+
+There are currently two ways of generating concrete loggers and EventSource implementations in a project
+
+* Using the MSBuild NuGet that triggers a pre-build of related files and then includes the generated result. **NOTE: This method is currenly not working well with larger projects and may end up in .dlls shared between multiple projects using the MSBuild target being locked by overlapping MSBuild processes**
+* Using a separate Tool. Recommended is to add this tool to Visual Studio for easier access and use. The steps for doing that is included below
+
+The easiest way to work with AutoLogger is to use it as an Visual Studio External Tool.
+
+### Download the tool
+
+To get started with AutoLogger as an External Tool for VS you need to download the executable for the tool from the [latest build](https://github.com/FabricatorsGuild/FG.AutoLogger/releases/latest), the file ``FG.Diagnostics.AutoLogger.Tool.zip`` contains the executable and related asseblies (Note: the tool uses .NET 4.5.2). Extract this tool to some folder where you can access it from Visual Studio later on, e.g. ``c:\tools\autologger``.
+
+### Adding the AutoLogger tool as a Visual Studio External Tool
+
+* Go to Tools > External Tools...
+* Click Add
+* Enter title "AutoLogger - Generate"
+* Command: ``[path to downloaded tool, e.g. c:/tools/autologger]/FG.Diagnostics.AutoLogger.Tool.exe``
+* Arguments: ``-o -s -p $(ProjectDir)$(ProjectFileName) -f``
+* Initial Directory: ``$(ProjectDir)``
+
+![Adding External Tool](https://github.com/FabricatorsGuild/FG.AutoLogger/raw/master/docs/Setting%20up%20Visual%20Studio%20External%20Tool.PNG)
+
+After doing this you can add a Keyboard shortcut for activating the tool in the project you are currently working in. If the External Tool you added above was number 2 in the list of External Tools, then simply add a Keyboard shortcut Tools > Options > Keyboard > Tools.ExternalCommands2 -> <kbd>ALT</kbd>+<kbd>L</kbd>
+
+### Create an EventSource in the project
+
+* Create a new Visual Studio project. This could be a Console Application, a Web Applcation, really any type of project, AutoLogger doesn't (and shouldn't) care which. For this tutorial we create a Console App (.NET Framework)
+* Add a logger interface to the project. This should be a simple c# interface contained in a single file named after the interface where the name ends with ``Logger``. The naming of the interface is the only thing that is important to the tool for it to work with the just-in-time pre-compilation and examination. As an example we can create the interface ``IConsoleLogger`` in ``IConsoleLogger.cs``:
+
+```csharp
+using System;
+
+namespace Sample.ConsoleApp
+{
+	public interface IConsoleLogger
+	{
+		void StartRunMain(string[] args);
+		void StopRunMain();
+		void KeyPressed(ConsoleKey key);
+	}
+}
+```
+* Run the AutoLogger tool in the project <kbd>ALT</kbd>+<kbd>L</kbd>. This will generate a default eventsource definition file in you project. Visual Studio will therefore ask you to reload the project, this is normal as the tool modifies the .csproj file as it adds new files. There should now be a ``DefaultEventSource.eventsource.json`` in your project that looks like this:
+```json
+{
+  "Loggers": [],
+  "Name": "DefaultEventSource",
+  "ProviderName": "AutoLogger-Samples-GettingStarted-Default",
+  "Keywords": [],
+  "Tasks": [],
+  "TypeTemplates": [
+    {
+      "Name": "Exception",
+      "CLRType": "System.Exception",
+      "Arguments": [
+        {
+          "Name": "message",
+          "Type": "string",
+          "Assignment": "$this.Message"
+        },
+        {
+          "Name": "source",
+          "Type": "string",
+          "Assignment": "$this.Source"
+        },
+        {
+          "Name": "exceptionTypeName",
+          "Type": "string",
+          "Assignment": "$this.GetType().FullName"
+        },
+        {
+          "Name": "exception",
+          "Type": "string",
+          "Assignment": "$this.AsJson()"
+        }
+      ]
+    }
+  ],
+  "Settings": {
+    "AutogenerateLoggerInterfaces": false
+  }
+}
+```
+* Add the logger interface to the eventsource definition. In the Loggers secion ``Loggers: []`` add a new logger entry:
+```json
+    {
+      "Name": "IConsoleLogger",
+      "StartId": 1000
+    }
+```
+* Run the tool again <kbd>ALT</kbd>+<kbd>L</kbd>. It should now have generated an number of additional files under the ``DefaultEventSource.eventsource.json`` in the project. These files contains the concrete loggers and ETW EventSource implementations based on the logger interface declared. You can now create a new instance of the concret logger directly in your code, where we instead of going to the singleton accessor of the EventSource, we can use the generated implementation of our logger interface. Add some logging code to your startup code:
+```csharp
+		static void Main(string[] args)
+		{
+			var logger = new ConsoleLogger();
+			logger.StartRunMain(args);
+
+			Console.WriteLine("Press any key");
+			var key = Console.ReadKey();
+			logger.KeyPressed(key);
+
+			logger.StopRunMain();
+		}
+```
+
+* Add some implicit arguments to each logged message (see below for a descritpion of implicit arguments), these will be included in each actual logged event but only set on the constructor of the concrete loggers. Let's say we wan't to log the machine name and process id of each of these console apps running. We can to that easily by injecting the current process object as an implicit argument to our logger:
+```json
+    {
+      "Name": "IConsoleLogger",
+      "StartId": 1000,
+      "ImplicitArguments": [
+        {
+          "Name": "process",
+          "Type": "Process"
+        }
+      ],
+    }
+```
+For the AutoLogger to know how to logg this object we need to add a template for which arguments should be logged for this complex type. In the ``TypeTemplates`` section of the eventsource json, add a new entry directly after the first entry for ``System.Exception`` (that one is included by default to help you create more complex TypeTemplates):
+```json
+    {
+      "Name": "Process",
+      "CLRType": "System.Diagnostics.Process",
+      "Arguments": [
+        {
+          "Name": "machineName",
+          "Type": "string",
+          "Assignment": "$this.MachineName"
+        },
+        {
+          "Name": "processId",
+          "Type": "int",
+          "Assignment": "$this.Id"
+        }
+      ]
+    }
+```
+* Run the tool again <kbd>ALT</kbd>+<kbd>L</kbd>. It will now add some additional arguments to the constructor of your concrete logger. Change the code in ``Program.Main()`` to add the implicit arguments at creation:
+```csharp
+			var logger = new ConsoleLogger(Process.GetCurrentProcess());
+```
+
+Below are details on how to use AutoLogger in more complex scenarios.
 
 ## Adding EventSources to a project
 
@@ -298,17 +444,5 @@ There are currently two ways of generating concrete loggers and EventSource impl
 * Using the MSBuild NuGet that triggers a pre-build of related files and then includes the generated result. **NOTE: This method is currenly not working well with larger projects and may end up in .dlls shared between multiple projects using the MSBuild target being locked by overlapping MSBuild processes**
 * Using a separate Tool. Recommended is to add this tool to Visual Studio for easier access and use. The steps for doing that is included below
 
-### Adding the AutoLogger tool as a Visual Studio External Tool
-
-* Go to Tools > External Tools...
-* Click Add
-* Enter title "AutoLogger - Generate"
-* Command: ``[path to downloaded tool]/FG.Diagnostics.AutoLogger.Tool.exe``
-* Arguments: ``-o -s -p $(ProjectDir)$(ProjectFileName) -f``
-* Initial Directory: ``$(ProjectDir)``
-
-![Adding External Tool](https://github.com/FabricatorsGuild/FG.AutoLogger/raw/master/docs/Setting%20up%20Visual%20Studio%20External%20Tool.PNG)
-
-After doing this you can add a Keyboard shortcut for activating the tool in the project you are currently working in. If the External Tool you added above was number 2 in the list of External Tools, then simply add a Keyboard shortcut Tools > Options > Keyboard > Tools.ExternalCommands2 -> ``ALT+L``
 
 
