@@ -109,6 +109,7 @@ namespace Sample.ConsoleApp
       "StartId": 1000
     }
 ```
+* Add the base NuGet for logging to your project ``FG.Diagnostics.AutoLogger.Model``. This includes some conveniece classes for the loggers.
 * Run the tool again <kbd>ALT</kbd>+<kbd>L</kbd>. It should now have generated an number of additional files under the ``DefaultEventSource.eventsource.json`` in the project. These files contains the concrete loggers and ETW EventSource implementations based on the logger interface declared. You can now create a new instance of the concret logger directly in your code, where we instead of going to the singleton accessor of the EventSource, we can use the generated implementation of our logger interface. Add some logging code to your startup code:
 ```csharp
 		static void Main(string[] args)
