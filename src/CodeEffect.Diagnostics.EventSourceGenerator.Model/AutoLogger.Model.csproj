@@ -76,6 +76,7 @@
     <Compile Include="ILoggerImplementationEventRenderer.cs" />
     <Compile Include="ILoggerImplementationMembersRenderer.cs" />
     <Compile Include="ILoggerImplementationMethodRenderer.cs" />
+    <Compile Include="ILoggerImplementationMethodScopedOperationRenderer.cs" />
     <Compile Include="ILoggerImplementationRenderer.cs" />
     <Compile Include="ILoggerImplementationUsingRenderer.cs" />
     <Compile Include="IProjectBuilder.cs" />
