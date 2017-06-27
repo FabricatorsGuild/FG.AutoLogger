@@ -1,6 +1,6 @@
 using System.Diagnostics.Tracing;
 using System.Text.RegularExpressions;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
 namespace ConsoleApplication1.Extensions
 {

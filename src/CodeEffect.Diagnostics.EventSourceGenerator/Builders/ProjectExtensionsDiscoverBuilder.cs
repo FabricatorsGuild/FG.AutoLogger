@@ -1,17 +1,12 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
-using Microsoft.CSharp;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
     public class ProjectExtensionsDiscoverBuilder : BaseWithLogging, IProjectBuilder
     {

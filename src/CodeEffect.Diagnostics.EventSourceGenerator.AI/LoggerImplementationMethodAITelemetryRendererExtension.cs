@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using System.Security.Policy;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
+namespace FG.Diagnostics.AutoLogger.AI
 {
     public class LoggerImplementationMethodAITelemetryRendererExtension : AITelemetryRendererExtensionBase, ILoggerImplementationMethodRenderer
     {

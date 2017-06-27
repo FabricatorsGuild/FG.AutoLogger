@@ -1,6 +1,6 @@
 using CommandLine;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
+namespace FG.Diagnostics.AutoLogger.Tool
 {
     internal class ConsoleOptions
     {

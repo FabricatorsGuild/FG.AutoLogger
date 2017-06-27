@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
+namespace FG.Diagnostics.AutoLogger.Generator.Utils
 {
     public static class ArrayExtensions
     {

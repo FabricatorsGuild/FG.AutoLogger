@@ -7,7 +7,6 @@ using ConsoleApplication1.Loggers;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace ConsoleApplication1.Diagnostics

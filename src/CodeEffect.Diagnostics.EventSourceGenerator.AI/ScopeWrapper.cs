@@ -3,7 +3,7 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
+namespace FG.Diagnostics.AutoLogger.AI
 {
     public sealed class ScopeWrapper<T> : IDisposable
         where T : OperationTelemetry, new()

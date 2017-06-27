@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+﻿using System.Threading.Tasks;
+using FG.Diagnostics.AutoLogger.Model;
 using NJsonSchema;
 using NJsonSchema.Generation;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Schema
+namespace FG.Diagnostics.AutoLogger.Schema
 {
     public static class SchemaWriter
     {

@@ -3,12 +3,11 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Templates;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
     public class LoggerImplementationEventMethodRenderer : BaseWithLogging, ILoggerImplementationEventRenderer
     {
