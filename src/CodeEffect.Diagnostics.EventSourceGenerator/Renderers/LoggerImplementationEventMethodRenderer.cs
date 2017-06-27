@@ -60,7 +60,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             {
                 if ((model.ReturnType == "System.IDisposable") && (model.Name.StartsWith("Start")))
                 {
-                    return RenderStartScopedOperation(model);
+                    return RenderStartScopedOperation(project, loggerProjectItem, eventSourceModel, model);
                 }
 
                 return RenderStartOperation(model);
@@ -118,7 +118,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
         private string RenderStopScopedOperation(EventModel model)
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         private string RenderStartOperation(EventModel model)
@@ -128,19 +128,42 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
         private string RenderStartScopedOperation(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventSourceModel eventSourceModel, EventModel model)
         {
-            var renderers = project.GetExtensions<ILoggerImplementationMethodScopedOperationRenderer>();
-            var renderersCount = renderers.Count();
-            if (renderersCount == 0)
-            {
-                // Do it ourselves
-            }
-            else if (renderersCount == 1)
-            {
-                return renderers.Single().Render(project, loggerProjectItem, model);
-            }
+            var operationName = GetEventOperationName(model);
+            var eventName = model.Name.Substring("Start".Length);
 
-            LogWarning("AutoLogger does currently not support multiple extension for scoped operations");
-            return null;
+            var output = LoggerImplementationEventMethodTemplate.Template_SCOPED_LOGGER_METHOD;
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_NAME, eventName);
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_RETURNTYPE, model.ReturnType ?? "void");
+
+            var methodArguments = new EventArgumentsListBuilder(
+                RenderMethodArgument, LoggerImplementationEventMethodTemplate.Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER);
+            foreach (var argument in model.GetAllNonImplicitArguments())
+            {
+                methodArguments.Append(argument);
+            }
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_ARGUMENTS, methodArguments.ToString());
+
+            var methodImplementations = new StringBuilder();
+            var renderers = new ILoggerImplementationMethodRenderer[]
+            {
+                new LoggerImplementationMethodCallEventSourceEventRenderer(),
+            }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>()).ToArray();
+            foreach (var renderer in renderers)
+            {
+                PassAlongLoggers(renderer as IWithLogging);
+                var startOutput = renderer.Render(project, loggerProjectItem, model);
+                var stopOutput = renderer.Render(project, loggerProjectItem, model.CorrelatesTo);
+
+                var methodScopeWrapperImplementation = LoggerImplementationEventMethodTemplate.Template_SCOPED_LOGGER_METHOD_WRAPPER;
+                methodScopeWrapperImplementation = methodScopeWrapperImplementation.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_SCOPED_START_IMPLEMENTATION, startOutput);
+                methodScopeWrapperImplementation = methodScopeWrapperImplementation.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_SCOPED_STOP_IMPLEMENTATION, stopOutput);
+
+                methodImplementations.Append(methodScopeWrapperImplementation);
+            }
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_SCOPED_LOGGER_METHODS, methodImplementations.ToString());
+
+            return output;
         }
 
         private readonly Regex _eventOperationNameRegex = new Regex("start|stop", RegexOptions.IgnoreCase | RegexOptions.Compiled);

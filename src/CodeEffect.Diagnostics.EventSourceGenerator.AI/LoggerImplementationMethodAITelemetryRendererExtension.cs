@@ -38,11 +38,14 @@ namespace FG.Diagnostics.AutoLogger.AI
 	       OperationHolder.StartOperation(@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
 ";
         private const string Template_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTART_DECLARATION = @"
-			var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<@@LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE@@Telemetry>(@@LOGGER_METHOD_TRACKOPERATION_REQUESTNAME@@);
-			@@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@
-			return new ScopeWrapper<@@LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE@@Telemetry>(_telemetryClient, @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder, () => @@LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_METHOD_NAME@@(@@LOGGER_METHOD_TRACKOPERATION_METHOD_ARGUMENTS_ASSIGNMENT@@));
+			            var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<@@LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE@@Telemetry>(@@LOGGER_METHOD_TRACKOPERATION_REQUESTNAME@@);
+			            @@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@
 ";
-        private const string Template_LOGGER_METHOD_TRACKOPERATIONSTOP_DECLARATION = @"	        var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = OperationHolder.StopOperation();
+        private const string Template_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_DECLARATION = @"
+			            _telemetryClient.StopOperation<@@LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE@@Telemetry>(@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
+";
+        private const string Template_LOGGER_METHOD_TRACKOPERATIONSTOP_DECLARATION = @"
+			var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = OperationHolder.StopOperation();
 			_telemetryClient.StopOperation(@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder);
 			@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Dispose();
 ";
@@ -93,7 +96,16 @@ namespace FG.Diagnostics.AutoLogger.AI
 
         private string RenderStopScopedOperation(EventModel model)
         {
-            return "";
+            var operationName = GetEventOperationName(model);
+
+            var output = Template_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_DECLARATION;
+
+            var telemetryType = GetTelemetryType(model);
+
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_NAME, operationName);
+            output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE, telemetryType);
+
+            return output;
         }
 
         private string RenderStartScopedOperation(EventModel model)
@@ -113,11 +125,7 @@ namespace FG.Diagnostics.AutoLogger.AI
                 requestName = $"\"{operationName}\"";
             }
 
-            var telemetryType = "Request";
-            if (model.Name.Matches(@"(call|send)", StringComparison.InvariantCultureIgnoreCase, false))
-            {
-                telemetryType = "Dependency";
-            }
+            var telemetryType = GetTelemetryType(model);
 
             output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_NAME, operationName);
             output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_REQUESTNAME, requestName);
@@ -300,6 +308,16 @@ namespace FG.Diagnostics.AutoLogger.AI
                     LogWarning($"Could not find Exception argument in event {model?.Name}");
             }
             return exceptionArgument;
+        }
+
+        private string GetTelemetryType(EventModel model)
+        {
+            var telemetryType = "Request";
+            if (model.Name.Matches(@"(call|send)", StringComparison.InvariantCultureIgnoreCase, false))
+            {
+                telemetryType = "Dependency";
+            }
+            return telemetryType;
         }
     }
 }

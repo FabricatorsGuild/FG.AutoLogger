@@ -62,6 +62,7 @@
     <Compile Include="Renderers\EventSourceEventTaskRenderer.cs" />
     <Compile Include="Renderers\ProjectSummaryRenderer.cs" />
     <Compile Include="Templates\EventSourceEventTaskTemplate.cs" />
+    <Compile Include="Templates\LoggerImplementationEventScopedMethodTemplate.cs" />
     <Compile Include="Utils\ComplierHelper.cs" />
     <Compile Include="Builders\EventArgumentExtensionMethodBuilder.cs" />
     <Compile Include="Builders\EventArgumentsBuilder.cs" />

@@ -132,12 +132,18 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                         var referencedProjectSubOutputPath =
                             referencedProject.Items.FirstOrDefault(item => item.ItemType.Equals("_OutputPathItem", StringComparison.InvariantCultureIgnoreCase))?
                                 .EvaluatedInclude;
-                        
+                        var referencedProjectAssemblyName =
+                            referencedProject.Properties.FirstOrDefault(p => p.Name.Equals("AssemblyName", StringComparison.InvariantCultureIgnoreCase))?.EvaluatedValue;
+                        expectedDllName = $"{referencedProjectAssemblyName}.dll";
                         referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), referencedProjectSubOutputPath);
                         projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
                         if (System.IO.File.Exists(projectItemFilePath))
                         {
-                            projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) { Include = projectItem.EvaluatedInclude });
+                            projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
+                        }
+                        else
+                        {
+                            LogError($"Could not find dll for project reference, ensure you have compiled {projectItemFilePath}");
                         }
                     }
                 }
