@@ -1,4 +1,4 @@
-# CodeEffect.Diagnostics.EventSourceGenerator
+# AutoLogger by Fabricators Guild
 
 * [Adding EventSources to a project](#adding-eventsources-to-a-project)
 * [Adding Loggers to a project](#adding-loggers-to-a-project)
