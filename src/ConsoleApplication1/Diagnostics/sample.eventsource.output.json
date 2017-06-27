@@ -38,34 +38,34 @@
   ],
   "ProjectReferences": [
     {
-      "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.AI\\bin\\Debug\\CodeEffect.Diagnostics.EventSourceGenerator.AI.dll",
-      "Hash": "20:57:00"
+      "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.AI\\bin\\Debug\\FG.Diagnostics.AutoLogger.AI.dll",
+      "Hash": "22:03:45"
     },
     {
-      "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\bin\\Debug\\CodeEffect.Diagnostics.EventSourceGenerator.Model.dll",
-      "Hash": "20:19:23"
+      "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\bin\\Debug\\FG.Diagnostics.AutoLogger.Model.dll",
+      "Hash": "22:03:41"
     }
   ],
   "CompileTargets": [
     {
       "Name": "Extensions\\LoggerImplementationConstructorDebugWriteRendererBuilderExtension.cs",
-      "Hash": "efbfbd52efbfbd3d5cefbfbd7f027656efbfbdefbfbd34487914"
+      "Hash": "003416efbfbd35efbfbdefbfbdefbfbdefbfbd1d3cefbfbd03efbfbd6fefbfbd"
     },
     {
       "Name": "Extensions\\LoggerImplementationMembersDebugWriteRendererBuilderExtension.cs",
-      "Hash": "efbfbd365c46efbfbdefbfbd25efbfbd5defbfbd12efbfbd47efbfbd"
+      "Hash": "705c5befbfbdefbfbdefbfbd2113cf9eefbfbd57efbfbdefbfbd02efbfbd"
     },
     {
       "Name": "Extensions\\LoggerImplementationMethodDebugWriteRendererBuilderExtension.cs",
-      "Hash": "2701efbfbdefbfbdefbfbd4eefbfbd31efbfbdefbfbdefbfbd3befbfbd4a7e7e"
+      "Hash": "082113efbfbd7671efbfbdefbfbdefbfbdefbfbd692c41efbfbd235a"
     },
     {
       "Name": "Extensions\\LoggerImplementationDebugWriteRendererBuilderExtension.cs",
-      "Hash": "efbfbdefbfbd7fefbfbd320eefbfbdefbfbdefbfbd62efbfbd6436efbfbdefbfbd"
+      "Hash": "efbfbd4befbfbdefbfbdefbfbd03efbfbdefbfbd0fefbfbdefbfbd535e76efbfbdefbfbd"
     },
     {
       "Name": "Extensions\\LoggerImplementationMethodOperationDebugWriteRendererBuilderExtension.cs",
-      "Hash": "4aefbfbd75efbfbd7b4eefbfbdefbfbd196220efbfbdefbfbd23efbfbd69"
+      "Hash": "154c38efbfbd0defbfbdefbfbdefbfbd5c0e27efbfbdefbfbdefbfbd1d49"
     },
     {
       "Name": "Loggers\\IConsoleLogger.cs",
@@ -77,12 +77,12 @@
     },
     {
       "Name": "Loggers\\IDependencyLogger.cs",
-      "Hash": "3d3c03efbfbd4e1435efbfbd2d31531115efbfbd73efbfbd"
+      "Hash": "efbfbd172648efbfbdefbfbd53efbfbd6340efbfbdefbfbd5807efbfbd36"
     },
     {
       "Name": "Loggers\\IInfrastructureLogger.cs",
       "Hash": "cf91cea87b4a78efbfbdd0abefbfbdefbfbd69efbfbd38"
     }
   ],
-  "Hash": "efbfbdefbfbd78d189efbfbdefbfbdefbfbd0f6cefbfbdefbfbd146cefbfbd03"
+  "Hash": "03efbfbd0fefbfbdefbfbd6befbfbd3052efbfbd62efbfbdefbfbdefbfbd45efbfbd"
 }

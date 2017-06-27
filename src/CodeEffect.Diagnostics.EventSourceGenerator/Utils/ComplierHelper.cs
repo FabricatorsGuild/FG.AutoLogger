@@ -1,13 +1,12 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
+namespace FG.Diagnostics.AutoLogger.Generator.Utils
 {
     public class ComplierHelper : BaseWithLogging
     {

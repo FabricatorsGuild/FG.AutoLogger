@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
+namespace FG.Diagnostics.AutoLogger.Generator.Utils
 {
     public static class TypeExtensions
     {

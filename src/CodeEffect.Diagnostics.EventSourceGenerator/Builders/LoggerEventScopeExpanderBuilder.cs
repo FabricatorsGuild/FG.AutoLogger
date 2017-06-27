@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
     public class LoggerEventScopeExpanderBuilder : BaseWithLogging, ILoggerBuilder
     {

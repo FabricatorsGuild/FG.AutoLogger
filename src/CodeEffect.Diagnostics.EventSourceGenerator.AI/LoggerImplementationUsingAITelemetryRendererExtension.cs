@@ -1,6 +1,6 @@
-﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+﻿using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
+namespace FG.Diagnostics.AutoLogger.AI
 {
     public class LoggerImplementationUsingAITelemetryRendererExtension : AITelemetryRendererExtensionBase, ILoggerImplementationUsingRenderer
     {
@@ -9,7 +9,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
             var output = @"using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 ";
 
             return output;

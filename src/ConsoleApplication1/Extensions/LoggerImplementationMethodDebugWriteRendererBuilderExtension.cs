@@ -3,7 +3,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
 namespace ConsoleApplication1.Extensions
 {

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class LoggerTemplateModel
     {
@@ -14,14 +10,6 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public override string ToString()
         {
             return $"{nameof(LoggerTemplateModel)} {this.Name}";
-        }
-    }
-
-    public static class LoggerTemplateExtensions
-    {
-        public static LoggerTemplateModel GetMatchingLoggerTemplate(this IEnumerable<LoggerTemplateModel> loggers, LoggerModel logger)
-        {
-            return loggers.FirstOrDefault(l => l.Name.Equals(logger.Name, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

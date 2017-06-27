@@ -1,4 +1,6 @@
-﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.Tests
+﻿using FG.Diagnostics.AutoLogger.Generator;
+
+namespace CodeEffect.Diagnostics.EventSourceGenerator.Tests
 {
     // ReSharper disable InconsistentNaming
     public class With_eventsource_definition

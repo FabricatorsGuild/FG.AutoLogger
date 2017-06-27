@@ -1,17 +1,12 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
-using Microsoft.CSharp;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
     public class ProjectExtensionsDiscoverBuilder : BaseWithLogging, IProjectBuilder
     {
@@ -35,7 +30,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 .ToArray();
 
             LogMessage($"Scanning for Extensions in code source only");
-            var compiledExtensions = CompileAndEvaluateExtensions(dynamicAssembly);
+            var compiledExtensions = CompileAndEvaluateExtensions(dynamicAssembly, referenceFiles);
             foreach (var foundExtensions in compiledExtensions)
             {
                 LogMessage($"Compiled Extension {foundExtensions.GetType().FullName}");
@@ -116,9 +111,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             return extensions.ToArray();
         }        
 
-        private IExtension[] CompileAndEvaluateExtensions(Assembly dynamicAssembly)
+        private IExtension[] CompileAndEvaluateExtensions(Assembly dynamicAssembly, IEnumerable<ProjectItem> references)
         {
             LogMessage($"Compiling possible logger builder extensions in referenced dlls");
+
+            var assemblyResolver = new AssemblyResolver(dynamicAssembly, references);
+            AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.CurrentDomainOnAssemblyResolve;
 
             var extensions = new List<IExtension>();
             try
@@ -151,8 +149,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             {
                 LogWarning($"Failed to compile/evaluate references - {ex.Message}\r\n{ex.StackTrace}");
             }
+
+            AppDomain.CurrentDomain.AssemblyResolve -= assemblyResolver.CurrentDomainOnAssemblyResolve;
             return extensions.ToArray();
-        }
+        }        
 
         private IExtension[] CompileAndEvaluateExtensions(Assembly dynamicAssembly, ProjectItem projectItem, IEnumerable<ProjectItem> referenceItems)
         {
@@ -177,5 +177,45 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             }
             return extensions.ToArray();
         }
+    }
+
+    public class AssemblyResolver
+    {
+        private readonly Assembly _dynamicAssembly;
+        private readonly IEnumerable<ProjectItem> _references;
+        private readonly IList<Assembly> _loadedAssemblies;
+
+        public AssemblyResolver(Assembly dynamicAssembly, IEnumerable<ProjectItem> references)
+        {
+            _dynamicAssembly = dynamicAssembly;
+            _references = references;
+            _loadedAssemblies = new List<Assembly>();
+        }
+
+        public Assembly CurrentDomainOnAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            if ((args.RequestingAssembly == _dynamicAssembly) || _loadedAssemblies.Contains(args.RequestingAssembly))
+            {
+                var alreadyLoadedAssembly = _loadedAssemblies.FirstOrDefault(a => a.FullName == args.Name);
+                if (alreadyLoadedAssembly != null)
+                {
+                    return alreadyLoadedAssembly;
+                }
+
+                var assemblyName = args.Name.Split(',')[0];
+                var reference = _references.FirstOrDefault(a => System.IO.Path.GetFileNameWithoutExtension(a.Name) == assemblyName);
+                if (reference != null)
+                {
+                    var loadedAssembly = Assembly.LoadFile(reference.Name);
+                    if (loadedAssembly != null)
+                    {
+                        _loadedAssemblies.Add(loadedAssembly);
+                    }
+                    return loadedAssembly;
+                }
+            }
+            return null;
+        }
+
     }
 }

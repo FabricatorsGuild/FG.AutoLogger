@@ -1,6 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
-
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public interface ITypeTemplateDefinition : IExtension
     {

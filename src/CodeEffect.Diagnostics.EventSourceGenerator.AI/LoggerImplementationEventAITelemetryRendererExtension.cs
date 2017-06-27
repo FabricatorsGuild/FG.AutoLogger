@@ -1,8 +1,6 @@
-﻿using System.Diagnostics.Tracing;
-using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+﻿using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
+namespace FG.Diagnostics.AutoLogger.AI
 {
     public class LoggerImplementationEventAITelemetryRendererExtension : AITelemetryRendererExtensionBase, ILoggerImplementationEventRenderer
     {

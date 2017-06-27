@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 using Newtonsoft.Json;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
     public class ProjectDefaultEventSourceDefinitionRenderer : BaseWithLogging, IProjectRenderer
     {

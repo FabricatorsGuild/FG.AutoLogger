@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
+namespace FG.Diagnostics.AutoLogger.Generator.Utils
 {
     public static class PathExtensions
     {
