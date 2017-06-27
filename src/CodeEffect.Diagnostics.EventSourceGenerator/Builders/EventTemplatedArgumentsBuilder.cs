@@ -1,7 +1,7 @@
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
     public class EventTemplatedArgumentsBuilder : BaseWithLogging, IEventBuilder, ILoggerEventBuilder
     {

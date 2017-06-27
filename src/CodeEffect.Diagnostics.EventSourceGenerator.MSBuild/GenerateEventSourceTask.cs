@@ -1,4 +1,6 @@
-﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.MSBuild
+﻿using FG.Diagnostics.AutoLogger.Generator;
+
+namespace FG.Diagnostics.AutoLogger.MSBuild
 {
     public class GenerateEventSourceTask : Microsoft.Build.Utilities.Task
     {

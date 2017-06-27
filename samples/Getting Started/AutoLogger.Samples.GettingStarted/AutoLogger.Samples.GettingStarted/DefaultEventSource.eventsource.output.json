@@ -1,0 +1,28 @@
+{
+  "EventSources": [
+    {
+      "Name": "DefaultEventSource.eventsource.json",
+      "Hash": "335cdbab52026cefbfbdefbfbd1aefbfbd615a4243efbfbd"
+    }
+  ],
+  "References": [
+    "..\\packages\\FG.Diagnostics.AutoLogger.Model.1.3.0.1\\lib\\net452\\FG.Diagnostics.AutoLogger.Model.dll",
+    "..\\packages\\FG.Diagnostics.AutoLogger.Model.1.3.0.1\\lib\\net452\\Newtonsoft.Json.dll",
+    "System.dll",
+    "System.Core.dll",
+    "System.Xml.Linq.dll",
+    "System.Data.DataSetExtensions.dll",
+    "Microsoft.CSharp.dll",
+    "System.Data.dll",
+    "System.Net.Http.dll",
+    "System.Xml.dll"
+  ],
+  "ProjectReferences": [],
+  "CompileTargets": [
+    {
+      "Name": "IConsoleLogger.cs",
+      "Hash": "efbfbdefbfbdefbfbdefbfbdefbfbd2eefbfbd091defbfbd69efbfbd35efbfbdefbfbd58"
+    }
+  ],
+  "Hash": "efbfbd066f345e31efbfbd6fefbfbd7c783aefbfbd7727efbfbd"
+}

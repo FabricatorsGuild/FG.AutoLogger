@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Renderers;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Builders;
+using FG.Diagnostics.AutoLogger.Generator.Renderers;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator
+namespace FG.Diagnostics.AutoLogger.Generator
 {
     public class ProjectEventSourceGenerator : BaseWithLogging
     {

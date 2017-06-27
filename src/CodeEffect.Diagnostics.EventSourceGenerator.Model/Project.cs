@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class Project
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Utils
+namespace FG.Diagnostics.AutoLogger.Generator.Utils
 {
     public static class StringMatchExtensions
     {

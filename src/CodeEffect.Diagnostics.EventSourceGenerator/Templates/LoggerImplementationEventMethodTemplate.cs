@@ -1,4 +1,4 @@
-﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.Templates
+﻿namespace FG.Diagnostics.AutoLogger.Generator.Templates
 {
     public static class LoggerImplementationEventMethodTemplate
     {
@@ -26,6 +26,35 @@
 @@LOGGER_METHOD_IMPLEMENTATION@@    
 		}
 ";
+
+        public const string Variable_SCOPED_LOGGER_METHODS = @"@@SCOPED_LOGGER_METHODS@@";
+        public const string Variable_LOGGER_METHOD_SCOPED_START_IMPLEMENTATION = @"@@LOGGER_METHOD_SCOPED_START_IMPLEMENTATION@@";
+        public const string Variable_LOGGER_METHOD_SCOPED_STOP_IMPLEMENTATION = @"@@LOGGER_METHOD_SCOPED_STOP_IMPLEMENTATION@@";
+        public const string Template_SCOPED_LOGGER_METHOD_WRAPPER = @"
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+@@LOGGER_METHOD_SCOPED_START_IMPLEMENTATION@@    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+@@LOGGER_METHOD_SCOPED_STOP_IMPLEMENTATION@@    
+		            });
+		        }),
+
+";
+
+        public const string Template_SCOPED_LOGGER_METHOD = @"
+
+        public @@LOGGER_METHOD_RETURNTYPE@@ @@LOGGER_METHOD_NAME@@(
+			@@LOGGER_METHOD_ARGUMENTS@@)
+		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+@@SCOPED_LOGGER_METHODS@@
+		    });
+		}
+";
+
+
         // ReSharper restore InconsistentNaming
     }
 }

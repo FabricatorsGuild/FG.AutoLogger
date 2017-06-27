@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class ProjectItem<TContent> : ProjectItem where TContent : class
     {

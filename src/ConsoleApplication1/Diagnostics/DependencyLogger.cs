@@ -3,17 +3,74 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using ConsoleApplication1.Loggers;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace ConsoleApplication1.Diagnostics
 {
 	internal sealed class DependencyLogger : IDependencyLogger
 	{
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
 		private readonly int _processId;
 		private readonly string _machineName;
 		private readonly string _requestName;
@@ -37,16 +94,38 @@ namespace ConsoleApplication1.Diagnostics
 
 		}
 
-		public System.IDisposable CallExternalComponent(
+
+        public System.IDisposable CallExternalComponent(
 			System.Uri requestName,
 			string content)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			Sample.Current.StartCallExternalComponent(
 				_processId, 
 				_machineName, 
 				requestName, 
 				content
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			Sample.Current.StopCallExternalComponent(
+				_processId, 
+				_machineName, 
+				requestName, 
+				content
+			);
+    
+		            });
+		        }),
+
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 
 			System.Diagnostics.Debug.WriteLine($"[Dependency] ERR: StartCallExternalComponent");
            
@@ -54,31 +133,9 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\trequestName.ToString():\t{requestName.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tcontent:\t{content}");
-			_callExternalComponentStopwatch.Restart();
-
-			var callExternalComponentOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestName.ToString() ?? "callExternalComponent");
-			callExternalComponentOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
-			callExternalComponentOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
-			callExternalComponentOperationHolder.Telemetry.Properties.Add("RequestName", requestName.ToString());
-			callExternalComponentOperationHolder.Telemetry.Properties.Add("Content", content);
-			return new ScopeWrapper<DependencyTelemetry>(_telemetryClient, callExternalComponentOperationHolder, () => StopCallExternalComponent(requestName,content));
     
-		}
-
-		private System.Diagnostics.Stopwatch _callExternalComponentStopwatch = new System.Diagnostics.Stopwatch();
-
-
-
-		public void StopCallExternalComponent(
-			System.Uri requestName,
-			string content)
-		{
-			Sample.Current.StopCallExternalComponent(
-				_processId, 
-				_machineName, 
-				requestName, 
-				content
-			);
+		            return new ScopeWrapperWithAction(() =>
+		            {
 
 			System.Diagnostics.Debug.WriteLine($"[Dependency] ERR: StopCallExternalComponent");
            
@@ -86,22 +143,82 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\trequestName.ToString():\t{requestName.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tcontent:\t{content}");
+    
+		            });
+		        }),
+
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+			_callExternalComponentStopwatch.Restart();
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
 			_callExternalComponentStopwatch.Stop();
     
+		            });
+		        }),
+
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var callExternalComponentOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestName.ToString() ?? "callExternalComponent");
+			            callExternalComponentOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
+			callExternalComponentOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
+			callExternalComponentOperationHolder.Telemetry.Properties.Add("RequestName", requestName.ToString());
+			callExternalComponentOperationHolder.Telemetry.Properties.Add("Content", content);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<DependencyTelemetry>(callExternalComponentOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
+		private System.Diagnostics.Stopwatch _callExternalComponentStopwatch = new System.Diagnostics.Stopwatch();
 
 
 
-		public System.IDisposable RecieveMessage(
+
+
+
+
+        public System.IDisposable RecieveMessage(
 			string message)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			Sample.Current.StartRecieveMessage(
 				_processId, 
 				_machineName, 
 				_requestName, 
 				message
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			Sample.Current.StopRecieveMessage(
+				_processId, 
+				_machineName, 
+				_requestName, 
+				message
+			);
+    
+		            });
+		        }),
+
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 
 			System.Diagnostics.Debug.WriteLine($"[Dependency] ERR: StartRecieveMessage");
            
@@ -109,30 +226,9 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tSystem.Diagnostics.Process.GetCurrentProcess().Id.ToString():\t{System.Diagnostics.Process.GetCurrentProcess().Id.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
-			_recieveMessageStopwatch.Restart();
-
-			var recieveMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(System.Diagnostics.Process.GetCurrentProcess().Id.ToString() ?? "recieveMessage");
-			recieveMessageOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
-			recieveMessageOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
-			recieveMessageOperationHolder.Telemetry.Properties.Add("RequestName", System.Diagnostics.Process.GetCurrentProcess().Id.ToString());
-			recieveMessageOperationHolder.Telemetry.Properties.Add("Message", message);
-			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveMessageOperationHolder, () => StopRecieveMessage(message));
     
-		}
-
-		private System.Diagnostics.Stopwatch _recieveMessageStopwatch = new System.Diagnostics.Stopwatch();
-
-
-
-		public void StopRecieveMessage(
-			string message)
-		{
-			Sample.Current.StopRecieveMessage(
-				_processId, 
-				_machineName, 
-				_requestName, 
-				message
-			);
+		            return new ScopeWrapperWithAction(() =>
+		            {
 
 			System.Diagnostics.Debug.WriteLine($"[Dependency] ERR: StopRecieveMessage");
            
@@ -140,37 +236,47 @@ namespace ConsoleApplication1.Diagnostics
 			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
 			System.Diagnostics.Debug.WriteLine($"\tSystem.Diagnostics.Process.GetCurrentProcess().Id.ToString():\t{System.Diagnostics.Process.GetCurrentProcess().Id.ToString()}");
 			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
+    
+		            });
+		        }),
+
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+			_recieveMessageStopwatch.Restart();
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
 			_recieveMessageStopwatch.Stop();
     
-		}
+		            });
+		        }),
 
 
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 
-
-		public void DoDirtyStuff(
-			)
-		{
-			Sample.Current.DoDirtyStuff(
-				_processId, 
-				_machineName, 
-				_requestName
-			);
-
-			System.Diagnostics.Debug.WriteLine($"[Dependency] ERR: DoDirtyStuff");
-           
-			System.Diagnostics.Debug.WriteLine($"\t_processId:\t{_processId}");
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			System.Diagnostics.Debug.WriteLine($"\tSystem.Diagnostics.Process.GetCurrentProcess().Id.ToString():\t{System.Diagnostics.Process.GetCurrentProcess().Id.ToString()}");
-			_telemetryClient.TrackEvent(
-	            nameof(DoDirtyStuff),
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-	                {"ProcessId", _processId.ToString()},
-                    {"MachineName", Environment.MachineName},
-                    {"RequestName", System.Diagnostics.Process.GetCurrentProcess().Id.ToString()}
-	            });
+			            var recieveMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(System.Diagnostics.Process.GetCurrentProcess().Id.ToString() ?? "recieveMessage");
+			            recieveMessageOperationHolder.Telemetry.Properties.Add("ProcessId", _processId.ToString());
+			recieveMessageOperationHolder.Telemetry.Properties.Add("MachineName", Environment.MachineName);
+			recieveMessageOperationHolder.Telemetry.Properties.Add("RequestName", System.Diagnostics.Process.GetCurrentProcess().Id.ToString());
+			recieveMessageOperationHolder.Telemetry.Properties.Add("Message", message);
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<RequestTelemetry>(recieveMessageOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
+
+		private System.Diagnostics.Stopwatch _recieveMessageStopwatch = new System.Diagnostics.Stopwatch();
+
+
 
 
 

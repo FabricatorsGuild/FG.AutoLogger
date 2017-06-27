@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class ListBuilder
     {

@@ -1,6 +1,4 @@
-using System;
-
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public interface IEventBuilder : IBuilder
     {

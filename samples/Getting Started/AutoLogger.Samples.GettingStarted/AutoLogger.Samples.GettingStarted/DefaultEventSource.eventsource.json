@@ -1,0 +1,65 @@
+{
+  "Loggers": [
+    {
+      "Name": "IConsoleLogger",
+      "StartId": 1000,
+      "ImplicitArguments": [
+        {
+          "Name": "process",
+          "Type": "Process"
+        }
+      ]
+    }
+  ],
+  "Name": "DefaultEventSource",
+  "ProviderName": "AutoLogger-Samples-GettingStarted-Default",
+  "Keywords": [],
+  "Tasks": [],
+  "TypeTemplates": [
+    {
+      "Name": "Exception",
+      "CLRType": "System.Exception",
+      "Arguments": [
+        {
+          "Name": "message",
+          "Type": "string",
+          "Assignment": "$this.Message"
+        },
+        {
+          "Name": "source",
+          "Type": "string",
+          "Assignment": "$this.Source"
+        },
+        {
+          "Name": "exceptionTypeName",
+          "Type": "string",
+          "Assignment": "$this.GetType().FullName"
+        },
+        {
+          "Name": "exception",
+          "Type": "string",
+          "Assignment": "$this.AsJson()"
+        }
+      ]
+    },
+    {
+      "Name": "Process",
+      "CLRType": "System.Diagnostics.Process",
+      "Arguments": [
+        {
+          "Name": "machineName",
+          "Type": "string",
+          "Assignment": "$this.MachineName"
+        },
+        {
+          "Name": "processId",
+          "Type": "int",
+          "Assignment": "$this.Id"
+        }
+      ]
+    }
+  ],
+  "Settings": {
+    "AutogenerateLoggerInterfaces": false
+  }
+}
