@@ -1,4 +1,4 @@
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
 namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates

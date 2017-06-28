@@ -1,4 +1,5 @@
-﻿using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+﻿using FG.Diagnostics.AutoLogger.Model;
+using FG.Diagnostics.AutoLogger.Model;
 using FG.ServiceFabric.Services.Remoting.FabricTransport;
 
 namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates
