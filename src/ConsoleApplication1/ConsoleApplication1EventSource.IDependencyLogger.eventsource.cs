@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication1
 {
-	internal sealed partial class ConsoleApplication1
+	internal sealed partial class ConsoleApplication1EventSource
 	{
 
 		private const int StartCallExternalComponentEventId = 3001;

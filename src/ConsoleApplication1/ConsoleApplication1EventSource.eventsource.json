@@ -65,7 +65,7 @@
       "OverrideArguments": []
     }
   ],
-  "Name": "ConsoleApplication1",
+  "Name": "ConsoleApplication1EventSource",
   "ProviderName": "ConsoleApplication1-Default",
   "Keywords": [
     "Console",
