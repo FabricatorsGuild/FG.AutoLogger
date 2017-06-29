@@ -1,13 +1,11 @@
 using System.Linq;
 using System.Text;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Templates;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class LoggerImplementationRenderer : BaseWithLogging, ILoggerImplementationRenderer
+    public class LoggerImplementationRenderer : BaseEtwRendererWithLogging, ILoggerImplementationRenderer
     {
         private static string RenderPrivateDeclaration(EventArgumentModel model)
         {
@@ -81,7 +79,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             var usings = new StringBuilder();
             var usingRenderers = new ILoggerImplementationUsingRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationUsingRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationUsingRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in usingRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -90,7 +88,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 
             var memberRenderers = new ILoggerImplementationMembersRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in memberRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -99,7 +97,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
 
             var constructorRenderers = new ILoggerImplementationConstructorRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in constructorRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -115,7 +113,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             var loggerEventRenderers = new ILoggerImplementationEventRenderer[]
             {
                 new LoggerImplementationEventMethodRenderer(), 
-            }.Union(project.GetExtensions<ILoggerImplementationEventRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationEventRenderer>(eventSourceModel.Modules)).ToArray();
 
             foreach (var loggerEvent in loggerModel.Events)
             {

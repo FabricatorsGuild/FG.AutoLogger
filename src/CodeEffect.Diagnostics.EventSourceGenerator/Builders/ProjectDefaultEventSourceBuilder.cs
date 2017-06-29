@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectDefaultEventSourceBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectDefaultEventSourceBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public void Build(Project model)
         {
@@ -20,9 +19,9 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 var defaultEventSource = new EventSourceModel()
                 {
                     Namespace = defaultEventSourceProjectItem.RootNamespace,
-                    Name = "DefaultEventSource",
+                    Name = defaultEventSourceProjectItem.AssemblyName,
                     ProviderName = $"{defaultEventSourceProjectItem.RootNamespace.Replace('.', '-')}-Default",
-                    ClassName = "DefaultEventSource",
+                    ClassName = defaultEventSourceProjectItem.AssemblyName,
                     TypeTemplates = new TypeTemplateModel[]
                     {
                         new TypeTemplateModel()
@@ -37,6 +36,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                                 new EventArgumentModel("exception", "string", "$this.AsJson()"),
                             }
                         }
+                    },
+                    Settings = new EventSourceModel.EventSourceSettings()
+                    {
+                        AutogenerateLoggerInterfaces = true,
                     }
                 };
                 var eventSourceLoggers = new List<LoggerModel>();

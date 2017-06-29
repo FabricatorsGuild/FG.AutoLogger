@@ -1,10 +1,9 @@
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventArgumentsBuilder : BaseWithLogging, IEventBuilder, ILoggerEventBuilder
+    public class EventArgumentsBuilder : BaseCoreBuilder, IEventBuilder, ILoggerEventBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventModel model)
         {
@@ -19,7 +18,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             {
                 new EventArgumentBuilder(),
                 new EventArgumentExtensionMethodBuilder(), 
-            }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
+            }.Union(project.GetExtensions<IEventArgumentBuilder>(eventSourceModel.Modules)).ToArray();
             foreach (var argument in model.Arguments ?? new EventArgumentModel[0])
             {
                 foreach (var builder in eventArgumentBuilders)

@@ -1,10 +1,10 @@
 using System;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventMessageFormatterBuilder : BaseWithLogging, IEventBuilder, ILoggerEventBuilder
+    public class EventMessageFormatterBuilder : BaseCoreBuilder, IEventBuilder, ILoggerEventBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel loggerModel, EventModel model)
         {

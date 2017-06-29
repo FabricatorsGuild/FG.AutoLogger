@@ -1,6 +1,6 @@
 using System;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public abstract class BaseTemplateExtension<T> : BaseWithLogging, ITypeTemplateDefinition
     {
@@ -58,6 +58,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         {
             return GetTypeTemplateModelInternal();
         }
+
+        public abstract string Module { get; }
 
     }
 }

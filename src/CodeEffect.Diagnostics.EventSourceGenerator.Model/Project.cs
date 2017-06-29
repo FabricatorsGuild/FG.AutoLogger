@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using System.Reflection;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class Project
     {
-        public EventSourceModel[] EventSources { get; set; }
         public string ProjectFilePath { get; set; }
         public string ProjectBasePath { get; set; }
         public ProjectItem[] ProjectItems { get; set; }
@@ -13,8 +13,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string Platform { get; set; }
         public string CscToolPath { get; set; }
         public Assembly DynamicAssembly { get; set; }
-        public ProjectSummary SummaryHash { get; set; }
         public bool HasProjectChanges { get; set; }
         public bool ForceUpdate { get; set; }
+        public List<string> ToolModuleReferences { get; set; }
     }
 }

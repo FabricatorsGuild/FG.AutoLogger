@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectReferenceItemRemoverBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectReferenceItemRemoverBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public void Build(Project model)
         {

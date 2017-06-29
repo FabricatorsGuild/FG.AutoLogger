@@ -41,14 +41,19 @@ namespace PersonActor
 		#endregion Keywords
 
 		#region Tasks
+
 		public static class Tasks
 		{
-			public const EventTask CallStuff = (EventTask)0x1L;
+			public const EventTask RunAsyncLoop = (EventTask)0x1L;
+			public const EventTask RecieveActorMessage = (EventTask)0x2L;
+			public const EventTask RecieveServiceMessage = (EventTask)0x4L;
+			public const EventTask CallActor = (EventTask)0x8L;
+			public const EventTask CallService = (EventTask)0x16L;
+			public const EventTask ReadState = (EventTask)0x32L;
+			public const EventTask WriteState = (EventTask)0x64L;
+
 		}
 		#endregion Tasks
-
-
-
 
 		#region Events
 

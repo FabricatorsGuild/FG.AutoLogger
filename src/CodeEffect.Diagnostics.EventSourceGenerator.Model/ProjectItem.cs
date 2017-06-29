@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class ProjectItem<TContent> : ProjectItem where TContent : class
     {
@@ -34,6 +34,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public string Include { get; set; }
         public object Content { get; set; }
         public string Output { get; set; }
+        public string AssemblyName { get; set; }
         public string RootNamespace { get; set; }
         public ProjectItem DependentUpon { get; set; }
         public ProjectItemType ItemType { get; set; }

@@ -1,9 +1,8 @@
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public abstract class EventMethodBaseRenderer : BaseWithLogging
+    public abstract class EventMethodBaseRenderer : BaseEtwRendererWithLogging
     {
         protected static string RenderEventSourceType(EventArgumentModel model)
         {

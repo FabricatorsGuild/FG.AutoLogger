@@ -1,5 +1,5 @@
 ﻿using System.Fabric;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
 namespace CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates
 {

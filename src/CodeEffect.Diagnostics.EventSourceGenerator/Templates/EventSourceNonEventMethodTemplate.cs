@@ -1,4 +1,4 @@
-﻿namespace CodeEffect.Diagnostics.EventSourceGenerator.Templates
+﻿namespace FG.Diagnostics.AutoLogger.Generator.Templates
 {
     public static class EventSourceNonEventMethodTemplate
     {

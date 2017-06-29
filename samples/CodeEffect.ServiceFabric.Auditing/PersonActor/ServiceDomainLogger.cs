@@ -3,17 +3,74 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using PersonActor.Diagnostics;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace PersonActor
 {
 	internal sealed class ServiceDomainLogger : IServiceDomainLogger
 	{
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
 		private readonly Microsoft.ServiceFabric.Actors.Runtime.ActorService _actorService;
 		private readonly FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
@@ -65,16 +122,36 @@ namespace PersonActor
 
 
 
-		public System.IDisposable RunAsyncLoop(
+
+        public System.IDisposable RunAsyncLoop(
 			)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			PersonActorServiceEventSource.Current.StartRunAsyncLoop(
 				_actorService, 
 				_context
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			PersonActorServiceEventSource.Current.StopRunAsyncLoop(
+				_actorService, 
+				_context
+			);
+    
+		            });
+		        }),
 
-			var runAsyncLoopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"] ?? "runAsyncLoop");
-			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ActorType", _actorService.ActorTypeInformation.ImplementationType.ToString());
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var runAsyncLoopOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"] ?? "runAsyncLoop");
+			            runAsyncLoopOperationHolder.Telemetry.Properties.Add("ActorType", _actorService.ActorTypeInformation.ImplementationType.ToString());
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actorService.Context.CodePackageActivationContext.ApplicationTypeName);
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ApplicationName", _actorService.Context.CodePackageActivationContext.ApplicationName);
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _actorService.Context.ServiceTypeName);
@@ -85,21 +162,20 @@ namespace PersonActor
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("CorrelationId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["correlationId"]);
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("UserId", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["userId"]);
 			runAsyncLoopOperationHolder.Telemetry.Properties.Add("RequestUri", FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext.Current?["requestUri"]);
-			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, runAsyncLoopOperationHolder, () => StopRunAsyncLoop());
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<RequestTelemetry>(runAsyncLoopOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
 
-
-		public void StopRunAsyncLoop(
-			)
-		{
-			PersonActorServiceEventSource.Current.StopRunAsyncLoop(
-				_actorService, 
-				_context
-			);
-    
-		}
 
 
 

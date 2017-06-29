@@ -1,10 +1,10 @@
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 using Newtonsoft.Json;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class ProjectSummaryRenderer : BaseWithLogging, IProjectRenderer
+    public class ProjectSummaryRenderer : BaseEtwRendererWithLogging, IProjectRenderer
     {
         public void Render(Project model)
         {

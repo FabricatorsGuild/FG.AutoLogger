@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public static class ProjectExtensions
     {
@@ -24,8 +25,20 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         }
 
         public static IEnumerable<TExtension> GetExtensions<TExtension>(this Project that)
+            where TExtension : IExtension
         {
-            return that.Extensions.Where(e => e is TExtension).Cast<TExtension>();
+            return that.Extensions.Where(e => e is TExtension).Cast<TExtension>().ToArray();
+        }
+
+        public static IEnumerable<TExtension> GetExtensions<TExtension>(this Project that, string[] modules)
+            where TExtension : IExtension
+        {
+            modules = modules ?? new string[0];
+            return that.Extensions
+                .Where(e => e is TExtension)
+                .Cast<TExtension>()
+                .Where(e => modules.Any(m => m.Equals(e.Module, StringComparison.InvariantCultureIgnoreCase)))
+                .ToArray();
         }
 
         public static string GetIncludeName(this Project that, ProjectItem item)

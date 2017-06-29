@@ -1,10 +1,9 @@
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class ProjectEventSourceRenderer : BaseWithLogging, IProjectRenderer
+    public class ProjectEventSourceRenderer : BaseEtwRendererWithLogging, IProjectRenderer
     {
         public void Render(Project model)
         {
@@ -33,7 +32,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             {
                 new EventSourceRenderer(), 
             };
-            foreach (var renderer in eventSourceRenderers.Union(project.GetExtensions<IEventSourceRenderer>()))
+            foreach (var renderer in eventSourceRenderers.Union(project.GetExtensions<IEventSourceRenderer>(eventSourceModel.Modules)))
             {
                 PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project, eventSourceProjectItem);

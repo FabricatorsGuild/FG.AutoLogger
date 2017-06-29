@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using CodeEffect.Diagnostics.EventSourceGenerator.Extensions;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Generator.Extensions;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectDefaultExtensionsBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectDefaultExtensionsBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public void Build(Project model)
         {

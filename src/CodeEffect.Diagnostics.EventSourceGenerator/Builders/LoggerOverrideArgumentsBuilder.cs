@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class LoggerOverrideArgumentsBuilder : BaseWithLogging, ILoggerBuilder
+    public class LoggerOverrideArgumentsBuilder : BaseCoreBuilder, ILoggerBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel model)
         {
@@ -20,7 +19,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             {
                 new EventArgumentBuilder(),
                 new EventArgumentExtensionMethodBuilder(),
-            }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
+            }.Union(project.GetExtensions<IEventArgumentBuilder>(eventSource.Modules)).ToArray();
             foreach (var argument in model?.OverrideArguments?? new EventArgumentModel[0])
             {
                 argument.IsOverriden = true;

@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class EventModel
     {
@@ -24,6 +23,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         public EventArgumentModel[] ImplicitArguments { get; set; }
         [JsonIgnore]
         public EventModel CorrelatesTo { get; set; }
+
+        public bool IsScopedOperation { get; set; }
+
+        [JsonIgnore]
+        public string  OperationName { get; set; }
+
         public void InsertImplicitArguments(EventArgumentModel[] implicitArguments)
         {
             var eventImplicitArguments = new List<EventArgumentModel>();

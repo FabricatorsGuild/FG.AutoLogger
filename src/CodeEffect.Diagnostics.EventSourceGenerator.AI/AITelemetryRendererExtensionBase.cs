@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
+namespace FG.Diagnostics.AutoLogger.AI
 {
-    public abstract class AITelemetryRendererExtensionBase : BaseWithLogging
+    public abstract class AITelemetryRendererExtensionBase : BaseWithLogging, IExtension
     {
         private readonly Regex _eventOperationNameRegex = new Regex("start|stop", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -35,5 +35,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
 
             return requestNameArgument;
         }
+
+        public string Module => @"AI";
     }
 }

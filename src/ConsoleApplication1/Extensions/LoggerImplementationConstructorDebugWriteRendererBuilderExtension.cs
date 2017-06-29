@@ -1,4 +1,4 @@
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
 namespace ConsoleApplication1.Extensions
 {
@@ -8,5 +8,7 @@ namespace ConsoleApplication1.Extensions
         {
             return @"// Do stuff in the constructor";
         }
+
+        public string Module => @"Demo";
     }
 }

@@ -52,8 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\ToolModuleReferenceBuilder.cs" />
+    <Compile Include="Renderers\BaseEtwRendererWithLogging.cs" />
+    <Compile Include="Renderers\ProjectEventSourceDefinitionRenderer.cs" />
+    <Compile Include="Utils\AssemblyResolver.cs" />
+    <Compile Include="Builders\BaseCoreBuilder.cs" />
     <Compile Include="Builders\EventSourceEventTaskBuilder.cs" />
     <Compile Include="Builders\LoggerEventScopeExpanderBuilder.cs" />
+    <Compile Include="Builders\ProjectModulesBuilder.cs" />
     <Compile Include="Extensions\ExceptionTypeTemplateExtension.cs" />
     <Compile Include="Builders\ProjectDefaultExtensionsBuilder.cs" />
     <Compile Include="Builders\ProjectPrecompileBuilder.cs" />
@@ -62,6 +68,7 @@
     <Compile Include="Renderers\EventSourceEventTaskRenderer.cs" />
     <Compile Include="Renderers\ProjectSummaryRenderer.cs" />
     <Compile Include="Templates\EventSourceEventTaskTemplate.cs" />
+    <Compile Include="Templates\LoggerImplementationEventScopedMethodTemplate.cs" />
     <Compile Include="Utils\ComplierHelper.cs" />
     <Compile Include="Builders\EventArgumentExtensionMethodBuilder.cs" />
     <Compile Include="Builders\EventArgumentsBuilder.cs" />

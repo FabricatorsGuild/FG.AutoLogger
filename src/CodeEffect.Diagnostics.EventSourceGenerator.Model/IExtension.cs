@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public interface IExtension
     {
+        string Module { get; }
     }
 }

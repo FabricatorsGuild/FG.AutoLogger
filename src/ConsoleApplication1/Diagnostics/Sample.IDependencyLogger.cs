@@ -117,21 +117,5 @@ namespace ConsoleApplication1.Diagnostics
 		}
 
 
-		private const int DoDirtyStuffEventId = 10005;
-
-		[Event(DoDirtyStuffEventId, Level = EventLevel.LogAlways, Message = "Do Dirty Stuff", Keywords = Keywords.Dependency)]
-		public void DoDirtyStuff(
-			int processId, 
-			string machineName, 
-			string requestName)
-		{
-			WriteEvent(
-				DoDirtyStuffEventId, 
-				processId, 
-				machineName, 
-				requestName);
-		}
-
-
 	}
 }

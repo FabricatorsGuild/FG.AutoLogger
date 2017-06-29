@@ -2,13 +2,13 @@
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Schema;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 using CommandLine;
+using FG.Diagnostics.AutoLogger.Generator;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
+using FG.Diagnostics.AutoLogger.Schema;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Tool
+namespace FG.Diagnostics.AutoLogger.Tool
 {
     class Program
     {

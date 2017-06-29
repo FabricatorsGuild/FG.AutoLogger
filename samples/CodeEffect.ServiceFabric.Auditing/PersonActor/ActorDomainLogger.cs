@@ -3,17 +3,74 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using PersonActor.Diagnostics;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace PersonActor
 {
 	internal sealed class ActorDomainLogger : IActorDomainLogger
 	{
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
 		private readonly Microsoft.ServiceFabric.Actors.Runtime.Actor _actor;
 		private readonly FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;

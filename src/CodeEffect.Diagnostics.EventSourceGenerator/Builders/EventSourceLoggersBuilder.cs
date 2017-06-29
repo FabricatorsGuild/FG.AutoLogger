@@ -1,11 +1,9 @@
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventSourceLoggersBuilder : BaseWithLogging, IEventSourceBuilder
+    public class EventSourceLoggersBuilder : BaseCoreBuilder, IEventSourceBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> model)
         {
@@ -27,7 +25,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 new EventSourceEventsBuilder(),
                 new LoggerImplementationBuilder(), 
                 new LoggerEventSourcePartialBuilder(), 
-            }.Union(project.GetExtensions<ILoggerBuilder>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerBuilder>(eventSource.Modules)).ToArray();
             var loggerStartId = 10000;
             foreach (var logger in eventSource.Loggers)
             {

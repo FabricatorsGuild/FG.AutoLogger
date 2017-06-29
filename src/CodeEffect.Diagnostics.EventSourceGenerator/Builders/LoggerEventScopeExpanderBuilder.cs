@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using System.Text.RegularExpressions;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class LoggerEventScopeExpanderBuilder : BaseWithLogging, ILoggerBuilder
+    public class LoggerEventScopeExpanderBuilder : BaseCoreBuilder, ILoggerBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel model)
         {
@@ -40,12 +39,20 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 }
                 eventModel.Task = eventTask;
 
+                if (eventModel.ReturnType == "System.IDisposable")
+                {
+                    eventModel.IsScopedOperation = true;
+                    eventModel.OperationName = GetEventOperationName(eventModel);
+                }
+
                 var stopEvent = new EventModel()
                 {
                     Arguments = eventModel.Arguments.Select(a => (EventArgumentModel) a.Clone()).ToArray(),
                     Name = $"Stop{eventBaseName}",
                     OpCode = EventOpcode.Stop,
                     Task = eventTask,
+                    IsScopedOperation = eventModel.IsScopedOperation,
+                    OperationName = eventModel.OperationName,
                     Keywords = eventModel.Keywords,
                     HasComplexArguments = eventModel.HasComplexArguments,
                     CorrelatesTo = eventModel,
@@ -53,6 +60,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     Level = eventModel.Level,
                     MessageFormatter = eventModel.MessageFormatter,
                 };
+
+
 
                 eventModel.CorrelatesTo = stopEvent;
 
@@ -67,6 +76,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 }
             }
             model.Events = events.ToArray();
+        }
+
+        private readonly Regex _eventOperationNameRegex = new Regex("start|stop", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private string GetEventOperationName(EventModel model)
+        {
+            var eventOperationName = _eventOperationNameRegex.Replace(model.Name, "");
+            eventOperationName = $"{eventOperationName.Substring(0, 1).ToLowerInvariant()}{eventOperationName.Substring(1)}";
+            return eventOperationName;
         }
     }
 }

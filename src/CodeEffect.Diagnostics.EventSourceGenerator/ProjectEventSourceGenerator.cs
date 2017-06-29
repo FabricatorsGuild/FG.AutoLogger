@@ -1,10 +1,11 @@
-﻿using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Renderers;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+﻿using System;
+using System.Linq;
+using FG.Diagnostics.AutoLogger.Generator.Builders;
+using FG.Diagnostics.AutoLogger.Generator.Renderers;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator
+namespace FG.Diagnostics.AutoLogger.Generator
 {
     public class ProjectEventSourceGenerator : BaseWithLogging
     {
@@ -17,7 +18,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             {
                 new ProjectBuilder(),
                 new ProjectSummaryBuilder(),
-
+                new ToolModuleReferenceBuilder(),
             };
             foreach (var builder in builders)
             {
@@ -31,6 +32,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 LogMessage("Ignoring to build and render the project as no changes were detected");
                 return project;
             }
+
+            var referenceFiles = 
+                project.ProjectItems.OfType(ProjectItemType.Reference).Select(r => r.Name)
+                .Union(project.ProjectItems.OfType(ProjectItemType.ProjectReference).Select(r => r.Name))
+                .Union(project.ToolModuleReferences)
+                .ToArray();
+
+            var assemblyResolver = new AssemblyResolver(referenceFiles);
+            AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.CurrentDomainOnAssemblyResolve;
 
             builders = new IProjectBuilder[]
             {
@@ -60,6 +70,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
             {
                 new ProjectDefaultEventSourceDefinitionRenderer(),
                 new ProjectEventSourceRenderer(),
+                new ProjectEventSourceDefinitionRenderer(),
                 new ProjectLoggerRenderer(),
                 new ProjectSummaryRenderer(),
                 new ProjectRenderer() {SaveChanges = saveChanges},
@@ -70,6 +81,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator
                 PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project);
             }
+
+            AppDomain.CurrentDomain.ResourceResolve -= assemblyResolver.CurrentDomainOnAssemblyResolve;
 
             return project;
         }

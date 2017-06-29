@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public Microsoft.Build.Evaluation.Project QuickLoadProjectReference(string projectFileReference)
         {
@@ -49,12 +49,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 )
                 {
                     var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
+                    var assemblyName = project.Properties.FirstOrDefault(property => property.Name.Equals("AssemblyName"))?.EvaluatedValue ?? projectName;
 
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);
                     projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.EventSourceDefinition, projectItemFilePath)
                     {
                         Include = projectItem.EvaluatedInclude,
-                        RootNamespace = rootNamespace
+                        RootNamespace = rootNamespace,
+                        AssemblyName = assemblyName,
                     });
                     hasEventSource = true;
                 }
@@ -132,12 +134,18 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                         var referencedProjectSubOutputPath =
                             referencedProject.Items.FirstOrDefault(item => item.ItemType.Equals("_OutputPathItem", StringComparison.InvariantCultureIgnoreCase))?
                                 .EvaluatedInclude;
-                        
+                        var referencedProjectAssemblyName =
+                            referencedProject.Properties.FirstOrDefault(p => p.Name.Equals("AssemblyName", StringComparison.InvariantCultureIgnoreCase))?.EvaluatedValue;
+                        expectedDllName = $"{referencedProjectAssemblyName}.dll";
                         referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), referencedProjectSubOutputPath);
                         projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
                         if (System.IO.File.Exists(projectItemFilePath))
                         {
-                            projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) { Include = projectItem.EvaluatedInclude });
+                            projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
+                        }
+                        else
+                        {
+                            LogError($"Could not find dll for project reference, ensure you have compiled {projectItemFilePath}");
                         }
                     }
                 }
@@ -145,13 +153,15 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 if (!hasEventSource)
                 {
                     var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
+                    var assemblyName = project.Properties.FirstOrDefault(property => property.Name.Equals("AssemblyName"))?.EvaluatedValue ?? projectName;
 
-                    var include = $"DefaultEventSource.eventsource.json";
+                    var include = $"{assemblyName}.eventsource.json";
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, include);
                     projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.DefaultGeneratedEventSourceDefinition, projectItemFilePath)
                     {
                         Include = include,
-                        RootNamespace = rootNamespace
+                        RootNamespace = rootNamespace,
+                        AssemblyName = assemblyName,
                     });
                 }
             }

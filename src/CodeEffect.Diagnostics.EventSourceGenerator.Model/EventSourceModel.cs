@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class EventSourceModel
     {
@@ -40,6 +40,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         [JsonIgnore]
         public List<ExtensionsMethodModel> Extensions { get; private set; }
 
+        public string[] Modules { get; set; }
+
         public EventModel[] Events { get; set; }
 
         public EventSourceSettings Settings { get; set; }
@@ -53,6 +55,5 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         {
             public bool AutogenerateLoggerInterfaces { get; set; }
         }
-
     }
 }

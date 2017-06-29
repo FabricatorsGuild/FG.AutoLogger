@@ -1,9 +1,9 @@
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
+using FG.Diagnostics.AutoLogger.Generator.Templates;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class EventSourceEventTaskRenderer : BaseWithLogging, IEventTaskRenderer
+    public class EventSourceEventTaskRenderer : BaseEtwRendererWithLogging, IEventTaskRenderer
     {
         public string Render(Project project, EventSourceModel eventSource, EventTaskModel model)
         {

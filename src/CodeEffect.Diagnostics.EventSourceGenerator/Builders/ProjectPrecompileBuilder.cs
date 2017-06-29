@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectPrecompileBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectPrecompileBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public void Build(Project model)
         {
@@ -26,15 +26,12 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
             compileFiles.AddRange(extensionFiles);
             compileFiles.AddRange(loggerProjectItems);
 
-            var loaderHelperFile = CreateLoaderHelperClass();
-            compileFiles.Add(loaderHelperFile);
+            //var loaderHelperFile = CreateLoaderHelperClass();
+            //compileFiles.Add(loaderHelperFile);
 
             var complierHelper = new ComplierHelper();
             this.PassAlongLoggers(complierHelper);
             var compiledAssembly = complierHelper.Compile(cscToolPath, compileFiles, referenceFiles);
-
-            
-
 
             return compiledAssembly;
         }
@@ -47,7 +44,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
 namespace CodeEffect.Labs.ReferenceLoader
 {

@@ -3,30 +3,77 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using ConsoleApplication1.Loggers;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace ConsoleApplication1.Diagnostics
 {
 	internal sealed class ConsoleLogger : IConsoleLogger
 	{
-		// Hello from extension
-		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
+		
 
 		public ConsoleLogger(
 			)
 		{
-			// Do stuff in the constructor
 			
-            _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
-            _telemetryClient.Context.User.Id = Environment.UserName;
-            _telemetryClient.Context.Session.Id = Guid.NewGuid().ToString();
-            _telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
-
 		}
 
 		public void SayHello(
@@ -35,20 +82,8 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.SayHello(
 				message
 			);
-
-			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayHello");
-           
-			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
-			_telemetryClient.TrackEvent(
-	            nameof(SayHello),
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-	                {"Message", message}
-	            });
     
 		}
-
-
 
 
 		public void Message(
@@ -57,20 +92,8 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.Message(
 				message
 			);
-
-			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Message");
-           
-			System.Diagnostics.Debug.WriteLine($"\tmessage:\t{message}");
-			_telemetryClient.TrackEvent(
-	            nameof(Message),
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-	                {"Message", message}
-	            });
     
 		}
-
-
 
 
 		public void Error(
@@ -79,27 +102,8 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.Error(
 				exception
 			);
-
-			System.Diagnostics.Debug.WriteLine($"[Console, Error] ERR: Error");
-           
-			System.Diagnostics.Debug.WriteLine($"\texception.Message:\t{exception.Message}");
-			System.Diagnostics.Debug.WriteLine($"\texception.Source:\t{exception.Source}");
-			System.Diagnostics.Debug.WriteLine($"\texception.GetType().FullName:\t{exception.GetType().FullName}");
-			System.Diagnostics.Debug.WriteLine($"\texception.AsJson():\t{exception.AsJson()}");
-			_telemetryClient.TrackException(
-	            exception,
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-                    { "Name", "Error" },
-	                {"Message", exception.Message},
-                    {"Source", exception.Source},
-                    {"ExceptionTypeName", exception.GetType().FullName},
-                    {"Exception", exception.AsJson()}
-	            });
     
 		}
-
-
 
 
 		public void SayGoodbye(
@@ -110,22 +114,8 @@ namespace ConsoleApplication1.Diagnostics
 				goodbye, 
 				nightTime
 			);
-
-			System.Diagnostics.Debug.WriteLine($"[Console] ERR: SayGoodbye");
-           
-			System.Diagnostics.Debug.WriteLine($"\tgoodbye:\t{goodbye}");
-			System.Diagnostics.Debug.WriteLine($"\tnightTime.ToString():\t{nightTime.ToString()}");
-			_telemetryClient.TrackEvent(
-	            nameof(SayGoodbye),
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-	                {"Goodbye", goodbye},
-                    {"NightTime", nightTime.ToString()}
-	            });
     
 		}
-
-
 
 
 		public void Specially(
@@ -134,20 +124,8 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.Specially(
 				special
 			);
-
-			System.Diagnostics.Debug.WriteLine($"[Console] ERR: Specially");
-           
-			System.Diagnostics.Debug.WriteLine($"\tspecial.ToString():\t{special.ToString()}");
-			_telemetryClient.TrackEvent(
-	            nameof(Specially),
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-	                {"Special", special.ToString()}
-	            });
     
 		}
-
-
 
 
 		public void StartHello(
@@ -156,18 +134,8 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.StartHello(
 				
 			);
-
-			System.Diagnostics.Debug.WriteLine($"[Console] ERR: StartHello");
-           
-			_helloStopwatch.Restart();
-            var helloOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>("hello");
-	       
-	       OperationHolder.StartOperation(helloOperationHolder);
     
 		}
-
-		private System.Diagnostics.Stopwatch _helloStopwatch = new System.Diagnostics.Stopwatch();
-
 
 
 		public void StopHello(
@@ -176,17 +144,8 @@ namespace ConsoleApplication1.Diagnostics
 			Sample.Current.StopHello(
 				
 			);
-
-			System.Diagnostics.Debug.WriteLine($"[Console] ERR: StopHello");
-           
-			_helloStopwatch.Stop();
-	        var helloOperationHolder = OperationHolder.StopOperation();
-	        _telemetryClient.StopOperation(helloOperationHolder);
-	        helloOperationHolder.Dispose();
     
 		}
-
-
 
 
 	}

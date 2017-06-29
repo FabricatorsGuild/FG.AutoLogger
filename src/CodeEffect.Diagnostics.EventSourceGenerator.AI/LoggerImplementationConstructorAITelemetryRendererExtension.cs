@@ -1,8 +1,10 @@
 ﻿using System.Text;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
+namespace FG.Diagnostics.AutoLogger.AI
 {
+
+
     public class LoggerImplementationConstructorAITelemetryRendererExtension : AITelemetryRendererExtensionBase, ILoggerImplementationConstructorRenderer
     {
         public string Render(Project project, ProjectItem<LoggerModel> loggerProjectItem)

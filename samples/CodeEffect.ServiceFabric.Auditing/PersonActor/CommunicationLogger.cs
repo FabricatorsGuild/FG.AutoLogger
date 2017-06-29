@@ -3,17 +3,74 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using PersonActor.Diagnostics;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace PersonActor
 {
 	internal sealed class CommunicationLogger : ICommunicationLogger
 	{
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
 		private readonly FG.ServiceFabric.Diagnostics.ActorOrActorServiceDescription _actor;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
 
@@ -29,12 +86,18 @@ namespace PersonActor
 
 		}
 
-		public System.IDisposable RecieveActorMessage(
+
+        public System.IDisposable RecieveActorMessage(
 			System.Uri requestUri,
 			string actorMethodName,
 			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
 			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			PersonActorServiceEventSource.Current.StartRecieveActorMessage(
 				_actor, 
 				requestUri, 
@@ -42,9 +105,26 @@ namespace PersonActor
 				actorMessageHeaders, 
 				customServiceRequestHeader
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			PersonActorServiceEventSource.Current.StopRecieveActorMessage(
+				_actor, 
+				requestUri, 
+				actorMethodName, 
+				actorMessageHeaders, 
+				customServiceRequestHeader
+			);
+    
+		            });
+		        }),
 
-			var recieveActorMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveActorMessage");
-			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var recieveActorMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveActorMessage");
+			            recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actor.ApplicationTypeName);
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ApplicationName", _actor.ApplicationName);
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _actor.ServiceTypeName);
@@ -59,27 +139,20 @@ namespace PersonActor
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("ActorId", actorMessageHeaders?.ActorId.ToString());
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
 			recieveActorMessageOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveActorMessageOperationHolder, () => StopRecieveActorMessage(requestUri,actorMethodName,actorMessageHeaders,customServiceRequestHeader));
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<RequestTelemetry>(recieveActorMessageOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
 
-
-		public void StopRecieveActorMessage(
-			System.Uri requestUri,
-			string actorMethodName,
-			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			PersonActorServiceEventSource.Current.StopRecieveActorMessage(
-				_actor, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
 
 
 
@@ -198,12 +271,18 @@ namespace PersonActor
 
 
 
-		public System.IDisposable RecieveServiceMessage(
+
+        public System.IDisposable RecieveServiceMessage(
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
 			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			PersonActorServiceEventSource.Current.StartRecieveServiceMessage(
 				_actor, 
 				requestUri, 
@@ -211,9 +290,26 @@ namespace PersonActor
 				serviceMessageHeaders, 
 				customServiceRequestHeader
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			PersonActorServiceEventSource.Current.StopRecieveServiceMessage(
+				_actor, 
+				requestUri, 
+				serviceMethodName, 
+				serviceMessageHeaders, 
+				customServiceRequestHeader
+			);
+    
+		            });
+		        }),
 
-			var recieveServiceMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveServiceMessage");
-			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var recieveServiceMessageOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveServiceMessage");
+			            recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ActorId", _actor.ActorId.ToString());
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actor.ApplicationTypeName);
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("ApplicationName", _actor.ApplicationName);
@@ -228,27 +324,20 @@ namespace PersonActor
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("MethodId", (serviceMessageHeaders?.MethodId ?? 0).ToString());
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
 			recieveServiceMessageOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveServiceMessageOperationHolder, () => StopRecieveServiceMessage(requestUri,serviceMethodName,serviceMessageHeaders,customServiceRequestHeader));
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<RequestTelemetry>(recieveServiceMessageOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
 
-
-		public void StopRecieveServiceMessage(
-			System.Uri requestUri,
-			string serviceMethodName,
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			PersonActorServiceEventSource.Current.StopRecieveServiceMessage(
-				_actor, 
-				requestUri, 
-				serviceMethodName, 
-				serviceMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
 
 
 
@@ -369,7 +458,8 @@ namespace PersonActor
 				_actor, 
 				headers
 			);
-	        var requestContextOperationHolder = OperationHolder.StopOperation();
+
+			var requestContextOperationHolder = OperationHolder.StopOperation();
 			_telemetryClient.StopOperation(requestContextOperationHolder);
 			requestContextOperationHolder.Dispose();
     
@@ -567,12 +657,18 @@ namespace PersonActor
 
 
 
-		public System.IDisposable CallActor(
+
+        public System.IDisposable CallActor(
 			System.Uri requestUri,
 			string actorMethodName,
 			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
 			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			PersonActorServiceEventSource.Current.StartCallActor(
 				_actor, 
 				requestUri, 
@@ -580,9 +676,26 @@ namespace PersonActor
 				actorMessageHeaders, 
 				customServiceRequestHeader
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			PersonActorServiceEventSource.Current.StopCallActor(
+				_actor, 
+				requestUri, 
+				actorMethodName, 
+				actorMessageHeaders, 
+				customServiceRequestHeader
+			);
+    
+		            });
+		        }),
 
-			var callActorOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callActor");
-			callActorOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var callActorOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callActor");
+			            callActorOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actor.ApplicationTypeName);
 			callActorOperationHolder.Telemetry.Properties.Add("ApplicationName", _actor.ApplicationName);
 			callActorOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _actor.ServiceTypeName);
@@ -597,27 +710,20 @@ namespace PersonActor
 			callActorOperationHolder.Telemetry.Properties.Add("ActorId", actorMessageHeaders?.ActorId.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
 			callActorOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<DependencyTelemetry>(_telemetryClient, callActorOperationHolder, () => StopCallActor(requestUri,actorMethodName,actorMessageHeaders,customServiceRequestHeader));
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<DependencyTelemetry>(callActorOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
 
-
-		public void StopCallActor(
-			System.Uri requestUri,
-			string actorMethodName,
-			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			PersonActorServiceEventSource.Current.StopCallActor(
-				_actor, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
 
 
 
@@ -666,12 +772,18 @@ namespace PersonActor
 
 
 
-		public System.IDisposable CallService(
+
+        public System.IDisposable CallService(
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
 			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			PersonActorServiceEventSource.Current.StartCallService(
 				_actor, 
 				requestUri, 
@@ -679,9 +791,26 @@ namespace PersonActor
 				serviceMessageHeaders, 
 				customServiceRequestHeader
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			PersonActorServiceEventSource.Current.StopCallService(
+				_actor, 
+				requestUri, 
+				serviceMethodName, 
+				serviceMessageHeaders, 
+				customServiceRequestHeader
+			);
+    
+		            });
+		        }),
 
-			var callServiceOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callService");
-			callServiceOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var callServiceOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callService");
+			            callServiceOperationHolder.Telemetry.Properties.Add("ActorType", _actor.ActorType.ToString());
 			callServiceOperationHolder.Telemetry.Properties.Add("ActorId", _actor.ActorId.ToString());
 			callServiceOperationHolder.Telemetry.Properties.Add("ApplicationTypeName", _actor.ApplicationTypeName);
 			callServiceOperationHolder.Telemetry.Properties.Add("ApplicationName", _actor.ApplicationName);
@@ -696,27 +825,20 @@ namespace PersonActor
 			callServiceOperationHolder.Telemetry.Properties.Add("MethodId", (serviceMessageHeaders?.MethodId ?? 0).ToString());
 			callServiceOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
 			callServiceOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<DependencyTelemetry>(_telemetryClient, callServiceOperationHolder, () => StopCallService(requestUri,serviceMethodName,serviceMessageHeaders,customServiceRequestHeader));
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<DependencyTelemetry>(callServiceOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
 
-
-		public void StopCallService(
-			System.Uri requestUri,
-			string serviceMethodName,
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			PersonActorServiceEventSource.Current.StopCallService(
-				_actor, 
-				requestUri, 
-				serviceMethodName, 
-				serviceMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
 
 
 

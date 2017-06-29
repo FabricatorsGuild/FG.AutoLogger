@@ -1,6 +1,6 @@
 using System.Diagnostics.Tracing;
 using System.Text.RegularExpressions;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
 namespace ConsoleApplication1.Extensions
 {
@@ -28,5 +28,7 @@ namespace ConsoleApplication1.Extensions
             eventOperationName = eventOperationName.Substring(0, 1).ToLowerInvariant() + eventOperationName.Substring(1);
             return eventOperationName;
         }
+
+        public string Module => @"Demo";
     }
 }

@@ -1,10 +1,9 @@
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Templates;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class EventSourceKeywordRenderer : BaseWithLogging, IKeywordRenderer
+    public class EventSourceKeywordRenderer : BaseEtwRendererWithLogging, IKeywordRenderer
     {
         public string Render(Project project, EventSourceModel eventSource, KeywordModel model)
         {

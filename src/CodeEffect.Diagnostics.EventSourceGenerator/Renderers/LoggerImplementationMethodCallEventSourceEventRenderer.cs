@@ -1,11 +1,9 @@
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Templates;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class LoggerImplementationMethodCallEventSourceEventRenderer : BaseWithLogging, ILoggerImplementationMethodRenderer
+    public class LoggerImplementationMethodCallEventSourceEventRenderer : BaseEtwRendererWithLogging, ILoggerImplementationMethodRenderer
     {
         private string RenderEventSourceEventMethodCallArgument(EventArgumentModel model)
         {

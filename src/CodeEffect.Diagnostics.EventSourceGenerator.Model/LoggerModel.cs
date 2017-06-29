@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using Newtonsoft.Json;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
+namespace FG.Diagnostics.AutoLogger.Model
 {
     public class LoggerModel
     {
@@ -10,6 +9,8 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Model
         private EventArgumentModel[] _overrideArguments;
         private EventModel[] _events;
 
+        [JsonIgnore]
+        public bool AutoDiscovered { get; set; }
         [JsonIgnore]
         public string SourceFileName { get; set; }
         public string Name { get; set; }

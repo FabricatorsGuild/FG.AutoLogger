@@ -1,11 +1,8 @@
-using System;
-using System.Diagnostics.Eventing.Reader;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventImplicitArgumentsBuilder : BaseWithLogging, IEventBuilder, ILoggerEventBuilder
+    public class EventImplicitArgumentsBuilder : BaseCoreBuilder, IEventBuilder, ILoggerEventBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventModel model)
         {

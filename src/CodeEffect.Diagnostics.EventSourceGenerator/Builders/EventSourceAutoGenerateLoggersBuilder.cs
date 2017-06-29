@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventSourceAutoGenerateLoggersBuilder : BaseWithLogging, IEventSourceBuilder
+    public class EventSourceAutoGenerateLoggersBuilder : BaseCoreBuilder, IEventSourceBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> model)
         {
@@ -31,9 +30,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                     {
                         Name = loggerTemplateModel.Name,
                         StartId = startId,
+                        AutoDiscovered = true,
                     });
+                    startId += 1000;
                 }
-                startId += 1000;
             }
             eventSource.Loggers = loggers.ToArray();
         }

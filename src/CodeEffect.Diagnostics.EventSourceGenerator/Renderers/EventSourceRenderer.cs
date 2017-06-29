@@ -1,12 +1,11 @@
 using System.Linq;
 using System.Text;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Generator.Templates;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class EventSourceRenderer : BaseWithLogging, IEventSourceRenderer
+    public class EventSourceRenderer : BaseEtwRendererWithLogging, IEventSourceRenderer
     {
         public void Render(Project project, ProjectItem<EventSourceModel> model)
         {
@@ -30,10 +29,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 new EventSourceEventMethodRenderer(),
                 new EventSourceNonEventMethodRenderer(),
                 new LoggerEventSourcePartialEventMethodRenderer(), 
-            }.Union(project.GetExtensions<IEventRenderer>()).ToArray();
+            }.Union(project.GetExtensions<IEventRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var eventSourceEvent in eventSourceModel?.Events ?? new EventModel[0])
             {
-                foreach (var renderer in eventRenderers.Union(project.GetExtensions<IEventRenderer>()))
+                foreach (var renderer in eventRenderers)
                 {
                     PassAlongLoggers(renderer as IWithLogging);
                     events.AppendLine(renderer.Render(project, eventSourceModel, eventSourceEvent));
@@ -47,7 +46,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             var keywordsRenderers = new IKeywordRenderer[]
             {
                 new EventSourceKeywordRenderer(),
-            }.Union(project.GetExtensions<IKeywordRenderer>()).ToArray();
+            }.Union(project.GetExtensions<IKeywordRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var keyword in eventSourceModel.Keywords ?? new KeywordModel[0])
             {
                 foreach (var renderer in keywordsRenderers)
@@ -63,7 +62,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             var eventTaskRenderers = new IEventTaskRenderer[]
             {
                 new EventSourceEventTaskRenderer(), 
-            }.Union(project.GetExtensions<IEventTaskRenderer>()).ToArray();
+            }.Union(project.GetExtensions<IEventTaskRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var eventTask in eventSourceModel.Tasks?? new EventTaskModel[0])
             {
                 foreach (var renderer in eventTaskRenderers)
@@ -81,10 +80,10 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 var extensionRenderers = new IExtensionsMethodRenderer[]
                 {
                     new EventSourceExtensionMethodRenderer(), 
-                }.Union(project.GetExtensions<IExtensionsMethodRenderer>()).ToArray();
+                }.Union(project.GetExtensions<IExtensionsMethodRenderer>(eventSourceModel.Modules)).ToArray();
                 foreach (var extension in eventSourceModel.Extensions)
                 {
-                    foreach (var renderer in extensionRenderers.Union(project.GetExtensions<IExtensionsMethodRenderer>()))
+                    foreach (var renderer in extensionRenderers)
                     {
                         PassAlongLoggers(renderer as IWithLogging);
                         extensions.AppendLine(renderer.Render(project, eventSourceModel, extension));

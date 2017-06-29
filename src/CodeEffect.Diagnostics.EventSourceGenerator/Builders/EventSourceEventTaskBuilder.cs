@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventSourceEventTaskBuilder : BaseWithLogging, IEventSourceBuilder
+    public class EventSourceEventTaskBuilder : BaseCoreBuilder, IEventSourceBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> model)
         {

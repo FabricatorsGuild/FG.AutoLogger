@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventSourceExtensionsMethodsBuilder : BaseWithLogging, IEventSourceBuilder
+    public class EventSourceExtensionsMethodsBuilder : BaseCoreBuilder, IEventSourceBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> model)
         {
@@ -19,7 +17,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
             var extensionMethodBuilders = new IExtensionsMethodBuilder[]
             {
-            }.Union(project.GetExtensions<IExtensionsMethodBuilder>()).ToArray();
+            }.Union(project.GetExtensions<IExtensionsMethodBuilder>(eventSource.Modules)).ToArray();
 
             foreach (var extension in (IEnumerable<ExtensionsMethodModel>) eventSource.Extensions ?? new ExtensionsMethodModel[0])
             {

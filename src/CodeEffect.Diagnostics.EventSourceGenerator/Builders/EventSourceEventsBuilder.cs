@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
+namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventSourceEventsBuilder : BaseWithLogging, IEventSourceBuilder, ILoggerBuilder
+    public class EventSourceEventsBuilder : BaseCoreBuilder, IEventSourceBuilder, ILoggerBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> model)
         {
@@ -27,7 +26,14 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
 
         private void Build<TBuilder>(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, IEnumerable<EventModel> events, Action<TBuilder, EventModel> build)
             where TBuilder : IBuilder
-        {            
+        {
+            var eventSourceModel = eventSourceProjectItem.Content;
+            if (eventSourceModel == null)
+            {
+                LogError($"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
+                return;
+            }
+
             var eventBuilders = new IBuilder[]
             {
                 new EventIdBuilder(),
@@ -38,7 +44,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Builders
                 new EventMessageFormatterBuilder(),
                 new EventTemplatedArgumentsBuilder(),
                 new EventArgumentsComplexityCheckBuilder(),
-            }.Cast<TBuilder>().Union(project.GetExtensions<TBuilder>()).ToArray();
+            }.Cast<TBuilder>().Union(project.GetExtensions<TBuilder>(eventSourceModel.Modules)).ToArray();
 
             foreach (var evt in events)
             {

@@ -111,7 +111,7 @@ namespace PersonActor
 
 		private const int StartReadStateEventId = 6003;
 
-		[Event(StartReadStateEventId, Level = EventLevel.LogAlways, Message = "Start Read State {9}", Keywords = Keywords.Actor, Opcode = EventOpcode.Start)]
+		[Event(StartReadStateEventId, Level = EventLevel.LogAlways, Message = "Start Read State {9}", Keywords = Keywords.Actor, Opcode = EventOpcode.Start, Task = Tasks.ReadState)]
 		private void StartReadState(
 			string actorType, 
 			string actorId, 
@@ -162,7 +162,7 @@ namespace PersonActor
 
 		private const int StopReadStateEventId = 8004;
 
-		[Event(StopReadStateEventId, Level = EventLevel.LogAlways, Message = "Stop Read State {9}", Keywords = Keywords.Actor, Opcode = EventOpcode.Stop)]
+		[Event(StopReadStateEventId, Level = EventLevel.LogAlways, Message = "Stop Read State {9}", Keywords = Keywords.Actor, Opcode = EventOpcode.Stop, Task = Tasks.ReadState)]
 		private void StopReadState(
 			string actorType, 
 			string actorId, 
@@ -213,7 +213,7 @@ namespace PersonActor
 
 		private const int StartWriteStateEventId = 10005;
 
-		[Event(StartWriteStateEventId, Level = EventLevel.LogAlways, Message = "Start Write State {9}", Keywords = Keywords.Actor, Opcode = EventOpcode.Start)]
+		[Event(StartWriteStateEventId, Level = EventLevel.LogAlways, Message = "Start Write State {9}", Keywords = Keywords.Actor, Opcode = EventOpcode.Start, Task = Tasks.WriteState)]
 		private void StartWriteState(
 			string actorType, 
 			string actorId, 
@@ -264,7 +264,7 @@ namespace PersonActor
 
 		private const int StopWriteStateEventId = 12006;
 
-		[Event(StopWriteStateEventId, Level = EventLevel.LogAlways, Message = "Stop Write State {9}", Keywords = Keywords.Actor, Opcode = EventOpcode.Stop)]
+		[Event(StopWriteStateEventId, Level = EventLevel.LogAlways, Message = "Stop Write State {9}", Keywords = Keywords.Actor, Opcode = EventOpcode.Stop, Task = Tasks.WriteState)]
 		private void StopWriteState(
 			string actorType, 
 			string actorId, 

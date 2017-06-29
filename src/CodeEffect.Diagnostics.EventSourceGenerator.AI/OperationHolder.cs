@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.AI
+namespace FG.Diagnostics.AutoLogger.AI
 {
     public sealed class OperationHolder
     {

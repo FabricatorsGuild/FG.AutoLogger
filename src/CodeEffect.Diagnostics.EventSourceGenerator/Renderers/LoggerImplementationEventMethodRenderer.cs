@@ -1,16 +1,17 @@
 using System;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Templates;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
+using System.Text.RegularExpressions;
+using FG.Diagnostics.AutoLogger.Generator.Templates;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 
-namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
+namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class LoggerImplementationEventMethodRenderer : BaseWithLogging, ILoggerImplementationEventRenderer
+    public class LoggerImplementationEventMethodRenderer : BaseEtwRendererWithLogging, ILoggerImplementationEventRenderer
     {
-        public string RenderMethodArgument(EventArgumentModel model)
+        private static string RenderMethodArgument(EventArgumentModel model)
         {
             var output = LoggerImplementationEventMethodTemplate.Template_METHOD_ARGUMENT_DECLARATION;
             output = output.Replace(LoggerImplementationEventMethodTemplate.Template_ARGUMENT_NAME, model.Name);
@@ -41,18 +42,32 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
                 return "";
             }
 
-            var eventName = model.Name;
+            if (model.OpCode == EventOpcode.Start)
+            {
+                if (model.IsScopedOperation)
+                {
+                    return RenderStartScopedOperation(project, loggerProjectItem, eventSourceModel, model);
+                }
 
-            if ((model.ReturnType == "System.IDisposable") && (model.Name.StartsWith("Start")))
-            {
-                eventName = model.Name.Substring("Start".Length);
+                return RenderStartOperation(project, loggerProjectItem, eventSourceModel, model);
             }
-            /*
-            else if (model.CorrelatesTo?.ReturnType == "System.IDisposable" && (model.CorrelatesTo?.Name.StartsWith("Start") ?? false))
+            else if (model.OpCode == EventOpcode.Stop)
             {
-                return "";
+                if (model.IsScopedOperation)
+                {
+                    return RenderStopScopedOperation(model);
+                }
+
+                return RenderStopOperation(project, loggerProjectItem, eventSourceModel, model);
             }
-            */
+
+            return RenderMethod(project, loggerProjectItem, eventSourceModel, model);
+
+        }
+
+        private string RenderMethod(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventSourceModel eventSourceModel, EventModel model)
+        {
+            var eventName = model.Name;
 
             var output = LoggerImplementationEventMethodTemplate.Template_LOGGER_METHOD;
             output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_NAME, eventName);
@@ -71,13 +86,67 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Renderers
             var renderers = new ILoggerImplementationMethodRenderer[]
             {
                 new LoggerImplementationMethodCallEventSourceEventRenderer(),
-            }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in renderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
                 methodImplementation.Append(renderer.Render(project, loggerProjectItem, model));
             }
             output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_IMPLEMENTATION, methodImplementation.ToString());
+
+            return output;
+        }
+
+        private string RenderStopOperation(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventSourceModel eventSourceModel, EventModel model)
+        {
+            return RenderMethod(project, loggerProjectItem, eventSourceModel, model);
+        }
+
+        private string RenderStopScopedOperation(EventModel model)
+        {
+            return "";
+        }
+
+        private string RenderStartOperation(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventSourceModel eventSourceModel, EventModel model)
+        {
+            return RenderMethod(project, loggerProjectItem, eventSourceModel, model);
+        }
+
+        private string RenderStartScopedOperation(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventSourceModel eventSourceModel, EventModel model)
+        {
+            var eventName = model.Name.Substring("Start".Length);
+
+            var output = LoggerImplementationEventMethodTemplate.Template_SCOPED_LOGGER_METHOD;
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_NAME, eventName);
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_EVENTSOURCE_CLASS_NAME, eventSourceModel.ClassName);
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_RETURNTYPE, model.ReturnType ?? "void");
+
+            var methodArguments = new EventArgumentsListBuilder(
+                RenderMethodArgument, LoggerImplementationEventMethodTemplate.Template_LOGGER_IMPLICIT_ARGUMENTS_METHOD_DECLARATION_DELIMITER);
+            foreach (var argument in model.GetAllNonImplicitArguments())
+            {
+                methodArguments.Append(argument);
+            }
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_ARGUMENTS, methodArguments.ToString());
+
+            var methodImplementations = new StringBuilder();
+            var renderers = new ILoggerImplementationMethodRenderer[]
+            {
+                new LoggerImplementationMethodCallEventSourceEventRenderer(),
+            }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>(eventSourceModel.Modules)).ToArray();
+            foreach (var renderer in renderers)
+            {
+                PassAlongLoggers(renderer as IWithLogging);
+                var startOutput = renderer.Render(project, loggerProjectItem, model);
+                var stopOutput = renderer.Render(project, loggerProjectItem, model.CorrelatesTo);
+
+                var methodScopeWrapperImplementation = LoggerImplementationEventMethodTemplate.Template_SCOPED_LOGGER_METHOD_WRAPPER;
+                methodScopeWrapperImplementation = methodScopeWrapperImplementation.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_SCOPED_START_IMPLEMENTATION, startOutput);
+                methodScopeWrapperImplementation = methodScopeWrapperImplementation.Replace(LoggerImplementationEventMethodTemplate.Variable_LOGGER_METHOD_SCOPED_STOP_IMPLEMENTATION, stopOutput);
+
+                methodImplementations.Append(methodScopeWrapperImplementation);
+            }
+            output = output.Replace(LoggerImplementationEventMethodTemplate.Variable_SCOPED_LOGGER_METHODS, methodImplementations.ToString());
 
             return output;
         }

@@ -1,8 +1,8 @@
 ﻿using System;
-using CodeEffect.Diagnostics.EventSourceGenerator.Builders;
-using CodeEffect.Diagnostics.EventSourceGenerator.Model;
-using CodeEffect.Diagnostics.EventSourceGenerator.Utils;
 using ConsoleApplication1.Loggers;
+using FG.Diagnostics.AutoLogger.Generator.Builders;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
+using FG.Diagnostics.AutoLogger.Model;
 using FluentAssertions;
 using NUnit.Framework;
 
