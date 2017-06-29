@@ -52,8 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Renderers\BaseEtwRendererWithLogging.cs" />
+    <Compile Include="Builders\BaseCoreBuilder.cs" />
     <Compile Include="Builders\EventSourceEventTaskBuilder.cs" />
     <Compile Include="Builders\LoggerEventScopeExpanderBuilder.cs" />
+    <Compile Include="Builders\ProjectModulesBuilder.cs" />
     <Compile Include="Extensions\ExceptionTypeTemplateExtension.cs" />
     <Compile Include="Builders\ProjectDefaultExtensionsBuilder.cs" />
     <Compile Include="Builders\ProjectPrecompileBuilder.cs" />
