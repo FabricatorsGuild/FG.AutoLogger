@@ -3,6 +3,8 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.AI
 {
+
+
     public class LoggerImplementationConstructorAITelemetryRendererExtension : AITelemetryRendererExtensionBase, ILoggerImplementationConstructorRenderer
     {
         public string Render(Project project, ProjectItem<LoggerModel> loggerProjectItem)
