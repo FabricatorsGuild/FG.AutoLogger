@@ -23,6 +23,12 @@ namespace FG.Diagnostics.AutoLogger.Model
         public EventArgumentModel[] ImplicitArguments { get; set; }
         [JsonIgnore]
         public EventModel CorrelatesTo { get; set; }
+
+        public bool IsScopedOperation { get; set; }
+
+        [JsonIgnore]
+        public string  OperationName { get; set; }
+
         public void InsertImplicitArguments(EventArgumentModel[] implicitArguments)
         {
             var eventImplicitArguments = new List<EventArgumentModel>();

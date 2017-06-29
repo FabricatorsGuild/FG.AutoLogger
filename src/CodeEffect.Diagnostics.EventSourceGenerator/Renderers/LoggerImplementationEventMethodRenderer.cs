@@ -11,7 +11,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
     public class LoggerImplementationEventMethodRenderer : BaseEtwRendererWithLogging, ILoggerImplementationEventRenderer
     {
-        public string RenderMethodArgument(EventArgumentModel model)
+        private static string RenderMethodArgument(EventArgumentModel model)
         {
             var output = LoggerImplementationEventMethodTemplate.Template_METHOD_ARGUMENT_DECLARATION;
             output = output.Replace(LoggerImplementationEventMethodTemplate.Template_ARGUMENT_NAME, model.Name);
@@ -42,37 +42,23 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
                 return "";
             }
 
-            var eventName = model.Name;
-
-            if ((model.ReturnType == "System.IDisposable") && (model.Name.StartsWith("Start")))
-            {
-                eventName = model.Name.Substring("Start".Length);
-            }
-            /*
-            else if (model.CorrelatesTo?.ReturnType == "System.IDisposable" && (model.CorrelatesTo?.Name.StartsWith("Start") ?? false))
-            {
-                return "";
-            }
-            */
-
-
             if (model.OpCode == EventOpcode.Start)
             {
-                if ((model.ReturnType == "System.IDisposable") && (model.Name.StartsWith("Start")))
+                if (model.IsScopedOperation)
                 {
                     return RenderStartScopedOperation(project, loggerProjectItem, eventSourceModel, model);
                 }
 
-                return RenderStartOperation(model);
+                return RenderStartOperation(project, loggerProjectItem, eventSourceModel, model);
             }
             else if (model.OpCode == EventOpcode.Stop)
             {
-                if (model.CorrelatesTo?.ReturnType == "System.IDisposable" && (model.CorrelatesTo?.Name.StartsWith("Start") ?? false))
+                if (model.IsScopedOperation)
                 {
                     return RenderStopScopedOperation(model);
                 }
 
-                return RenderStopOperation(model);
+                return RenderStopOperation(project, loggerProjectItem, eventSourceModel, model);
             }
 
             return RenderMethod(project, loggerProjectItem, eventSourceModel, model);
@@ -111,9 +97,9 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             return output;
         }
 
-        private string RenderStopOperation(EventModel model)
+        private string RenderStopOperation(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventSourceModel eventSourceModel, EventModel model)
         {
-            throw new NotImplementedException();
+            return RenderMethod(project, loggerProjectItem, eventSourceModel, model);
         }
 
         private string RenderStopScopedOperation(EventModel model)
@@ -121,14 +107,13 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             return "";
         }
 
-        private string RenderStartOperation(EventModel model)
+        private string RenderStartOperation(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventSourceModel eventSourceModel, EventModel model)
         {
-            throw new NotImplementedException();
+            return RenderMethod(project, loggerProjectItem, eventSourceModel, model);
         }
 
         private string RenderStartScopedOperation(Project project, ProjectItem<LoggerModel> loggerProjectItem, EventSourceModel eventSourceModel, EventModel model)
         {
-            var operationName = GetEventOperationName(model);
             var eventName = model.Name.Substring("Start".Length);
 
             var output = LoggerImplementationEventMethodTemplate.Template_SCOPED_LOGGER_METHOD;
@@ -165,35 +150,5 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
             return output;
         }
-
-        private readonly Regex _eventOperationNameRegex = new Regex("start|stop", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        protected string GetEventOperationName(EventModel model)
-        {
-            var eventOperationName = _eventOperationNameRegex.Replace(model.Name, "");
-            eventOperationName = $"{eventOperationName.Substring(0, 1).ToLowerInvariant()}{eventOperationName.Substring(1)}";
-            return eventOperationName;
-        }
-
-        public EventArgumentModel GetRequestNameArgument(EventModel model)
-        {
-            var hasRequestNameArgument = false;
-            EventArgumentModel requestNameArgument = null;
-            foreach (var eventArgumentModel in model.GetAllArgumentsExpanded())
-            {
-                if (eventArgumentModel.Name.Matches("*request*", StringComparison.InvariantCultureIgnoreCase, useWildcards: true))
-                {
-                    if (hasRequestNameArgument)
-                    {
-                        LogWarning($"Event {model.Name} has multiple potential request name arguments");
-                    }
-                    requestNameArgument = eventArgumentModel;
-                    hasRequestNameArgument = true;
-                }
-            }
-
-            return requestNameArgument;
-        }
-
     }
 }
