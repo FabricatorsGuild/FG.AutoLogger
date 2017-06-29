@@ -10,9 +10,6 @@ namespace FG.Diagnostics.AutoLogger.Generator.Utils
 {
     public class ComplierHelper : BaseWithLogging
     {
-
-
-
         private Assembly CompileInternal(
             string cscToolPath,
             IEnumerable<ProjectItem> sourceItems,
@@ -53,12 +50,21 @@ namespace FG.Diagnostics.AutoLogger.Generator.Utils
 
             try
             {
-                var process = Process.Start(new ProcessStartInfo(cscExePath, commandLineForProject) {CreateNoWindow = true});
+                var process = Process.Start(new ProcessStartInfo(cscExePath, commandLineForProject)
+                {
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                });
+                while (!process.StandardOutput.EndOfStream)
+                {
+                    LogMessage(process.StandardOutput.ReadLine());
+                }
                 process.Exited += (sender, args) =>
                 {
                     compiledAssembly = Assembly.LoadFile(tempOutput);
                 };
-
 
                 var timeoutchecker = TimeSpan.Zero;
                 while ((!process.HasExited) && (timeoutchecker.TotalMilliseconds < 30000))
@@ -77,22 +83,6 @@ namespace FG.Diagnostics.AutoLogger.Generator.Utils
             }
 
             return compiledAssembly;
-        }
-
-        public Assembly Compile(string cscToolPath, string code, IEnumerable<ProjectItem> referenceItems)
-        {
-            var tempCodeFile = $"{System.IO.Path.GetTempFileName()}.cs";
-            System.IO.File.WriteAllText(tempCodeFile, code);
-            var sourceProjectItem = new ProjectItem(ProjectItemType.Unknown, "temp source code", code);
-            try
-            {
-                return CompileInternal(cscToolPath, new ProjectItem[] { sourceProjectItem}, referenceItems);
-            }
-            catch (Exception ex)
-            {
-                LogWarning($"Failed to compile/evaluate code source - {ex.Message}\r\n{ex.StackTrace}");
-            }
-            return null;
         }
 
         public Assembly Compile(string cscToolPath, IEnumerable<ProjectItem> projectItems, IEnumerable<ProjectItem> referenceItems)

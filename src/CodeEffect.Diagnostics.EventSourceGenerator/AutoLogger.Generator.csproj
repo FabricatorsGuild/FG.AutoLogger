@@ -52,7 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\ToolModuleReferenceBuilder.cs" />
     <Compile Include="Renderers\BaseEtwRendererWithLogging.cs" />
+    <Compile Include="Utils\AssemblyResolver.cs" />
     <Compile Include="Builders\BaseCoreBuilder.cs" />
     <Compile Include="Builders\EventSourceEventTaskBuilder.cs" />
     <Compile Include="Builders\LoggerEventScopeExpanderBuilder.cs" />

@@ -26,15 +26,12 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             compileFiles.AddRange(extensionFiles);
             compileFiles.AddRange(loggerProjectItems);
 
-            var loaderHelperFile = CreateLoaderHelperClass();
-            compileFiles.Add(loaderHelperFile);
+            //var loaderHelperFile = CreateLoaderHelperClass();
+            //compileFiles.Add(loaderHelperFile);
 
             var complierHelper = new ComplierHelper();
             this.PassAlongLoggers(complierHelper);
             var compiledAssembly = complierHelper.Compile(cscToolPath, compileFiles, referenceFiles);
-
-            
-
 
             return compiledAssembly;
         }

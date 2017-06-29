@@ -33,6 +33,11 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             model.Loggers = loggerTemplates.ToArray();            
         }
 
+        private bool IsLoggerInterface(Type type)
+        {
+            return type.IsInterface && type.Name.Matches(@"^I[^\\]*Logger", StringComparison.InvariantCultureIgnoreCase, useWildcards: false);
+        }
+
         private LoggerTemplateModel[] CompileAndEvaluateInterface(Assembly dynamicAssembly, IEnumerable<ProjectItem> projectItems)
         {
             var loggerFiles = projectItems.GetCSVList(p => p.Include);
@@ -49,9 +54,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 if (dynamicAssembly != null)
                 {
                     var types = dynamicAssembly.GetTypes();
-                    foreach (
-                        var type in
-                        types.Where(t => t.IsInterface && t.Name.Matches(@"^I[^\\]*Logger", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)))
+                    foreach (var type in types.Where(IsLoggerInterface).ToArray())
                     {
                         var projectItem = projectItems.FirstOrDefault(l => l.Name.Matches($"*{type.Name}.cs", StringComparison.InvariantCultureIgnoreCase, true));
                         if (projectItem == null)

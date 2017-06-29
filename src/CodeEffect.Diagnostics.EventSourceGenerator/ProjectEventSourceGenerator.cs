@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FG.Diagnostics.AutoLogger.Generator.Builders;
 using FG.Diagnostics.AutoLogger.Generator.Renderers;
+using FG.Diagnostics.AutoLogger.Generator.Utils;
 using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator
@@ -16,7 +18,7 @@ namespace FG.Diagnostics.AutoLogger.Generator
             {
                 new ProjectBuilder(),
                 new ProjectSummaryBuilder(),
-
+                new ToolModuleReferenceBuilder(),
             };
             foreach (var builder in builders)
             {
@@ -30,6 +32,15 @@ namespace FG.Diagnostics.AutoLogger.Generator
                 LogMessage("Ignoring to build and render the project as no changes were detected");
                 return project;
             }
+
+            var referenceFiles = 
+                project.ProjectItems.OfType(ProjectItemType.Reference).Select(r => r.Name)
+                .Union(project.ProjectItems.OfType(ProjectItemType.ProjectReference).Select(r => r.Name))
+                .Union(project.ToolModuleReferences)
+                .ToArray();
+
+            var assemblyResolver = new AssemblyResolver(referenceFiles);
+            AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.CurrentDomainOnAssemblyResolve;
 
             builders = new IProjectBuilder[]
             {
@@ -69,6 +80,8 @@ namespace FG.Diagnostics.AutoLogger.Generator
                 PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project);
             }
+
+            AppDomain.CurrentDomain.ResourceResolve -= assemblyResolver.CurrentDomainOnAssemblyResolve;
 
             return project;
         }

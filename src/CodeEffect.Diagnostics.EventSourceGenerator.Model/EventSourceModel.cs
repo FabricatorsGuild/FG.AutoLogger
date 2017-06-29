@@ -40,6 +40,8 @@ namespace FG.Diagnostics.AutoLogger.Model
         [JsonIgnore]
         public List<ExtensionsMethodModel> Extensions { get; private set; }
 
+        public string[] Modules { get; set; }
+
         public EventModel[] Events { get; set; }
 
         public EventSourceSettings Settings { get; set; }
@@ -53,6 +55,5 @@ namespace FG.Diagnostics.AutoLogger.Model
         {
             public bool AutogenerateLoggerInterfaces { get; set; }
         }
-
     }
 }

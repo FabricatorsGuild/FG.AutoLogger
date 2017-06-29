@@ -130,7 +130,10 @@ namespace FG.Diagnostics.AutoLogger.Generator.Utils
         public static string GetCSVList<T>(this IEnumerable<T> values, Func<T, string> renderValue )
         {
             renderValue = renderValue ?? (v => v.ToString());
-            return values.Aggregate("", (s, i) => $"{s}, {renderValue(i)}");
+            var valuesLength = values.Count();
+            if (valuesLength == 0) return "";
+            if (valuesLength == 1) return renderValue(values.Single());
+            return values.Aggregate("", (s, i) => $"{s}, {renderValue(i)}").Substring(2);
         }
     }
 }
