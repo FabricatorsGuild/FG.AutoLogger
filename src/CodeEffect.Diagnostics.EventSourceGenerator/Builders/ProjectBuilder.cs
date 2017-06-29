@@ -155,7 +155,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                     var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
                     var assemblyName = project.Properties.FirstOrDefault(property => property.Name.Equals("AssemblyName"))?.EvaluatedValue ?? projectName;
 
-                    var include = $"{assemblyName}.eventsource.json";
+                    var include = $"{assemblyName}EventSource.eventsource.json";
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, include);
                     projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.DefaultGeneratedEventSourceDefinition, projectItemFilePath)
                     {
