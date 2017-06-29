@@ -2,7 +2,7 @@
   "EventSources": [
     {
       "Name": "Diagnostics\\sample.eventsource.json",
-      "Hash": "efbfbd79efbfbdefbfbd24efbfbdefbfbdefbfbd64efbfbdefbfbdefbfbd27c5b1"
+      "Hash": "42efbfbd4407eb9089efbfbd6d60c8a22f7140efbfbd"
     }
   ],
   "References": [
@@ -39,7 +39,7 @@
   "ProjectReferences": [
     {
       "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\bin\\Debug\\FG.Diagnostics.AutoLogger.Model.dll",
-      "Hash": "19:49:00"
+      "Hash": "22:04:42"
     }
   ],
   "CompileTargets": [
@@ -80,5 +80,5 @@
       "Hash": "cf91cea87b4a78efbfbdd0abefbfbdefbfbd69efbfbd38"
     }
   ],
-  "Hash": "05efbfbd4565660c72295aefbfbdefbfbd0f0eefbfbdefbfbdefbfbd"
+  "Hash": "efbfbdefbfbdefbfbd3b427507efbfbdefbfbd2d47efbfbd30efbfbdefbfbdefbfbd"
 }

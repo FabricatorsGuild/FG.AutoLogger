@@ -3,54 +3,87 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using ConsoleApplication1.Loggers;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
 
 
 namespace ConsoleApplication1.Diagnostics
 {
 	internal sealed class InfrastructureLogger : IInfrastructureLogger
 	{
-		private readonly string _machineName;
-		// Hello from extension
-		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
+		
 
 		public InfrastructureLogger(
-			string machineName)
+			)
 		{
-			_machineName = machineName;
-			// Do stuff in the constructor
 			
-            _telemetryClient = new Microsoft.ApplicationInsights.TelemetryClient();
-            _telemetryClient.Context.User.Id = Environment.UserName;
-            _telemetryClient.Context.Session.Id = Guid.NewGuid().ToString();
-            _telemetryClient.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
-
 		}
 
 		public void ActivatingService(
 			)
 		{
 			Sample.Current.ActivatingService(
-				_machineName
+				
 			);
-
-			System.Diagnostics.Debug.WriteLine($"[Infrastructure] ERR: ActivatingService");
-           
-			System.Diagnostics.Debug.WriteLine($"\tEnvironment.MachineName:\t{Environment.MachineName}");
-			_telemetryClient.TrackEvent(
-	            nameof(ActivatingService),
-	            new System.Collections.Generic.Dictionary<string, string>()
-	            {
-	                {"MachineName", Environment.MachineName}
-	            });
     
 		}
-
-
 
 
 	}

@@ -11,15 +11,14 @@ namespace ConsoleApplication1.Diagnostics
 	internal sealed partial class Sample
 	{
 
-		private const int ActivatingServiceEventId = 3001;
+		private const int ActivatingServiceEventId = 6001;
 
 		[Event(ActivatingServiceEventId, Level = EventLevel.LogAlways, Message = "Activating Service", Keywords = Keywords.Infrastructure)]
 		public void ActivatingService(
-			string machineName)
+			)
 		{
 			WriteEvent(
-				ActivatingServiceEventId, 
-				machineName);
+				ActivatingServiceEventId);
 		}
 
 

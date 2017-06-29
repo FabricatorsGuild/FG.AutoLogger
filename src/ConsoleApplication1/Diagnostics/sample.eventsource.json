@@ -1,41 +1,4 @@
 {
-  "ProviderName": "CE-CodeEffect.Diagnostics.EventSourceGenerator-sample",
-  "Settings": {
-    "AutogenerateLoggerInterfaces":  false 
-  },
-  "Keywords": [
-    "HostInitialization",
-    "Domain",
-    "Infrastructure"
-  ],
-  "TypeTemplates": [
-    {
-      "Name": "Exception",
-      "CLRType": "System.Exception",
-      "Arguments": [
-        {
-          "Assignment": "$this.Message",
-          "Name": "message",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.Source",
-          "Name": "source",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.GetType().FullName",
-          "Name": "exceptionTypeName",
-          "Type": "string"
-        },
-        {
-          "Assignment": "$this.AsJson()",
-          "Name": "exception",
-          "Type": "string"
-        }
-      ]
-    }
-  ],
   "Loggers": [
     {
       "Name": "IDependencyLogger",
@@ -55,10 +18,59 @@
           "Type": "string",
           "Assignment": "System.Diagnostics.Process.GetCurrentProcess().Id.ToString()"
         }
-      ],
-      "OverrideArguments": []
+      ]
     }
   ],
-  "Events": [
-  ]
+  "Name": "sample",
+  "ProviderName": "CE-CodeEffect.Diagnostics.EventSourceGenerator-sample",
+  "Keywords": [
+    "HostInitialization",
+    "Domain",
+    "Infrastructure",
+    "Dependency",
+    "Console",
+    "Error",
+    "ConsoleRunner"
+  ],
+  "Tasks": [
+    {
+      "Name": "CallExternalComponent",
+      "Value": 1
+    },
+    {
+      "Name": "RecieveMessage",
+      "Value": 2
+    }
+  ],
+  "TypeTemplates": [
+    {
+      "Name": "Exception",
+      "CLRType": "System.Exception",
+      "Arguments": [
+        {
+          "Name": "message",
+          "Type": "string",
+          "Assignment": "$this.Message"
+        },
+        {
+          "Name": "source",
+          "Type": "string",
+          "Assignment": "$this.Source"
+        },
+        {
+          "Name": "exceptionTypeName",
+          "Type": "string",
+          "Assignment": "$this.GetType().FullName"
+        },
+        {
+          "Name": "exception",
+          "Type": "string",
+          "Assignment": "$this.AsJson()"
+        }
+      ]
+    }
+  ],
+  "Settings": {
+    "AutogenerateLoggerInterfaces": true
+  }
 }
