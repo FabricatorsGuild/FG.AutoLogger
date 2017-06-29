@@ -11,6 +11,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
         {
             foreach (var output in model.ProjectItems.OfType(
                         ProjectItemType.EventSource,
+                        ProjectItemType.EventSourceDefinition,
                         ProjectItemType.DefaultGeneratedEventSourceDefinition,
                         ProjectItemType.EventSourceLoggerPartial,
                         ProjectItemType.LoggerImplementation,
@@ -18,7 +19,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             {
 
                 var exists = System.IO.File.Exists(output.Name);
-                var newHash = output.Output.ToMD5();
+                var newHash = output.Output?.ToMD5() ?? "";
 
                 var writeContent = false;
                 if (exists)
@@ -26,7 +27,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
                     var existingContent = System.IO.File.ReadAllText(output.Name);
                     var existingHash = existingContent.ToMD5();
 
-                    if (existingHash != newHash)
+                    if (existingHash != newHash && output.Output != null)
                     {
                         LogMessage($"Writing file {output.Name} as the content has changed");
                         writeContent = true;

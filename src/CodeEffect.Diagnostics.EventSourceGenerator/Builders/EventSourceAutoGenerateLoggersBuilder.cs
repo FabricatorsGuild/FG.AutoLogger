@@ -30,9 +30,10 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                     {
                         Name = loggerTemplateModel.Name,
                         StartId = startId,
+                        AutoDiscovered = true,
                     });
+                    startId += 1000;
                 }
-                startId += 1000;
             }
             eventSource.Loggers = loggers.ToArray();
         }

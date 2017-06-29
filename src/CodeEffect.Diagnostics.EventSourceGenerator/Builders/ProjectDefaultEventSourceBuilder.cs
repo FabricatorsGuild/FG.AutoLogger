@@ -36,6 +36,10 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                                 new EventArgumentModel("exception", "string", "$this.AsJson()"),
                             }
                         }
+                    },
+                    Settings = new EventSourceModel.EventSourceSettings()
+                    {
+                        AutogenerateLoggerInterfaces = true,
                     }
                 };
                 var eventSourceLoggers = new List<LoggerModel>();

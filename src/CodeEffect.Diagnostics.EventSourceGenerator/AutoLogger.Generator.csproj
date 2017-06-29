@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Builders\ToolModuleReferenceBuilder.cs" />
     <Compile Include="Renderers\BaseEtwRendererWithLogging.cs" />
+    <Compile Include="Renderers\ProjectEventSourceDefinitionRenderer.cs" />
     <Compile Include="Utils\AssemblyResolver.cs" />
     <Compile Include="Builders\BaseCoreBuilder.cs" />
     <Compile Include="Builders\EventSourceEventTaskBuilder.cs" />

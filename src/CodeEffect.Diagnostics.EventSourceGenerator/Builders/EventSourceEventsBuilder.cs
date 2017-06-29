@@ -26,7 +26,14 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
 
         private void Build<TBuilder>(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, IEnumerable<EventModel> events, Action<TBuilder, EventModel> build)
             where TBuilder : IBuilder
-        {            
+        {
+            var eventSourceModel = eventSourceProjectItem.Content;
+            if (eventSourceModel == null)
+            {
+                LogError($"{eventSourceProjectItem.Name} should have a content of type {typeof(EventSourceModel).Name} set but found {eventSourceProjectItem.Content?.GetType().Name ?? "null"}");
+                return;
+            }
+
             var eventBuilders = new IBuilder[]
             {
                 new EventIdBuilder(),

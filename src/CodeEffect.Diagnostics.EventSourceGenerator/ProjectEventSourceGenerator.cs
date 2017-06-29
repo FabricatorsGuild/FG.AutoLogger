@@ -70,6 +70,7 @@ namespace FG.Diagnostics.AutoLogger.Generator
             {
                 new ProjectDefaultEventSourceDefinitionRenderer(),
                 new ProjectEventSourceRenderer(),
+                new ProjectEventSourceDefinitionRenderer(),
                 new ProjectLoggerRenderer(),
                 new ProjectSummaryRenderer(),
                 new ProjectRenderer() {SaveChanges = saveChanges},

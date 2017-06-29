@@ -10,6 +10,8 @@ namespace FG.Diagnostics.AutoLogger.Model
         private EventModel[] _events;
 
         [JsonIgnore]
+        public bool AutoDiscovered { get; set; }
+        [JsonIgnore]
         public string SourceFileName { get; set; }
         public string Name { get; set; }
         [JsonIgnore]
