@@ -34,6 +34,7 @@ namespace FG.Diagnostics.AutoLogger.Model
         public string Include { get; set; }
         public object Content { get; set; }
         public string Output { get; set; }
+        public string AssemblyName { get; set; }
         public string RootNamespace { get; set; }
         public ProjectItem DependentUpon { get; set; }
         public ProjectItemType ItemType { get; set; }

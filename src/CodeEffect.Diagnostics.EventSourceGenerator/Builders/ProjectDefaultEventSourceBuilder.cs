@@ -19,9 +19,9 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 var defaultEventSource = new EventSourceModel()
                 {
                     Namespace = defaultEventSourceProjectItem.RootNamespace,
-                    Name = "DefaultEventSource",
+                    Name = defaultEventSourceProjectItem.AssemblyName,
                     ProviderName = $"{defaultEventSourceProjectItem.RootNamespace.Replace('.', '-')}-Default",
-                    ClassName = "DefaultEventSource",
+                    ClassName = defaultEventSourceProjectItem.AssemblyName,
                     TypeTemplates = new TypeTemplateModel[]
                     {
                         new TypeTemplateModel()

@@ -49,12 +49,14 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 )
                 {
                     var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
+                    var assemblyName = project.Properties.FirstOrDefault(property => property.Name.Equals("AssemblyName"))?.EvaluatedValue ?? projectName;
 
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);
                     projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.EventSourceDefinition, projectItemFilePath)
                     {
                         Include = projectItem.EvaluatedInclude,
-                        RootNamespace = rootNamespace
+                        RootNamespace = rootNamespace,
+                        AssemblyName = assemblyName,
                     });
                     hasEventSource = true;
                 }
@@ -151,13 +153,15 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 if (!hasEventSource)
                 {
                     var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
+                    var assemblyName = project.Properties.FirstOrDefault(property => property.Name.Equals("AssemblyName"))?.EvaluatedValue ?? projectName;
 
-                    var include = $"DefaultEventSource.eventsource.json";
+                    var include = $"{assemblyName}.eventsource.json";
                     var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, include);
                     projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.DefaultGeneratedEventSourceDefinition, projectItemFilePath)
                     {
                         Include = include,
-                        RootNamespace = rootNamespace
+                        RootNamespace = rootNamespace,
+                        AssemblyName = assemblyName,
                     });
                 }
             }
