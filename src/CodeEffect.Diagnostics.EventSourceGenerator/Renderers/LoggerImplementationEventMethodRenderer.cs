@@ -86,7 +86,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             var renderers = new ILoggerImplementationMethodRenderer[]
             {
                 new LoggerImplementationMethodCallEventSourceEventRenderer(),
-            }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in renderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -133,7 +133,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             var renderers = new ILoggerImplementationMethodRenderer[]
             {
                 new LoggerImplementationMethodCallEventSourceEventRenderer(),
-            }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationMethodRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in renderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);

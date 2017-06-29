@@ -19,7 +19,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             {
                 new EventArgumentBuilder(),
                 new EventArgumentExtensionMethodBuilder(),
-            }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
+            }.Union(project.GetExtensions<IEventArgumentBuilder>(eventSource.Modules)).ToArray();
             foreach (var argument in model?.OverrideArguments?? new EventArgumentModel[0])
             {
                 argument.IsOverriden = true;

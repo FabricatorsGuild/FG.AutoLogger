@@ -18,7 +18,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             {
                 new EventArgumentBuilder(),
                 new EventArgumentExtensionMethodBuilder(), 
-            }.Union(project.GetExtensions<IEventArgumentBuilder>()).ToArray();
+            }.Union(project.GetExtensions<IEventArgumentBuilder>(eventSourceModel.Modules)).ToArray();
             foreach (var argument in model.Arguments ?? new EventArgumentModel[0])
             {
                 foreach (var builder in eventArgumentBuilders)

@@ -37,7 +37,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 new EventMessageFormatterBuilder(),
                 new EventTemplatedArgumentsBuilder(),
                 new EventArgumentsComplexityCheckBuilder(),
-            }.Cast<TBuilder>().Union(project.GetExtensions<TBuilder>()).ToArray();
+            }.Cast<TBuilder>().Union(project.GetExtensions<TBuilder>(eventSourceModel.Modules)).ToArray();
 
             foreach (var evt in events)
             {

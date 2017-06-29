@@ -25,7 +25,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 new EventSourceEventsBuilder(),
                 new LoggerImplementationBuilder(), 
                 new LoggerEventSourcePartialBuilder(), 
-            }.Union(project.GetExtensions<ILoggerBuilder>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerBuilder>(eventSource.Modules)).ToArray();
             var loggerStartId = 10000;
             foreach (var logger in eventSource.Loggers)
             {

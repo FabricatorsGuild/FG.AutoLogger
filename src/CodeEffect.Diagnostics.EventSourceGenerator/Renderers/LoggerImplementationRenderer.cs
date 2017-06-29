@@ -79,7 +79,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             var usings = new StringBuilder();
             var usingRenderers = new ILoggerImplementationUsingRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationUsingRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationUsingRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in usingRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -88,7 +88,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
             var memberRenderers = new ILoggerImplementationMembersRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in memberRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -97,7 +97,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
             var constructorRenderers = new ILoggerImplementationConstructorRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>(eventSourceModel.Modules)).ToArray();
             foreach (var renderer in constructorRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -113,7 +113,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             var loggerEventRenderers = new ILoggerImplementationEventRenderer[]
             {
                 new LoggerImplementationEventMethodRenderer(), 
-            }.Union(project.GetExtensions<ILoggerImplementationEventRenderer>()).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationEventRenderer>(eventSourceModel.Modules)).ToArray();
 
             foreach (var loggerEvent in loggerModel.Events)
             {

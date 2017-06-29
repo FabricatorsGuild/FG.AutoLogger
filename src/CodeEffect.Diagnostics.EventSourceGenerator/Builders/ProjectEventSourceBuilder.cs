@@ -87,7 +87,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 new EventSourceLoggersBuilder(),
                 new EventSourceEventsBuilder(),
                 new EventSourceExtensionsMethodsBuilder(),
-            }.Union(project.GetExtensions<IEventSourceBuilder>()).ToArray();
+            }.Union(project.GetExtensions<IEventSourceBuilder>(eventSource.Modules)).ToArray();
             foreach (var builder in eventSourceBuilders)
             {
                 PassAlongLoggers(builder as IWithLogging);
