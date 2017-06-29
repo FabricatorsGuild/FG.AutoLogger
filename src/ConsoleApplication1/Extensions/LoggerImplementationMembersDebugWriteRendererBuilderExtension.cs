@@ -8,5 +8,7 @@ namespace ConsoleApplication1.Extensions
         {
             return @"// Hello from extension";
         }
+
+        public string Module => @"Demo";
     }
 }

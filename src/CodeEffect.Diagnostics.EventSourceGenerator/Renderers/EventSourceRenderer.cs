@@ -5,7 +5,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class EventSourceRenderer : BaseWithLogging, IEventSourceRenderer
+    public class EventSourceRenderer : BaseEtwRendererWithLogging, IEventSourceRenderer
     {
         public void Render(Project project, ProjectItem<EventSourceModel> model)
         {

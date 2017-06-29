@@ -7,7 +7,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class ProjectRenderer : BaseWithLogging, IProjectRenderer
+    public class ProjectRenderer : BaseEtwRendererWithLogging, IProjectRenderer
     {
         public bool SaveChanges { get; set; }
 

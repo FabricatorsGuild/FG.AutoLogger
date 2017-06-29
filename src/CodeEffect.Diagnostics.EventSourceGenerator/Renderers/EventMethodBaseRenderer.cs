@@ -2,7 +2,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public abstract class EventMethodBaseRenderer : BaseWithLogging
+    public abstract class EventMethodBaseRenderer : BaseEtwRendererWithLogging
     {
         protected static string RenderEventSourceType(EventArgumentModel model)
         {

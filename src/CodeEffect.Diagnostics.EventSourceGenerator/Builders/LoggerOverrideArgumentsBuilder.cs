@@ -3,7 +3,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class LoggerOverrideArgumentsBuilder : BaseWithLogging, ILoggerBuilder
+    public class LoggerOverrideArgumentsBuilder : BaseCoreBuilder, ILoggerBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, LoggerModel model)
         {

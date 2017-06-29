@@ -39,5 +39,7 @@ namespace ConsoleApplication1.Extensions
             }
             return "";
         }
+
+        public string Module => @"Demo";
     }
 }

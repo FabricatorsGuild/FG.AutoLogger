@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class ProjectSummaryRenderer : BaseWithLogging, IProjectRenderer
+    public class ProjectSummaryRenderer : BaseEtwRendererWithLogging, IProjectRenderer
     {
         public void Render(Project model)
         {

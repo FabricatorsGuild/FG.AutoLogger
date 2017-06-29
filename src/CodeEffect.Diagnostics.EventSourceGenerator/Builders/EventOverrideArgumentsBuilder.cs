@@ -2,7 +2,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventOverrideArgumentsBuilder : BaseWithLogging, IEventBuilder, ILoggerEventBuilder
+    public class EventOverrideArgumentsBuilder : BaseCoreBuilder, IEventBuilder, ILoggerEventBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> eventSourceProjectItem, EventModel model)
         {

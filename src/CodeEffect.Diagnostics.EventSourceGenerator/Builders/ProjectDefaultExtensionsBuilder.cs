@@ -4,7 +4,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectDefaultExtensionsBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectDefaultExtensionsBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public void Build(Project model)
         {

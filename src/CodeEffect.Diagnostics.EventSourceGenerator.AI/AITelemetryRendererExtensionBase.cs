@@ -5,7 +5,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.AI
 {
-    public abstract class AITelemetryRendererExtensionBase : BaseWithLogging
+    public abstract class AITelemetryRendererExtensionBase : BaseWithLogging, IExtension
     {
         private readonly Regex _eventOperationNameRegex = new Regex("start|stop", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -35,5 +35,7 @@ namespace FG.Diagnostics.AutoLogger.AI
 
             return requestNameArgument;
         }
+
+        public string Module => @"AI";
     }
 }

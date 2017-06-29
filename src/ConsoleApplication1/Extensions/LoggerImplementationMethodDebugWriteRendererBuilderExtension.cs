@@ -60,5 +60,7 @@ namespace ConsoleApplication1.Extensions
 
             return output;
         }
+
+        public string Module => @"Demo";
     }
 }

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectSummaryBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectSummaryBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public void Build(Project model)
         {

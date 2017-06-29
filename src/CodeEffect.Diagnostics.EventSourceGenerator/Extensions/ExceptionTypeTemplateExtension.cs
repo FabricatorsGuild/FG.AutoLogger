@@ -36,5 +36,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Extensions
         {
             return Definition;
         }
+
+        public override string Module => @"Core";
     }
 }

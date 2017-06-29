@@ -7,7 +7,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public Microsoft.Build.Evaluation.Project QuickLoadProjectReference(string projectFileReference)
         {

@@ -8,5 +8,7 @@ namespace ConsoleApplication1.Extensions
         {
             return @"// Do stuff in the constructor";
         }
+
+        public string Module => @"Demo";
     }
 }

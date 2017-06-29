@@ -59,5 +59,7 @@ namespace FG.Diagnostics.AutoLogger.Model
             return GetTypeTemplateModelInternal();
         }
 
+        public abstract string Module { get; }
+
     }
 }

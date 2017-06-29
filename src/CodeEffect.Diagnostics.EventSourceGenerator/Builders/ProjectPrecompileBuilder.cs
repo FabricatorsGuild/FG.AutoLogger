@@ -6,7 +6,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class ProjectPrecompileBuilder : BaseWithLogging, IProjectBuilder
+    public class ProjectPrecompileBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public void Build(Project model)
         {

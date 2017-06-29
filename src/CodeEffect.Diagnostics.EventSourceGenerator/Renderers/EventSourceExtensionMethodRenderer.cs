@@ -3,7 +3,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class EventSourceExtensionMethodRenderer : BaseWithLogging, IExtensionsMethodRenderer
+    public class EventSourceExtensionMethodRenderer : BaseEtwRendererWithLogging, IExtensionsMethodRenderer
     {
         public string Render(Project project, EventSourceModel eventSource, ExtensionsMethodModel model)
         {

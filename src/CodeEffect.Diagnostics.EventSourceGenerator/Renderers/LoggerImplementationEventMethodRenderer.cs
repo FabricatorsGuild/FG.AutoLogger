@@ -9,7 +9,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 {
-    public class LoggerImplementationEventMethodRenderer : BaseWithLogging, ILoggerImplementationEventRenderer
+    public class LoggerImplementationEventMethodRenderer : BaseEtwRendererWithLogging, ILoggerImplementationEventRenderer
     {
         public string RenderMethodArgument(EventArgumentModel model)
         {

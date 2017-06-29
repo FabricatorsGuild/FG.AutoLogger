@@ -4,7 +4,7 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
-    public class EventSourceExtensionsMethodsBuilder : BaseWithLogging, IEventSourceBuilder
+    public class EventSourceExtensionsMethodsBuilder : BaseCoreBuilder, IEventSourceBuilder
     {
         public void Build(Project project, ProjectItem<EventSourceModel> model)
         {
