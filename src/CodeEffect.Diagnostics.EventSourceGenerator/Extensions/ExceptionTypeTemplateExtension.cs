@@ -1,9 +1,8 @@
-using System;
 using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Extensions
 {
-    public class ExceptionTypeTemplateExtension : BaseTemplateExtension<Exception>
+    public class ExceptionTypeTemplateExtension : BaseTemplateExtension
     {
         private const string Definition = @"{
                   ""Name"": ""Exception"",

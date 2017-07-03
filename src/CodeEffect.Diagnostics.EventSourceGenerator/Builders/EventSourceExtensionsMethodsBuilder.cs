@@ -17,7 +17,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
 
             var extensionMethodBuilders = new IExtensionsMethodBuilder[]
             {
-            }.Union(project.GetExtensions<IExtensionsMethodBuilder>(eventSource.Modules)).ToArray();
+            }.Union(project.GetExtensions<IExtensionsMethodBuilder>(eventSource.Settings?.Modules ?? new string[0])).ToArray();
 
             foreach (var extension in (IEnumerable<ExtensionsMethodModel>) eventSource.Extensions ?? new ExtensionsMethodModel[0])
             {

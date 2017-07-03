@@ -45,7 +45,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
             foreach (var loggerEvent in loggerModel.Events)
             {
-                foreach (var renderer in loggerEventRenderers.Union(project.GetExtensions<ILoggerEventSourcePartialEventRenderer>(eventSourceModel.Modules)))
+                foreach (var renderer in loggerEventRenderers.Union(project.GetExtensions<ILoggerEventSourcePartialEventRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])))
                 {
                     PassAlongLoggers(renderer as IWithLogging);
                     var eventRender = renderer.Render(project, model, loggerEvent);

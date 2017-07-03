@@ -32,7 +32,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             {
                 new EventSourceRenderer(), 
             };
-            foreach (var renderer in eventSourceRenderers.Union(project.GetExtensions<IEventSourceRenderer>(eventSourceModel.Modules)))
+            foreach (var renderer in eventSourceRenderers.Union(project.GetExtensions<IEventSourceRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])))
             {
                 PassAlongLoggers(renderer as IWithLogging);
                 renderer.Render(project, eventSourceProjectItem);
