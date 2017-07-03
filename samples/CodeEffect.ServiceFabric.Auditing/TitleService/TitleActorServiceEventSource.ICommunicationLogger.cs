@@ -13,7 +13,7 @@ namespace TitleService
 
 		private const int StartRecieveServiceMessageEventId = 1001;
 
-		[Event(StartRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Service Message {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		[Event(StartRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Service Message {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = Tasks.RecieveServiceMessage)]
 		private void StartRecieveServiceMessage(
 			string serviceName, 
 			string serviceTypeName, 
@@ -76,7 +76,7 @@ namespace TitleService
 
 		private const int StopRecieveServiceMessageEventId = 2002;
 
-		[Event(StopRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Service Message {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		[Event(StopRecieveServiceMessageEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Service Message {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop, Task = Tasks.RecieveServiceMessage)]
 		private void StopRecieveServiceMessage(
 			string serviceName, 
 			string serviceTypeName, 
@@ -691,7 +691,7 @@ namespace TitleService
 
 		private const int StartCallServiceEventId = 13013;
 
-		[Event(StartCallServiceEventId, Level = EventLevel.LogAlways, Message = "Start Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		[Event(StartCallServiceEventId, Level = EventLevel.LogAlways, Message = "Start Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = Tasks.CallService)]
 		private void StartCallService(
 			string serviceName, 
 			string serviceTypeName, 
@@ -754,7 +754,7 @@ namespace TitleService
 
 		private const int StopCallServiceEventId = 14014;
 
-		[Event(StopCallServiceEventId, Level = EventLevel.LogAlways, Message = "Stop Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		[Event(StopCallServiceEventId, Level = EventLevel.LogAlways, Message = "Stop Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop, Task = Tasks.CallService)]
 		private void StopCallService(
 			string serviceName, 
 			string serviceTypeName, 

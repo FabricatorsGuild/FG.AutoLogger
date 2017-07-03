@@ -3,19 +3,113 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using WebApiService.Diagnostics;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
+using System.Runtime.Remoting.Messaging;
 
 
 namespace WebApiService
 {
 	internal sealed class WebApiLogger : IWebApiLogger
 	{
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
 		private readonly System.Fabric.StatelessServiceContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
+
+        public sealed class OperationHolder
+        {
+            public static void StartOperation(IOperationHolder<RequestTelemetry> aiOperationHolder)
+            {
+                OperationHolder.Current = new OperationHolder() {AIOperationHolder = aiOperationHolder};
+            }
+
+            public static IOperationHolder<RequestTelemetry> StopOperation()
+            {
+                var aiOperationHolder = OperationHolder.Current.AIOperationHolder;
+                OperationHolder.Current = null;
+
+                return aiOperationHolder;
+            }
+
+            private IOperationHolder<RequestTelemetry> AIOperationHolder { get; set; }
+
+            private static readonly string ContextKey = Guid.NewGuid().ToString();
+
+            public static OperationHolder Current
+            {
+                get { return (OperationHolder)CallContext.LogicalGetData(ContextKey); }
+                internal set
+                {
+                    if (value == null)
+                    {
+                        CallContext.FreeNamedDataSlot(ContextKey);
+                    }
+                    else
+                    {
+                        CallContext.LogicalSetData(ContextKey, value);
+                    }
+                }
+            }
+        }
 
 		public WebApiLogger(
 			System.Fabric.StatelessServiceContext context)
@@ -84,7 +178,8 @@ namespace WebApiService
 			WebApiServiceEventSource.Current.StopGetAll(
 				_context
 			);
-	        var getAllOperationHolder = OperationHolder.StopOperation();
+
+			var getAllOperationHolder = OperationHolder.StopOperation();
 			_telemetryClient.StopOperation(getAllOperationHolder);
 			getAllOperationHolder.Dispose();
     
@@ -92,12 +187,18 @@ namespace WebApiService
 
 
 
-		public System.IDisposable RecieveWebApiRequest(
+
+        public System.IDisposable RecieveWebApiRequest(
 			System.Uri requestUri,
 			string payload,
 			string correlationId,
 			string userId)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			WebApiServiceEventSource.Current.StartRecieveWebApiRequest(
 				_context, 
 				requestUri, 
@@ -105,9 +206,26 @@ namespace WebApiService
 				correlationId, 
 				userId
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			WebApiServiceEventSource.Current.StopRecieveWebApiRequest(
+				_context, 
+				requestUri, 
+				payload, 
+				correlationId, 
+				userId
+			);
+    
+		            });
+		        }),
 
-			var recieveWebApiRequestOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveWebApiRequest");
-			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var recieveWebApiRequestOperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(requestUri.ToString() ?? "recieveWebApiRequest");
+			            recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
@@ -118,27 +236,20 @@ namespace WebApiService
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("Payload", payload);
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("CorrelationId", correlationId);
 			recieveWebApiRequestOperationHolder.Telemetry.Properties.Add("UserId", userId);
-			return new ScopeWrapper<RequestTelemetry>(_telemetryClient, recieveWebApiRequestOperationHolder, () => StopRecieveWebApiRequest(requestUri,payload,correlationId,userId));
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<RequestTelemetry>(recieveWebApiRequestOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
 
-
-		public void StopRecieveWebApiRequest(
-			System.Uri requestUri,
-			string payload,
-			string correlationId,
-			string userId)
-		{
-			WebApiServiceEventSource.Current.StopRecieveWebApiRequest(
-				_context, 
-				requestUri, 
-				payload, 
-				correlationId, 
-				userId
-			);
-    
-		}
 
 
 

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Fabric;
 using System.Threading;
-using System.Threading.Tasks;
-using CodeEffect.ServiceFabric.Diagnostics.LoggerTypeTemplates;
-using FG.ServiceFabric.Diagnostics;
 using Microsoft.ServiceFabric.Actors.Runtime;
 
 namespace PersonActor
@@ -32,6 +27,7 @@ namespace PersonActor
 			{
 				// TODO: Fix this logging, add option to build ActorOrActorServiceDescription from FabricRuntime?
 				//FabricRuntime.GetNodeContext().
+				
 				new ActorLogger(null).ActorHostInitializationFailed(e);
 				throw;
 			}

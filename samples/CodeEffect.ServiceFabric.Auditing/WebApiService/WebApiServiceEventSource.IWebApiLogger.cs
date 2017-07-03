@@ -144,7 +144,7 @@ namespace WebApiService
 
 		private const int StartRecieveWebApiRequestEventId = 404;
 
-		[Event(StartRecieveWebApiRequestEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Web Api Request {7} {8} {9} {10}", Keywords = Keywords.WebApi, Opcode = EventOpcode.Start)]
+		[Event(StartRecieveWebApiRequestEventId, Level = EventLevel.LogAlways, Message = "Start Recieve Web Api Request {7} {8} {9} {10}", Keywords = Keywords.WebApi, Opcode = EventOpcode.Start, Task = Tasks.RecieveWebApiRequest)]
 		private void StartRecieveWebApiRequest(
 			string serviceName, 
 			string serviceTypeName, 
@@ -201,7 +201,7 @@ namespace WebApiService
 
 		private const int StopRecieveWebApiRequestEventId = 505;
 
-		[Event(StopRecieveWebApiRequestEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Web Api Request {7} {8} {9} {10}", Keywords = Keywords.WebApi, Opcode = EventOpcode.Stop)]
+		[Event(StopRecieveWebApiRequestEventId, Level = EventLevel.LogAlways, Message = "Stop Recieve Web Api Request {7} {8} {9} {10}", Keywords = Keywords.WebApi, Opcode = EventOpcode.Stop, Task = Tasks.RecieveWebApiRequest)]
 		private void StopRecieveWebApiRequest(
 			string serviceName, 
 			string serviceTypeName, 

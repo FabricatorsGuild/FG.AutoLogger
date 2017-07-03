@@ -74,16 +74,6 @@
     "Dependency",
     "Infrastructure"
   ],
-  "Tasks": [
-    {
-      "Name": "CallExternalComponent",
-      "Value": 1
-    },
-    {
-      "Name": "RecieveMessage",
-      "Value": 2
-    }
-  ],
   "TypeTemplates": [
     {
       "Name": "Exception",
@@ -113,6 +103,7 @@
     }
   ],
   "Settings": {
-    "AutogenerateLoggerInterfaces": true
+    "AutogenerateLoggerInterfaces": true,
+    "Modules" :  ["AI"] 
   }
 }

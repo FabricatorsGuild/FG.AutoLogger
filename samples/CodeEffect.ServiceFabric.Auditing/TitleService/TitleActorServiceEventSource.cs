@@ -38,6 +38,16 @@ namespace TitleService
 		}
 		#endregion Keywords
 
+		#region Tasks
+
+		public static class Tasks
+		{
+			public const EventTask RecieveServiceMessage = (EventTask)0x1L;
+			public const EventTask CallService = (EventTask)0x2L;
+
+		}
+		#endregion Tasks
+
 		#region Events
 
 
