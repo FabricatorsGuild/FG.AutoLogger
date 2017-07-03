@@ -1,8 +1,8 @@
 ﻿using System;
-using ConsoleApplication1.Loggers;
 using FG.Diagnostics.AutoLogger.Generator.Builders;
 using FG.Diagnostics.AutoLogger.Generator.Utils;
 using FG.Diagnostics.AutoLogger.Model;
+using FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Loggers;
 using FluentAssertions;
 using NUnit.Framework;
 

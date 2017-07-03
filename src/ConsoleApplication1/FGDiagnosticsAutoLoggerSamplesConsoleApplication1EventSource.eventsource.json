@@ -65,8 +65,8 @@
       "OverrideArguments": []
     }
   ],
-  "Name": "ConsoleApplication1EventSource",
-  "ProviderName": "ConsoleApplication1-Default",
+  "Name": "FGDiagnosticsAutoLoggerSamplesConsoleApplication1EventSource",
+  "ProviderName": "FG-Diagnostics-AutoLogger-Samples-ConsoleApplication1",
   "Keywords": [
     "Console",
     "Error",
@@ -103,7 +103,10 @@
     }
   ],
   "Settings": {
-    "AutogenerateLoggerInterfaces": true,
-    "Modules" :  ["AI"] 
+    "Modules": [
+      "Demo",
+      "AI"
+    ],
+    "AutogenerateLoggerInterfaces": true
   }
 }

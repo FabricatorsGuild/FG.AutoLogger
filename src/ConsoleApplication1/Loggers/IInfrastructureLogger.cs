@@ -1,4 +1,4 @@
-﻿namespace ConsoleApplication1.Loggers
+﻿namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Loggers
 {
     public interface IInfrastructureLogger
     {

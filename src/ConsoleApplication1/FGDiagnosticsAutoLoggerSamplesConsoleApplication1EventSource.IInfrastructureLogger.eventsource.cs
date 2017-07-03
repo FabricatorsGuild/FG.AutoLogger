@@ -6,9 +6,9 @@ using System;
 using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 {
-	internal sealed partial class ConsoleApplication1EventSource
+	internal sealed partial class FGDiagnosticsAutoLoggerSamplesConsoleApplication1EventSource
 	{
 
 		private const int ActivatingServiceEventId = 4001;
