@@ -19,6 +19,7 @@ The purpose is to remove a lot of the manual writing and maintainance of EventSo
 
 ## Getting Started
 
+### Tutorial - Setting up the Tool in Visual Studio
 [![Setting up the Tool in Visual Studio](https://github.com/FabricatorsGuild/FG.AutoLogger/raw/master/docs/AutoLogger%20setup%20tool.PNG)](https://youtu.be/lQZxHx78A_A)
 
 There are currently two ways of generating concrete loggers and EventSource implementations in a project
