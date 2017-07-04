@@ -19,6 +19,12 @@ The purpose is to remove a lot of the manual writing and maintainance of EventSo
 
 ## Getting Started
 
+### Tutorial - Setting up the Tool in Visual Studio
+[![Setting up the Tool in Visual Studio](https://github.com/FabricatorsGuild/FG.AutoLogger/raw/docs/docs/AutoLogger%20setup%20tool.PNG)](https://youtu.be/vl-eLHK7des)
+
+### Tutorial - Adding logging to a project
+[![Adding logging to a project](https://github.com/FabricatorsGuild/FG.AutoLogger/raw/docs/docs/Autologger%20adding%20logging%20to%20a%20project.PNG)](https://youtu.be/VY6TJuFu6yA)
+
 There are currently two ways of generating concrete loggers and EventSource implementations in a project
 
 * Using the MSBuild NuGet that triggers a pre-build of related files and then includes the generated result. **NOTE: This method is currenly not working well with larger projects and may end up in .dlls shared between multiple projects using the MSBuild target being locked by overlapping MSBuild processes**
