@@ -20,7 +20,7 @@ namespace FG.Diagnostics.AutoLogger.AI
             return aiOperationHolder;
         }
 
-        public IOperationHolder<RequestTelemetry> AIOperationHolder { get; set; }
+        private IOperationHolder<RequestTelemetry> AIOperationHolder { get; set; }
 
         private static readonly string ContextKey = Guid.NewGuid().ToString();
 

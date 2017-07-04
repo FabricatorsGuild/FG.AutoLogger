@@ -1,6 +1,6 @@
 using FG.Diagnostics.AutoLogger.Model;
 
-namespace ConsoleApplication1.Extensions
+namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Extensions
 {
     public class LoggerImplementationMembersDebugWriteRendererBuilderExtension : ILoggerImplementationMembersRenderer
     {

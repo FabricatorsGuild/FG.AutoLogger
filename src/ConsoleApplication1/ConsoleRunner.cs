@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
-using ConsoleApplication1.Loggers;
+using FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Loggers;
 
-namespace ConsoleApplication1
+namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 {
     public class ConsoleRunner
     {

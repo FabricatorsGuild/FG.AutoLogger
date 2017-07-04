@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ConsoleApplication1
+namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 {
     public class ObjectMother
     {

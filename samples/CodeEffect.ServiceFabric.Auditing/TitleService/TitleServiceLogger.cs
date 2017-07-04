@@ -3,20 +3,114 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using TitleService.Diagnostics;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
+using System.Runtime.Remoting.Messaging;
 
 
 namespace TitleService
 {
 	internal sealed class TitleServiceLogger : ITitleServiceLogger
 	{
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
 		private readonly System.Fabric.StatefulServiceContext _serviceContext;
 		private readonly FG.ServiceFabric.Services.Remoting.FabricTransport.ServiceRequestContext _requestContext;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
+
+        public sealed class OperationHolder
+        {
+            public static void StartOperation(IOperationHolder<RequestTelemetry> aiOperationHolder)
+            {
+                OperationHolder.Current = new OperationHolder() {AIOperationHolder = aiOperationHolder};
+            }
+
+            public static IOperationHolder<RequestTelemetry> StopOperation()
+            {
+                var aiOperationHolder = OperationHolder.Current.AIOperationHolder;
+                OperationHolder.Current = null;
+
+                return aiOperationHolder;
+            }
+
+            private IOperationHolder<RequestTelemetry> AIOperationHolder { get; set; }
+
+            private static readonly string ContextKey = Guid.NewGuid().ToString();
+
+            public static OperationHolder Current
+            {
+                get { return (OperationHolder)CallContext.LogicalGetData(ContextKey); }
+                internal set
+                {
+                    if (value == null)
+                    {
+                        CallContext.FreeNamedDataSlot(ContextKey);
+                    }
+                    else
+                    {
+                        CallContext.LogicalSetData(ContextKey, value);
+                    }
+                }
+            }
+        }
 
 		public TitleServiceLogger(
 			System.Fabric.StatefulServiceContext serviceContext,

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FG.Diagnostics.AutoLogger.Generator.Utils;
 using FG.Diagnostics.AutoLogger.Model;
 
@@ -16,12 +17,17 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             var defaultEventSourceProjectItem = project.ProjectItems.GetDefaultEventSourceProjectItem();
             if (defaultEventSourceProjectItem != null)
             {
+                var defaultEventSourceName = $"{defaultEventSourceProjectItem.AssemblyName}EventSource";
+                defaultEventSourceName = defaultEventSourceName.RemoveNonWordCharacters();
+
+                var modules = project.GetExtensionModules();
+
                 var defaultEventSource = new EventSourceModel()
                 {
                     Namespace = defaultEventSourceProjectItem.RootNamespace,
-                    Name = defaultEventSourceProjectItem.AssemblyName,
-                    ProviderName = $"{defaultEventSourceProjectItem.RootNamespace.Replace('.', '-')}-Default",
-                    ClassName = defaultEventSourceProjectItem.AssemblyName,
+                    Name = defaultEventSourceName,
+                    ProviderName = $"{defaultEventSourceProjectItem.RootNamespace.Replace('.', '-')}",
+                    ClassName = defaultEventSourceName,
                     TypeTemplates = new TypeTemplateModel[]
                     {
                         new TypeTemplateModel()
@@ -40,6 +46,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                     Settings = new EventSourceModel.EventSourceSettings()
                     {
                         AutogenerateLoggerInterfaces = true,
+                        Modules = modules.ToArray(),
                     }
                 };
                 var eventSourceLoggers = new List<LoggerModel>();

@@ -79,7 +79,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             var usings = new StringBuilder();
             var usingRenderers = new ILoggerImplementationUsingRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationUsingRenderer>(eventSourceModel.Modules)).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationUsingRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
             foreach (var renderer in usingRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -88,7 +88,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
             var memberRenderers = new ILoggerImplementationMembersRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>(eventSourceModel.Modules)).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
             foreach (var renderer in memberRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -97,7 +97,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
             var constructorRenderers = new ILoggerImplementationConstructorRenderer[]
             {
-            }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>(eventSourceModel.Modules)).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationConstructorRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
             foreach (var renderer in constructorRenderers)
             {
                 PassAlongLoggers(renderer as IWithLogging);
@@ -113,7 +113,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             var loggerEventRenderers = new ILoggerImplementationEventRenderer[]
             {
                 new LoggerImplementationEventMethodRenderer(), 
-            }.Union(project.GetExtensions<ILoggerImplementationEventRenderer>(eventSourceModel.Modules)).ToArray();
+            }.Union(project.GetExtensions<ILoggerImplementationEventRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
 
             foreach (var loggerEvent in loggerModel.Events)
             {

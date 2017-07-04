@@ -33,14 +33,13 @@ namespace FG.Diagnostics.AutoLogger.Model
 
         public KeywordModel[] Keywords { get; set; }        
 
+        [JsonIgnore]
         public EventTaskModel[] Tasks { get; set; }
 
         public TypeTemplateModel[] TypeTemplates { get; set; }
 
         [JsonIgnore]
         public List<ExtensionsMethodModel> Extensions { get; private set; }
-
-        public string[] Modules { get; set; }
 
         public EventModel[] Events { get; set; }
 
@@ -53,6 +52,8 @@ namespace FG.Diagnostics.AutoLogger.Model
 
         public class EventSourceSettings
         {
+            public string[] Modules { get; set; }
+
             public bool AutogenerateLoggerInterfaces { get; set; }
         }
     }

@@ -3,19 +3,113 @@
 *  Do not directly update this class as changes will be lost on rebuild.
 *******************************************************************************************/
 using System;
+using System.Collections.Generic;
 using WebApiService.Diagnostics;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using CodeEffect.Diagnostics.EventSourceGenerator.AI;
+using System.Runtime.Remoting.Messaging;
 
 
 namespace WebApiService
 {
 	internal sealed class CommunicationLogger : ICommunicationLogger
 	{
+	    private sealed class ScopeWrapper : IDisposable
+        {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public ScopeWrapper(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    foreach (var disposable in _disposables)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+            }
+        }
+
+	    private sealed class ScopeWrapperWithAction : IDisposable
+        {
+            private readonly Action _onStop;
+
+            internal static IDisposable Wrap(Func<IDisposable> wrap)
+            {
+                return wrap();
+            }
+
+            public ScopeWrapperWithAction(Action onStop)
+            {
+                _onStop = onStop;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _onStop?.Invoke();
+                }
+            }
+        }
+
+
 		private readonly System.Fabric.StatelessServiceContext _context;
 		private readonly Microsoft.ApplicationInsights.TelemetryClient _telemetryClient;
+
+        public sealed class OperationHolder
+        {
+            public static void StartOperation(IOperationHolder<RequestTelemetry> aiOperationHolder)
+            {
+                OperationHolder.Current = new OperationHolder() {AIOperationHolder = aiOperationHolder};
+            }
+
+            public static IOperationHolder<RequestTelemetry> StopOperation()
+            {
+                var aiOperationHolder = OperationHolder.Current.AIOperationHolder;
+                OperationHolder.Current = null;
+
+                return aiOperationHolder;
+            }
+
+            private IOperationHolder<RequestTelemetry> AIOperationHolder { get; set; }
+
+            private static readonly string ContextKey = Guid.NewGuid().ToString();
+
+            public static OperationHolder Current
+            {
+                get { return (OperationHolder)CallContext.LogicalGetData(ContextKey); }
+                internal set
+                {
+                    if (value == null)
+                    {
+                        CallContext.FreeNamedDataSlot(ContextKey);
+                    }
+                    else
+                    {
+                        CallContext.LogicalSetData(ContextKey, value);
+                    }
+                }
+            }
+        }
 
 		public CommunicationLogger(
 			System.Fabric.StatelessServiceContext context)
@@ -142,12 +236,18 @@ namespace WebApiService
 
 
 
-		public System.IDisposable CallActor(
+
+        public System.IDisposable CallActor(
 			System.Uri requestUri,
 			string actorMethodName,
 			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
 			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			WebApiServiceEventSource.Current.StartCallActor(
 				_context, 
 				requestUri, 
@@ -155,9 +255,26 @@ namespace WebApiService
 				actorMessageHeaders, 
 				customServiceRequestHeader
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			WebApiServiceEventSource.Current.StopCallActor(
+				_context, 
+				requestUri, 
+				actorMethodName, 
+				actorMessageHeaders, 
+				customServiceRequestHeader
+			);
+    
+		            });
+		        }),
 
-			var callActorOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callActor");
-			callActorOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var callActorOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callActor");
+			            callActorOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
 			callActorOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
@@ -171,27 +288,20 @@ namespace WebApiService
 			callActorOperationHolder.Telemetry.Properties.Add("ActorId", actorMessageHeaders?.ActorId.ToString());
 			callActorOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
 			callActorOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<DependencyTelemetry>(_telemetryClient, callActorOperationHolder, () => StopCallActor(requestUri,actorMethodName,actorMessageHeaders,customServiceRequestHeader));
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<DependencyTelemetry>(callActorOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
 
-
-		public void StopCallActor(
-			System.Uri requestUri,
-			string actorMethodName,
-			FG.ServiceFabric.Actors.Remoting.Runtime.ActorMessageHeaders actorMessageHeaders,
-			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			WebApiServiceEventSource.Current.StopCallActor(
-				_context, 
-				requestUri, 
-				actorMethodName, 
-				actorMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
 
 
 
@@ -239,12 +349,18 @@ namespace WebApiService
 
 
 
-		public System.IDisposable CallService(
+
+        public System.IDisposable CallService(
 			System.Uri requestUri,
 			string serviceMethodName,
 			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
 			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
 		{
+		    return new ScopeWrapper(new IDisposable[]
+		    {
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
 			WebApiServiceEventSource.Current.StartCallService(
 				_context, 
 				requestUri, 
@@ -252,9 +368,26 @@ namespace WebApiService
 				serviceMessageHeaders, 
 				customServiceRequestHeader
 			);
+    
+		            return new ScopeWrapperWithAction(() =>
+		            {
+			WebApiServiceEventSource.Current.StopCallService(
+				_context, 
+				requestUri, 
+				serviceMethodName, 
+				serviceMessageHeaders, 
+				customServiceRequestHeader
+			);
+    
+		            });
+		        }),
 
-			var callServiceOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callService");
-			callServiceOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
+
+                ScopeWrapperWithAction.Wrap(() =>
+		        {
+
+			            var callServiceOperationHolder = _telemetryClient.StartOperation<DependencyTelemetry>(requestUri.ToString() ?? "callService");
+			            callServiceOperationHolder.Telemetry.Properties.Add("ServiceName", _context.ServiceName.ToString());
 			callServiceOperationHolder.Telemetry.Properties.Add("ServiceTypeName", _context.ServiceTypeName);
 			callServiceOperationHolder.Telemetry.Properties.Add("ReplicaOrInstanceId", _context.InstanceId.ToString());
 			callServiceOperationHolder.Telemetry.Properties.Add("PartitionId", _context.PartitionId.ToString());
@@ -267,27 +400,20 @@ namespace WebApiService
 			callServiceOperationHolder.Telemetry.Properties.Add("MethodId", (serviceMessageHeaders?.MethodId ?? 0).ToString());
 			callServiceOperationHolder.Telemetry.Properties.Add("UserId", customServiceRequestHeader?.GetHeader("userId"));
 			callServiceOperationHolder.Telemetry.Properties.Add("CorrelationId", customServiceRequestHeader?.GetHeader("correlationId"));
-			return new ScopeWrapper<DependencyTelemetry>(_telemetryClient, callServiceOperationHolder, () => StopCallService(requestUri,serviceMethodName,serviceMessageHeaders,customServiceRequestHeader));
     
+		            return new ScopeWrapperWithAction(() =>
+		            {
+
+			            _telemetryClient.StopOperation<DependencyTelemetry>(callServiceOperationHolder);
+    
+		            });
+		        }),
+
+
+		    });
 		}
 
 
-
-		public void StopCallService(
-			System.Uri requestUri,
-			string serviceMethodName,
-			Microsoft.ServiceFabric.Services.Remoting.ServiceRemotingMessageHeaders serviceMessageHeaders,
-			FG.ServiceFabric.Services.Remoting.FabricTransport.CustomServiceRequestHeader customServiceRequestHeader)
-		{
-			WebApiServiceEventSource.Current.StopCallService(
-				_context, 
-				requestUri, 
-				serviceMethodName, 
-				serviceMessageHeaders, 
-				customServiceRequestHeader
-			);
-    
-		}
 
 
 
@@ -400,7 +526,8 @@ namespace WebApiService
 				_context, 
 				headers
 			);
-	        var requestContextOperationHolder = OperationHolder.StopOperation();
+
+			var requestContextOperationHolder = OperationHolder.StopOperation();
 			_telemetryClient.StopOperation(requestContextOperationHolder);
 			requestContextOperationHolder.Dispose();
     

@@ -13,8 +13,8 @@ using WebApiService.Diagnostics;
 
 namespace WebApiService.Controllers
 {
-    [ServiceRequestActionFilter]
-	public class ValuesController : ApiController, ILoggableController
+	[ServiceRequestActionFilter]
+	public class PersonController : ApiController, ILoggableController
     {
         private readonly object _lock = new object();
 
@@ -25,7 +25,7 @@ namespace WebApiService.Controllers
 
 	    private readonly ServiceRequestContextWrapperX _contextScope;        
 
-        public ValuesController(StatelessServiceContext context)
+        public PersonController(StatelessServiceContext context)
         {
             _contextScope = new ServiceRequestContextWrapperX(correlationId: Guid.NewGuid().ToString(), userId: "mainframe64/Kapten_rödskägg");
 
@@ -65,7 +65,7 @@ namespace WebApiService.Controllers
 
         }
 
-	    // GET api/values 
+	    // GET api/person 
 		public async Task<IDictionary<string, IDictionary<string, Person>>> Get()
 		{
             var serviceUri = new Uri($"{FabricRuntime.GetActivationContext().ApplicationName}/PersonActorService");
@@ -86,17 +86,14 @@ namespace WebApiService.Controllers
             return allPersons;
 		}
 
-		// GET api/values/5 
+		// GET api/person/ardinheli 
 		public async Task<Person> Get(string id)
 		{
-			//var actorProxyFactory = new ActorProxyFactory(client =>
-			//	new FabricTransportServiceRemotingClientFactory(
-			//		new Microsoft.ServiceFabric.Services.Remoting.FabricTransport.Client.FabricTransportServiceRemotingClientFactory(callbackClient: client),
-			//		GetRequestHeaders(true)));
-			var actorProxyFactory = new ActorProxyFactory();
+			var serviceUri = new Uri($"{FabricRuntime.GetActivationContext().ApplicationName}/PersonActorService");
+			var actorProxyFactory = new FG.ServiceFabric.Actors.Client.ActorProxyFactory(_servicesCommunicationLogger);
 
 			var proxy = actorProxyFactory.CreateActorProxy<IPersonActor>(
-				new Uri($"fabric:/{FabricRuntime.GetActivationContext().ApplicationName}/PersonActorService"),
+				serviceUri,
 				new ActorId(id));
 
 			var person = await proxy.GetPersonAsync(CancellationToken.None);

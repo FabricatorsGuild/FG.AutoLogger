@@ -30,6 +30,7 @@
   "TypeTemplates": [
   ],
   "Settings": {
-    "AutogenerateLoggerInterfaces": false
+    "AutogenerateLoggerInterfaces": false,
+    "Modules": [ "ServiceFabric", "AI" ]
   }
 }

@@ -65,24 +65,14 @@
       "OverrideArguments": []
     }
   ],
-  "Name": "ConsoleApplication1",
-  "ProviderName": "ConsoleApplication1-Default",
+  "Name": "FGDiagnosticsAutoLoggerSamplesConsoleApplication1EventSource",
+  "ProviderName": "FG-Diagnostics-AutoLogger-Samples-ConsoleApplication1",
   "Keywords": [
     "Console",
     "Error",
     "ConsoleRunner",
     "Dependency",
     "Infrastructure"
-  ],
-  "Tasks": [
-    {
-      "Name": "CallExternalComponent",
-      "Value": 1
-    },
-    {
-      "Name": "RecieveMessage",
-      "Value": 2
-    }
   ],
   "TypeTemplates": [
     {
@@ -113,6 +103,10 @@
     }
   ],
   "Settings": {
+    "Modules": [
+      "Demo",
+      "AI"
+    ],
     "AutogenerateLoggerInterfaces": true
   }
 }

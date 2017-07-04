@@ -38,6 +38,17 @@ namespace WebApiService
 		}
 		#endregion Keywords
 
+		#region Tasks
+
+		public static class Tasks
+		{
+			public const EventTask RecieveWebApiRequest = (EventTask)0x1L;
+			public const EventTask CallActor = (EventTask)0x2L;
+			public const EventTask CallService = (EventTask)0x4L;
+
+		}
+		#endregion Tasks
+
 		#region Events
 
 

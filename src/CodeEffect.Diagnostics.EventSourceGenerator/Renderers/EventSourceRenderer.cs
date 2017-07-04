@@ -29,7 +29,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
                 new EventSourceEventMethodRenderer(),
                 new EventSourceNonEventMethodRenderer(),
                 new LoggerEventSourcePartialEventMethodRenderer(), 
-            }.Union(project.GetExtensions<IEventRenderer>(eventSourceModel.Modules)).ToArray();
+            }.Union(project.GetExtensions<IEventRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
             foreach (var eventSourceEvent in eventSourceModel?.Events ?? new EventModel[0])
             {
                 foreach (var renderer in eventRenderers)
@@ -46,7 +46,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             var keywordsRenderers = new IKeywordRenderer[]
             {
                 new EventSourceKeywordRenderer(),
-            }.Union(project.GetExtensions<IKeywordRenderer>(eventSourceModel.Modules)).ToArray();
+            }.Union(project.GetExtensions<IKeywordRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
             foreach (var keyword in eventSourceModel.Keywords ?? new KeywordModel[0])
             {
                 foreach (var renderer in keywordsRenderers)
@@ -62,7 +62,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
             var eventTaskRenderers = new IEventTaskRenderer[]
             {
                 new EventSourceEventTaskRenderer(), 
-            }.Union(project.GetExtensions<IEventTaskRenderer>(eventSourceModel.Modules)).ToArray();
+            }.Union(project.GetExtensions<IEventTaskRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
             foreach (var eventTask in eventSourceModel.Tasks?? new EventTaskModel[0])
             {
                 foreach (var renderer in eventTaskRenderers)
@@ -80,7 +80,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
                 var extensionRenderers = new IExtensionsMethodRenderer[]
                 {
                     new EventSourceExtensionMethodRenderer(), 
-                }.Union(project.GetExtensions<IExtensionsMethodRenderer>(eventSourceModel.Modules)).ToArray();
+                }.Union(project.GetExtensions<IExtensionsMethodRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
                 foreach (var extension in eventSourceModel.Extensions)
                 {
                     foreach (var renderer in extensionRenderers)

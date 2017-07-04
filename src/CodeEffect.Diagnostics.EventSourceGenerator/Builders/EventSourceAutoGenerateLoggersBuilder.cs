@@ -20,7 +20,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
 
             var existingLoggers = eventSource.Loggers.Select(l => l.Name).ToArray();
             var loggers = new List<LoggerModel>(eventSource.Loggers);
-            var maxStartId = eventSource.Loggers.Max(l => l.StartId ?? 0);
+            var maxStartId = (eventSource.Loggers ?? new LoggerModel[0]).Max(l => l.StartId ?? 0);
             var startId = (int)Math.Floor((maxStartId + 1000) / 1000.0) * 1000;
             foreach (var loggerTemplateModel in project.Loggers)
             {

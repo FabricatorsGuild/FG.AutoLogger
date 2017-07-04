@@ -2,23 +2,20 @@
   "EventSources": [
     {
       "Name": "PersonActorServiceEventSource.eventsource.json",
-      "Hash": "0d6defbfbd3fefbfbdefbfbdefbfbd3cefbfbd48efbfbd71efbfbd43"
+      "Hash": "efbfbd38efbfbd27efbfbdefbfbd29efbfbdefbfbdefbfbdefbfbdefbfbdefbfbd1eefbfbd78"
     }
   ],
   "References": [
-    "..\\packages\\FG.Common.1.0.0\\lib\\net452\\FG.Common.dll",
-    "..\\packages\\FG.Diagnostics.AutoLogger.AI.1.3.1\\lib\\net452\\FG.Diagnostics.AutoLogger.AI.dll",
-    "..\\packages\\FG.Diagnostics.AutoLogger.AI.1.3.1\\lib\\net452\\FG.Diagnostics.AutoLogger.Generator.dll",
-    "..\\packages\\FG.Diagnostics.AutoLogger.AI.1.3.1\\lib\\net452\\FG.Diagnostics.AutoLogger.Model.dll",
-    "..\\packages\\FG.ServiceFabric.Actors.Remoting.1.0.0\\lib\\net452\\FG.ServiceFabric.Actors.Remoting.dll",
-    "..\\packages\\FG.ServiceFabric.Services.Remoting.1.0.0.1\\lib\\net452\\FG.ServiceFabric.Services.Remoting.dll",
+    "..\\packages\\FG.Common.1.0.1-beta3\\lib\\net452\\FG.Common.dll",
+    "..\\packages\\FG.Diagnostics.AutoLogger.Model.1.4.0\\lib\\net452\\FG.Diagnostics.AutoLogger.Model.dll",
+    "..\\packages\\FG.ServiceFabric.Actors.Remoting.1.0.1-beta8\\lib\\net452\\FG.ServiceFabric.Actors.Remoting.dll",
+    "..\\packages\\FG.ServiceFabric.Diagnostics.1.0.1-beta3\\lib\\net452\\FG.ServiceFabric.Diagnostics.dll",
+    "..\\packages\\FG.ServiceFabric.Services.Remoting.1.0.1-beta3\\lib\\net452\\FG.ServiceFabric.Services.Remoting.dll",
     "..\\packages\\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\\lib\\net45\\Microsoft.AI.Agent.Intercept.dll",
     "..\\packages\\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\\lib\\net45\\Microsoft.AI.DependencyCollector.dll",
-    "..\\packages\\FG.Diagnostics.AutoLogger.AI.1.3.1\\lib\\net452\\Microsoft.AI.PerfCounterCollector.dll",
     "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.3.0\\lib\\net45\\Microsoft.AI.ServerTelemetryChannel.dll",
     "..\\packages\\Microsoft.ApplicationInsights.Web.2.3.0\\lib\\net45\\Microsoft.AI.Web.dll",
     "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.2.3.0\\lib\\net45\\Microsoft.AI.WindowsServer.dll",
-    "..\\packages\\FG.Diagnostics.AutoLogger.AI.1.3.1\\lib\\net452\\Microsoft.ApplicationInsights.dll",
     "..\\packages\\Microsoft.ServiceFabric.Actors.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Actors.dll",
     "..\\packages\\Microsoft.ServiceFabric.Data.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Data.dll",
     "..\\packages\\Microsoft.ServiceFabric.Data.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Data.Interfaces.dll",
@@ -27,7 +24,7 @@
     "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\Microsoft.ServiceFabric.Internal.Strings.dll",
     "..\\packages\\Microsoft.ServiceFabric.Services.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Services.dll",
     "..\\packages\\Microsoft.ServiceFabric.Services.Remoting.2.6.210\\lib\\net45\\Microsoft.ServiceFabric.Services.Remoting.dll",
-    "..\\packages\\FG.Diagnostics.AutoLogger.AI.1.3.1\\lib\\net452\\Newtonsoft.Json.dll",
+    "..\\packages\\FG.Diagnostics.AutoLogger.Model.1.4.0\\lib\\net452\\Newtonsoft.Json.dll",
     "System.dll",
     "System.Core.dll",
     "..\\packages\\Microsoft.ServiceFabric.5.6.210\\lib\\net45\\System.Fabric.dll",
@@ -39,16 +36,12 @@
   ],
   "ProjectReferences": [
     {
-      "ReferenceName": "..\\CodeEffect.ServiceFabric.Diagnostics\\bin\\Debug\\CodeEffect.ServiceFabric.Diagnostics.EventSourceGenerator.dll",
-      "Hash": "11:47:17"
-    },
-    {
       "ReferenceName": "..\\Common\\bin\\Debug\\Common.dll",
-      "Hash": "11:47:17"
+      "Hash": "09:00:47"
     },
     {
       "ReferenceName": "..\\PersonActor.Interfaces\\bin\\x64\\Debug\\PersonActor.Interfaces.dll",
-      "Hash": "11:47:17"
+      "Hash": "09:00:47"
     }
   ],
   "CompileTargets": [
@@ -69,5 +62,5 @@
       "Hash": "c98befbfbd3acda253efbfbd622a19efbfbd1befbfbd36efbfbd"
     }
   ],
-  "Hash": "1729efbfbd637eefbfbd6102efbfbdd29676efbfbd15efbfbd66"
+  "Hash": "1219112aec8497efbfbdefbfbdefbfbdefbfbdefbfbd1438efbfbdefbfbd"
 }

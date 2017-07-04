@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using ConsoleApplication1.Loggers;
-using Microsoft.ServiceFabric.Actors;
-
-namespace ConsoleApplication1
+﻿namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 {
     class Program
     {

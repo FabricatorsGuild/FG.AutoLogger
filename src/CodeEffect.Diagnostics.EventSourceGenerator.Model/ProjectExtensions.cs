@@ -41,6 +41,15 @@ namespace FG.Diagnostics.AutoLogger.Model
                 .ToArray();
         }
 
+        public static IEnumerable<string> GetExtensionModules(this Project that)
+        {
+            return that.Extensions
+                .Select(e => e.Module)
+                .Where(e => e != @"Core")
+                .Distinct()
+                .ToArray();
+        }
+
         public static string GetIncludeName(this Project that, ProjectItem item)
         {
             return item.Name.StartsWith(that.ProjectBasePath) ? item.Name.Substring(that.ProjectBasePath.Length + 1) : item.Name;

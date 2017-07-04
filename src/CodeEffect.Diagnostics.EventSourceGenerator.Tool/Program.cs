@@ -25,7 +25,20 @@ namespace FG.Diagnostics.AutoLogger.Tool
             var parsedOptions = new ConsoleOptions();
             Parser.Default.ParseArguments(args, parsedOptions);
 
+            if (!parsedOptions.IgnoreVersionCheck)
+            {
+                var versionChecker = new VersionChecker();
+                versionChecker.SetLogMessage(m => LogMessage(m, EventLevel.Informational));
+                versionChecker.SetLogWarning(w => LogMessage(w, EventLevel.Warning));
+                versionChecker.SetLogError(e => LogMessage(e, EventLevel.Error));
+
+                versionChecker.CheckVersion();
+            }
+
+
             if (parsedOptions.Verbose) LogMessage($"Filename: {parsedOptions.ProjectFile}");
+
+
 
             if (parsedOptions.ProjectFile == null)
             {

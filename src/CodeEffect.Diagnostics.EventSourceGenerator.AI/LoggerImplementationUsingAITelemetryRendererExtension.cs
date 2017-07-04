@@ -9,6 +9,7 @@ namespace FG.Diagnostics.AutoLogger.AI
             var output = @"using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using System.Runtime.Remoting.Messaging;
 ";
 
             return output;

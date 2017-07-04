@@ -214,7 +214,7 @@ namespace WebApiService
 
 		private const int StartCallActorEventId = 1005;
 
-		[Event(StartCallActorEventId, Level = EventLevel.LogAlways, Message = "Start Call Actor {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		[Event(StartCallActorEventId, Level = EventLevel.LogAlways, Message = "Start Call Actor {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = Tasks.CallActor)]
 		private void StartCallActor(
 			string serviceName, 
 			string serviceTypeName, 
@@ -225,9 +225,9 @@ namespace WebApiService
 			string nodeName, 
 			string requestUri, 
 			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
+			int interfaceId, 
+			int methodId, 
+			string actorId, 
 			string userId, 
 			string correlationId)
 		{
@@ -242,9 +242,9 @@ namespace WebApiService
 				nodeName, 
 				requestUri, 
 				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
+				interfaceId, 
+				methodId, 
+				actorId, 
 				userId, 
 				correlationId);
 		}
@@ -280,7 +280,7 @@ namespace WebApiService
 
 		private const int StopCallActorEventId = 1206;
 
-		[Event(StopCallActorEventId, Level = EventLevel.LogAlways, Message = "Stop Call Actor {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		[Event(StopCallActorEventId, Level = EventLevel.LogAlways, Message = "Stop Call Actor {7} {8} {9} {10} {11} {12} {13}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop, Task = Tasks.CallActor)]
 		private void StopCallActor(
 			string serviceName, 
 			string serviceTypeName, 
@@ -291,9 +291,9 @@ namespace WebApiService
 			string nodeName, 
 			string requestUri, 
 			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
+			int interfaceId, 
+			int methodId, 
+			string actorId, 
 			string userId, 
 			string correlationId)
 		{
@@ -308,9 +308,9 @@ namespace WebApiService
 				nodeName, 
 				requestUri, 
 				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
+				interfaceId, 
+				methodId, 
+				actorId, 
 				userId, 
 				correlationId);
 		}
@@ -357,9 +357,9 @@ namespace WebApiService
 			string nodeName, 
 			string requestUri, 
 			string actorMethodName, 
-			int InterfaceId, 
-			int MethodId, 
-			string ActorId, 
+			int interfaceId, 
+			int methodId, 
+			string actorId, 
 			string userId, 
 			string correlationId, 
 			string message, 
@@ -378,9 +378,9 @@ namespace WebApiService
 				nodeName, 
 				requestUri, 
 				actorMethodName, 
-				InterfaceId, 
-				MethodId, 
-				ActorId, 
+				interfaceId, 
+				methodId, 
+				actorId, 
 				userId, 
 				correlationId, 
 				message, 
@@ -425,7 +425,7 @@ namespace WebApiService
 
 		private const int StartCallServiceEventId = 1608;
 
-		[Event(StartCallServiceEventId, Level = EventLevel.LogAlways, Message = "Start Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start)]
+		[Event(StartCallServiceEventId, Level = EventLevel.LogAlways, Message = "Start Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Start, Task = Tasks.CallService)]
 		private void StartCallService(
 			string serviceName, 
 			string serviceTypeName, 
@@ -488,7 +488,7 @@ namespace WebApiService
 
 		private const int StopCallServiceEventId = 1809;
 
-		[Event(StopCallServiceEventId, Level = EventLevel.LogAlways, Message = "Stop Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop)]
+		[Event(StopCallServiceEventId, Level = EventLevel.LogAlways, Message = "Stop Call Service {7} {8} {9} {10} {11} {12}", Keywords = Keywords.Communication, Opcode = EventOpcode.Stop, Task = Tasks.CallService)]
 		private void StopCallService(
 			string serviceName, 
 			string serviceTypeName, 

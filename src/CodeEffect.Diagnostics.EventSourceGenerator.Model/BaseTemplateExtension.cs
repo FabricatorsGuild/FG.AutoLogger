@@ -2,7 +2,7 @@ using System;
 
 namespace FG.Diagnostics.AutoLogger.Model
 {
-    public abstract class BaseTemplateExtension<T> : BaseWithLogging, ITypeTemplateDefinition
+    public abstract class BaseTemplateExtension : BaseWithLogging, ITypeTemplateDefinition
     {
         private TypeTemplateModel _typeTemplateModel;
 

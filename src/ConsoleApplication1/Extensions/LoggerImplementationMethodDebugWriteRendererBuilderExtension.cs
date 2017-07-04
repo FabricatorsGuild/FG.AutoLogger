@@ -1,11 +1,10 @@
-﻿using System;
-using System.Diagnostics.Tracing;
+﻿using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using FG.Diagnostics.AutoLogger.Model;
 
-namespace ConsoleApplication1.Extensions
+namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Extensions
 {
     public class LoggerImplementationMethodDebugWriteRendererBuilderExtension : ILoggerImplementationMethodRenderer
     {
