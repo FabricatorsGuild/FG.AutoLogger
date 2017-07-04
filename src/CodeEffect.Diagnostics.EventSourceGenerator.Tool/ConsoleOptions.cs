@@ -1,3 +1,4 @@
+using System.IO;
 using CommandLine;
 
 namespace FG.Diagnostics.AutoLogger.Tool
@@ -33,5 +34,9 @@ namespace FG.Diagnostics.AutoLogger.Tool
         [Option('i', "interactive", DefaultValue = false,
             HelpText = "Interactive mode, requests and waits for user interaction")]
         public bool Interactive { get; set; }
+
+        [Option('n', "interactive", DefaultValue = false,
+            HelpText = "Ignores to check online for a newer version of the tool.")]
+        public bool IgnoreVersionCheck { get; set; }
     }
 }
