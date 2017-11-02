@@ -8,8 +8,7 @@
           "Name": "context",
           "Type": "StatelessServiceContext"
         }
-      ],
-      "OverrideArguments": []
+      ]
     },
     {
       "Name": "ICommunicationLogger",
@@ -19,9 +18,21 @@
           "Name": "context",
           "Type": "StatelessServiceContext"
         }
-      ],
-      "OverrideArguments": [
       ]
+    },
+    {
+      "Name": "IOwinCommunicationLogger",
+      "StartId": 300,
+      "ImplicitArguments": [
+        {
+          "Name": "context",
+          "Type": "StatelessServiceContext"
+        }
+      ]
+    },
+    {
+      "Name": "IServiceHostLogger",
+      "StartId": 400
     }
   ],
   "Name": "WebApiServiceEventSource",

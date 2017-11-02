@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using TinyIoC;
+using WebApiService.Diagnostics;
 
 namespace WebApiService
 {
@@ -23,6 +24,7 @@ namespace WebApiService
 			Container = new TinyIoCContainer();
 			Container.Register<StatelessServiceContext>(context);
 			Container.Register<WebApiService>(this);
+			Container.Register<IOwinCommunicationLogger>(new OwinCommunicationLogger(context));
 		}
 
 		/// <summary>
@@ -33,7 +35,7 @@ namespace WebApiService
 		{
 			return new ServiceInstanceListener[]
 			{
-				new ServiceInstanceListener(serviceContext => new OwinCommunicationListener(appBuilder => Startup.ConfigureApp(appBuilder, Container), serviceContext, ServiceEventSource.Current, "ServiceEndpoint"))
+				new ServiceInstanceListener(serviceContext => new OwinCommunicationListener(appBuilder => Startup.ConfigureApp(appBuilder, Container), serviceContext, Container.Resolve<IOwinCommunicationLogger>(), "ServiceEndpoint"))
 			};
 		}
 	}

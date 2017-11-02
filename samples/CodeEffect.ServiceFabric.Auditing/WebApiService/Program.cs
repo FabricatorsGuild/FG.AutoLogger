@@ -24,14 +24,14 @@ namespace WebApiService
 				ServiceRuntime.RegisterServiceAsync("WebApiServiceType",
 					context => new WebApiService(context)).GetAwaiter().GetResult();
 
-				ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(WebApiService).Name);
+				WebApiServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(WebApiService).Name);
 
 				// Prevents this host process from terminating so services keeps running. 
 				Thread.Sleep(Timeout.Infinite);
 			}
 			catch (Exception e)
 			{
-				ServiceEventSource.Current.ServiceHostInitializationFailed(e.ToString());
+				WebApiServiceEventSource.Current.ServiceHostInitializationFailed(e);
 				throw;
 			}
 		}

@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Owin;
+using WebApiService.Diagnostics;
 
 namespace WebApiService
 {
 	internal class OwinCommunicationListener : ICommunicationListener
 	{
-		private readonly ServiceEventSource eventSource;
+		private readonly IOwinCommunicationLogger logger;
 		private readonly Action<IAppBuilder> startup;
 		private readonly ServiceContext serviceContext;
 		private readonly string endpointName;
@@ -22,12 +23,12 @@ namespace WebApiService
 		private string publishAddress;
 		private string listeningAddress;
 
-		public OwinCommunicationListener(Action<IAppBuilder> startup, ServiceContext serviceContext, ServiceEventSource eventSource, string endpointName)
-			: this(startup, serviceContext, eventSource, endpointName, null)
+		public OwinCommunicationListener(Action<IAppBuilder> startup, ServiceContext serviceContext, IOwinCommunicationLogger logger, string endpointName)
+			: this(startup, serviceContext, logger, endpointName, null)
 		{
 		}
 
-		public OwinCommunicationListener(Action<IAppBuilder> startup, ServiceContext serviceContext, ServiceEventSource eventSource, string endpointName, string appRoot)
+		public OwinCommunicationListener(Action<IAppBuilder> startup, ServiceContext serviceContext, IOwinCommunicationLogger logger, string endpointName, string appRoot)
 		{
 			if (startup == null)
 			{
@@ -44,15 +45,15 @@ namespace WebApiService
 				throw new ArgumentNullException(nameof(endpointName));
 			}
 
-			if (eventSource == null)
+			if (logger == null)
 			{
-				throw new ArgumentNullException(nameof(eventSource));
+				throw new ArgumentNullException(nameof(logger));
 			}
 
 			this.startup = startup;
 			this.serviceContext = serviceContext;
 			this.endpointName = endpointName;
-			this.eventSource = eventSource;
+			this.logger = logger;
 			this.appRoot = appRoot;
 		}
 
@@ -97,17 +98,17 @@ namespace WebApiService
 
 			try
 			{
-				this.eventSource.ServiceMessage(this.serviceContext, "Starting web server on " + this.listeningAddress);
+				this.logger.StartingWebServer(this.listeningAddress);
 
 				this.webApp = WebApp.Start(this.listeningAddress, appBuilder => this.startup.Invoke(appBuilder));
 
-				this.eventSource.ServiceMessage(this.serviceContext, "Listening on " + this.publishAddress);
+				this.logger.ListeningOn(this.publishAddress);
 
 				return Task.FromResult(this.publishAddress);
 			}
 			catch (Exception ex)
 			{
-				this.eventSource.ServiceMessage(this.serviceContext, "Web server failed to open. " + ex.ToString());
+				this.logger.WebServerFailed(ex);
 
 				this.StopWebServer();
 
@@ -117,7 +118,7 @@ namespace WebApiService
 
 		public Task CloseAsync(CancellationToken cancellationToken)
 		{
-			this.eventSource.ServiceMessage(this.serviceContext, "Closing web server");
+			this.logger.ClosingWebServer();
 
 			this.StopWebServer();
 
@@ -126,7 +127,7 @@ namespace WebApiService
 
 		public void Abort()
 		{
-			this.eventSource.ServiceMessage(this.serviceContext, "Aborting web server");
+			this.logger.AbortingWebServer();
 
 			this.StopWebServer();
 		}

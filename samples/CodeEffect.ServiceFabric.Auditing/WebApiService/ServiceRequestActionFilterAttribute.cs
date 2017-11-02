@@ -24,17 +24,12 @@ namespace WebApiService
                     correlationId: ServiceRequestContext.Current?[ServiceRequestContextKeys.CorrelationId],
                     userId: ServiceRequestContext.Current?[ServiceRequestContextKeys.UserId]);
 		    }
-
-		    ServiceEventSource.Current.ServiceRequestStart(actionContext.ActionDescriptor.ActionName);
 		}
 
 		public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
 		{
             var valuesController = actionExecutedContext.ActionContext.ControllerContext.Controller as ILoggableController;
 		    valuesController?.RequestLoggingContext?.Dispose();
-
-		    ServiceEventSource.Current.ServiceRequestStop(actionExecutedContext.ActionContext.ActionDescriptor.ActionName,
-				actionExecutedContext.Exception?.ToString() ?? string.Empty);
 		}
 
 	    public override Task OnActionExecutingAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
