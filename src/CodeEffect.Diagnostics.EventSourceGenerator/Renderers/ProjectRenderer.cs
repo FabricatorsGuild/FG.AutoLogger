@@ -183,8 +183,11 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
                     }
                     LogMessage($"Saving project file {projectFilePath}");
                     project.Save(projectFilePath);
-                    LogMessage($"Loading project file {projectFilePath} in Global project collection");
-                    Microsoft.Build.Evaluation. ProjectCollection.GlobalProjectCollection.LoadProject(projectFilePath);
+	                if (loadedFromProjectCollection)
+	                {
+		                LogMessage($"Loading project file {projectFilePath} in Global project collection");
+		                Microsoft.Build.Evaluation. ProjectCollection.GlobalProjectCollection.LoadProject(projectFilePath);
+	                }
                 }
                 else
                 {
