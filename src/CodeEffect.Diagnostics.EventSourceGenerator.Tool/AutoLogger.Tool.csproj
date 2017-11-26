@@ -81,7 +81,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(SolutionDir)nuget.exe pack $(ProjectPath) -OutputDirectory ./../../../../nugetfeed
+    <PostBuildEvent>if not exist "./../../../../nugetfeed" mkdir "./../../../../nugetfeed"
+$(SolutionDir)nuget.exe pack $(ProjectPath) -OutputDirectory ./../../../../nugetfeed
 xcopy /i /e /s /y /f "$(TargetDir)\*.*" "$(SolutionDir)..\lib\$(ConfigurationName)\"
 </PostBuildEvent>
   </PropertyGroup>
