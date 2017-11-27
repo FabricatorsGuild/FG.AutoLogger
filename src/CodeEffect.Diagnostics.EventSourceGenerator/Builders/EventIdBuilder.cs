@@ -28,9 +28,9 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
 
         private void Build(IEnumerable<EventModel> events, EventModel model, int? startId = 0)
         {
-            var maxAssignedId = (events?.Where(e => e.Id != null).Max(e => e.Id) ?? 0);
+            var maxAssignedId = (events?.Where(e => e.Id != null).Max(e => e.Id) ?? startId);
 
-            var next = model.Id ?? (startId + maxAssignedId + 1);
+            var next = model.Id ?? (maxAssignedId + 1);
             model.Id = next;
         }
     }
