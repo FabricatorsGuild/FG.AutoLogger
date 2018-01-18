@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLogger.MSBuild", "CodeEffect.Diagnostics.EventSourceGenerator.MSBuild\AutoLogger.MSBuild.csproj", "{41FDE7BF-94B1-4A51-AB58-7E94CFF6FD47}"
 EndProject
@@ -71,5 +71,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A084D81A-47DC-41FA-A9E1-9CF5D9FF70E7} = {2A769E63-66D8-4EF0-AEA0-A1E6891043B0}
 		{A53C8677-AFB4-41F9-B091-7A26878A5E90} = {46B2C472-B06F-46C8-8C25-A6408B73A92C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C36938DF-E2FC-4093-A985-414BFF7B8FFD}
 	EndGlobalSection
 EndGlobal
