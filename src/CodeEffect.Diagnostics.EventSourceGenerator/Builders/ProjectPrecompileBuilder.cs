@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,6 +7,25 @@ using FG.Diagnostics.AutoLogger.Model;
 
 namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
+    public class ProjectAssemblyLoader : BaseCoreBuilder, IProjectBuilder
+    {
+        public void Build(Project model)
+        {
+            var projectAssembly = FindProjectAssembly(model);
+            model.DynamicAssembly = projectAssembly;
+        }
+
+        private Assembly FindProjectAssembly(Project project)
+        {
+            var projectAssemblyReferenceItem = project.ProjectItems.OfType(ProjectItemType.Reference)
+                .FirstOrDefault(item => item.Include == project.AssemblyName);
+
+            var projectAssembly = Assembly.LoadFile(projectAssemblyReferenceItem.Name);
+
+            return projectAssembly;
+        }
+    }
+
     public class ProjectPrecompileBuilder : BaseCoreBuilder, IProjectBuilder
     {
         public void Build(Project model)

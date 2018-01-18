@@ -6,9 +6,9 @@ using System;
 using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace Ce.Labs.Samples
 {
-	internal sealed partial class ConsoleApplication1EventSource
+	internal sealed partial class FGDiagnosticsAutoLoggerSamplesConsoleApplication1EventSource
 	{
 
 		private const int StartCallExternalComponentEventId = 3001;
@@ -46,7 +46,7 @@ namespace ConsoleApplication1
 		}
 
 
-		private const int StopCallExternalComponentEventId = 6002;
+		private const int StopCallExternalComponentEventId = 3002;
 
 		[Event(StopCallExternalComponentEventId, Level = EventLevel.LogAlways, Message = "Stop Call External Component {2} {3}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop, Task = Tasks.CallExternalComponent)]
 		private void StopCallExternalComponent(
@@ -81,7 +81,7 @@ namespace ConsoleApplication1
 		}
 
 
-		private const int StartRecieveMessageEventId = 9003;
+		private const int StartRecieveMessageEventId = 3003;
 
 		[Event(StartRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Start, Task = Tasks.RecieveMessage)]
 		public void StartRecieveMessage(
@@ -97,7 +97,7 @@ namespace ConsoleApplication1
 		}
 
 
-		private const int StopRecieveMessageEventId = 12004;
+		private const int StopRecieveMessageEventId = 3004;
 
 		[Event(StopRecieveMessageEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.Dependency, Opcode = EventOpcode.Stop, Task = Tasks.RecieveMessage)]
 		public void StopRecieveMessage(

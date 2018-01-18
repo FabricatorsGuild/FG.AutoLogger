@@ -2,50 +2,42 @@
   "EventSources": [
     {
       "Name": "FGDiagnosticsAutoLoggerSamplesConsoleApplication1EventSource.eventsource.json",
-      "Hash": "efbfbd17efbfbd0a1465010e5befbfbd3befbfbdefbfbdefbfbd48efbfbd"
+      "Hash": "efbfbd293f760852efbfbdefbfbd67efbfbd53442befbfbd40efbfbd"
     }
   ],
   "References": [
-    "..\\packages\\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\\lib\\net45\\Microsoft.AI.Agent.Intercept.dll",
-    "..\\packages\\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\\lib\\net45\\Microsoft.AI.DependencyCollector.dll",
-    "..\\packages\\Microsoft.ApplicationInsights.PerfCounterCollector.2.3.0\\lib\\net45\\Microsoft.AI.PerfCounterCollector.dll",
-    "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.3.0\\lib\\net45\\Microsoft.AI.ServerTelemetryChannel.dll",
-    "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.2.3.0\\lib\\net45\\Microsoft.AI.WindowsServer.dll",
-    "..\\packages\\Microsoft.ApplicationInsights.2.3.0\\lib\\net45\\Microsoft.ApplicationInsights.dll",
-    "..\\packages\\Microsoft.ServiceFabric.Actors.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Actors.dll",
-    "..\\packages\\Microsoft.ServiceFabric.Data.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Data.dll",
-    "..\\packages\\Microsoft.ServiceFabric.Data.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Data.Interfaces.dll",
-    "..\\packages\\Microsoft.ServiceFabric.FabricTransport.Internal.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.FabricTransport.dll",
-    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\Microsoft.ServiceFabric.Internal.dll",
-    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\Microsoft.ServiceFabric.Internal.Strings.dll",
-    "..\\packages\\Microsoft.ServiceFabric.Services.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Services.dll",
-    "..\\packages\\Microsoft.ServiceFabric.Services.Remoting.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Services.Remoting.dll",
-    "..\\packages\\Newtonsoft.Json.10.0.2\\lib\\net45\\Newtonsoft.Json.dll",
-    "System.dll",
-    "System.Core.dll",
-    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\System.Fabric.dll",
-    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\System.Fabric.Management.ServiceModel.dll",
-    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\System.Fabric.Management.ServiceModel.XmlSerializers.dll",
-    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\System.Fabric.Strings.dll",
-    "System.Runtime.Serialization.dll",
-    "System.ServiceModel.dll",
-    "System.Xml.Linq.dll",
-    "System.Data.DataSetExtensions.dll",
-    "Microsoft.CSharp.dll",
-    "System.Data.dll",
-    "System.Net.Http.dll",
-    "System.Xml.dll"
+    "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\AutoLogger.Model.csproj",
+    "bin\\Debug\\FG.Diagnostics.AutoLogger.Model.dll",
+    "bin\\Debug\\FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.exe",
+    "bin\\Debug\\Microsoft.AI.Agent.Intercept.dll",
+    "bin\\Debug\\Microsoft.AI.DependencyCollector.dll",
+    "bin\\Debug\\Microsoft.AI.PerfCounterCollector.dll",
+    "bin\\Debug\\Microsoft.AI.ServerTelemetryChannel.dll",
+    "bin\\Debug\\Microsoft.AI.WindowsServer.dll",
+    "bin\\Debug\\Microsoft.ApplicationInsights.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Actors.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Data.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Data.Interfaces.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.FabricTransport.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Internal.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Internal.Strings.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Services.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Services.Remoting.dll",
+    "bin\\Debug\\Newtonsoft.Json.dll",
+    "bin\\Debug\\System.Fabric.dll",
+    "bin\\Debug\\System.Fabric.Management.ServiceModel.dll",
+    "bin\\Debug\\System.Fabric.Management.ServiceModel.XmlSerializers.dll",
+    "bin\\Debug\\System.Fabric.Strings.dll"
   ],
-  "ProjectReferences": [
-    {
-      "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\bin\\Debug\\FG.Diagnostics.AutoLogger.Model.dll",
-      "Hash": "14:50:36"
-    }
-  ],
+  "ProjectReferences": [],
   "CompileTargets": [
     {
       "Name": "Extensions\\LoggerImplementationConstructorDebugWriteRendererBuilderExtension.cs",
       "Hash": "35efbfbd5cefbfbdefbfbd603befbfbd4e1eefbfbd6fefbfbd1a24efbfbd"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationDebugWriteRendererBuilderExtension.cs",
+      "Hash": "3c1defbfbd061fefbfbdc6aaefbfbdddb17a103978"
     },
     {
       "Name": "Extensions\\LoggerImplementationMembersDebugWriteRendererBuilderExtension.cs",
@@ -56,16 +48,12 @@
       "Hash": "efbfbd1cefbfbd18efbfbdefbfbdefbfbd453aefbfbd06efbfbd3404efbfbd"
     },
     {
-      "Name": "Extensions\\LoggerImplementationDebugWriteRendererBuilderExtension.cs",
-      "Hash": "3c1defbfbd061fefbfbdc6aaefbfbdddb17a103978"
-    },
-    {
       "Name": "Extensions\\LoggerImplementationMethodOperationDebugWriteRendererBuilderExtension.cs",
       "Hash": "3a6d2befbfbd4befbfbdefbfbd5e7d51340d17efbfbd7a72"
     },
     {
       "Name": "Loggers\\IConsoleLogger.cs",
-      "Hash": "efbfbd300eefbfbd0567efbfbdefbfbd1cefbfbd4a653e4befbfbdefbfbd"
+      "Hash": "efbfbd64efbfbdefbfbd0d417d33efbfbd7b0b186befbfbd"
     },
     {
       "Name": "Loggers\\IConsoleRunnerLogger.cs",
@@ -80,5 +68,5 @@
       "Hash": "27efbfbdefbfbdefbfbdefbfbd1befbfbd486857600f064eefbfbd5d"
     }
   ],
-  "Hash": "48efbfbdefbfbd344a6eefbfbdefbfbd155fefbfbdefbfbdefbfbdefbfbdefbfbd58"
+  "Hash": "5359d68976efbfbdefbfbdefbfbd38efbfbdefbfbd23efbfbd682c5a"
 }

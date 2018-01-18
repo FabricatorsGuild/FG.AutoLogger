@@ -45,6 +45,11 @@ namespace FG.Diagnostics.AutoLogger.Model
 
         public EventSourceSettings Settings { get; set; }
 
+        public bool ImplicitTypeTemplates { get; set; }
+
+        public string[] ImplicitTypeTemplateNamespaces { get; set; }
+
+
         public override string ToString()
         {
             return $"{nameof(EventSourceModel)} {this.Name}";

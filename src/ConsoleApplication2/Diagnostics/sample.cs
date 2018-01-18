@@ -35,12 +35,23 @@ namespace ConsoleApplication1.Diagnostics
 			public const EventKeywords HostInitialization = (EventKeywords)0x1L;
 			public const EventKeywords Domain = (EventKeywords)0x2L;
 			public const EventKeywords Infrastructure = (EventKeywords)0x4L;
-			public const EventKeywords Console = (EventKeywords)0x8L;
-			public const EventKeywords Error = (EventKeywords)0x16L;
-			public const EventKeywords ConsoleRunner = (EventKeywords)0x32L;
+			public const EventKeywords Dependency = (EventKeywords)0x8L;
+			public const EventKeywords Console = (EventKeywords)0x16L;
+			public const EventKeywords Error = (EventKeywords)0x32L;
+			public const EventKeywords ConsoleRunner = (EventKeywords)0x64L;
 
 		}
 		#endregion Keywords
+
+		#region Tasks
+
+		public static class Tasks
+		{
+			public const EventTask CallExternalComponent = (EventTask)0x1L;
+			public const EventTask RecieveMessage = (EventTask)0x2L;
+
+		}
+		#endregion Tasks
 
 		#region Events
 

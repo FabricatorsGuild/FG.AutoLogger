@@ -43,6 +43,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 new EventArgumentsBuilder(),
                 new EventMessageFormatterBuilder(),
                 new EventTemplatedArgumentsBuilder(),
+                new EventImplicitlyTemplatedArgumentsBuilder(), 
                 new EventArgumentsComplexityCheckBuilder(),
             }.Cast<TBuilder>().Union(project.GetExtensions<TBuilder>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
 

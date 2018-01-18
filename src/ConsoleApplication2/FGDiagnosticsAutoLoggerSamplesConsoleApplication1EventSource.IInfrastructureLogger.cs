@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
 
-namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
+namespace Ce.Labs.Samples
 {
 	internal sealed partial class FGDiagnosticsAutoLoggerSamplesConsoleApplication1EventSource
 	{

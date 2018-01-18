@@ -11,7 +11,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using System.Runtime.Remoting.Messaging;
 
 
-namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
+namespace Ce.Labs.Samples
 {
 	internal sealed class InfrastructureLogger : IInfrastructureLogger
 	{

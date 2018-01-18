@@ -25,7 +25,7 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 		}
 
 
-		private const int RunnerDestroyedEventId = 4002;
+		private const int RunnerDestroyedEventId = 2002;
 
 		[Event(RunnerDestroyedEventId, Level = EventLevel.LogAlways, Message = "Runner Destroyed", Keywords = Keywords.ConsoleRunner)]
 		public void RunnerDestroyed(
@@ -39,7 +39,7 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 		}
 
 
-		private const int WaitingForKeyPressEventId = 6003;
+		private const int WaitingForKeyPressEventId = 2003;
 
 		[Event(WaitingForKeyPressEventId, Level = EventLevel.LogAlways, Message = "Waiting For Key Press", Keywords = Keywords.ConsoleRunner)]
 		public void WaitingForKeyPress(
@@ -53,7 +53,7 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 		}
 
 
-		private const int KeyPressedEventId = 8004;
+		private const int KeyPressedEventId = 2004;
 
 		[Event(KeyPressedEventId, Level = EventLevel.LogAlways, Message = "Key Pressed {2}", Keywords = Keywords.ConsoleRunner)]
 		private void KeyPressed(
@@ -84,7 +84,7 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 		}
 
 
-		private const int UnsupportedKeyErrorEventId = 10005;
+		private const int UnsupportedKeyErrorEventId = 2005;
 
 		[Event(UnsupportedKeyErrorEventId, Level = EventLevel.LogAlways, Message = "{2}", Keywords = Keywords.ConsoleRunner | Keywords.Error)]
 		private void UnsupportedKeyError(
@@ -124,7 +124,7 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 		}
 
 
-		private const int StartLoopEventId = 12006;
+		private const int StartLoopEventId = 2006;
 
 		[Event(StartLoopEventId, Level = EventLevel.LogAlways, Message = "Start Loop", Keywords = Keywords.ConsoleRunner, Opcode = EventOpcode.Start)]
 		public void StartLoop(
@@ -138,7 +138,7 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 		}
 
 
-		private const int StopLoopEventId = 14007;
+		private const int StopLoopEventId = 2007;
 
 		[Event(StopLoopEventId, Level = EventLevel.LogAlways, Message = "Stop Loop", Keywords = Keywords.ConsoleRunner, Opcode = EventOpcode.Stop)]
 		public void StopLoop(
@@ -152,7 +152,7 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1
 		}
 
 
-		private const int RandomIntsGeneratedEventId = 16008;
+		private const int RandomIntsGeneratedEventId = 2008;
 
 		[Event(RandomIntsGeneratedEventId, Level = EventLevel.LogAlways, Message = "Random Ints Generated {2}", Keywords = Keywords.ConsoleRunner)]
 		private void RandomIntsGenerated(
