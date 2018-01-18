@@ -116,12 +116,20 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                         var assemblyName = System.IO.Path.GetFileNameWithoutExtension(referencedAssemblyFile);
                         if (!loadedAssemblyNames.Contains(assemblyName))
                         {
-                            var assembly = Assembly.LoadFile(referencedAssemblyFile);
-                            Debug.WriteLine($"Loaded assembly {assembly.GetName().Name} with {assembly.GetTypes().Length} types");
-                            types.AddRange(assembly
-                                .GetTypes()
-                                .Where(IsTypeIExtensionFromOtherAssembly)
-                                .ToArray());
+                            try
+                            {
+                                var assembly = Assembly.LoadFile(referencedAssemblyFile);
+                                Debug.WriteLine($"Loaded assembly {assembly.GetName().Name} with {assembly.GetTypes().Length} types");
+                                types.AddRange(assembly
+                                    .GetTypes()
+                                    .Where(IsTypeIExtensionFromOtherAssembly)
+                                    .ToArray());
+                            }
+                            catch (System.BadImageFormatException badImageFormatException)
+                            {
+                                LogError($"Failed to load {referencedAssemblyFile}, {badImageFormatException.Message}");
+                            }
+
                         }
                     }
                 }
