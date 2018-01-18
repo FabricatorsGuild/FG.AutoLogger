@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using FG.Diagnostics.AutoLogger.Generator.Utils;
@@ -9,18 +10,6 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
 {
     public class ProjectBuilder : BaseCoreBuilder, IProjectBuilder
     {
-        public Microsoft.Build.Evaluation.Project QuickLoadProjectReference(string projectFileReference)
-        {
-            Microsoft.Build.Evaluation.Project project = null;
-            using (var projectFileReader = XmlReader.Create(projectFileReference))
-            {
-                project = new Microsoft.Build.Evaluation.Project(projectFileReader);
-                LogMessage($"Loaded referenced project {projectFileReference} from XML with {project.Items.Count} items");
-
-                return project;
-            }
-        }
-
         public void Build(Project model)
         {
             LogMessage($"Scanning project {model.ProjectFilePath} for eventsource definitions");
@@ -36,42 +25,45 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             if (model.ProjectBasePath != null)
             {
                 var projectName = System.IO.Path.GetFileNameWithoutExtension(model.ProjectFilePath);
-                Microsoft.Build.Evaluation.Project project = null;
-                using (var projectFileReader = XmlReader.Create(model.ProjectFilePath))
-                {
-                    project = new Microsoft.Build.Evaluation.Project(projectFileReader);
-                    LogMessage($"Loaded project {model.ProjectFilePath} from XML with {project.Items.Count} items");
-                }
+                //Microsoft.Build.Evaluation.Project project = null;
+                var configuration = "Debug";
+                var projectTool = new FG.Utils.BuildTools.ProjectTool(model.ProjectFilePath, null);
+                var projectFiles = projectTool.ScanFilesInProjectFolder();
+                var projectReferences = projectTool.GetProjectReferences();
+                var projectProperties = projectTool.GetProjectProperties(configuration, model.Platform);
+                LogMessage($"Loaded project {model.ProjectFilePath} from XML with {projectFiles.Count()} items");
+
+
+                var rootNamespace = projectProperties.ContainsKey("RootNamespace") ? projectProperties["RootNamespace"] : projectName;
+                var assemblyName = projectProperties.ContainsKey("AssemblyName") ? projectProperties["AssemblyName"] : projectName;
+                model.RootNamespace = rootNamespace;
+                model.AssemblyName = assemblyName;
 
                 var hasEventSource = false;
-                foreach (
-                    var projectItem in project.Items.Where(item => item.EvaluatedInclude.EndsWith(@".eventsource.json", StringComparison.InvariantCultureIgnoreCase))
-                )
+                foreach (var projectItem in projectFiles.Where(item => 
+                    item.Name.EndsWith(@".eventsource.json", StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
-                    var assemblyName = project.Properties.FirstOrDefault(property => property.Name.Equals("AssemblyName"))?.EvaluatedValue ?? projectName;
 
-                    var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);
-                    projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.EventSourceDefinition, projectItemFilePath)
+                    projectItems.Add(new ProjectItem<EventSourceModel>(ProjectItemType.EventSourceDefinition, projectItem.Path)
                     {
-                        Include = projectItem.EvaluatedInclude,
+                        Include = projectItem.Name,
                         RootNamespace = rootNamespace,
                         AssemblyName = assemblyName,
                     });
                     hasEventSource = true;
                 }
 
-                var platformProperty = project.Properties.FirstOrDefault(p => p.Name == "PlatformTarget")?.EvaluatedValue ?? "AnyCPU";
-                model.Platform = platformProperty;
+                //var platformProperty = project.Properties.FirstOrDefault(p => p.Name == "PlatformTarget")?.EvaluatedValue ?? "AnyCPU";
+                //model.Platform = platformProperty;
 
-                foreach (var projectItem in project.Items.Where(item =>
-                    item.EvaluatedInclude.Matches(@"*.eventsource.output.json", StringComparison.InvariantCultureIgnoreCase, useWildcards: true)
-                    && item.ItemType == "Content"))
+                foreach (var projectItem in projectFiles.Where(item =>
+                    item.Name.Matches(@"*.eventsource.output.json", StringComparison.InvariantCultureIgnoreCase, useWildcards: true)
+                    && item.IncludeType == "Content"))
                 {
-                    var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);                                        
+                    var projectItemFilePath = projectItem.Path;
                     projectItems.Add(new ProjectItem<ProjectSummary>(ProjectItemType.ProjectSummary, projectItemFilePath)
                     {
-                        Include = projectItem.EvaluatedInclude,
+                        Include = projectItem.Name,
                     });
                 }
 
@@ -85,75 +77,87 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                     }
                     .Select(metadata => Enum.GetName(typeof(ProjectItemType), metadata))
                     .ToArray();
-                foreach (var projectItem in project.Items.Where(item =>
-                    item.EvaluatedInclude.Matches(@"(^|\\)I[^\\]*Logger.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
-                    && item.ItemType == "Compile"
-                    && !autogeneratedMetadataTypes.Contains((item.HasMetadata("AutoGenerated") ? item.GetMetadataValue("AutoGenerated") : "") ?? "")))
+                foreach (var projectItem in projectFiles.Where(item =>
+                    item.Name.Matches(@"(^|\\)I[^\\]*Logger.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
+                    && item.IncludeType == "Compile"
+                    && !autogeneratedMetadataTypes.Contains((item.Properties.ContainsKey("AutoGenerated") ? item.Properties["AutoGenerated"] : "") ?? "")))
                 {
-                    var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);
-                    projectItems.Add(new ProjectItem<LoggerTemplateModel>(ProjectItemType.LoggerInterface, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
+                    var projectItemFilePath = projectItem.Path;
+                    projectItems.Add(new ProjectItem<LoggerTemplateModel>(ProjectItemType.LoggerInterface, projectItemFilePath) {Include = projectItem.Name});
                 }
 
-                foreach (var projectItem in project.Items.Where(item =>
-                    item.EvaluatedInclude.Matches(@"(^|\\)[^\\]*Extension.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
-                    && item.ItemType == "Compile"
-                    && !autogeneratedMetadataTypes.Contains((item.HasMetadata("AutoGenerated") ? item.GetMetadataValue("AutoGenerated") : "") ?? "")))
+                foreach (var projectItem in projectFiles.Where(item =>
+                    item.Name.Matches(@"(^|\\)[^\\]*Extension.cs", StringComparison.InvariantCultureIgnoreCase, useWildcards: false)
+                    && item.IncludeType == "Compile"
+                    && !autogeneratedMetadataTypes.Contains((item.Properties.ContainsKey("AutoGenerated") ? item.Properties["AutoGenerated"] : "") ?? "")))
                 {
-                    var projectItemFilePath = System.IO.Path.Combine(model.ProjectBasePath, projectItem.EvaluatedInclude);
-                    projectItems.Add(new ProjectItem(ProjectItemType.BuilderExtension, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
+                    var projectItemFilePath = projectItem.Path;
+                    projectItems.Add(new ProjectItem(ProjectItemType.BuilderExtension, projectItemFilePath) {Include = projectItem.Name});
                 }
                 var anyHintPath = "";
-                foreach (var projectItem in project.Items.Where(item => item.ItemType == "Reference"))
+                foreach (var projectItem in projectReferences)
                 {
-                    var hintPath = projectItem.HasMetadata("HintPath") ? projectItem.GetMetadataValue("HintPath") : null;
+                    var hintPath = projectItem.HintPath;
                     hintPath = hintPath != null ? PathExtensions.GetAbsolutePath(model.ProjectBasePath, hintPath) : null;
 
                     anyHintPath = hintPath ?? anyHintPath;
 
-                    var projectItemFilePath = hintPath == null ? $"{projectItem.EvaluatedInclude}.dll" : System.IO.Path.Combine(model.ProjectBasePath, hintPath);
+                    var projectItemFilePath = hintPath == null ? $"{projectItem.Name}.dll" : System.IO.Path.Combine(model.ProjectBasePath, hintPath);
 
-                    projectItems.Add(new ProjectItem(ProjectItemType.Reference, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
+                    projectItems.Add(new ProjectItem(ProjectItemType.Reference, projectItemFilePath) {Include = projectItem.Name});
                 }
 
-                var outputPath =
-                    project.Items.FirstOrDefault(item => item.ItemType.Equals("_OutputPathItem", StringComparison.InvariantCultureIgnoreCase))?.EvaluatedInclude;
-                foreach (var projectItem in project.Items.Where(item => item.ItemType == "ProjectReference"))
+                var outputPath = projectProperties.ContainsKey("OutputPath") ? projectProperties["OutputPath"] : $"bin\\{configuration}";
+                var buildOutputPath = PathExtensions.GetAbsolutePath(model.ProjectBasePath, outputPath);
+                if (System.IO.Directory.Exists(buildOutputPath))
                 {
-                    var referencedProjectPath = PathExtensions.GetAbsolutePath(model.ProjectBasePath, projectItem.EvaluatedInclude);
-                    var referencedProjectName = System.IO.Path.GetFileNameWithoutExtension(projectItem.EvaluatedInclude);
-                    var expectedDllName = $"{referencedProjectName}.dll";
-                    var referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), outputPath);
-                    var projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
-                    if (System.IO.File.Exists(projectItemFilePath))
+                    var outputFiles = System.IO.Directory.GetFiles(buildOutputPath, "*.*", SearchOption.AllDirectories);
+                    foreach (var outputFile in outputFiles)
                     {
-                        projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
-                    }
-                    else
-                    {
-                        var referencedProject = QuickLoadProjectReference(referencedProjectPath);
-                        var referencedProjectSubOutputPath =
-                            referencedProject.Items.FirstOrDefault(item => item.ItemType.Equals("_OutputPathItem", StringComparison.InvariantCultureIgnoreCase))?
-                                .EvaluatedInclude;
-                        var referencedProjectAssemblyName =
-                            referencedProject.Properties.FirstOrDefault(p => p.Name.Equals("AssemblyName", StringComparison.InvariantCultureIgnoreCase))?.EvaluatedValue;
-                        expectedDllName = $"{referencedProjectAssemblyName}.dll";
-                        referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), referencedProjectSubOutputPath);
-                        projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
-                        if (System.IO.File.Exists(projectItemFilePath))
+                        var outputFileType = System.IO.Path.GetExtension(outputFile);
+                        if (outputFileType == ".dll" || outputFileType == ".exe")
                         {
-                            projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.EvaluatedInclude});
-                        }
-                        else
-                        {
-                            LogError($"Could not find dll for project reference, ensure you have compiled {projectItemFilePath}");
+                            var referenceFilePath = outputFile;
+                            var referenceName = System.IO.Path.GetFileNameWithoutExtension(outputFile);
+                            projectItems.Add(new ProjectItem(ProjectItemType.Reference, referenceFilePath) { Include = referenceName });
                         }
                     }
                 }
+
+                //foreach (var projectItem in projectReferences)
+                //{
+                //    var referencedProjectPath = PathExtensions.GetAbsolutePath(model.ProjectBasePath, projectItem.Name);
+                //    var expectedDllName = $"{projectItem.Name}.dll";
+                //    var referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), outputPath);
+                //    var projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
+                //    if (System.IO.File.Exists(projectItemFilePath))
+                //    {
+                //        projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.Name});
+                //    }
+                //    else
+                //    {
+                //        var referencedProject = QuickLoadProjectReference(referencedProjectPath);
+                //        var referencedProjectSubOutputPath =
+                //            referencedProject.Items.FirstOrDefault(item => item.ItemType.Equals("_OutputPathItem", StringComparison.InvariantCultureIgnoreCase))?
+                //                .EvaluatedInclude;
+                //        var referencedProjectAssemblyName =
+                //            referencedProject.Properties.FirstOrDefault(p => p.Name.Equals("AssemblyName", StringComparison.InvariantCultureIgnoreCase))?.EvaluatedValue;
+                //        expectedDllName = $"{referencedProjectAssemblyName}.dll";
+                //        referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), referencedProjectSubOutputPath);
+                //        projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
+                //        if (System.IO.File.Exists(projectItemFilePath))
+                //        {
+                //            projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.Name});
+                //        }
+                //        else
+                //        {
+                //            LogError($"Could not find dll for project reference, ensure you have compiled {projectItemFilePath}");
+                //        }
+                //    }
+                //}
 
                 if (!hasEventSource)
                 {
-                    var rootNamespace = project.Properties.FirstOrDefault(property => property.Name.Equals("RootNamespace"))?.EvaluatedValue ?? projectName;
-                    var assemblyName = project.Properties.FirstOrDefault(property => property.Name.Equals("AssemblyName"))?.EvaluatedValue ?? projectName;
                     var defaultEventSourceName = $"{assemblyName}EventSource";
                     defaultEventSourceName = defaultEventSourceName.RemoveNonWordCharacters();
 
@@ -171,7 +175,4 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             model.ProjectItems = projectItems.ToArray();
         }
     }
-
-    
-
 }

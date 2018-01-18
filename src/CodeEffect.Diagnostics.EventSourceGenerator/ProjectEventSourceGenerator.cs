@@ -44,8 +44,9 @@ namespace FG.Diagnostics.AutoLogger.Generator
 
             builders = new IProjectBuilder[]
             {
-                new ProjectRefenceCopyBuilder(), 
-                new ProjectPrecompileBuilder(), 
+                new ProjectAssemblyLoader(), 
+                //new ProjectRefenceCopyBuilder(), 
+                //new ProjectPrecompileBuilder(), 
                 new ProjectExtensionsDiscoverBuilder(),
                 new ProjectDefaultExtensionsBuilder(),
                 new ProjectLoggerDiscoverBuilder(),
