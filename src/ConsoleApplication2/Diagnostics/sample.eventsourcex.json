@@ -1,0 +1,76 @@
+{
+  "Loggers": [
+    {
+      "Name": "IDependencyLogger",
+      "StartId": 2000,
+      "ImplicitArguments": [
+        {
+          "Name": "processId",
+          "Type": "int"
+        },
+        {
+          "Name": "machineName",
+          "Type": "string",
+          "Assignment": "Environment.MachineName"
+        },
+        {
+          "Name": "requestName",
+          "Type": "string",
+          "Assignment": "System.Diagnostics.Process.GetCurrentProcess().Id.ToString()"
+        }
+      ]
+    }
+  ],
+  "Name": "sample",
+  "ProviderName": "CE-CodeEffect.Diagnostics.EventSourceGenerator-sample",
+  "Keywords": [
+    "HostInitialization",
+    "Domain",
+    "Infrastructure",
+    "Dependency",
+    "Console",
+    "Error",
+    "ConsoleRunner"
+  ],
+  "Tasks": [
+    {
+      "Name": "CallExternalComponent",
+      "Value": 1
+    },
+    {
+      "Name": "RecieveMessage",
+      "Value": 2
+    }
+  ],
+  "TypeTemplates": [
+    {
+      "Name": "Exception",
+      "CLRType": "System.Exception",
+      "Arguments": [
+        {
+          "Name": "message",
+          "Type": "string",
+          "Assignment": "$this.Message"
+        },
+        {
+          "Name": "source",
+          "Type": "string",
+          "Assignment": "$this.Source"
+        },
+        {
+          "Name": "exceptionTypeName",
+          "Type": "string",
+          "Assignment": "$this.GetType().FullName"
+        },
+        {
+          "Name": "exception",
+          "Type": "string",
+          "Assignment": "$this.AsJson()"
+        }
+      ]
+    }
+  ],
+  "Settings": {
+    "AutogenerateLoggerInterfaces": true
+  }
+}

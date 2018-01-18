@@ -1,0 +1,72 @@
+{
+  "EventSources": [
+    {
+      "Name": "FGDiagnosticsAutoLoggerSamplesConsoleApplication1EventSource.eventsource.json",
+      "Hash": "efbfbd293f760852efbfbdefbfbd67efbfbd53442befbfbd40efbfbd"
+    }
+  ],
+  "References": [
+    "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\AutoLogger.Model.csproj",
+    "bin\\Debug\\FG.Diagnostics.AutoLogger.Model.dll",
+    "bin\\Debug\\FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.exe",
+    "bin\\Debug\\Microsoft.AI.Agent.Intercept.dll",
+    "bin\\Debug\\Microsoft.AI.DependencyCollector.dll",
+    "bin\\Debug\\Microsoft.AI.PerfCounterCollector.dll",
+    "bin\\Debug\\Microsoft.AI.ServerTelemetryChannel.dll",
+    "bin\\Debug\\Microsoft.AI.WindowsServer.dll",
+    "bin\\Debug\\Microsoft.ApplicationInsights.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Actors.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Data.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Data.Interfaces.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.FabricTransport.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Internal.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Internal.Strings.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Services.dll",
+    "bin\\Debug\\Microsoft.ServiceFabric.Services.Remoting.dll",
+    "bin\\Debug\\Newtonsoft.Json.dll",
+    "bin\\Debug\\System.Fabric.dll",
+    "bin\\Debug\\System.Fabric.Management.ServiceModel.dll",
+    "bin\\Debug\\System.Fabric.Management.ServiceModel.XmlSerializers.dll",
+    "bin\\Debug\\System.Fabric.Strings.dll"
+  ],
+  "ProjectReferences": [],
+  "CompileTargets": [
+    {
+      "Name": "Extensions\\LoggerImplementationConstructorDebugWriteRendererBuilderExtension.cs",
+      "Hash": "35efbfbd5cefbfbdefbfbd603befbfbd4e1eefbfbd6fefbfbd1a24efbfbd"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationDebugWriteRendererBuilderExtension.cs",
+      "Hash": "3c1defbfbd061fefbfbdc6aaefbfbdddb17a103978"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationMembersDebugWriteRendererBuilderExtension.cs",
+      "Hash": "2b167e72efbfbdefbfbd03efbfbd38efbfbdd68500efbfbd09efbfbd"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationMethodDebugWriteRendererBuilderExtension.cs",
+      "Hash": "efbfbd1cefbfbd18efbfbdefbfbdefbfbd453aefbfbd06efbfbd3404efbfbd"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationMethodOperationDebugWriteRendererBuilderExtension.cs",
+      "Hash": "3a6d2befbfbd4befbfbdefbfbd5e7d51340d17efbfbd7a72"
+    },
+    {
+      "Name": "Loggers\\IConsoleLogger.cs",
+      "Hash": "efbfbd64efbfbdefbfbd0d417d33efbfbd7b0b186befbfbd"
+    },
+    {
+      "Name": "Loggers\\IConsoleRunnerLogger.cs",
+      "Hash": "efbfbd79efbfbdefbfbd02efbfbd6826efbfbdefbfbdefbfbdefbfbd3f640e"
+    },
+    {
+      "Name": "Loggers\\IDependencyLogger.cs",
+      "Hash": "efbfbdefbfbdefbfbd28efbfbdefbfbdefbfbdefbfbdefbfbdefbfbd6b08790e6befbfbd"
+    },
+    {
+      "Name": "Loggers\\IInfrastructureLogger.cs",
+      "Hash": "27efbfbdefbfbdefbfbdefbfbd1befbfbd486857600f064eefbfbd5d"
+    }
+  ],
+  "Hash": "5359d68976efbfbdefbfbdefbfbd38efbfbdefbfbd23efbfbd682c5a"
+}

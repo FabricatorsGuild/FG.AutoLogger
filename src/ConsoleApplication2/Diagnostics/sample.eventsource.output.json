@@ -1,0 +1,84 @@
+{
+  "EventSources": [
+    {
+      "Name": "Diagnostics\\sample.eventsource.json",
+      "Hash": "42efbfbd4407eb9089efbfbd6d60c8a22f7140efbfbd"
+    }
+  ],
+  "References": [
+    "..\\packages\\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\\lib\\net45\\Microsoft.AI.Agent.Intercept.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\\lib\\net45\\Microsoft.AI.DependencyCollector.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.PerfCounterCollector.2.3.0\\lib\\net45\\Microsoft.AI.PerfCounterCollector.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.3.0\\lib\\net45\\Microsoft.AI.ServerTelemetryChannel.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.WindowsServer.2.3.0\\lib\\net45\\Microsoft.AI.WindowsServer.dll",
+    "..\\packages\\Microsoft.ApplicationInsights.2.3.0\\lib\\net45\\Microsoft.ApplicationInsights.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Actors.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Actors.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Data.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Data.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Data.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Data.Interfaces.dll",
+    "..\\packages\\Microsoft.ServiceFabric.FabricTransport.Internal.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.FabricTransport.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\Microsoft.ServiceFabric.Internal.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\Microsoft.ServiceFabric.Internal.Strings.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Services.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Services.dll",
+    "..\\packages\\Microsoft.ServiceFabric.Services.Remoting.2.5.216\\lib\\net45\\Microsoft.ServiceFabric.Services.Remoting.dll",
+    "..\\packages\\Newtonsoft.Json.10.0.2\\lib\\net45\\Newtonsoft.Json.dll",
+    "System.dll",
+    "System.Core.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\System.Fabric.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\System.Fabric.Management.ServiceModel.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\System.Fabric.Management.ServiceModel.XmlSerializers.dll",
+    "..\\packages\\Microsoft.ServiceFabric.5.5.216\\lib\\net45\\System.Fabric.Strings.dll",
+    "System.Runtime.Serialization.dll",
+    "System.ServiceModel.dll",
+    "System.Xml.Linq.dll",
+    "System.Data.DataSetExtensions.dll",
+    "Microsoft.CSharp.dll",
+    "System.Data.dll",
+    "System.Net.Http.dll",
+    "System.Xml.dll"
+  ],
+  "ProjectReferences": [
+    {
+      "ReferenceName": "..\\CodeEffect.Diagnostics.EventSourceGenerator.Model\\bin\\Debug\\FG.Diagnostics.AutoLogger.Model.dll",
+      "Hash": "22:04:42"
+    }
+  ],
+  "CompileTargets": [
+    {
+      "Name": "Extensions\\LoggerImplementationConstructorDebugWriteRendererBuilderExtension.cs",
+      "Hash": "5f485d74efbfbd6330efbfbdefbfbdefbfbd7201efbfbdefbfbd0befbfbd"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationMembersDebugWriteRendererBuilderExtension.cs",
+      "Hash": "33efbfbd3003efbfbd061befbfbd227aefbfbd50efbfbd70efbfbdefbfbd"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationMethodDebugWriteRendererBuilderExtension.cs",
+      "Hash": "64efbfbd2f08efbfbdefbfbd7e5eefbfbd1c0fc390efbfbdceb6"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationDebugWriteRendererBuilderExtension.cs",
+      "Hash": "efbfbd54efbfbd7eefbfbdefbfbdefbfbd0f4c0eefbfbdefbfbd043c09efbfbd"
+    },
+    {
+      "Name": "Extensions\\LoggerImplementationMethodOperationDebugWriteRendererBuilderExtension.cs",
+      "Hash": "efbfbdefbfbd23efbfbd13efbfbd7051efbfbd642eefbfbdefbfbd6cefbfbd"
+    },
+    {
+      "Name": "Loggers\\IConsoleLogger.cs",
+      "Hash": "7fefbfbdefbfbd0defbfbdefbfbdefbfbd30efbfbd0b4c65efbfbdefbfbd2625"
+    },
+    {
+      "Name": "Loggers\\IConsoleRunnerLogger.cs",
+      "Hash": "efbfbdefbfbd0eefbfbdefbfbdefbfbd34efbfbd0cefbfbdefbfbdefbfbd50efbfbdefbfbdefbfbd"
+    },
+    {
+      "Name": "Loggers\\IDependencyLogger.cs",
+      "Hash": "efbfbd172648efbfbdefbfbd53efbfbd6340efbfbdefbfbd5807efbfbd36"
+    },
+    {
+      "Name": "Loggers\\IInfrastructureLogger.cs",
+      "Hash": "cf91cea87b4a78efbfbdd0abefbfbdefbfbd69efbfbd38"
+    }
+  ],
+  "Hash": "efbfbdefbfbdefbfbd3b427507efbfbdefbfbd2d47efbfbd30efbfbdefbfbdefbfbd"
+}
