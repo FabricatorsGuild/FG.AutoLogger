@@ -13,6 +13,8 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Loggers
 
         void StartHello();
         void StopHello();
+
+        void LogOtherObject(OtherDataCarryingObject data);
     }
 
     public class Special
