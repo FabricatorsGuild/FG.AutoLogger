@@ -25,7 +25,6 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             if (model.ProjectBasePath != null)
             {
                 var projectName = System.IO.Path.GetFileNameWithoutExtension(model.ProjectFilePath);
-                //Microsoft.Build.Evaluation.Project project = null;
                 var configuration = "Debug";
                 var projectTool = new FG.Utils.BuildTools.ProjectTool(model.ProjectFilePath, null);
                 var projectFiles = projectTool.ScanFilesInProjectFolder();
@@ -52,9 +51,6 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                     });
                     hasEventSource = true;
                 }
-
-                //var platformProperty = project.Properties.FirstOrDefault(p => p.Name == "PlatformTarget")?.EvaluatedValue ?? "AnyCPU";
-                //model.Platform = platformProperty;
 
                 foreach (var projectItem in projectFiles.Where(item =>
                     item.Name.Matches(@"*.eventsource.output.json", StringComparison.InvariantCultureIgnoreCase, useWildcards: true)
@@ -94,18 +90,6 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                     var projectItemFilePath = projectItem.Path;
                     projectItems.Add(new ProjectItem(ProjectItemType.BuilderExtension, projectItemFilePath) {Include = projectItem.Name});
                 }
-                var anyHintPath = "";
-                foreach (var projectItem in projectReferences)
-                {
-                    var hintPath = projectItem.HintPath;
-                    hintPath = hintPath != null ? PathExtensions.GetAbsolutePath(model.ProjectBasePath, hintPath) : null;
-
-                    anyHintPath = hintPath ?? anyHintPath;
-
-                    var projectItemFilePath = hintPath == null ? $"{projectItem.Name}.dll" : System.IO.Path.Combine(model.ProjectBasePath, hintPath);
-
-                    projectItems.Add(new ProjectItem(ProjectItemType.Reference, projectItemFilePath) {Include = projectItem.Name});
-                }
 
                 var outputPath = projectProperties.ContainsKey("OutputPath") ? projectProperties["OutputPath"] : $"bin\\{configuration}";
                 var buildOutputPath = PathExtensions.GetAbsolutePath(model.ProjectBasePath, outputPath);
@@ -123,38 +107,6 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                         }
                     }
                 }
-
-                //foreach (var projectItem in projectReferences)
-                //{
-                //    var referencedProjectPath = PathExtensions.GetAbsolutePath(model.ProjectBasePath, projectItem.Name);
-                //    var expectedDllName = $"{projectItem.Name}.dll";
-                //    var referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), outputPath);
-                //    var projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
-                //    if (System.IO.File.Exists(projectItemFilePath))
-                //    {
-                //        projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.Name});
-                //    }
-                //    else
-                //    {
-                //        var referencedProject = QuickLoadProjectReference(referencedProjectPath);
-                //        var referencedProjectSubOutputPath =
-                //            referencedProject.Items.FirstOrDefault(item => item.ItemType.Equals("_OutputPathItem", StringComparison.InvariantCultureIgnoreCase))?
-                //                .EvaluatedInclude;
-                //        var referencedProjectAssemblyName =
-                //            referencedProject.Properties.FirstOrDefault(p => p.Name.Equals("AssemblyName", StringComparison.InvariantCultureIgnoreCase))?.EvaluatedValue;
-                //        expectedDllName = $"{referencedProjectAssemblyName}.dll";
-                //        referencedProjectOutputPath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(referencedProjectPath), referencedProjectSubOutputPath);
-                //        projectItemFilePath = System.IO.Path.Combine(referencedProjectOutputPath, expectedDllName);
-                //        if (System.IO.File.Exists(projectItemFilePath))
-                //        {
-                //            projectItems.Add(new ProjectItem(ProjectItemType.ProjectReference, projectItemFilePath) {Include = projectItem.Name});
-                //        }
-                //        else
-                //        {
-                //            LogError($"Could not find dll for project reference, ensure you have compiled {projectItemFilePath}");
-                //        }
-                //    }
-                //}
 
                 if (!hasEventSource)
                 {

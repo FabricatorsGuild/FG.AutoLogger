@@ -35,7 +35,6 @@ namespace FG.Diagnostics.AutoLogger.Generator
 
             var referenceFiles = 
                 project.ProjectItems.OfType(ProjectItemType.Reference).Select(r => r.Name)
-                .Union(project.ProjectItems.OfType(ProjectItemType.ProjectReference).Select(r => r.Name))
                 .Union(project.ToolModuleReferences)
                 .ToArray();
 
@@ -45,8 +44,6 @@ namespace FG.Diagnostics.AutoLogger.Generator
             builders = new IProjectBuilder[]
             {
                 new ProjectAssemblyLoader(), 
-                //new ProjectRefenceCopyBuilder(), 
-                //new ProjectPrecompileBuilder(), 
                 new ProjectExtensionsDiscoverBuilder(),
                 new ProjectDefaultExtensionsBuilder(),
                 new ProjectLoggerDiscoverBuilder(),
