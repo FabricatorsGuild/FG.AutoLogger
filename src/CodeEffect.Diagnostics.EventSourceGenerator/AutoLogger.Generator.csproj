@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\EventImplicitlyTemplatedArgumentsBuilder.cs" />
     <Compile Include="Builders\ToolModuleReferenceBuilder.cs" />
     <Compile Include="Renderers\BaseEtwRendererWithLogging.cs" />
     <Compile Include="Renderers\ProjectEventSourceDefinitionRenderer.cs" />

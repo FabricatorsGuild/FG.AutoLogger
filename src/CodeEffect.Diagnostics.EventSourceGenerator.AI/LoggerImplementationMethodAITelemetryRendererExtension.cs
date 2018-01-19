@@ -255,7 +255,7 @@ namespace FG.Diagnostics.AutoLogger.AI
             }
             if ((assignmentType != null) && (EventArgumentModel.ParseType(assignmentType) != typeof(string)))
             {
-                assignment = $"{assignment}.ToString()";
+                assignment = $"({assignment}).ToString()";
             }
 
             var keyOutput = $"{model.Name.Substring(0, 1).ToUpperInvariant()}{model.Name.Substring(1)}";
