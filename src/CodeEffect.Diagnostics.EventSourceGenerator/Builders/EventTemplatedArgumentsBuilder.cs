@@ -81,9 +81,9 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 if (TypeExtensions.IsComplexType(argument.Type) && (argument.TypeTemplate == null))
                 {
                     var template = this.GetTypeTemplate(project, eventSource.TypeTemplates, argument);
-                    if (template == null && eventSource.ImplicitTypeTemplates)
+                    if (template == null && eventSource.Settings.ImplicitTypeTemplates)
                     {
-                        foreach (var implicitTypeTemplateNamespace in eventSource.ImplicitTypeTemplateNamespaces ?? new string[0])
+                        foreach (var implicitTypeTemplateNamespace in eventSource.Settings.ImplicitTypeTemplateNamespaces ?? new string[0])
                         {
                             if (argument.Type.StartsWith(implicitTypeTemplateNamespace))
                             {

@@ -45,10 +45,6 @@ namespace FG.Diagnostics.AutoLogger.Model
 
         public EventSourceSettings Settings { get; set; }
 
-        public bool ImplicitTypeTemplates { get; set; }
-
-        public string[] ImplicitTypeTemplateNamespaces { get; set; }
-
 
         public override string ToString()
         {
@@ -60,6 +56,10 @@ namespace FG.Diagnostics.AutoLogger.Model
             public string[] Modules { get; set; }
 
             public bool AutogenerateLoggerInterfaces { get; set; }
+
+            public bool ImplicitTypeTemplates { get; set; }
+
+            public string[] ImplicitTypeTemplateNamespaces { get; set; }
         }
     }
 }
