@@ -16,8 +16,10 @@ namespace FG.Diagnostics.AutoLogger.Schema
             var schemaJson = schema.ToJson();
 
             var projectNamespace = typeof(EventSourceModel).Namespace;
+            var currentDirectory = System.IO.Directory.GetCurrentDirectory();
             var schemaFileName = $"{projectNamespace}.json";
-            System.IO.File.WriteAllText(schemaFileName, schemaJson);
+            var schemaPath = System.IO.Path.Combine(currentDirectory, schemaFileName);
+            System.IO.File.WriteAllText(schemaPath, schemaJson);
 
             var projectItem = new ProjectItem(type: ProjectItemType.Unknown, name: schemaFileName)
             {
