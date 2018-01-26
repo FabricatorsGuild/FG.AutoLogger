@@ -134,7 +134,11 @@ namespace FG.Diagnostics.AutoLogger.Generator.Utils
             return $"{that?.Substring(0, 1).ToLowerInvariant()}{that?.Substring(1)}";
         }
 
-        public static string GetCSVList<T>(this IEnumerable<T> values, Func<T, string> renderValue )
+        public static string GetCSVList<T>(this IEnumerable<T> values)
+        {
+            return GetCSVList(values, null);
+        }
+        public static string GetCSVList<T>(this IEnumerable<T> values, Func<T, string> renderValue, string delimiter = ", ")
         {
             renderValue = renderValue ?? (v => v.ToString());
             var valuesLength = values.Count();

@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="BaseTemplateExtension.cs" />
     <Compile Include="BaseWithLogging.cs" />
+    <Compile Include="DefaultExtensionMethods.cs" />
     <Compile Include="EventArgumentModel.cs" />
     <Compile Include="EventArgumentsListBuilder.cs" />
     <Compile Include="EventModel.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="ProjectItemType.cs" />
     <Compile Include="ProjectSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeTemplate.cs" />
     <Compile Include="TypeTemplateExtensions.cs" />
     <Compile Include="TypeTemplateModel.cs" />
   </ItemGroup>

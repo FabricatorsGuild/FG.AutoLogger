@@ -2,9 +2,11 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace FG.Diagnostics.AutoLogger.Model
 {
+
     public static class TypeTemplateExtensions
     {
         private static readonly IDictionary<string, TypeTemplateModel> TypeTemplates = new ConcurrentDictionary<string, TypeTemplateModel>();
