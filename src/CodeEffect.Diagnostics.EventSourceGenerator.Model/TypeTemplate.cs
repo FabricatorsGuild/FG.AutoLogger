@@ -176,6 +176,12 @@ namespace FG.Diagnostics.AutoLogger.Model
                 type = typeof(string);
             }
 
+            if (type.IsEnum)
+            {
+                assignment = $"{assignment}.ToString()";
+                type = typeof(string);
+            }
+
             return new AssignmentOutput(name, name, type, assignment);
         }
 

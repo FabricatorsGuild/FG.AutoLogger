@@ -138,7 +138,11 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tests
             arguments[i].Assignment.Should().Be("$this.Id");
             arguments[i].Type.Should().Be(typeof(string).FullName);
 
-            arguments[i = 5].Name.Should().Be("SomeDate");
+            arguments[i = 5].Name.Should().Be("ReportType");
+            arguments[i].Assignment.Should().Be("$this.ReportType.ToString()");
+            arguments[i].Type.Should().Be(typeof(string).FullName);
+
+            arguments[i = 6].Name.Should().Be("SomeDate");
             arguments[i].Assignment.Should().Be("$this.SomeDate ?? DateTime.MinValue");
             arguments[i].Type.Should().Be(typeof(DateTime).FullName);
 
@@ -163,6 +167,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tests
         
     }
 
+    public enum ReportType
+    {
+        PDF,
+        Excel,
+        CSV
+    }
+
     public class Employee
     {
         public string Id { get; set; }
@@ -174,6 +185,7 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tests
 
         public Company[] RelatedCompanies { get; set; }
         public string[] Reports { get; set; }
+        public ReportType ReportType { get; set; }
     }
 
     public static class ContextExtensionMethods
