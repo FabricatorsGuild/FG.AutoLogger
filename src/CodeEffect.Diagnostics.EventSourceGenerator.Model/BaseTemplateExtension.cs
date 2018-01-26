@@ -5,7 +5,7 @@ namespace FG.Diagnostics.AutoLogger.Model
     public abstract class BaseTemplateExtension<TSource> : BaseWithLogging, ITypeTemplateDefinition
     {
         private TypeTemplateModel _typeTemplateModel;
-        public string Module { get; }
+        public abstract string Module { get; }
 
         protected abstract void BuildArguments(TypeTemplate<TSource> config);
 

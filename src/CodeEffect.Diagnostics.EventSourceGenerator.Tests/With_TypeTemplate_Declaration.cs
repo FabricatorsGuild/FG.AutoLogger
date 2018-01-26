@@ -145,12 +145,13 @@ namespace CodeEffect.Diagnostics.EventSourceGenerator.Tests
             arguments[i = 6].Name.Should().Be("SomeDate");
             arguments[i].Assignment.Should().Be("$this.SomeDate ?? DateTime.MinValue");
             arguments[i].Type.Should().Be(typeof(DateTime).FullName);
-
         }
     }
     
     public class TemplateEmployee : BaseTemplateExtension<Employee>
     {
+        public override string Module => @"Samples";
+
         protected override void BuildArguments(TypeTemplate<Employee> config)
         {
             config
