@@ -55,6 +55,11 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
 
             output = output.Replace(LoggerEventSourcePartialTemplate.Variable_LOGGER_EVENTS_DECLARATION, logger.ToString());
 
+            var useReferencedHelpers = loggerModel.EventSource.Settings.UseReferencedHelpers
+                ? "using FG.Diagnostics.AutoLogger.Model;\r\n"
+                : "";
+            output = output.Replace(LoggerEventSourcePartialTemplate.Variable_LOGGER_USING_AUTOLOGGER_MODEL, useReferencedHelpers);
+
             model.Output = output;
         }
     }

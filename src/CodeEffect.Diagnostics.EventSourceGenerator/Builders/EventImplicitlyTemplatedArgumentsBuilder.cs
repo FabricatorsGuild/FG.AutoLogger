@@ -35,6 +35,8 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 return;
             }
 
+            
+
             foreach (var argument in model.GetAllArguments())
             {
                 if (TypeExtensions.IsComplexType(argument.Type) && (argument.TypeTemplate == null))

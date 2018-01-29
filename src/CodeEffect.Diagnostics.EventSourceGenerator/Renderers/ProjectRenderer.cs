@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using FG.Diagnostics.AutoLogger.Generator.Utils;
 using FG.Diagnostics.AutoLogger.Model;
 

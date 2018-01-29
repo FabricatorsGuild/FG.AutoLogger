@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FG.Diagnostics.AutoLogger.Generator.Utils;
@@ -58,6 +59,19 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             eventSourceModel.ProviderName = eventSourceModel.ProviderName ?? $"{eventSourceModel.Namespace.Replace('.', '-')}-{name}";
             eventSourceModel.ClassName = name.GetUpperCasedInitial();
             eventSourceModel.SourceFilePath = eventSourceDefinitionProjectItem.Include;
+            if( eventSourceModel.Settings == null) eventSourceModel.Settings = new EventSourceModel.EventSourceSettings();
+
+            if (eventSourceModel.Settings.UseReferencedHelpers)
+            {
+                var referenceAssemblyName = typeof(EventArgumentModel).Assembly.GetName().Name;
+                var referenceToAutoLoggerModel = project.DynamicAssembly.GetReferencedAssemblies().FirstOrDefault(r =>
+                    r.Name == referenceAssemblyName);
+
+                if (referenceToAutoLoggerModel == null)
+                {
+                    throw new NotSupportedException($"The 'UseReferencedHelpers' setting for EventSource '{eventSourceModel.Name}' can only be specified if the project references '{referenceAssemblyName}'");
+                }
+            }
 
             var filePath = PathExtensions.GetAbsolutePath(System.IO.Path.GetDirectoryName(eventSourceDefinitionProjectItem.Name), implementationFileName);
 

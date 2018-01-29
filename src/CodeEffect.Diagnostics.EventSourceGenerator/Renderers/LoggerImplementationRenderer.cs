@@ -86,6 +86,11 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
                 usings.Append(renderer.Render(project, model));
             }
 
+            var useReferencedHelpers = loggerModel.EventSource.Settings.UseReferencedHelpers
+                ? "using FG.Diagnostics.AutoLogger.Model;\r\n"
+                : "";
+
+
             var memberRenderers = new ILoggerImplementationMembersRenderer[]
             {
             }.Union(project.GetExtensions<ILoggerImplementationMembersRenderer>(eventSourceModel.Settings?.Modules ?? new string[0])).ToArray();
@@ -104,10 +109,16 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
                 constructorMemberAssignments.Append(renderer.Render(project, model));
             }
 
+            var scopeWrappers = !loggerModel.EventSource.Settings.UseReferencedHelpers
+                ? LoggerImplementationTemplate.Template_LOGGER_IMPLEMENTATION_SCOPE_WRAPPERS
+                : "";
+
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_USING_DECLARATION, usings.ToString());
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_DECLARATION, memberDeclarations.ToString());
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_MEMBER_ASSIGNMENT, constructorMemberAssignments.ToString());
             output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLICIT_ARGUMENTS_CONSTRUCTOR_DECLARATION, constructorArguments.ToString());
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_USING_AUTOLOGGER_MODEL, useReferencedHelpers);
+            output = output.Replace(LoggerImplementationTemplate.Variable_LOGGER_IMPLEMENTATION_SCOPE_WRAPPERS, scopeWrappers);
 
             var logger = new StringBuilder();
             var loggerEventRenderers = new ILoggerImplementationEventRenderer[]

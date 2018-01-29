@@ -111,6 +111,7 @@
 		"ImplicitTypeTemplateNamespaces": [
 			"FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Loggers"
 		],
-		"AutogenerateLoggerInterfaces": true
+		"AutogenerateLoggerInterfaces": true,
+		"UseReferencedHelpers":  true 
 	}
 }

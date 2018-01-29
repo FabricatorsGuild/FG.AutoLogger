@@ -60,6 +60,8 @@ namespace FG.Diagnostics.AutoLogger.Model
             public bool ImplicitTypeTemplates { get; set; }
 
             public string[] ImplicitTypeTemplateNamespaces { get; set; }
+
+            public bool UseReferencedHelpers { get; set; }
         }
     }
 }
