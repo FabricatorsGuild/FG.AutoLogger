@@ -69,7 +69,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
 
                 if (referenceToAutoLoggerModel == null)
                 {
-                    throw new NotSupportedException($"The 'UseReferencedHelpers' setting for EventSource '{eventSourceModel.Name}' can only be specified if the project references '{referenceAssemblyName}'");
+                    LogWarning($"The 'UseReferencedHelpers' setting for EventSource '{eventSourceModel.Name}' can only be specified if the project references '{referenceAssemblyName}'");
                 }
             }
 
