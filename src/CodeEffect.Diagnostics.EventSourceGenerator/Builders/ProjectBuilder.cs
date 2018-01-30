@@ -90,9 +90,17 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                     projectItems.Add(new ProjectItem(ProjectItemType.BuilderExtension, projectItemFilePath) {Include = projectItem.Name});
                 }
 
-                var outputPath = projectProperties.ContainsKey("OutputPath") ? projectProperties["OutputPath"] : $"bin\\{configuration}";
+                var outputPath = projectTool.GetProjectOutputPath(configuration, null);
                 var buildOutputPath = PathExtensions.GetAbsolutePath(model.ProjectBasePath, outputPath);
-                if (System.IO.Directory.Exists(buildOutputPath))
+                var outputPathExists = System.IO.Directory.Exists(buildOutputPath);
+                if (!outputPathExists)
+                {
+                    outputPath = projectTool.GetProjectOutputPath(configuration, "x64");
+                    buildOutputPath = PathExtensions.GetAbsolutePath(model.ProjectBasePath, outputPath);
+                    outputPathExists = System.IO.Directory.Exists(buildOutputPath);
+                }
+
+                if (outputPathExists)
                 {
                     var outputFiles = System.IO.Directory.GetFiles(buildOutputPath, "*.*", SearchOption.AllDirectories);
                     foreach (var outputFile in outputFiles)
@@ -102,7 +110,11 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                         {
                             var referenceFilePath = outputFile;
                             var referenceName = System.IO.Path.GetFileNameWithoutExtension(outputFile);
-                            projectItems.Add(new ProjectItem(ProjectItemType.Reference, referenceFilePath) { Include = referenceName });
+                            projectItems.Add(
+                                new ProjectItem(ProjectItemType.Reference, referenceFilePath)
+                                {
+                                    Include = referenceName
+                                });
                         }
                     }
                 }
