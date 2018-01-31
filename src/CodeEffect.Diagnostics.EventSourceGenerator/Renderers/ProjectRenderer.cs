@@ -64,8 +64,9 @@ namespace FG.Diagnostics.AutoLogger.Generator.Renderers
                         };
                     }
 
+                    var fileType = System.IO.Path.GetExtension(include.Include);
                     var includeType = (include.ItemType == ProjectItemType.DefaultGeneratedEventSourceDefinition || 
-                        include.ItemType == ProjectItemType.ProjectSummary) ? "None" : "Compile";
+                        include.ItemType == ProjectItemType.ProjectSummary) ? "None" : fileType == ".cs" ? "Compile" : "Content";
 
                     if (matchingItem == null || !FG.Utils.BuildTools.DictionaryExtensions.AreEquivalent(matchingItem.Properties, properties))
                     {
