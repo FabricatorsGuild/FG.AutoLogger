@@ -35,6 +35,29 @@ namespace FG.Diagnostics.AutoLogger.Tool
                 versionChecker.CheckVersion();
             }
 
+            if (parsedOptions.GenerateSchema)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Generating JSON Schema");
+
+                var output = SchemaWriter.GenerateSchema(parsedOptions.SaveChanges).GetAwaiter().GetResult();
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{"".PadRight(40, '_')}");
+                Console.WriteLine($"{"".PadRight(40, '=')}");
+                Console.WriteLine($"File: {output.Name}");
+                Console.WriteLine($"{"".PadRight(40, '_')}");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(output.Output);
+
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"{"".PadRight(40, '_')}");
+                Console.WriteLine($"{"".PadRight(40, '=')}");
+
+                Console.WriteLine($"Done generating JSON Schema");
+            }
 
             if (parsedOptions.Verbose) LogMessage($"Filename: {parsedOptions.ProjectFile}");
 
@@ -42,7 +65,8 @@ namespace FG.Diagnostics.AutoLogger.Tool
 
             if (parsedOptions.ProjectFile == null)
             {
-                var possibleProjectFiles = System.IO.Directory.GetFiles("*.csproj");
+                var currentDirectory = System.IO.Directory.GetCurrentDirectory();
+                var possibleProjectFiles = System.IO.Directory.GetFiles(currentDirectory, "*.csproj");
                 if (possibleProjectFiles.Any())
                 {
                     parsedOptions.ProjectFile = possibleProjectFiles.First();
@@ -110,29 +134,6 @@ namespace FG.Diagnostics.AutoLogger.Tool
             }
 
 
-            if (parsedOptions.GenerateSchema)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Generating JSON Schema");
-
-                var output = SchemaWriter.GenerateSchema(parsedOptions.SaveChanges).GetAwaiter().GetResult();
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"{"".PadRight(40, '_')}");
-                Console.WriteLine($"{"".PadRight(40, '=')}");
-                Console.WriteLine($"File: {output.Name}");
-                Console.WriteLine($"{"".PadRight(40, '_')}");
-
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(output.Output);
-
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"{"".PadRight(40, '_')}");
-                Console.WriteLine($"{"".PadRight(40, '=')}");
-
-                Console.WriteLine($"Done generating JSON Schema");
-            }
 
             if (parsedOptions.Interactive)
             {

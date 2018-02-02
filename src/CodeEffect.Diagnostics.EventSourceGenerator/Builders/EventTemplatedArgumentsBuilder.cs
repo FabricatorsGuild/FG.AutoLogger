@@ -1,3 +1,4 @@
+using System;
 using FG.Diagnostics.AutoLogger.Generator.Utils;
 using FG.Diagnostics.AutoLogger.Model;
 
@@ -39,7 +40,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                     if (template != null)
                     {
                         argument.TypeTemplate = template;
-                    }
+                    }                   
                 }
             }
         }

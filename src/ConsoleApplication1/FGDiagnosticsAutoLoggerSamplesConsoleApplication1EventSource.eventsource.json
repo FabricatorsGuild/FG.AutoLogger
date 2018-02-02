@@ -102,15 +102,16 @@
 			]
 		}
 	],
-	"ImplicitTypeTemplates": true,
-	"ImplicitTypeTemplateNamespaces": [
-		"FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Loggers"
-	],
 	"Settings": {
 		"Modules": [
 			"Demo",
 			"AI"
 		],
-		"AutogenerateLoggerInterfaces": true
+		"ImplicitTypeTemplates": true,
+		"ImplicitTypeTemplateNamespaces": [
+			"FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Loggers"
+		],
+		"AutogenerateLoggerInterfaces": true,
+		"UseReferencedHelpers":  true 
 	}
 }

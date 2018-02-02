@@ -45,6 +45,7 @@ namespace FG.Diagnostics.AutoLogger.Model
 
         public EventSourceSettings Settings { get; set; }
 
+
         public override string ToString()
         {
             return $"{nameof(EventSourceModel)} {this.Name}";
@@ -55,6 +56,12 @@ namespace FG.Diagnostics.AutoLogger.Model
             public string[] Modules { get; set; }
 
             public bool AutogenerateLoggerInterfaces { get; set; }
+
+            public bool ImplicitTypeTemplates { get; set; }
+
+            public string[] ImplicitTypeTemplateNamespaces { get; set; }
+
+            public bool UseReferencedHelpers { get; set; }
         }
     }
 }

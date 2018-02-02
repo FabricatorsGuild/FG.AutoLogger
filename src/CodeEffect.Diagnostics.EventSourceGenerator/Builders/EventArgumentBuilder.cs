@@ -35,7 +35,7 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
                 else
                 {
                     model.AssignedCLRType = "string";
-                    model.Assignment = "$this.ToString()";
+                    model.Assignment = "($this).ToString()";
                 }  
             }
             model.CLRType = type;

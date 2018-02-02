@@ -39,25 +39,25 @@ namespace FG.Diagnostics.AutoLogger.Generator.Builders
             if (argument.Assignment == null) return;
             var templateCLRType = argument.AssignedCLRType ?? argument.TemplatedParentArgument?.CLRType ?? argument?.TemplatedParentArgument?.Type ?? argument.Type;
 
-            if (argument.Assignment.Contains("$this.AsJson()"))
+            if (argument.Assignment.EndsWith(".AsJson()"))
             {
-                AddKnownExtension(eventSource, "AsJson", templateCLRType);
+                AddKnownExtension(eventSource, "AsJson", "object");
                 return;
             }
 
-            if (argument.Assignment.Contains("$this.GetReplicaOrInstanceId()"))
+            if (argument.Assignment.EndsWith(".GetReplicaOrInstanceId()"))
             {
                 AddKnownExtension(eventSource, "GetReplicaOrInstanceId", templateCLRType);
                 return;
             }
 
-            if (argument.Assignment.Contains("$this.GetContentDigest("))
+            if (argument.Assignment.EndsWith(".GetContentDigest("))
             {
                 AddKnownExtension(eventSource, "GetContentDigest", templateCLRType);
                 AddKnownExtension(eventSource, "GetMD5Hash", templateCLRType);
                 return;
             }
-            if (argument.Assignment.Contains("$this.GetMD5Hash("))
+            if (argument.Assignment.EndsWith(".GetMD5Hash("))
             {
                 AddKnownExtension(eventSource, "GetMD5Hash", templateCLRType);
                 return;

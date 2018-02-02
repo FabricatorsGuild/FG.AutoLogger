@@ -89,6 +89,38 @@ namespace FG.Diagnostics.AutoLogger.Model
             }
         }
 
+        public static string GetDefaultValue(Type type)
+        {            
+            switch (type.Name.ToLowerInvariant())
+            {
+                case ("system.string"):
+                    return "";
+                case ("int"):
+                case ("system.int32"):
+                    return "0";
+                case ("double"):
+                case ("system.double"):
+                    return "0";
+                case ("decimal"):
+                case ("system.decimal"):
+                    return "0";
+                case ("long"):
+                case ("system.int64"):
+                    return "0";
+                case ("bool"):
+                case ("system.boolean"):
+                    return "false";
+                case ("datetime"):
+                case ("system.dateTime"):
+                    return "System.DateTime.MinValue";
+                case ("guid"):
+                case ("system.guid"):
+                    return "Guid.Empty";
+                default:
+                    return null;
+            }
+        }
+
         public object Clone()
         {
             return new EventArgumentModel()

@@ -16,5 +16,7 @@ namespace FG.Diagnostics.AutoLogger.Model
         public bool HasProjectChanges { get; set; }
         public bool ForceUpdate { get; set; }
         public List<string> ToolModuleReferences { get; set; }
+        public string RootNamespace { get; set; }
+        public string AssemblyName { get; set; }
     }
 }

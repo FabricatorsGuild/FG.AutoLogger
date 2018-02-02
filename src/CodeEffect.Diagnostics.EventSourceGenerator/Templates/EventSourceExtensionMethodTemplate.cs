@@ -32,7 +32,7 @@
 ";
 
         public const string Template_EXTENSION_GETCONTENTDIGEST_DECLARATION = @"
-            public static long GetContentDigest(this string content)
+            public static string GetContentDigest(this string content)
             {
                 var contentDigest = """";
                 try

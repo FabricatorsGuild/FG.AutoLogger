@@ -42,4 +42,5 @@ namespace FG.Diagnostics.AutoLogger.Samples.ConsoleApplication1.Extensions
 
         public string Module => @"Demo";
     }
+
 }
