@@ -19,6 +19,10 @@ The purpose is to remove a lot of the manual writing and maintainance of EventSo
 
 ## Getting Started
 
+**Note!** As of Release 1.3.0 the tool now supports newer Visual Studio Projects a.k.a. Common Project System projects or SDK project. The project files can be parsed and manipulated by the tool. However, the tool does not necessarily support all usages of the projects. Currenly the supporting code for this is maintained in (FG.Utils repo)[https://github.com/FabricatorsGuild/FG.Utils]. Let us know if there are any scenarios/configurations currently not supported or send a PR to that repo.
+
+**Note!** As opposed to earlier versions of AutoLogger, from 1.3.0 the tool does _not_ JIT-compile your files but rather relies on the compiled binaries in your output-path. This removes the complexity of perfectly parsing, compiling and loading your code. The drawback to this is of course that you have to recompile every time you change the loggers in your project. This drawback however seems smaller than having to handle complex project structures, relationships, build platforms, compile targets and so on.
+
 ### Tutorial - Setting up the Tool in Visual Studio
 [![Setting up the Tool in Visual Studio](https://github.com/FabricatorsGuild/FG.AutoLogger/raw/docs/docs/AutoLogger%20setup%20tool.PNG)](https://youtu.be/vl-eLHK7des)
 
@@ -115,6 +119,7 @@ namespace Sample.ConsoleApp
       "StartId": 1000
     }
 ```
+* Compile the project. (see section on running the tool)
 * Add the base NuGet for logging to your project ``FG.Diagnostics.AutoLogger.Model``. This includes some conveniece classes for the loggers.
 * Run the tool again <kbd>ALT</kbd>+<kbd>L</kbd>. It should now have generated an number of additional files under the ``DefaultEventSource.eventsource.json`` in the project. These files contains the concrete loggers and ETW EventSource implementations based on the logger interface declared. You can now create a new instance of the concret logger directly in your code, where we instead of going to the singleton accessor of the EventSource, we can use the generated implementation of our logger interface. Add some logging code to your startup code:
 ```csharp
@@ -169,6 +174,14 @@ For the AutoLogger to know how to logg this object we need to add a template for
 ```
 
 Below are details on how to use AutoLogger in more complex scenarios.
+
+## Running the tool in you project
+
+**Make sure you build the project you are generating loggers in**. As opposed to earlier versions of AutoLogger, from 1.3.0 the tool does _not_ JIT-compile your files but rather relies on the compiled binaries in your output-path. This removes the complexity of perfectly parsing, compiling and loading your code. The drawback to this is of course that you have to recompile every time you change the loggers in your project. This drawback however seems smaller than having to handle complex project structures, relationships, build platforms, compile targets and so on.
+
+If the changes you do in your loggers breaks earlier generated loggers, you are forced to supply a minimal implementation of that (```throw new NotImplementedException();``` works just fine) in order for you to be able to compile the project with the new interface updates. If you just run the tool without recompiling, it will simply grab the latest successfully comiled assembly from the output-path and you won't see your changes in the generated loggers. Annoying, so please remember to recompile.
+
+If the changes you are making are simply to the ```*.eventsource.json``` file then recompilation is not neccesary. This file need not be included in the project output, it's enough that it is included in the project with build action ```None```.
 
 ## Adding EventSources to a project
 
