@@ -31,7 +31,7 @@ namespace FG.Diagnostics.AutoLogger.AI
         private const string Variable_LOGGER_METHOD_TRACKOPERATION_METHOD_ARGUMENTS_ASSIGNMENT = @"@@LOGGER_METHOD_TRACKOPERATION_METHOD_ARGUMENTS_ASSIGNMENT@@";
         private const string Variable_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_METHOD_NAME = @"@@LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_METHOD_NAME@@";
 
-        private const string Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION = @"@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Telemetry.Properties.Add(""@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@"", @@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@);";
+        private const string Template_LOGGER_METHOD_TRACKOPERATION_PROPERTY_DECLARATION = @"@@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder.Telemetry.Properties[""@@LOGGER_METHOD_TRACKOPERATION_PROPERTY_NAME@@""] = @@LOGGER_METHOD_TRACKOPERATION_PROPERTY_ASSIGNMENT@@;";
         private const string Template_LOGGER_METHOD_TRACKOPERATIONSTART_DECLARATION = @"
 			var @@LOGGER_METHOD_TRACKOPERATION_NAME@@OperationHolder = _telemetryClient.StartOperation<RequestTelemetry>(@@LOGGER_METHOD_TRACKOPERATION_REQUESTNAME@@);
 	       @@LOGGER_METHOD_TRACKOPERATION_PROPERTIES_DECLARATION@@
@@ -132,7 +132,7 @@ namespace FG.Diagnostics.AutoLogger.AI
             output = output.Replace(Variable_LOGGER_METHOD_TRACKOPERATION_TELEMETRYTYPE, telemetryType);
             output = output.Replace(Variable_LOGGER_METHOD_TRACKSCOPEDOPERATIONSTOP_METHOD_NAME, model.CorrelatesTo.Name);
 
-            var arguments = new EventArgumentsListBuilder("", arg => RenderDictionaryKeyValueAdd(arg, operationName), "\r\n			");
+            var arguments = new EventArgumentsListBuilder("", arg => RenderDictionaryKeyValueAdd(arg, operationName), "\r\n			            ");
             foreach (var argumentModel in model.GetAllArgumentsExpanded(directArgumentAssignments: false))
             {
                 arguments.Append(argumentModel);
